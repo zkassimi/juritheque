@@ -1,0 +1,70 @@
+{
+  "run_at": "20260513_144414",
+  "source": "https://www.huquqai.ma/api/laws",
+  "total_api": 6808,
+  "count": 3111,
+  "duplicates": 225,
+  "filters": {
+    "year": null,
+    "limit": null,
+    "no_dedup": false
+  },
+  "sample": [
+    {
+      "id": "10000006419",
+      "number": "2.22.64",
+      "date": "2025-09-18",
+      "year": 2025,
+      "type_ar": "مرسوم",
+      "type_fr": "Décret",
+      "title_ar": "مرسوم بإلحاق المندوبية الوزارية المكلفة بحقوق الإنسان بوزير العدل (نسخ )",
+      "domain": null,
+      "tags": [],
+      "pdfUrl": "https://pub-ecd37824be8e4b1da4aa7297a0ed1619.r2.dev/adala_documents/10000006419.pdf",
+      "source": "Adala",
+      "sourceUrl": "https://adala.justice.gov.ma",
+      "isExternal": true
+    },
+    {
+      "id": "10000006922",
+      "number": "54.19",
+      "date": "2025-09-18",
+      "year": 2025,
+      "type_ar": "مرسوم",
+      "type_fr": "Décret",
+      "title_ar": "مـرسوم بإعادة تنظيم المندوبية الوزارية المكلفة بحقوق الإنسان وتحديد اختصاصاتها",
+      "domain": "administratif",
+      "tags": [
+        "الحكومة",
+        "القانون الإداري",
+        "المرسوم",
+        "حقوق الإنسان"
+      ],
+      "pdfUrl": "https://pub-ecd37824be8e4b1da4aa7297a0ed1619.r2.dev/adala_documents/10000006922.pdf",
+      "source": "Adala",
+      "sourceUrl": "https://adala.justice.gov.ma",
+      "isExternal": true
+    },
+    {
+      "id": "10000000954",
+      "number": "15.95",
+      "date": "2025-09-18",
+      "year": 2025,
+      "type_ar": "مرسوم",
+      "type_fr": "Décret",
+      "title_ar": "مرسوم بتحديد المؤهلات المطلوبة لمزاولة مهام السنديك والأتعاب المستحقة عن هذه المهام في مساطر صعوبات المقاولة",
+      "domain": "commercial",
+      "tags": [
+        "القاضي المنتدب",
+        "القانون التجاري",
+        "المرسوم",
+        "تحديد أتعاب المحامي",
+        "مساطر صعوبات المقاولة"
+      ],
+      "pdfUrl": "https://pub-ecd37824be8e4b1da4aa7297a0ed1619.r2.dev/adala_documents/10000000954.pdf",
+      "source": "Adala",
+      "sourceUrl": "https://adala.justice.gov.ma",
+      "isExternal": true
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "run_at": "20260513_145339",
+  "dry_run": false,
+  "input": "C:\\Users\\HP\\Desktop\\Legal-website\\lexbase\\public\\data\\lois-adala.json",
+  "total_json": 3111,
+  "skipped": 0,
+  "attempted": 3111,
+  "inserted": 0,
+  "errors": 3111
+}

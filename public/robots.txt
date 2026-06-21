@@ -1,0 +1,20 @@
+User-agent: *
+
+# Pages publiques autorisées
+Allow: /
+Allow: /base
+Allow: /domaines
+Allow: /domaine/
+Allow: /loi/
+Allow: /videos
+Allow: /assistant
+Allow: /contact
+Allow: /mentions-legales
+
+# Pages privées bloquées
+Disallow: /admin
+Disallow: /connexion
+Disallow: /profil
+
+# Sitemap
+Sitemap: https://juritheque.com/sitemap.xml

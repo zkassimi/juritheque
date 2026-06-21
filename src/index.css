@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Variables ── */
+:root {
+  --navy:        #0f172a;
+  --navy-800:    #1e293b;
+  --navy-700:    #334155;
+  --navy-600:    #475569;
+  --navy-500:    #64748b;
+  --gold:        #c9a84c;
+  --gold-light:  #e8d08a;
+  --gold-dark:   #a07c2e;
+  --surface:     #f8fafc;
+  --border:      #e2e8f0;
+}
+
+/* ── Base ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--surface);
+  color: var(--navy);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+
+/* ── Typography helpers ── */
+.font-playfair { font-family: 'Playfair Display', Georgia, serif; }
+.font-arabic   { font-family: 'Noto Naskh Arabic', serif; }
+
+/* ── Hero gradient mesh ── */
+.hero-bg {
+  background: linear-gradient(135deg, #0a1628 0%, #0f172a 35%, #0d1f3c 65%, #111827 100%);
+  background-size: 400% 400%;
+  animation: gradientPulse 10s ease infinite;
+  position: relative;
+}
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 40%, rgba(201,168,76,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 80% 60%, rgba(59,130,246,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+@keyframes gradientPulse {
+  0%,100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* ── Gold divider line ── */
+.gold-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* ── Skeleton shimmer ── */
+.skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f8fafc 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* ── Typing dots (AI assistant) ── */
+.typing-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: bounce 1.2s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%,60%,100% { transform: translateY(0); }
+  30%          { transform: translateY(-6px); }
+}
+
+/* ── Law type left-border colors ── */
+.law-border-Loi           { border-left-color: #2563eb !important; }
+.law-border-Dahir         { border-left-color: #7c3aed !important; }
+.law-border-Décret        { border-left-color: #0f766e !important; }
+.law-border-Arrêté        { border-left-color: #b45309 !important; }
+.law-border-Circulaire    { border-left-color: #64748b !important; }
+.law-border-Code          { border-left-color: #dc2626 !important; }
+.law-border-Jurisprudence { border-left-color: #d97706 !important; }
+.law-border-Convention    { border-left-color: #0891b2 !important; }
+.law-border-Règlement     { border-left-color: #4f46e5 !important; }
+.law-border-Ordonnance    { border-left-color: #be185d !important; }
+
+/* ── Stat counter animation ── */
+.stat-value { animation: fadeUp 0.8s ease-out forwards; opacity: 0; }
+.stat-delay-1 { animation-delay: 0.1s; }
+.stat-delay-2 { animation-delay: 0.25s; }
+.stat-delay-3 { animation-delay: 0.4s; }
+.stat-delay-4 { animation-delay: 0.55s; }
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(10px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* ── Page fade-in ── */
+.page-enter { animation: pageEnter 0.4s ease-out forwards; }
+@keyframes pageEnter {
+  from { opacity:0; transform: translateY(8px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+
+/* ── RTL text blocks ── */
+[dir="rtl"] { font-family: 'Noto Naskh Arabic', serif; text-align: right; }
+
+/* ── Chat bubbles ── */
+.bubble-user { background: linear-gradient(135deg, #c9a84c, #a07c2e); color: #fff; }
+.bubble-ai   { background: #1e293b; border: 1px solid rgba(201,168,76,0.2); color: #e2e8f0; }
+
+/* ── Navbar blur ── */
+.navbar-blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(15,23,42,0.92);
+}
+
+/* ── Buttons ── */
+.btn-gold {
+  background: var(--gold); color: var(--navy); font-weight: 600;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-gold:hover { background: var(--gold-dark); transform: translateY(-1px); }
+
+.btn-outline {
+  border: 1.5px solid var(--gold); color: var(--gold);
+  background: transparent; transition: all 0.2s;
+}
+.btn-outline:hover { background: var(--gold); color: var(--navy); }

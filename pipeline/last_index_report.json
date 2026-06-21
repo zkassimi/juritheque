@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-06-21T19:58:01.064670+00:00",
+  "dry_run": false,
+  "total": 7553,
+  "inserted": 7553,
+  "by_source": {
+    "laws": 7553
+  }
+}

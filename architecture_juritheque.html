@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JuriThèque — Architecture & Spécifications Techniques</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ── Reset & Base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:       #0d1117;
+  --bg2:      #161b22;
+  --bg3:      #1c2128;
+  --border:   #30363d;
+  --border2:  #21262d;
+  --text:     #e6edf3;
+  --text2:    #8b949e;
+  --text3:    #6e7681;
+  --gold:     #c9a84c;
+  --gold-dim: #7d6630;
+  --blue:     #58a6ff;
+  --green:    #3fb950;
+  --red:      #f85149;
+  --orange:   #d29922;
+  --purple:   #bc8cff;
+  --navy:     #1a2e4a;
+  --radius:   8px;
+  --radius-sm:5px;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── Layout ────────────────────────────────────────────────────────────────── */
+.page-wrapper { display: flex; min-height: 100vh; }
+
+/* ── Sidebar Navigation ───────────────────────────────────────────────────── */
+.sidenav {
+  position: fixed; top: 0; left: 0;
+  width: 240px; height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border2);
+  overflow-y: auto;
+  z-index: 100;
+  padding: 20px 0 40px;
+}
+.sidenav-logo {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border2);
+  margin-bottom: 16px;
+}
+.sidenav-logo svg { flex-shrink: 0; }
+.sidenav-logo-text { line-height: 1.2; }
+.sidenav-logo-text .t1 { font-family: 'Playfair Display', serif; font-size: 14px; color: var(--gold); font-weight: 600; }
+.sidenav-logo-text .t2 { font-size: 10px; color: var(--text3); }
+.sidenav-section { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; padding: 8px 20px 4px; }
+.sidenav a {
+  display: block; padding: 6px 20px; font-size: 13px; color: var(--text2);
+  text-decoration: none; border-left: 2px solid transparent;
+  transition: all .15s;
+}
+.sidenav a:hover { color: var(--text); background: rgba(255,255,255,.04); border-left-color: var(--border); }
+.sidenav a.active { color: var(--gold); background: rgba(201,168,76,.08); border-left-color: var(--gold); }
+
+/* ── Main content ─────────────────────────────────────────────────────────── */
+.main {
+  margin-left: 240px;
+  flex: 1;
+  max-width: calc(100% - 240px);
+}
+
+/* ── Top Header ───────────────────────────────────────────────────────────── */
+.top-header {
+  background: linear-gradient(135deg, #0d1117 0%, #1a2744 50%, #0d1117 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 48px 56px 40px;
+  position: relative; overflow: hidden;
+}
+.top-header::before {
+  content: '';
+  position: absolute; top: -80px; right: -80px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(201,168,76,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.th-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(201,168,76,.12); border: 1px solid rgba(201,168,76,.3);
+  color: var(--gold); font-size: 11px; font-weight: 500;
+  padding: 3px 10px; border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 16px;
+}
+.th-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px; font-weight: 700; color: #fff;
+  line-height: 1.2; margin-bottom: 8px;
+}
+.th-sub { font-size: 15px; color: var(--text2); margin-bottom: 24px; }
+.th-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.th-tag {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); font-size: 12px; padding: 3px 10px;
+  border-radius: 20px; font-family: 'JetBrains Mono', monospace;
+}
+.th-tag.gold { color: var(--gold); border-color: var(--gold-dim); background: rgba(201,168,76,.06); }
+.th-tag.blue { color: var(--blue); border-color: rgba(88,166,255,.3); background: rgba(88,166,255,.06); }
+.th-tag.green{ color: var(--green); border-color: rgba(63,185,80,.3); background: rgba(63,185,80,.06); }
+
+/* ── Section wrapper ─────────────────────────────────────────────────────── */
+.section { padding: 40px 56px; border-bottom: 1px solid var(--border2); }
+.section:last-child { border-bottom: none; }
+.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+.section-num {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: rgba(201,168,76,.15); border: 1px solid var(--gold-dim);
+  color: var(--gold); font-size: 11px; font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.section-title { font-size: 20px; font-weight: 600; color: var(--text); }
+
+/* ── Architecture Diagram ────────────────────────────────────────────────── */
+.arch-diagram {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 0; position: relative; margin: 8px 0 32px;
+}
+.arch-col {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; position: relative;
+}
+.arch-col:nth-child(2) { border-color: rgba(201,168,76,.4); background: rgba(201,168,76,.04); }
+.arch-col-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text3); margin-bottom: 14px; font-family: 'JetBrains Mono', monospace;
+}
+.arch-col-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.arch-col-sub { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
+.arch-tech {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.arch-tech span {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); font-size: 11px; padding: 2px 8px; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.arch-arrow {
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 8px; color: var(--text3); font-size: 20px;
+  flex-shrink: 0; position: relative; z-index: 1;
+  /* between columns we insert arrows visually via a pseudo-element on the middle column */
+}
+.arch-separator {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--gold); position: relative;
+}
+/* Stack row */
+.stack-row {
+  display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;
+}
+
+/* ── Table ────────────────────────────────────────────────────────────────── */
+.t-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { background: var(--bg3); }
+thead th {
+  text-align: left; padding: 10px 14px;
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--text3); white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+tbody tr { border-bottom: 1px solid var(--border2); }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: rgba(255,255,255,.02); }
+tbody td { padding: 9px 14px; color: var(--text2); vertical-align: top; }
+tbody td:first-child { color: var(--text); font-weight: 500; }
+.td-mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--blue); }
+.td-type { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+
+/* ── Code block ───────────────────────────────────────────────────────────── */
+.code-block {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow-x: auto;
+  margin-bottom: 20px;
+}
+.code-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; border-bottom: 1px solid var(--border2);
+  background: var(--bg3);
+}
+.code-lang { font-size: 11px; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+.code-fname { font-size: 11px; color: var(--text2); font-family: 'JetBrains Mono', monospace; }
+pre {
+  padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  line-height: 1.7; color: #e6edf3; overflow-x: auto;
+}
+.kw  { color: #ff7b72; }   /* keywords */
+.str { color: #a5d6ff; }   /* strings */
+.cmt { color: #8b949e; font-style: italic; }   /* comments */
+.fn  { color: #d2a8ff; }   /* functions */
+.num { color: #79c0ff; }   /* numbers / types */
+.cls { color: #ffa657; }   /* class / column names */
+.pun { color: #8b949e; }   /* punctuation */
+
+/* ── File tree ────────────────────────────────────────────────────────────── */
+.file-tree {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 24px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+  line-height: 2; margin-bottom: 24px;
+}
+.ft-dir  { color: var(--gold); }
+.ft-file { color: var(--text2); }
+.ft-note { color: var(--text3); font-style: italic; }
+.ft-root { color: var(--text); font-weight: 600; }
+
+/* ── Badges ────────────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block; font-size: 10px; font-weight: 600;
+  padding: 2px 8px; border-radius: 20px; font-family: 'JetBrains Mono', monospace;
+  letter-spacing: .03em; white-space: nowrap;
+}
+.badge-green  { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+.badge-orange { background: rgba(210,153,34,.15); color: var(--orange); border: 1px solid rgba(210,153,34,.3); }
+.badge-red    { background: rgba(248,81,73,.15);  color: var(--red);    border: 1px solid rgba(248,81,73,.3); }
+.badge-blue   { background: rgba(88,166,255,.15); color: var(--blue);   border: 1px solid rgba(88,166,255,.3); }
+.badge-gray   { background: rgba(139,148,158,.1); color: var(--text3);  border: 1px solid rgba(139,148,158,.2); }
+.badge-gold   { background: rgba(201,168,76,.15); color: var(--gold);   border: 1px solid var(--gold-dim); }
+
+/* ── Cards grid ───────────────────────────────────────────────────────────── */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+}
+.card-icon { font-size: 22px; margin-bottom: 10px; }
+.card-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.card-body { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+/* ── Flow diagram ─────────────────────────────────────────────────────────── */
+.flow {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: 4px; margin: 20px 0; padding: 20px 24px;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+}
+.flow-step {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 8px 14px;
+  font-size: 12px; color: var(--text); font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+.flow-step.active { border-color: rgba(201,168,76,.5); color: var(--gold); background: rgba(201,168,76,.06); }
+.flow-arrow { color: var(--text3); font-size: 16px; padding: 0 2px; }
+
+/* ── RLS policy block ─────────────────────────────────────────────────────── */
+.policy-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;
+}
+.policy-item {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 12px 16px;
+}
+.policy-role { font-size: 11px; font-weight: 600; font-family: 'JetBrains Mono', monospace; margin-bottom: 6px; }
+.policy-perms { display: flex; flex-wrap: wrap; gap: 4px; }
+.perm { font-size: 10px; font-family: 'JetBrains Mono', monospace; padding: 2px 6px; border-radius: 3px; }
+.perm-select { background: rgba(63,185,80,.1); color: var(--green); }
+.perm-insert { background: rgba(88,166,255,.1); color: var(--blue); }
+.perm-update { background: rgba(210,153,34,.1); color: var(--orange); }
+.perm-delete { background: rgba(248,81,73,.1); color: var(--red); }
+
+/* ── Progress table ──────────────────────────────────────────────────────── */
+.prog-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border2); }
+.prog-row:last-child { border-bottom: none; }
+.prog-label { flex: 1; font-size: 13px; color: var(--text); }
+.prog-bar-wrap { width: 160px; height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.prog-bar { height: 100%; border-radius: 3px; }
+.prog-pct { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--text2); width: 36px; text-align: right; }
+
+/* ── Info box ─────────────────────────────────────────────────────────────── */
+.info-box {
+  background: rgba(88,166,255,.06); border: 1px solid rgba(88,166,255,.25);
+  border-radius: var(--radius); padding: 12px 16px; margin-bottom: 20px;
+  font-size: 13px; color: var(--text2);
+}
+.warn-box {
+  background: rgba(210,153,34,.06); border: 1px solid rgba(210,153,34,.25);
+  border-radius: var(--radius); padding: 12px 16px; margin-bottom: 20px;
+  font-size: 13px; color: var(--text2);
+}
+.warn-box strong, .info-box strong { color: var(--text); }
+
+/* ── Env vars ─────────────────────────────────────────────────────────────── */
+.env-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.env-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 10px 14px;
+}
+.env-key { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--blue); min-width: 240px; flex-shrink: 0; }
+.env-desc { font-size: 12px; color: var(--text2); }
+.env-scope { font-size: 10px; font-family: 'JetBrains Mono', monospace; }
+
+/* ── Sub-title ─────────────────────────────────────────────────────────────── */
+h3 { font-size: 14px; font-weight: 600; color: var(--text); margin: 24px 0 10px; }
+h3 .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-right: 8px; vertical-align: middle; }
+p { color: var(--text2); font-size: 13px; margin-bottom: 12px; }
+
+/* ── footer ───────────────────────────────────────────────────────────────── */
+.doc-footer {
+  background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 24px 56px; display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px; color: var(--text3);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .sidenav { display: none; }
+  .main { margin-left: 0; max-width: 100%; }
+  .section { padding: 28px 20px; }
+  .top-header { padding: 32px 20px; }
+  .arch-diagram { grid-template-columns: 1fr; }
+  .policy-grid { grid-template-columns: 1fr; }
+}
+
+@media print {
+  .sidenav { display: none; }
+  .main { margin-left: 0; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Sidebar ──────────────────────────────────────────────────────────────── -->
+<div class="page-wrapper">
+<nav class="sidenav">
+  <div class="sidenav-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" width="32" height="32">
+      <rect width="64" height="64" rx="14" fill="#1a2744"/>
+      <line x1="32" y1="12" x2="32" y2="52" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="14" y1="20" x2="50" y2="20" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="18" y1="20" x2="18" y2="32" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M10 34 Q18 38 26 34" stroke="#C9A84C" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <line x1="46" y1="20" x2="46" y2="32" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M38 34 Q46 38 54 34" stroke="#C9A84C" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <line x1="26" y1="52" x2="38" y2="52" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <div class="sidenav-logo-text">
+      <div class="t1">JuriThèque</div>
+      <div class="t2">Architecture Technique</div>
+    </div>
+  </div>
+
+  <div class="sidenav-section">Vue d'ensemble</div>
+  <a href="#arch">Architecture générale</a>
+  <a href="#stack">Stack technique</a>
+  <a href="#structure">Structure du projet</a>
+
+  <div class="sidenav-section">Base de données</div>
+  <a href="#schema">Schéma Supabase</a>
+  <a href="#migrations">Migrations</a>
+  <a href="#rls">Sécurité RLS</a>
+
+  <div class="sidenav-section">Frontend</div>
+  <a href="#routing">Routing & Pages</a>
+  <a href="#contexts">Contexts & Hooks</a>
+  <a href="#components">Composants clés</a>
+
+  <div class="sidenav-section">Backend & Pipeline</div>
+  <a href="#api">API Helpers</a>
+  <a href="#pipeline">Pipeline Python</a>
+
+  <div class="sidenav-section">Config & Deploy</div>
+  <a href="#auth">Auth & Rôles</a>
+  <a href="#env">Variables d'env</a>
+  <a href="#deploy">Déploiement</a>
+
+  <div class="sidenav-section">État du projet</div>
+  <a href="#avancement">Avancement</a>
+  <a href="#todo">Points d'attention</a>
+</nav>
+
+<!-- ── Main ─────────────────────────────────────────────────────────────────── -->
+<div class="main">
+
+<!-- Top header -->
+<div class="top-header">
+  <div class="th-badge">v1.0 — Mai 2026</div>
+  <div class="th-title">JuriThèque — Architecture & Specs Techniques</div>
+  <div class="th-sub">Plateforme de documentation juridique marocaine — Documentation interne équipe</div>
+  <div class="th-tags">
+    <span class="th-tag gold">React 18 + Vite</span>
+    <span class="th-tag gold">Supabase PostgreSQL</span>
+    <span class="th-tag gold">Python Pipeline</span>
+    <span class="th-tag blue">Claude AI (Anthropic)</span>
+    <span class="th-tag blue">Hostinger</span>
+    <span class="th-tag green">3 847 textes juridiques</span>
+    <span class="th-tag green">15 migrations SQL</span>
+    <span class="th-tag">juritheque.com</span>
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 1. Architecture générale -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="arch">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title">Architecture Générale</div>
+  </div>
+
+  <p>Architecture <strong style="color:var(--text)">JAMstack</strong> : SPA statique + backend serverless géré + pipeline de données local. Trois couches indépendantes communiquant via API REST.</p>
+
+  <div class="arch-diagram">
+    <div class="arch-col">
+      <div class="arch-col-label">Couche 1 — Client</div>
+      <div class="arch-col-title">Frontend SPA</div>
+      <div class="arch-col-sub">React 18 · hébergé Hostinger</div>
+      <div class="arch-tech">
+        <span>React 18</span>
+        <span>Vite 5</span>
+        <span>React Router v6</span>
+        <span>Tailwind CSS</span>
+        <span>Lucide React</span>
+        <span>JS/JSX</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;padding:0 12px;color:var(--gold);font-size:22px;flex-shrink:0;">⇄</div>
+    <div class="arch-col" style="border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.04);">
+      <div class="arch-col-label">Couche 2 — Backend Géré</div>
+      <div class="arch-col-title">Supabase</div>
+      <div class="arch-col-sub">PostgreSQL · Auth · Storage · REST</div>
+      <div class="arch-tech">
+        <span>PostgREST</span>
+        <span>Supabase Auth (JWT)</span>
+        <span>Row Level Security</span>
+        <span>Supabase Storage</span>
+        <span>Supabase Cloud EU</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;padding:0 12px;color:var(--gold);font-size:22px;flex-shrink:0;">⇄</div>
+    <div class="arch-col">
+      <div class="arch-col-label">Couche 3 — Pipeline Local</div>
+      <div class="arch-col-title">Python Scripts</div>
+      <div class="arch-col-sub">Collecte · Extraction · Enrichissement</div>
+      <div class="arch-tech">
+        <span>scraper.py</span>
+        <span>extract.py</span>
+        <span>enrich.py</span>
+        <span>PyMuPDF</span>
+        <span>BeautifulSoup4</span>
+        <span>httpx</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>Note d'architecture :</strong> Le pipeline Python tourne <strong>localement</strong> (poste développeur) et pousse les données directement dans Supabase via l'API REST avec la <code style="font-family:monospace;color:var(--blue)">SUPABASE_SERVICE_KEY</code>. Le frontend n'a accès qu'à la clé anonyme avec RLS activé.
+  </div>
+
+  <!-- Data flow -->
+  <h3><span class="dot"></span>Flux de données</h3>
+  <div class="flow">
+    <div class="flow-step">11 Sources officielles</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step active">scraper.py</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">PDFs locaux</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step active">extract.py</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step active">enrich.py (Claude AI)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Supabase DB</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">PostgREST API</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Frontend React</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Utilisateur</div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 2. Stack technique -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="stack">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title">Stack Technique Complète</div>
+  </div>
+
+  <h3><span class="dot"></span>Frontend</h3>
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>Librairie / Outil</th><th>Version</th><th>Rôle</th><th>Fichier config</th></tr></thead>
+      <tbody>
+        <tr><td>React</td><td class="td-mono">18.x</td><td>Framework UI (SPA)</td><td class="td-mono">main.jsx</td></tr>
+        <tr><td>Vite</td><td class="td-mono">5.x</td><td>Bundler, dev server, HMR</td><td class="td-mono">vite.config.js</td></tr>
+        <tr><td>React Router DOM</td><td class="td-mono">v6</td><td>Navigation client-side, lazy loading pages</td><td class="td-mono">App.jsx</td></tr>
+        <tr><td>Tailwind CSS</td><td class="td-mono">v3</td><td>Styling utility-first, responsive</td><td class="td-mono">tailwind.config.js</td></tr>
+        <tr><td>Lucide React</td><td class="td-mono">latest</td><td>Icônes SVG (remplacement de Heroicons)</td><td>—</td></tr>
+        <tr><td>@supabase/supabase-js</td><td class="td-mono">v2</td><td>Client SDK Supabase (auth + DB + storage)</td><td class="td-mono">src/lib/supabase.js</td></tr>
+        <tr><td>PostCSS + Autoprefixer</td><td class="td-mono">—</td><td>Compilation CSS, préfixes navigateurs</td><td class="td-mono">postcss.config.js</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="dot"></span>Backend (Supabase)</h3>
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>Composant</th><th>Technologie</th><th>Usage dans JuriThèque</th></tr></thead>
+      <tbody>
+        <tr><td>Base de données</td><td class="td-mono">PostgreSQL 15</td><td>Stockage laws, domains, profiles, favorites, videos</td></tr>
+        <tr><td>API REST</td><td class="td-mono">PostgREST</td><td>API auto-générée depuis le schéma PG, requêtes complexes</td></tr>
+        <tr><td>Auth</td><td class="td-mono">Supabase Auth (JWT)</td><td>Email/password, refresh token, JWT stocké côté client</td></tr>
+        <tr><td>Storage</td><td class="td-mono">S3-compatible</td><td>PDFs bruts, assets (bucket public + privé)</td></tr>
+        <tr><td>Full-Text Search</td><td class="td-mono">tsvector (pg FTS)</td><td>Colonne <code class="td-mono">search_vector</code> GENERATED ALWAYS, config française</td></tr>
+        <tr><td>Row Level Security</td><td class="td-mono">PostgreSQL RLS</td><td>Politiques par rôle sur toutes les tables</td></tr>
+        <tr><td>Fonctions RPC</td><td class="td-mono">PL/pgSQL</td><td><code class="td-mono">increment_views(law_id)</code>, <code class="td-mono">handle_new_user()</code></td></tr>
+        <tr><td>Hosting</td><td class="td-mono">Supabase Cloud (EU)</td><td>Région Europe (Frankfurt)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="dot"></span>Pipeline Python</h3>
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>Librairie</th><th>Version</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td>Python</td><td class="td-mono">3.14</td><td>Runtime du pipeline</td></tr>
+        <tr><td>httpx / requests</td><td class="td-mono">latest</td><td>Requêtes HTTP (scraping + appels API Supabase)</td></tr>
+        <tr><td>BeautifulSoup4 + lxml</td><td class="td-mono">latest</td><td>Parsing HTML des pages sources</td></tr>
+        <tr><td>PyMuPDF (fitz)</td><td class="td-mono">latest</td><td>Extraction texte depuis PDFs numériques</td></tr>
+        <tr><td>pytesseract + pdf2image</td><td class="td-mono">latest</td><td>OCR pour PDFs scannés (images)</td></tr>
+        <tr><td>anthropic</td><td class="td-mono">latest</td><td>SDK Claude — génération résumés, TOC, mots-clés</td></tr>
+        <tr><td>rich</td><td class="td-mono">latest</td><td>Logs couleur dans le terminal (progress bars, tables)</td></tr>
+        <tr><td>python-dotenv</td><td class="td-mono">latest</td><td>Chargement <code class="td-mono">.env</code> (clés Supabase, Anthropic)</td></tr>
+        <tr><td>python-slugify</td><td class="td-mono">latest</td><td>Génération canonical slugs URL-friendly</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 3. Structure du projet -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="structure">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title">Structure du Projet</div>
+  </div>
+
+  <div class="file-tree">
+<span class="ft-root">lexbase/</span>
+├── <span class="ft-dir">src/</span>                         <span class="ft-note">-- code source React</span>
+│   ├── <span class="ft-file">App.jsx</span>                  <span class="ft-note">-- routes + layout global</span>
+│   ├── <span class="ft-file">main.jsx</span>                 <span class="ft-note">-- entry point, providers</span>
+│   ├── <span class="ft-file">index.css</span>                <span class="ft-note">-- tailwind + custom tokens</span>
+│   ├── <span class="ft-dir">pages/</span>                   <span class="ft-note">-- 17 pages (lazy-loaded sauf Home)</span>
+│   │   ├── <span class="ft-file">Home.jsx</span>
+│   │   ├── <span class="ft-file">Database.jsx</span>         <span class="ft-note">-- /base : recherche + filtres</span>
+│   │   ├── <span class="ft-file">LawDetail.jsx</span>        <span class="ft-note">-- /loi/:slug</span>
+│   │   ├── <span class="ft-file">Domains.jsx</span>
+│   │   ├── <span class="ft-file">DomainView.jsx</span>       <span class="ft-note">-- /domaine/:slug</span>
+│   │   ├── <span class="ft-file">Videos.jsx</span>
+│   │   ├── <span class="ft-file">Assistant.jsx</span>        <span class="ft-note">-- Claude AI chat</span>
+│   │   ├── <span class="ft-file">LegalWatch.jsx</span>       <span class="ft-note">-- /fr/veille-juridique</span>
+│   │   ├── <span class="ft-file">BulletinsOfficiels.jsx</span>
+│   │   ├── <span class="ft-file">GuidesIndex.jsx</span>      <span class="ft-note">-- /fr/guides</span>
+│   │   ├── <span class="ft-file">SEOIntentPage.jsx</span>    <span class="ft-note">-- /fr/guides/:slug (eager)</span>
+│   │   ├── <span class="ft-file">Admin.jsx</span>
+│   │   ├── <span class="ft-file">Auth.jsx</span>             <span class="ft-note">-- login + register</span>
+│   │   └── <span class="ft-file">Profile.jsx</span>
+│   ├── <span class="ft-dir">components/</span>
+│   │   ├── <span class="ft-file">Navbar.jsx</span>           <span class="ft-note">-- menu responsive + RTL + auth</span>
+│   │   ├── <span class="ft-file">Footer.jsx</span>
+│   │   ├── <span class="ft-file">LawCard.jsx</span>
+│   │   ├── <span class="ft-file">DomainCard.jsx</span>
+│   │   ├── <span class="ft-file">FilterSidebar.jsx</span>
+│   │   ├── <span class="ft-file">SearchBar.jsx</span>
+│   │   ├── <span class="ft-file">VideoCard.jsx / VideoModal.jsx</span>
+│   │   ├── <span class="ft-file">AuthModal.jsx</span>
+│   │   ├── <span class="ft-file">JsonLD.jsx</span>           <span class="ft-note">-- structured data SEO</span>
+│   │   └── <span class="ft-dir">ui/</span>
+│   │       ├── <span class="ft-file">RTLWrapper.jsx</span>
+│   │       ├── <span class="ft-file">SkeletonLoader.jsx</span>
+│   │       ├── <span class="ft-file">StatusBadge.jsx</span>
+│   │       └── <span class="ft-file">TypeBadge.jsx</span>
+│   ├── <span class="ft-dir">contexts/</span>
+│   │   ├── <span class="ft-file">AuthContext.jsx</span>      <span class="ft-note">-- user, session, rôle, signIn/Out</span>
+│   │   └── <span class="ft-file">LangContext.jsx</span>      <span class="ft-note">-- fr|ar, isRTL, t(key)</span>
+│   ├── <span class="ft-dir">hooks/</span>
+│   │   └── <span class="ft-file">useSEO.js</span>            <span class="ft-note">-- met à jour title, meta, og, canonical</span>
+│   ├── <span class="ft-dir">lib/</span>
+│   │   ├── <span class="ft-file">api.js</span>               <span class="ft-note">-- toutes les fonctions Supabase</span>
+│   │   ├── <span class="ft-file">supabase.js</span>          <span class="ft-note">-- client Supabase (singleton)</span>
+│   │   ├── <span class="ft-file">lawUtils.js</span>          <span class="ft-note">-- formatters, helpers</span>
+│   │   └── <span class="ft-file">seoIntentApi.js</span>      <span class="ft-note">-- API site_search_index</span>
+│   └── <span class="ft-dir">data/</span>
+│       ├── <span class="ft-file">mockData.js</span>          <span class="ft-note">-- fallback si Supabase down</span>
+│       ├── <span class="ft-file">translations.js</span>      <span class="ft-note">-- strings FR/AR</span>
+│       └── <span class="ft-file">seoIntentPages.js</span>
+├── <span class="ft-dir">pipeline/</span>                    <span class="ft-note">-- Python local (non déployé)</span>
+│   ├── <span class="ft-file">scraper.py</span>               <span class="ft-note">-- CLI : collecte PDFs (11 sources)</span>
+│   ├── <span class="ft-file">extract.py</span>               <span class="ft-note">-- CLI : extraction texte → DB</span>
+│   ├── <span class="ft-file">enrich.py</span>                <span class="ft-note">-- CLI : enrichissement Claude AI</span>
+│   ├── <span class="ft-file">generate_sitemap.py</span>      <span class="ft-note">-- génère sitemap.xml</span>
+│   └── <span class="ft-dir">pdfs/</span>                    <span class="ft-note">-- PDFs téléchargés (local, ~696 fichiers)</span>
+├── <span class="ft-dir">supabase/migrations/</span>         <span class="ft-note">-- 15 fichiers SQL</span>
+├── <span class="ft-dir">public/</span>
+│   ├── <span class="ft-file">favicon.svg / favicon.ico</span>
+│   └── <span class="ft-file">og-image.png</span>
+├── <span class="ft-dir">dist/</span>                        <span class="ft-note">-- build Vite (upload Hostinger)</span>
+├── <span class="ft-file">.env</span>                         <span class="ft-note">-- secrets (non versionné)</span>
+├── <span class="ft-file">vite.config.js</span>
+├── <span class="ft-file">tailwind.config.js</span>
+└── <span class="ft-file">package.json</span>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 4. Schéma Base de données -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="schema">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title">Schéma Base de Données</div>
+  </div>
+
+  <h3><span class="dot"></span>Table <code class="td-mono">laws</code> — Table principale</h3>
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>Colonne</th><th>Type</th><th>Contrainte</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="td-mono">id</td><td class="td-type">bigserial</td><td><span class="badge badge-blue">PK</span></td><td>Identifiant auto-incrémenté</td></tr>
+        <tr><td class="td-mono">number</td><td class="td-type">text</td><td><span class="badge badge-orange">NOT NULL</span></td><td>ex: <code class="td-mono">"Dahir n°1-04-22"</code>, <code class="td-mono">"Loi 103-12"</code></td></tr>
+        <tr><td class="td-mono">type</td><td class="td-type">text</td><td><span class="badge badge-orange">NOT NULL</span></td><td>Loi | Dahir | Décret | Arrêté | Circulaire | Code</td></tr>
+        <tr><td class="td-mono">domain_id</td><td class="td-type">text</td><td><span class="badge badge-gray">FK → domains</span></td><td>Domaine principal</td></tr>
+        <tr><td class="td-mono">domain_ids</td><td class="td-type">text[]</td><td>—</td><td>Domaines secondaires (multi-domaine)</td></tr>
+        <tr><td class="td-mono">status</td><td class="td-type">text</td><td><span class="badge badge-orange">NOT NULL</span></td><td>En vigueur | Abrogé | Modifié</td></tr>
+        <tr><td class="td-mono">date</td><td class="td-type">date</td><td>—</td><td>Date de publication / promulgation</td></tr>
+        <tr><td class="td-mono">title_fr</td><td class="td-type">text</td><td><span class="badge badge-orange">NOT NULL</span></td><td>Titre en français</td></tr>
+        <tr><td class="td-mono">title_ar</td><td class="td-type">text</td><td>—</td><td>Titre en arabe</td></tr>
+        <tr><td class="td-mono">excerpt_fr / excerpt_ar</td><td class="td-type">text</td><td>—</td><td>Résumé court (extrait)</td></tr>
+        <tr><td class="td-mono">content_fr / content_ar</td><td class="td-type">text</td><td>—</td><td>Texte intégral extrait du PDF</td></tr>
+        <tr><td class="td-mono">simple_summary_fr/ar</td><td class="td-type">text</td><td>—</td><td>Résumé vulgarisé généré par Claude</td></tr>
+        <tr><td class="td-mono">table_of_contents_fr/ar</td><td class="td-type">jsonb</td><td>—</td><td>Sommaire structuré JSON <code class="td-mono">{sections:[{titre,articles,resume}]}</code></td></tr>
+        <tr><td class="td-mono">important_articles</td><td class="td-type">jsonb</td><td>—</td><td>Articles clés <code class="td-mono">[{number,title,text}]</code></td></tr>
+        <tr><td class="td-mono">legal_keywords</td><td class="td-type">text[]</td><td>—</td><td>Mots-clés juridiques extraits</td></tr>
+        <tr><td class="td-mono">canonical_slug</td><td class="td-type">text</td><td><span class="badge badge-blue">UNIQUE</span></td><td>URL slug ex: <code class="td-mono">loi-65-99-code-travail</code></td></tr>
+        <tr><td class="td-mono">search_vector</td><td class="td-type">tsvector</td><td><span class="badge badge-green">GENERATED</span></td><td>Index FTS auto depuis title_fr + excerpt_fr + number</td></tr>
+        <tr><td class="td-mono">seo_title_fr / seo_description_fr</td><td class="td-type">text</td><td>—</td><td>Meta SEO personnalisés (&lt;60 / &lt;155 chars)</td></tr>
+        <tr><td class="td-mono">extraction_confidence_score</td><td class="td-type">numeric</td><td>—</td><td>Score qualité extraction 0→100</td></tr>
+        <tr><td class="td-mono">extraction_status</td><td class="td-type">text</td><td>—</td><td>success | partial | needs_review | failed</td></tr>
+        <tr><td class="td-mono">needs_human_review</td><td class="td-type">boolean</td><td>DEFAULT false</td><td>Flag relecture manuelle nécessaire</td></tr>
+        <tr><td class="td-mono">is_publicly_indexable</td><td class="td-type">boolean</td><td>DEFAULT true</td><td>Visibilité publique dans les listes</td></tr>
+        <tr><td class="td-mono">pdf_url</td><td class="td-type">text</td><td>—</td><td>URL Supabase Storage ou source officielle</td></tr>
+        <tr><td class="td-mono">views</td><td class="td-type">integer</td><td>DEFAULT 0</td><td>Compteur de vues (via RPC <code class="td-mono">increment_views</code>)</td></tr>
+        <tr><td class="td-mono">language</td><td class="td-type">text</td><td>—</td><td>Français | Arabe | Bilingue</td></tr>
+        <tr><td class="td-mono">source</td><td class="td-type">text</td><td>—</td><td>Nom de la source officielle</td></tr>
+        <tr><td class="td-mono">created_at / updated_at</td><td class="td-type">timestamptz</td><td>DEFAULT now()</td><td>Horodatages</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="dot"></span>Table <code class="td-mono">domains</code></h3>
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>Colonne</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="td-mono">id</td><td class="td-type">text PK</td><td>Slug du domaine ex: <code class="td-mono">civil</code>, <code class="td-mono">bancaire</code></td></tr>
+        <tr><td class="td-mono">name_fr / name_ar</td><td class="td-type">text</td><td>Libellés bilingues</td></tr>
+        <tr><td class="td-mono">icon</td><td class="td-type">text</td><td>Nom de l'icône Lucide React</td></tr>
+        <tr><td class="td-mono">law_count</td><td class="td-type">integer</td><td>Compteur de lois (mis à jour manuellement)</td></tr>
+        <tr><td class="td-mono">sub_domains</td><td class="td-type">text[]</td><td>Sous-domaines listés</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+    <div>
+      <h3><span class="dot"></span>Table <code class="td-mono">profiles</code></h3>
+      <div class="t-wrap" style="margin-bottom:0">
+        <table>
+          <thead><tr><th>Colonne</th><th>Type</th></tr></thead>
+          <tbody>
+            <tr><td class="td-mono">id</td><td class="td-type">uuid FK→auth.users</td></tr>
+            <tr><td class="td-mono">name, email</td><td class="td-type">text</td></tr>
+            <tr><td class="td-mono">role</td><td class="td-type">user|editor|admin</td></tr>
+            <tr><td class="td-mono">profession, avatar_url</td><td class="td-type">text</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3><span class="dot"></span>Table <code class="td-mono">videos</code></h3>
+      <div class="t-wrap" style="margin-bottom:0">
+        <table>
+          <thead><tr><th>Colonne</th><th>Type</th></tr></thead>
+          <tbody>
+            <tr><td class="td-mono">id</td><td class="td-type">bigserial PK</td></tr>
+            <tr><td class="td-mono">title_fr, title_ar</td><td class="td-type">text</td></tr>
+            <tr><td class="td-mono">youtube_id</td><td class="td-type">text NOT NULL</td></tr>
+            <tr><td class="td-mono">domain_id</td><td class="td-type">text FK→domains</td></tr>
+            <tr><td class="td-mono">level</td><td class="td-type">Débutant|Inter.|Expert</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="dot"></span>Table <code class="td-mono">site_search_index</code> — Index IA</h3>
+  <p>Table dédiée à l'Assistant IA. Contient des entrées indexées pour les pages statiques, guides, domaines — permettant à l'assistant de citer des pages internes pertinentes.</p>
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>Colonne</th><th>Type</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td class="td-mono">url</td><td class="td-type">text UNIQUE</td><td>URL relative de la page</td></tr>
+        <tr><td class="td-mono">title, description, summary</td><td class="td-type">text</td><td>Métadonnées pour le RAG</td></tr>
+        <tr><td class="td-mono">source_type</td><td class="td-type">text</td><td>law | guide | domain | static</td></tr>
+        <tr><td class="td-mono">legal_domain</td><td class="td-type">text</td><td>Domaine juridique associé</td></tr>
+        <tr><td class="td-mono">search_vector</td><td class="td-type">tsvector</td><td>Index FTS (same config french)</td></tr>
+        <tr><td class="td-mono">priority</td><td class="td-type">integer</td><td>Tri par pertinence (guides > lois > domaines)</td></tr>
+        <tr><td class="td-mono">is_public</td><td class="td-type">boolean</td><td>Filtre RLS</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 5. Migrations -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="migrations">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title">Migrations SQL</div>
+  </div>
+
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Fichier</th><th>Description</th><th>Statut</th></tr></thead>
+      <tbody>
+        <tr><td>001</td><td class="td-mono">001_lexbase_schema.sql</td><td>Schéma initial : laws, domains, profiles, favorites, videos + RLS + triggers</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>002</td><td class="td-mono">002_videos_columns.sql</td><td>Colonnes supplémentaires pour videos (level, thumbnail)</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>003</td><td class="td-mono">003_security_fixes.sql</td><td>Correction policies RLS trop permissives</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>004</td><td class="td-mono">004_fix_rls_recursion.sql</td><td>Fix récursion infinie dans les policies profiles</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>005</td><td class="td-mono">005_new_domains.sql</td><td>Ajout domaines : bancaire, finances_publiques</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>006</td><td class="td-mono">006_increment_views.sql</td><td>Fonction RPC <code class="td-mono">increment_views(law_id)</code></td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>007</td><td class="td-mono">007_language_backfill.sql</td><td>Backfill colonne language (détection FR/AR/Bilingue)</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>008</td><td class="td-mono">008_enrichment_fields.sql</td><td>+20 colonnes : summary, TOC, keywords, slug, SEO, quality flags</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>009</td><td class="td-mono">009_site_search_index.sql</td><td>Nouvelle table pour le RAG de l'assistant IA</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>010</td><td class="td-mono">010_sources_and_bulletins.sql</td><td>Colonne source, table bulletins_officiels</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>011</td><td class="td-mono">011_new_domains_and_multidomain.sql</td><td>Colonne <code class="td-mono">domain_ids[]</code> + nouveau domaine collectivités territoriales</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>012</td><td class="td-mono">012_real_videos.sql</td><td>Insertion vraies vidéos YouTube JuriThèque</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>013</td><td class="td-mono">013_fix_title_errors.sql</td><td>Correction titres mal extraits (caractères corrompus)</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>014</td><td class="td-mono">014_collectivites_domain.sql</td><td>Domaine collectivités territoriales + seed lois</td><td><span class="badge badge-green">appliqué</span></td></tr>
+        <tr><td>015</td><td class="td-mono">015_fix_duplicate_slugs.sql</td><td>Détection + NULL-ification slugs dupliqués (régénération via enrich.py)</td><td><span class="badge badge-green">appliqué</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="warn-box">
+    <strong>Convention :</strong> toujours créer une nouvelle migration (016, 017…) pour chaque modification de schéma. Ne jamais modifier les fichiers existants. Utiliser <code style="font-family:monospace;color:var(--gold)">ADD COLUMN IF NOT EXISTS</code> pour la sécurité.
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 6. Sécurité RLS -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="rls">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title">Sécurité & Row Level Security</div>
+  </div>
+
+  <p>RLS activé sur <strong style="color:var(--text)">toutes les tables</strong>. La clé <code class="td-mono">anon</code> utilisée côté frontend ne peut jamais contourner les politiques.</p>
+
+  <div class="policy-grid">
+    <div class="policy-item">
+      <div class="policy-role" style="color:var(--text3)">anon / public</div>
+      <div class="policy-perms">
+        <span class="perm perm-select">SELECT laws</span>
+        <span class="perm perm-select">SELECT domains</span>
+        <span class="perm perm-select">SELECT videos</span>
+        <span class="perm perm-select">SELECT site_search_index (is_public=true)</span>
+      </div>
+    </div>
+    <div class="policy-item">
+      <div class="policy-role" style="color:var(--blue)">user (auth)</div>
+      <div class="policy-perms">
+        <span class="perm perm-select">SELECT own profile</span>
+        <span class="perm perm-update">UPDATE own profile</span>
+        <span class="perm perm-select">SELECT own favorites</span>
+        <span class="perm perm-insert">INSERT own favorites</span>
+        <span class="perm perm-delete">DELETE own favorites</span>
+      </div>
+    </div>
+    <div class="policy-item">
+      <div class="policy-role" style="color:var(--orange)">editor (auth)</div>
+      <div class="policy-perms">
+        <span class="perm perm-insert">INSERT laws</span>
+        <span class="perm perm-update">UPDATE laws</span>
+        <span class="perm perm-insert">INSERT videos</span>
+        <span class="perm" style="background:rgba(139,148,158,.1);color:var(--text3)">+ tout user</span>
+      </div>
+    </div>
+    <div class="policy-item">
+      <div class="policy-role" style="color:var(--gold)">admin (auth)</div>
+      <div class="policy-perms">
+        <span class="perm" style="background:rgba(201,168,76,.12);color:var(--gold);border:1px solid var(--gold-dim)">Accès complet toutes tables</span>
+        <span class="perm perm-delete">DELETE laws/videos</span>
+        <span class="perm perm-update">UPDATE tous profils</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-lang">SQL — Vérification du rôle dans les policies</span>
+    </div>
+    <pre><span class="cmt">-- Pattern utilisé dans toutes les policies editor/admin</span>
+<span class="kw">CREATE POLICY</span> <span class="str">"Editors update laws"</span>
+  <span class="kw">ON</span> public.laws <span class="kw">FOR</span> <span class="kw">UPDATE</span>
+  <span class="kw">USING</span> (
+    <span class="fn">exists</span> (
+      <span class="kw">SELECT</span> <span class="num">1</span> <span class="kw">FROM</span> public.profiles
+      <span class="kw">WHERE</span> <span class="cls">id</span> = <span class="fn">auth.uid</span>()
+      <span class="kw">AND</span>   <span class="cls">role</span> <span class="kw">IN</span> (<span class="str">'editor'</span>, <span class="str">'admin'</span>)
+    )
+  );</pre>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 7. Routing & Pages -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="routing">
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title">Routing & Pages Frontend</div>
+  </div>
+
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>Route</th><th>Page / Composant</th><th>Lazy?</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="td-mono">/</td><td class="td-mono">Home.jsx</td><td><span class="badge badge-blue">eager</span></td><td>Hero, stats live, grille domaines, derniers textes</td></tr>
+        <tr><td class="td-mono">/base</td><td class="td-mono">Database.jsx</td><td><span class="badge badge-gray">lazy</span></td><td>Recherche full-text + filtres (type, domaine, statut, langue, date)</td></tr>
+        <tr><td class="td-mono">/loi/:slug</td><td class="td-mono">LawDetail.jsx</td><td><span class="badge badge-gray">lazy</span></td><td>Fiche texte : résumé, TOC, articles importants, PDF, textes liés</td></tr>
+        <tr><td class="td-mono">/domaines</td><td class="td-mono">Domains.jsx</td><td><span class="badge badge-gray">lazy</span></td><td>Grille 16 domaines avec compteurs</td></tr>
+        <tr><td class="td-mono">/domaine/:slug</td><td class="td-mono">DomainView.jsx</td><td><span class="badge badge-gray">lazy</span></td><td>Textes filtrés par domaine + sous-domaines</td></tr>
+        <tr><td class="td-mono">/videos</td><td class="td-mono">Videos.jsx</td><td><span class="badge badge-gray">lazy</span></td><td>Galerie vidéos YouTube + modal lecteur</td></tr>
+        <tr><td class="td-mono">/assistant</td><td class="td-mono">Assistant.jsx</td><td><span class="badge badge-gray">lazy</span></td><td>Chat IA Claude — réponses juridiques + citations pages</td></tr>
+        <tr><td class="td-mono">/fr/veille-juridique</td><td class="td-mono">LegalWatch.jsx</td><td><span class="badge badge-gray">lazy</span></td><td>Nouveaux textes + textes modifiés, filtre domaine/type</td></tr>
+        <tr><td class="td-mono">/fr/bulletins-officiels</td><td class="td-mono">BulletinsOfficiels.jsx</td><td><span class="badge badge-gray">lazy</span></td><td>Accès aux bulletins officiels du Maroc</td></tr>
+        <tr><td class="td-mono">/fr/guides</td><td class="td-mono">GuidesIndex.jsx</td><td><span class="badge badge-gray">lazy</span></td><td>Index des guides thématiques SEO</td></tr>
+        <tr><td class="td-mono">/fr/guides/:slug</td><td class="td-mono">SEOIntentPage.jsx</td><td><span class="badge badge-blue">eager</span></td><td>Pages guides générées depuis <code class="td-mono">seoIntentPages.js</code> (Hostinger: MIME fix)</td></tr>
+        <tr><td class="td-mono">/connexion</td><td class="td-mono">Auth.jsx</td><td><span class="badge badge-gray">lazy</span></td><td>Login / Register (Supabase Auth)</td></tr>
+        <tr><td class="td-mono">/profil</td><td class="td-mono">Profile.jsx</td><td><span class="badge badge-gray">lazy</span></td><td>Espace utilisateur, favoris, historique</td></tr>
+        <tr><td class="td-mono">/admin</td><td class="td-mono">Admin.jsx</td><td><span class="badge badge-gray">lazy</span></td><td>Back-office : CRUD lois/vidéos, stats, review queue</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 8. Contexts & Hooks -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="contexts">
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title">Contexts & Hooks</div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">🔐</div>
+      <div class="card-title">AuthContext</div>
+      <div class="card-body">Expose : <code class="td-mono">user</code>, <code class="td-mono">session</code>, <code class="td-mono">profile</code> (role), <code class="td-mono">loading</code>, <code class="td-mono">signIn()</code>, <code class="td-mono">signUp()</code>, <code class="td-mono">signOut()</code>.<br/>Sync auto avec <code class="td-mono">onAuthStateChange</code> de Supabase. Profile chargé depuis <code class="td-mono">public.profiles</code> après login.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <div class="card-title">LangContext</div>
+      <div class="card-body">Expose : <code class="td-mono">lang</code> (fr|ar), <code class="td-mono">isRTL</code>, <code class="td-mono">t(key)</code>, <code class="td-mono">toggleLang()</code>.<br/>Persisté en <code class="td-mono">localStorage</code>. RTL géré via <code class="td-mono">dir</code> attribute sur <code class="td-mono">&lt;div&gt;</code> root dans App.jsx. Font arabic via Tailwind class.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔍</div>
+      <div class="card-title">useSEO (hook)</div>
+      <div class="card-body">Met à jour dynamiquement <code class="td-mono">&lt;title&gt;</code>, <code class="td-mono">meta description</code>, <code class="td-mono">og:*</code>, <code class="td-mono">canonical</code>, <code class="td-mono">hreflang</code> à chaque changement de route ou de contenu. Utilisé dans toutes les pages.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📡</div>
+      <div class="card-title">src/lib/api.js</div>
+      <div class="card-body">Toutes les fonctions Supabase centralisées : <code class="td-mono">fetchLaws()</code>, <code class="td-mono">fetchLawBySlug()</code>, <code class="td-mono">fetchDomains()</code>, <code class="td-mono">fetchStats()</code>, <code class="td-mono">fetchWatchLaws()</code>, <code class="td-mono">retrieveRelevantSitePages()</code>, etc.</div>
+    </div>
+  </div>
+
+  <h3><span class="dot"></span>Résolution de slug (<code class="td-mono">fetchLawBySlug</code>)</h3>
+  <p>La résolution est en 3 étapes pour garantir la rétrocompatibilité des anciens liens :</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-lang">JavaScript</span>
+      <span class="code-fname">src/lib/api.js</span>
+    </div>
+    <pre><span class="kw">async function</span> <span class="fn">fetchLawBySlug</span>(slug) {
+  <span class="cmt">// 1. Slug canonique exact → cas normal</span>
+  <span class="kw">const</span> { data } = <span class="kw">await</span> supabase.from(<span class="str">'laws'</span>)
+    .select(<span class="str">'*'</span>).eq(<span class="str">'canonical_slug'</span>, slug).maybeSingle()
+  <span class="kw">if</span> (data) <span class="kw">return</span> data
+
+  <span class="cmt">// 2. Fallback ID numérique → anciens liens /loi/1234</span>
+  <span class="kw">if</span> (<span class="pun">/</span><span class="num">^\d+$</span><span class="pun">/</span>.test(slug)) { <span class="cmt">/* ... fetch by id */</span> }
+
+  <span class="cmt">// 3. Déduplication : slug généré avec numéro dupliqué</span>
+  <span class="cmt">// Ex: "dahir-n-1-21-65-dahir-n-1-21-65-du-..." → "dahir-n-1-21-65-du-..."</span>
+  <span class="kw">const</span> deduped = <span class="cmt">/* detect & extract non-repeated half */</span>
+  <span class="kw">if</span> (deduped) { <span class="cmt">/* try exact, then ILIKE fallback */</span> }
+
+  <span class="kw">throw new</span> <span class="fn">Error</span>(<span class="str">'Texte introuvable'</span>)
+}</pre>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 9. Pipeline Python -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="pipeline">
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title">Pipeline de Données Python</div>
+  </div>
+
+  <h3><span class="dot"></span>scraper.py — Collecte des PDFs</h3>
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>Source (--source)</th><th>Site</th><th>Type de contenu</th><th>PDFs</th></tr></thead>
+      <tbody>
+        <tr><td class="td-mono">sgg</td><td>sgg.gov.ma</td><td>Textes consolidés (codes, grandes lois)</td><td><span class="badge badge-blue">63</span></td></tr>
+        <tr><td class="td-mono">sgg-lois</td><td>sgg.gov.ma</td><td>Lois importantes récentes</td><td><span class="badge badge-blue">73</span></td></tr>
+        <tr><td class="td-mono">mmsp</td><td>mmsp.gov.ma</td><td>Fonction publique, travail</td><td><span class="badge badge-blue">47</span></td></tr>
+        <tr><td class="td-mono">anrt</td><td>anrt.ma</td><td>Télécom, numérique</td><td><span class="badge badge-blue">32</span></td></tr>
+        <tr><td class="td-mono">bkam</td><td>bkam.ma</td><td>Bancaire, Bank Al-Maghrib</td><td><span class="badge badge-blue">67</span></td></tr>
+        <tr><td class="td-mono">finances</td><td>lof + mef + dgi + cdr</td><td>Finances publiques, fiscalité</td><td><span class="badge badge-blue">67</span></td></tr>
+        <tr><td class="td-mono">cdr</td><td>chambredesrepresentants.ma</td><td>Projets de loi, textes parlementaires</td><td><span class="badge badge-blue">27</span></td></tr>
+        <tr><td class="td-mono">mem</td><td>mem.gov.ma</td><td>Énergie, mines</td><td><span class="badge badge-blue">89</span></td></tr>
+        <tr><td class="td-mono">environnement</td><td>environnement.gov.ma</td><td>Environnement</td><td><span class="badge badge-blue">53</span></td></tr>
+        <tr><td class="td-mono">wipo</td><td>WIPO Lex + UNODC + Maroclear</td><td>Propriété intellectuelle, international</td><td><span class="badge badge-blue">18</span></td></tr>
+        <tr><td class="td-mono">ism</td><td>ism.ma</td><td>ISM — arabe, 13 domaines</td><td><span class="badge badge-blue">160</span></td></tr>
+        <tr><td colspan="3" style="font-weight:600;color:var(--text)">TOTAL</td><td><span class="badge badge-gold">696</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="dot"></span>Commandes CLI</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+      <span class="code-fname">pipeline/</span>
+    </div>
+    <pre><span class="cmt"># Scraper — collecte</span>
+python scraper.py --source sgg --limit <span class="num">50</span>
+python scraper.py --source ism --dry-run          <span class="cmt"># preview sans téléchargement</span>
+python scraper.py --source all --year <span class="num">2024</span>        <span class="cmt"># filtre par année</span>
+
+<span class="cmt"># Extractor — insertion DB</span>
+python extract.py --source sgg
+python extract.py --source all --limit <span class="num">100</span>
+
+<span class="cmt"># Enrichissement Claude AI</span>
+python enrich.py --only-missing                   <span class="cmt"># lois sans résumé</span>
+python enrich.py --force --domain civil            <span class="cmt"># ré-enrichit un domaine</span>
+python enrich.py --only-missing --force --no-ai   <span class="cmt"># slugs seulement (sans appel Claude)</span>
+
+<span class="cmt"># Sitemap</span>
+python generate_sitemap.py                         <span class="cmt"># génère public/sitemap.xml</span></pre>
+  </div>
+
+  <h3><span class="dot"></span>extract.py — Pipeline d'extraction</h3>
+  <div class="flow">
+    <div class="flow-step">Lire PDF (PyMuPDF)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Texte natif ?</div>
+    <div class="flow-arrow">→ non →</div>
+    <div class="flow-step active">OCR (pytesseract)</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Nettoyage regex</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step active">detect_domain()</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step active">detect_type()</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">UPSERT Supabase</div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 10. Auth & Rôles -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="auth">
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title">Authentification & Rôles</div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-title">🔑 Flux d'authentification</div>
+      <div class="card-body">
+        1. <strong style="color:var(--text)">Signup</strong> → Supabase crée <code class="td-mono">auth.users</code> + déclenche le trigger <code class="td-mono">handle_new_user()</code> → crée automatiquement une ligne dans <code class="td-mono">public.profiles</code> avec <code class="td-mono">role='user'</code><br/><br/>
+        2. <strong style="color:var(--text)">Login</strong> → retourne un JWT signé (access token 1h + refresh token 7j)<br/><br/>
+        3. <strong style="color:var(--text)">AuthContext</strong> écoute <code class="td-mono">onAuthStateChange</code>, charge le profile, expose le rôle dans tout l'app
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">👤 Rôles utilisateurs</div>
+      <div class="card-body">
+        <strong style="color:var(--text3)">user</strong> — lecture publique + favoris personnels<br/><br/>
+        <strong style="color:var(--orange)">editor</strong> — CRUD lois + vidéos, accès back-office limité<br/><br/>
+        <strong style="color:var(--gold)">admin</strong> — accès complet, gestion profils, suppression, analytics<br/><br/>
+        Rôle promu manuellement via Supabase Dashboard ou SQL :
+        <code style="font-family:monospace;font-size:11px;color:var(--blue)">UPDATE profiles SET role='editor' WHERE email='...'</code>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🔒 Sécurité clés</div>
+      <div class="card-body">
+        <code class="td-mono">VITE_SUPABASE_ANON_KEY</code> — publique, contrainte par RLS<br/><br/>
+        <code class="td-mono">SUPABASE_SERVICE_KEY</code> — bypass RLS, <strong style="color:var(--red)">pipeline Python uniquement</strong>, jamais côté client<br/><br/>
+        <code class="td-mono">VITE_CLAUDE_API_KEY</code> — Anthropic, appels depuis le navigateur (prévoir migration vers Edge Function)
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 11. Variables d'environnement -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="env">
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title">Variables d'Environnement</div>
+  </div>
+
+  <div class="env-list">
+    <div class="env-item">
+      <div class="env-key">VITE_SUPABASE_URL</div>
+      <div>
+        <div class="env-desc">URL du projet Supabase (ex: https://xxxx.supabase.co)</div>
+        <span class="env-scope badge badge-blue">Frontend</span> <span class="env-scope badge badge-green">Pipeline</span>
+      </div>
+    </div>
+    <div class="env-item">
+      <div class="env-key">VITE_SUPABASE_ANON_KEY</div>
+      <div>
+        <div class="env-desc">Clé publique Supabase — contrainte par RLS. Exposée au navigateur, <strong>sans risque</strong> si RLS bien configuré.</div>
+        <span class="env-scope badge badge-blue">Frontend uniquement</span>
+      </div>
+    </div>
+    <div class="env-item">
+      <div class="env-key">SUPABASE_SERVICE_KEY</div>
+      <div>
+        <div class="env-desc" style="color:var(--red)"><strong>⚠ Bypass total RLS</strong> — réservé au pipeline Python local. Ne jamais committer, ne jamais exposer côté client.</div>
+        <span class="env-scope badge badge-orange">Pipeline Python uniquement</span>
+      </div>
+    </div>
+    <div class="env-item">
+      <div class="env-key">VITE_CLAUDE_API_KEY</div>
+      <div>
+        <div class="env-desc">Clé API Anthropic pour l'assistant IA. Actuellement utilisée côté client (page /assistant). <em>TODO: migrer vers Supabase Edge Function.</em></div>
+        <span class="env-scope badge badge-blue">Frontend</span> <span class="env-scope badge badge-orange">Pipeline (enrichissement)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-lang">dotenv</span>
+      <span class="code-fname">.env (template — à compléter)</span>
+    </div>
+    <pre><span class="cmt"># Supabase</span>
+<span class="cls">VITE_SUPABASE_URL</span>=<span class="str">https://&lt;project-id&gt;.supabase.co</span>
+<span class="cls">VITE_SUPABASE_ANON_KEY</span>=<span class="str">eyJhbGci...</span>
+<span class="cls">SUPABASE_SERVICE_KEY</span>=<span class="str">eyJhbGci...   # pipeline uniquement</span>
+
+<span class="cmt"># Anthropic Claude</span>
+<span class="cls">VITE_CLAUDE_API_KEY</span>=<span class="str">sk-ant-api03-...</span></pre>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 12. Déploiement -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="deploy">
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title">Déploiement</div>
+  </div>
+
+  <h3><span class="dot"></span>Frontend → Hostinger</h3>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-lang">bash</span>
+    </div>
+    <pre><span class="cmt"># 1. Build production</span>
+npm run build           <span class="cmt"># génère dist/</span>
+
+<span class="cmt"># 2. Upload via FTP (FileZilla) ou Hostinger File Manager</span>
+<span class="cmt"># → Uploader tout le contenu de dist/ dans public_html/</span>
+
+<span class="cmt"># IMPORTANT : inclure le fichier .htaccess pour le SPA routing</span></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="code-lang">apache</span>
+      <span class="code-fname">public_html/.htaccess — OBLIGATOIRE pour React Router</span>
+    </div>
+    <pre><span class="kw">Options</span> -MultiViews
+<span class="kw">RewriteEngine</span> On
+<span class="kw">RewriteCond</span> %{REQUEST_FILENAME} !-f
+<span class="kw">RewriteRule</span> ^ index.html [QSA,L]</pre>
+  </div>
+
+  <div class="warn-box">
+    <strong>Problème connu Hostinger :</strong> Les modules JS lazy-loadés peuvent avoir des erreurs MIME type (<code style="font-family:monospace">text/html</code> au lieu de <code style="font-family:monospace">application/javascript</code>). Solution appliquée : <code style="font-family:monospace;color:var(--gold)">SEOIntentPage</code> importé en <strong>eager</strong> dans App.jsx (pas lazy).
+  </div>
+
+  <h3><span class="dot"></span>Backend — Supabase (géré)</h3>
+  <p>Aucun déploiement manuel. Les migrations SQL sont appliquées via l'éditeur SQL du Dashboard Supabase ou via <code class="td-mono">supabase db push</code> (CLI). Les changements sont instantanément disponibles via l'API REST.</p>
+
+  <h3><span class="dot"></span>Pipeline — Local uniquement</h3>
+  <p>Le pipeline Python tourne sur le poste développeur et pousse vers Supabase via l'API. Pas de CI/CD pour le pipeline à ce stade.</p>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 13. Avancement -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="avancement">
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <div class="section-title">État d'Avancement</div>
+  </div>
+
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>Module / Fonctionnalité</th><th>Statut</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Base documentaire (3 847 textes)</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>11 sources, 16 domaines</td></tr>
+        <tr><td>Recherche full-text FR/AR</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>FTS PostgreSQL + fallback ilike</td></tr>
+        <tr><td>Filtres multi-critères</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>Type, domaine, statut, langue, date</td></tr>
+        <tr><td>Fiches détaillées (résumé, TOC, articles)</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>Claude AI enrichissement</td></tr>
+        <tr><td>Bilingue FR/AR + RTL</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>LangContext, Noto Naskh Arabic</td></tr>
+        <tr><td>Assistant IA documentaire</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>Claude + RAG site_search_index</td></tr>
+        <tr><td>Authentification + rôles</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>Supabase Auth, 3 rôles</td></tr>
+        <tr><td>Admin back-office</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>CRUD lois/vidéos, review queue</td></tr>
+        <tr><td>Veille juridique</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>/fr/veille-juridique</td></tr>
+        <tr><td>Bulletins officiels</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>/fr/bulletins-officiels</td></tr>
+        <tr><td>Guides thématiques SEO</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>seoIntentPages.js + SEOIntentPage</td></tr>
+        <tr><td>Intégration vidéos YouTube</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>Modal lecteur, galerie domaines</td></tr>
+        <tr><td>Espace contributeurs</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>Profils éditeurs créés</td></tr>
+        <tr><td>SEO technique (canonical, OG, schema)</td><td><span class="badge badge-green">✅ Réalisé</span></td><td>useSEO hook + JsonLD.jsx</td></tr>
+        <tr><td>Slugs canoniques</td><td><span class="badge badge-orange">🔄 En cours</span></td><td>Migration 015 appliquée, 2 NULL restants</td></tr>
+        <tr><td>Sitemap.xml complet</td><td><span class="badge badge-orange">🔄 En cours</span></td><td>generate_sitemap.py prêt, à regénérer</td></tr>
+        <tr><td>Soumission Google Search Console</td><td><span class="badge badge-orange">🔄 En cours</span></td><td>Sitemap à soumettre après regénération</td></tr>
+        <tr><td>Base jurisprudence</td><td><span class="badge badge-gray">⬜ Planifié</span></td><td>Nouvelle source + table jurisprudences</td></tr>
+        <tr><td>Module QCM / quiz juridique</td><td><span class="badge badge-gray">⬜ Planifié</span></td><td>Table questions + résultats</td></tr>
+        <tr><td>Newsletter</td><td><span class="badge badge-gray">⬜ Planifié</span></td><td>Table subscribers + Edge Function envoi</td></tr>
+        <tr><td>Migration Claude API → Edge Function</td><td><span class="badge badge-gray">⬜ Planifié</span></td><td>Sécuriser la clé API Anthropic</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<!-- 14. Points d'attention -->
+<!-- ─────────────────────────────────────────────────────────────────────────── -->
+<section class="section" id="todo">
+  <div class="section-header">
+    <div class="section-num">14</div>
+    <div class="section-title">Points d'Attention & TODO</div>
+  </div>
+
+  <div class="cards">
+    <div class="card" style="border-color:rgba(248,81,73,.25)">
+      <div class="card-icon">🔑</div>
+      <div class="card-title" style="color:var(--red)">Sécurité : Clé Claude API côté client</div>
+      <div class="card-body">La <code class="td-mono">VITE_CLAUDE_API_KEY</code> est visible dans le bundle JS. <strong style="color:var(--text)">Action :</strong> créer une Supabase Edge Function <code class="td-mono">/functions/v1/ask-assistant</code> qui appelle Claude côté serveur. Le frontend n'envoie que la question.</div>
+    </div>
+    <div class="card" style="border-color:rgba(210,153,34,.25)">
+      <div class="card-icon">🐌</div>
+      <div class="card-title" style="color:var(--orange)">Performance : FTS sur l'arabe</div>
+      <div class="card-body">La recherche arabe utilise <code class="td-mono">ilike</code> (séquentiel) faute d'index trigram. Pour améliorer : activer <code class="td-mono">pg_trgm</code> sur <code class="td-mono">title_ar</code> + <code class="td-mono">excerpt_ar</code>. Migration à créer.</div>
+    </div>
+    <div class="card" style="border-color:rgba(210,153,34,.25)">
+      <div class="card-icon">🗺️</div>
+      <div class="card-title" style="color:var(--orange)">Sitemap & SEO</div>
+      <div class="card-body">Regénérer le sitemap après chaque enrichissement important :<br/><code class="td-mono">python generate_sitemap.py</code><br/>Puis resoumettre à Google Search Console et Bing Webmaster Tools.</div>
+    </div>
+    <div class="card" style="border-color:rgba(88,166,255,.25)">
+      <div class="card-icon">📝</div>
+      <div class="card-title" style="color:var(--blue)">law_count dans domains</div>
+      <div class="card-body">Le champ <code class="td-mono">law_count</code> est statique (mis à jour manuellement). <strong style="color:var(--text)">Suggestion :</strong> créer un trigger PostgreSQL <code class="td-mono">AFTER INSERT/DELETE ON laws</code> pour mise à jour automatique.</div>
+    </div>
+    <div class="card" style="border-color:rgba(88,166,255,.25)">
+      <div class="card-icon">💾</div>
+      <div class="card-title" style="color:var(--blue)">PDFs dans Supabase Storage</div>
+      <div class="card-body">Actuellement les PDFs pointent vers les sources officielles (liens externes). Envisager de stocker les PDFs dans Supabase Storage pour la pérennité (liens officiels changent ou disparaissent).</div>
+    </div>
+    <div class="card" style="border-color:rgba(63,185,80,.25)">
+      <div class="card-icon">📦</div>
+      <div class="card-title" style="color:var(--green)">Build & Deploy automatisé</div>
+      <div class="card-body">Actuellement : build manuel + upload FTP. <strong style="color:var(--text)">Suggestion :</strong> GitHub Actions workflow qui build sur push main et déploie via FTP automatiquement (Hostinger supporte le déploiement Git en option payante).</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<div class="doc-footer">
+  <div>JuriThèque — Documentation Technique Interne — v1.0 — Mai 2026</div>
+  <div>juritheque.com</div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /page-wrapper -->
+
+<script>
+// Active nav link on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks  = document.querySelectorAll('.sidenav a');
+const observer  = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const active = document.querySelector(`.sidenav a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "run_at": "20260513_120042",
+  "source": "https://www.huquqai.ma/api/sgg",
+  "count": 229,
+  "filters": {
+    "lang": null,
+    "year": 2025,
+    "limit": 500
+  },
+  "sample": [
+    {
+      "number": "7469",
+      "date": "2025-12-28",
+      "year": 2025,
+      "language": "ar",
+      "edition": "edition_generale",
+      "title": "الجريدة الرسمية عدد 7469",
+      "officialUrl": "https://www.sgg.gov.ma/BO/AR/3111/2025/BO_7469_Ar.pdf",
+      "source": "SGG",
+      "isExternal": true,
+      "tags": []
+    },
+    {
+      "number": "7469",
+      "date": "2025-12-28",
+      "year": 2025,
+      "language": "fr",
+      "edition": "traduction_officielle",
+      "title": "Bulletin Officiel n° 7469 — Traduction officielle",
+      "officialUrl": "https://www.sgg.gov.ma/BO/FR/2873/2025/BO_7469_Fr.pdf",
+      "source": "SGG",
+      "isExternal": true,
+      "tags": []
+    },
+    {
+      "number": "7468",
+      "date": "2025-12-24",
+      "year": 2025,
+      "language": "ar",
+      "edition": "edition_generale",
+      "title": "الجريدة الرسمية عدد 7468",
+      "officialUrl": "https://www.sgg.gov.ma/BO/AR/3111/2025/BO_7468_Ar.pdf",
+      "source": "SGG",
+      "isExternal": true,
+      "tags": []
+    }
+  ]
+}

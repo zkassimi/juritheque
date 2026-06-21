@@ -1,0 +1,71 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+dist-ssr/
+build/
+
+# Environment variables — NEVER commit these
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+pipeline/.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# Pipeline reports (contain run data)
+pipeline/report_*.json
+pipeline/pdfs/
+pipeline/pdfs/done/
+pipeline/pdfs/errors/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Vercel
+.vercel/
+
+# Clés API et credentials (JAMAIS commiter)
+pipeline/google-indexing-key.json
+*.json.key
+*-key.json
+*credentials*.json
+
+# Fichiers générés / volumineux
+juritheque-dist.zip
+*.zip
+*.pptx
+*.pdf
+JuriTheque_Presentation_*.pptx
+JuriTheque_Specifications_*.pdf
+
+# Screenshots slides
+_slide_shots/
+
+# État runtime pipeline
+bo_state.json
+pipeline/report_*.json

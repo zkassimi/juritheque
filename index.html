@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO de base (mis à jour dynamiquement par le hook useSEO) -->
+    <title>JuriThèque | مكتبة القانون</title>
+    <meta name="description" content="JuriThèque — La référence juridique marocaine bilingue. Accédez librement aux lois, décrets, dahirs, jurisprudences et codes en français et en arabe." />
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content="JuriThèque" />
+    <meta name="keywords" content="droit marocain, lois maroc, législation maroc, jurisprudence maroc, code civil maroc, dahir, textes juridiques, القانون المغربي" />
+    <link rel="canonical" href="https://juritheque.com" />
+
+    <!-- Open Graph (valeurs par défaut — surchargées par useSEO par page) -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:site_name"   content="JuriThèque" />
+    <meta property="og:title"       content="JuriThèque | مكتبة القانون" />
+    <meta property="og:description" content="La référence juridique marocaine bilingue. Lois, décrets, jurisprudences et codes en français et arabe." />
+    <meta property="og:url"         content="https://juritheque.com" />
+    <meta property="og:image"       content="https://juritheque.com/og-image.png" />
+    <meta property="og:locale"      content="fr_MA" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="JuriThèque | مكتبة القانون" />
+    <meta name="twitter:description" content="La référence juridique marocaine bilingue." />
+    <meta name="twitter:image"       content="https://juritheque.com/og-image.png" />
+
+    <!-- Favicon — balance de justice JuriThèque -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <!-- Apple Touch Icon : utilisez /favicon.svg si pas de PNG généré -->
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- Fonts Google — non-bloquantes (évite le render-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Noto+Naskh+Arabic:wght@400;600&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Noto+Naskh+Arabic:wght@400;600&display=swap" />
+    </noscript>
+
+    <!-- Bing Webmaster Tools — vérification (à ajouter quand disponible) -->
+    <!-- <meta name="msvalidate.01" content="VOTRE_CODE_BING" /> -->
+
+    <!-- JSON-LD : WebSite + Organisation + Sitelinks Searchbox + Navigation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://juritheque.com/#website",
+          "url": "https://juritheque.com",
+          "name": "JuriThèque",
+          "alternateName": "مكتبة القانون",
+          "description": "Base de données juridique marocaine bilingue français-arabe : lois, dahirs, décrets, codes et arrêtés.",
+          "inLanguage": ["fr", "ar"],
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://juritheque.com/base?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://juritheque.com/#organization",
+          "name": "JuriThèque",
+          "url": "https://juritheque.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://juritheque.com/og-image.png",
+            "width": 1200,
+            "height": 630
+          },
+          "sameAs": [
+            "https://www.youtube.com/@juritheque"
+          ],
+          "description": "Plateforme marocaine de documentation juridique bilingue (français/arabe) regroupant plus de 7 400 textes juridiques officiels.",
+          "foundingLocation": {
+            "@type": "Place",
+            "name": "Maroc"
+          }
+        },
+        {
+          "@type": "ItemList",
+          "@id": "https://juritheque.com/#navigation",
+          "name": "Navigation principale JuriThèque",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Base de données juridique",
+              "description": "7 400+ lois, dahirs, décrets et codes marocains",
+              "url": "https://juritheque.com/base"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Domaines juridiques",
+              "description": "16 domaines : civil, pénal, commercial, travail, fiscal…",
+              "url": "https://juritheque.com/domaines"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Glossaire juridique",
+              "description": "Définitions des termes juridiques marocains en français et arabe",
+              "url": "https://juritheque.com/glossaire"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "Assistant IA juridique",
+              "description": "Posez vos questions juridiques à notre assistant intelligent",
+              "url": "https://juritheque.com/assistant"
+            },
+            {
+              "@type": "ListItem",
+              "position": 5,
+              "name": "Veille juridique",
+              "description": "Suivez les dernières évolutions du droit marocain",
+              "url": "https://juritheque.com/fr/veille-juridique"
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "name": "Bulletins Officiels",
+              "description": "Accédez aux Bulletins Officiels du Royaume du Maroc",
+              "url": "https://juritheque.com/fr/bulletins-officiels"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <!-- Google Tag Manager — chargé après load pour ne pas bloquer le rendu -->
+    <script>
+    window.addEventListener('load',function(){
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-WTMGJ8CH');
+    });
+    </script>
+    <!-- End Google Tag Manager -->
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WTMGJ8CH"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

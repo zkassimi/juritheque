@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JuriThèque — Documentation Technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ═══ RESET & BASE ═══════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:      #1a2e4a;
+    --navy-700:  #243d5e;
+    --navy-500:  #3a5577;
+    --navy-200:  #8facc5;
+    --navy-100:  #dde8f2;
+    --gold:      #c9a84c;
+    --gold-light:#e8d08a;
+    --gold-pale: #fdf8ed;
+    --white:     #ffffff;
+    --gray-50:   #f8fafc;
+    --gray-100:  #f1f5f9;
+    --gray-200:  #e2e8f0;
+    --gray-400:  #94a3b8;
+    --gray-600:  #475569;
+    --gray-800:  #1e293b;
+    --green:     #16a34a;
+    --green-bg:  #dcfce7;
+    --orange:    #d97706;
+    --orange-bg: #fef3c7;
+    --red:       #dc2626;
+    --red-bg:    #fee2e2;
+    --blue:      #2563eb;
+    --blue-bg:   #dbeafe;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--gray-800);
+    background: var(--gray-50);
+  }
+
+  /* ═══ LAYOUT ═══════════════════════════════════════════════ */
+  .page-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ═══ HEADER / COVER ════════════════════════════════════════ */
+  .cover {
+    background: var(--navy);
+    color: white;
+    padding: 60px 48px 48px;
+    margin: 0 -24px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+  }
+  .cover-inner { position: relative; z-index: 1; }
+  .cover-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold-light);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+  }
+  .cover-badge::before { content: '⚖'; font-size: 14px; }
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 8px;
+    color: white;
+  }
+  .cover h1 span { color: var(--gold); }
+  .cover-subtitle {
+    font-size: 16px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .cover-meta-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+  }
+  .cover-meta-item strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+  }
+
+  /* ═══ TABLE DES MATIÈRES ════════════════════════════════════ */
+  .toc {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .toc h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--navy);
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--gold);
+    display: inline-block;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px 24px;
+  }
+  .toc a {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--navy-500);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    transition: all 0.15s;
+  }
+  .toc a:hover { background: var(--gold-pale); color: var(--navy); }
+  .toc-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    min-width: 20px;
+  }
+
+  /* ═══ SECTIONS ══════════════════════════════════════════════ */
+  .section {
+    margin-bottom: 56px;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--navy-100);
+  }
+  .section-num {
+    width: 36px; height: 36px;
+    background: var(--navy);
+    color: var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .section h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 20px 0 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section h3::before {
+    content: '';
+    display: inline-block;
+    width: 3px; height: 16px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+  .section p {
+    color: var(--gray-600);
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  /* ═══ CARTES DE STATS ════════════════════════════════════════ */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .stat-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-value span { color: var(--gold); }
+  .stat-label {
+    font-size: 11px;
+    color: var(--gray-400);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ═══ ARCHITECTURE DIAGRAM ══════════════════════════════════ */
+  .arch-diagram {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 20px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+  .arch-layer {
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 4px;
+    background: rgba(255,255,255,0.03);
+  }
+  .arch-layer-title {
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+  .arch-layer-content {
+    color: rgba(255,255,255,0.65);
+    font-size: 12px;
+  }
+  .arch-arrow {
+    text-align: center;
+    color: var(--gold-light);
+    padding: 4px 0;
+    font-size: 16px;
+  }
+  .arch-arrow-label {
+    font-size: 10px;
+    color: var(--navy-200);
+    margin-left: 8px;
+  }
+
+  /* ═══ TABLEAUX ══════════════════════════════════════════════ */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 16px 0;
+    border-radius: 10px;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 13px;
+  }
+  thead th {
+    background: var(--navy);
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  thead th:first-child { border-radius: 10px 0 0 0; }
+  thead th:last-child  { border-radius: 0 10px 0 0; }
+  tbody tr { border-bottom: 1px solid var(--gray-100); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--gray-50); }
+  tbody tr:hover { background: var(--gold-pale); }
+  tbody td { padding: 9px 14px; color: var(--gray-600); vertical-align: top; }
+  tbody td:first-child { color: var(--navy); font-weight: 500; }
+
+  /* ═══ CODE BLOCKS ════════════════════════════════════════════ */
+  pre {
+    background: var(--gray-800);
+    color: #e2e8f0;
+    border-radius: 10px;
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 14px 0;
+    border-left: 3px solid var(--gold);
+  }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--gray-100);
+    color: var(--navy);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+  }
+  .code-comment { color: #94a3b8; }
+  .code-string  { color: #86efac; }
+  .code-keyword { color: var(--gold-light); }
+
+  /* ═══ BADGES ════════════════════════════════════════════════ */
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-green  { background: var(--green-bg);  color: var(--green);  }
+  .badge-orange { background: var(--orange-bg); color: var(--orange); }
+  .badge-red    { background: var(--red-bg);    color: var(--red);    }
+  .badge-blue   { background: var(--blue-bg);   color: var(--blue);   }
+  .badge-navy   { background: var(--navy-100);  color: var(--navy);   }
+  .badge-gold   { background: var(--gold-pale); color: var(--navy);   border: 1px solid var(--gold-light); }
+
+  /* ═══ CARDS ══════════════════════════════════════════════════ */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 16px 0;
+  }
+  .card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .card-title-icon {
+    width: 26px; height: 26px;
+    background: var(--navy);
+    color: var(--gold);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .card p { font-size: 12px; color: var(--gray-400); margin: 0; }
+
+  /* ═══ ALERT BOXES ════════════════════════════════════════════ */
+  .alert {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 13px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alert-warn  { background: #fef9ed; border: 1px solid #f5d369; color: #92400e; }
+  .alert-info  { background: #eff6ff; border: 1px solid #93c5fd; color: #1e40af; }
+  .alert-danger{ background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+  .alert-success{background: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+
+  /* ═══ STEPS ═════════════════════════════════════════════════ */
+  .steps { margin: 16px 0; }
+  .step {
+    display: flex; gap: 16px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .step:last-child { border-bottom: none; margin-bottom: 0; }
+  .step-num {
+    width: 28px; height: 28px;
+    background: var(--navy);
+    color: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-content h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .step-content p {
+    font-size: 12px;
+    color: var(--gray-400);
+    margin: 0 0 6px;
+  }
+
+  /* ═══ ROADMAP ════════════════════════════════════════════════ */
+  .roadmap-phase {
+    border-left: 3px solid var(--gold);
+    padding-left: 20px;
+    margin-bottom: 24px;
+  }
+  .roadmap-phase h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .roadmap-phase .badge { margin-bottom: 10px; }
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 13px;
+    color: var(--gray-600);
+    padding: 4px 0;
+  }
+  .checklist li::before {
+    content: '○';
+    color: var(--gray-400);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .checklist li.done::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+  }
+  .checklist li.wip::before {
+    content: '◑';
+    color: var(--orange);
+  }
+
+  /* ═══ SECURITY TABLE ═════════════════════════════════════════ */
+  .sec-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .sec-item {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-top: 3px solid var(--green);
+  }
+  .sec-item h5 {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .sec-item p {
+    font-size: 11px;
+    color: var(--gray-400);
+    margin: 0;
+  }
+
+  /* ═══ FILE TREE ══════════════════════════════════════════════ */
+  .file-tree {
+    background: var(--gray-800);
+    color: #cbd5e1;
+    border-radius: 10px;
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 2;
+    border-left: 3px solid var(--gold);
+    margin: 14px 0;
+  }
+  .ft-dir   { color: #93c5fd; }
+  .ft-file  { color: #cbd5e1; }
+  .ft-note  { color: #64748b; font-style: italic; }
+  .ft-warn  { color: #fbbf24; }
+
+  /* ═══ FOOTER ═════════════════════════════════════════════════ */
+  .doc-footer {
+    margin-top: 64px;
+    padding: 28px 32px;
+    background: var(--navy);
+    border-radius: 12px;
+    color: rgba(255,255,255,0.6);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .doc-footer strong { color: var(--gold); }
+  .doc-footer a { color: var(--gold-light); text-decoration: none; }
+
+  /* ═══ PRINT ══════════════════════════════════════════════════ */
+  @media print {
+    body { background: white; font-size: 11px; }
+    .page-wrapper { max-width: 100%; padding: 0; }
+    .cover { margin: 0 0 32px; padding: 40px 40px 32px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section { break-inside: avoid; }
+    .table-wrap { break-inside: avoid; }
+    .toc { break-inside: avoid; }
+    pre { break-inside: avoid; }
+    .card-grid { break-inside: avoid; }
+    .stats-grid { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    thead { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  /* ═══ DIVIDERS ═══════════════════════════════════════════════ */
+  .gold-divider {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px;
+    margin: 10px 0 16px;
+  }
+
+  /* ═══ INLINE TAGS ════════════════════════════════════════════ */
+  .tag {
+    display: inline-block;
+    background: var(--navy-100);
+    color: var(--navy);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    margin: 2px;
+  }
+
+  /* ═══ TWO-COL ════════════════════════════════════════════════ */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  /* ═══ SCHEMA COLUMNS ═════════════════════════════════════════ */
+  .schema-col {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .schema-col-header {
+    background: var(--navy);
+    color: var(--gold);
+    padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .schema-col-body { padding: 12px 16px; }
+  .schema-row {
+    display: flex; gap: 10px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 12px;
+  }
+  .schema-row:last-child { border-bottom: none; }
+  .schema-col-name { color: var(--navy); font-family: 'JetBrains Mono', monospace; min-width: 170px; font-weight: 500; }
+  .schema-col-type { color: var(--blue); font-family: 'JetBrains Mono', monospace; min-width: 80px; font-size: 11px; }
+  .schema-col-desc { color: var(--gray-400); font-size: 11px; }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--gray-100); }
+  ::-webkit-scrollbar-thumb { background: var(--navy-200); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       COVER
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="cover">
+    <div class="cover-inner">
+      <div class="cover-badge">Documentation Technique v2.0</div>
+      <h1><span>JuriThèque</span> — LexBase</h1>
+      <div class="cover-subtitle">Plateforme numérique de base de données juridique marocaine bilingue (FR/AR)</div>
+      <div class="cover-meta">
+        <div class="cover-meta-item">🌐 <strong>juritheque.com</strong></div>
+        <div class="cover-meta-item">📅 <strong>Juin 2026</strong></div>
+        <div class="cover-meta-item">⚖️ <strong>7 400+ textes juridiques</strong></div>
+        <div class="cover-meta-item">🇲🇦 <strong>Droit marocain FR/AR</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TABLE DES MATIÈRES
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="toc">
+    <h2>Table des matières</h2>
+    <div class="toc-grid">
+      <a href="#s1"><span class="toc-num">01</span> Vue d'ensemble</a>
+      <a href="#s7"><span class="toc-num">07</span> Scripts pipeline</a>
+      <a href="#s2"><span class="toc-num">02</span> Architecture technique</a>
+      <a href="#s8"><span class="toc-num">08</span> Sécurité</a>
+      <a href="#s3"><span class="toc-num">03</span> Stack technique</a>
+      <a href="#s9"><span class="toc-num">09</span> Déploiement</a>
+      <a href="#s4"><span class="toc-num">04</span> Structure des fichiers</a>
+      <a href="#s10"><span class="toc-num">10</span> Projections &amp; Roadmap</a>
+      <a href="#s5"><span class="toc-num">05</span> Installation complète</a>
+      <a href="#s11"><span class="toc-num">11</span> Besoins identifiés</a>
+      <a href="#s6"><span class="toc-num">06</span> Base de données</a>
+      <a href="#annexe"><span class="toc-num">—</span> Annexe ressources</a>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 1 — VUE D'ENSEMBLE
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <h2>Vue d'ensemble</h2>
+    </div>
+
+    <p><strong>JuriThèque</strong> (nom de domaine : <code>juritheque.com</code>, nom interne du dépôt : <code>lexbase</code>) est une plateforme numérique de centralisation, de recherche et de vulgarisation du droit marocain.</p>
+    <p><strong>Mission :</strong> Rendre accessibles les 7 400+ textes juridiques marocains (lois, dahirs, décrets, codes, arrêtés) en version bilingue français/arabe, avec résumés IA, assistant juridique intelligent, et contenus pédagogiques.</p>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">7 400<span>+</span></div>
+        <div class="stat-label">Textes juridiques</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">16</div>
+        <div class="stat-label">Domaines juridiques</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">11</div>
+        <div class="stat-label">Sources officielles</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">28</div>
+        <div class="stat-label">Scripts pipeline</div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">5 015</div>
+        <div class="stat-label">Résumés en arabe</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">21</div>
+        <div class="stat-label">Pages React</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">18</div>
+        <div class="stat-label">Composants React</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">16</div>
+        <div class="stat-label">Migrations SQL</div>
+      </div>
+    </div>
+
+    <h3>Public cible</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+      <span class="tag">🎓 Étudiants en droit</span>
+      <span class="tag">⚖️ Juristes &amp; avocats</span>
+      <span class="tag">🏛️ Fonctionnaires</span>
+      <span class="tag">📚 Chercheurs &amp; enseignants</span>
+      <span class="tag">🌍 Citoyens marocains (MRE)</span>
+      <span class="tag">💼 Investisseurs étrangers</span>
+      <span class="tag">🗳️ Élus locaux</span>
+    </div>
+
+    <h3>Sources officielles indexées</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+      <span class="tag">justice.gov.ma (Adala)</span>
+      <span class="tag">sgg.gov.ma</span>
+      <span class="tag">bkam.ma</span>
+      <span class="tag">anrt.ma</span>
+      <span class="tag">mmsp.gov.ma</span>
+      <span class="tag">mem.gov.ma</span>
+      <span class="tag">chambredesrepresentants.ma</span>
+      <span class="tag">finances.gov.ma</span>
+      <span class="tag">environnement.gov.ma</span>
+      <span class="tag">ism.ma</span>
+      <span class="tag">WIPO Lex</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 2 — ARCHITECTURE
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <h2>Architecture technique</h2>
+    </div>
+
+    <p>JuriThèque repose sur une architecture <strong>JAMstack</strong> à 3 couches indépendantes :</p>
+
+    <div style="background:var(--navy);border-radius:12px;padding:28px 28px;margin:16px 0;">
+      <div class="arch-layer">
+        <div class="arch-layer-title">🖥️ FRONTEND — React SPA</div>
+        <div class="arch-layer-content">React 18 + Vite 5 + Tailwind CSS &nbsp;|&nbsp; Hébergé sur Hostinger (dist/ statique)</div>
+      </div>
+      <div class="arch-arrow">↕ <span class="arch-arrow-label">REST API · Supabase JS SDK · clé anon publique</span></div>
+      <div class="arch-layer">
+        <div class="arch-layer-title">🗄️ BACKEND — Supabase Cloud</div>
+        <div class="arch-layer-content">PostgreSQL + Auth JWT + Storage + PostgREST &nbsp;|&nbsp; Projet : bmargdbbcnhkrjeidmvh (Région EU)</div>
+      </div>
+      <div class="arch-arrow">↕ <span class="arch-arrow-label">service_role key — pipeline uniquement, jamais public</span></div>
+      <div class="arch-layer">
+        <div class="arch-layer-title">⚙️ PIPELINE DE DONNÉES — Python local</div>
+        <div class="arch-layer-content">28 scripts : crawl · scrape · extract · enrich · translate · build &nbsp;|&nbsp; LLM : OpenRouter → Gemini 2.5 Flash Lite &nbsp;|&nbsp; Dashboard admin : FastAPI port 8000</div>
+      </div>
+    </div>
+
+    <h3>Flux de données</h3>
+    <pre><span class="code-comment"># Collecte</span>
+Sites officiels (11) ──► scraper.py / crawl_adala.py ──► PDFs locaux
+
+<span class="code-comment"># Extraction</span>
+PDFs locaux ──► extract.py ──► texte brut → Supabase laws
+
+<span class="code-comment"># Enrichissement IA (Gemini 2.5 Flash Lite via OpenRouter)</span>
+laws (sans résumé) ──► generate_adala_summaries.py ──► simple_summary_fr
+laws (summary_fr)  ──► translate_summaries_ar.py   ──► simple_summary_ar
+
+<span class="code-comment"># Diffusion</span>
+Supabase PostgreSQL ──► REST API (anon) ──► Frontend React ──► juritheque.com</pre>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 3 — STACK TECHNIQUE
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <h2>Stack technique détaillé</h2>
+    </div>
+
+    <h3>Frontend</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Technologie</th><th>Version</th><th>Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>React</td><td>18.2.0</td><td>Framework UI (SPA — Single Page Application)</td></tr>
+          <tr><td>Vite</td><td>5.1.0</td><td>Bundler ultra-rapide + serveur de développement</td></tr>
+          <tr><td>React Router DOM</td><td>6.22.0</td><td>Navigation client-side (21 routes)</td></tr>
+          <tr><td>Tailwind CSS</td><td>3.4.1</td><td>Styling utility-first responsive</td></tr>
+          <tr><td>Lucide React</td><td>0.344.0</td><td>Bibliothèque d'icônes SVG</td></tr>
+          <tr><td>@supabase/supabase-js</td><td>2.105.1</td><td>Client Supabase (Auth + REST)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Backend (Supabase)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Composant</th><th>Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>PostgreSQL</td><td>Base de données principale (géré Supabase Cloud)</td></tr>
+          <tr><td>Supabase Auth</td><td>JWT, email/password, rôles (user / editor / admin)</td></tr>
+          <tr><td>PostgREST</td><td>API REST auto-générée depuis le schéma PostgreSQL</td></tr>
+          <tr><td>Supabase Storage</td><td>Bucket <code>legal-documents</code> (PDFs)</td></tr>
+          <tr><td>Row Level Security</td><td>Contrôle d'accès par rôle sur chaque table</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Pipeline Python</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Package</th><th>Rôle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>requests</code></td><td>HTTP scraping + appels API REST</td></tr>
+          <tr><td><code>pdfplumber</code> ≥ 0.10.3</td><td>Extraction de texte PDF (méthode primaire)</td></tr>
+          <tr><td><code>PyMuPDF (fitz)</code> ≥ 1.23.0</td><td>Extraction de texte PDF (méthode fallback)</td></tr>
+          <tr><td><code>python-dotenv</code> ≥ 1.0.0</td><td>Chargement des variables d'environnement</td></tr>
+          <tr><td><code>rich</code> ≥ 13.7.0</td><td>Affichage console formaté avec barres de progression</td></tr>
+          <tr><td><code>fastapi</code> + <code>uvicorn</code></td><td>Dashboard web admin (SSE, API REST)</td></tr>
+          <tr><td><code>supabase</code> 2.3.4</td><td>Client Python Supabase</td></tr>
+          <tr><td><code>beautifulsoup4</code> + <code>lxml</code></td><td>Parsing HTML pour le scraping</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>APIs externes</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Service</th><th>Usage</th><th>Modèle / Coût</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>OpenRouter</td><td>Résumés juridiques FR + traductions AR</td><td>Gemini 2.5 Flash Lite — ~$0.00006/1K tokens</td></tr>
+          <tr><td>Supabase</td><td>Base de données + Auth + Storage</td><td>Plan Pro Cloud</td></tr>
+          <tr><td>huquqai.ma</td><td>Métadonnées lois Adala</td><td>Gratuit</td></tr>
+          <tr><td>11 sites officiels</td><td>Scraping des PDFs</td><td>Gratuit (scraping respectueux)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 4 — STRUCTURE DES FICHIERS
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <h2>Structure des fichiers</h2>
+    </div>
+
+    <div class="file-tree">
+<span class="ft-dir">lexbase/</span>
+├── <span class="ft-dir">src/</span>
+│   ├── <span class="ft-dir">pages/</span>         <span class="ft-note">(21 pages React)</span>
+│   │   ├── Home.jsx · Base.jsx · LawDetail.jsx · Domaines.jsx
+│   │   ├── DomainDetail.jsx · Assistant.jsx · Login.jsx · Profile.jsx
+│   │   ├── Admin.jsx · Videos.jsx · BulletinsOfficiels.jsx
+│   │   └── VeilleJuridique.jsx · Guides.jsx · GuideDetail.jsx · ...
+│   ├── <span class="ft-dir">components/</span>    <span class="ft-note">(18 composants réutilisables)</span>
+│   │   ├── Navbar.jsx · Footer.jsx · SearchBar.jsx
+│   │   ├── LawCard.jsx · DomainCard.jsx · VideoCard.jsx
+│   │   └── VideoModal.jsx · JsonLD.jsx · ...
+│   ├── <span class="ft-dir">contexts/</span>
+│   │   ├── AuthContext.jsx    <span class="ft-note">(auth JWT + rôles : user / editor / admin)</span>
+│   │   └── LangContext.jsx    <span class="ft-note">(bascule FR/AR + toggle RTL automatique)</span>
+│   ├── <span class="ft-dir">hooks/</span>
+│   │   └── useSEO.js          <span class="ft-note">(meta tags dynamiques par page)</span>
+│   ├── <span class="ft-dir">lib/</span>
+│   │   ├── api.js             <span class="ft-note">(fetchLaws, fetchDomains, fetchStats...)</span>
+│   │   ├── supabase.js        <span class="ft-note">(client Supabase initialisé)</span>
+│   │   └── lawUtils.js        <span class="ft-note">(helpers formatage, tri, types)</span>
+│   └── <span class="ft-dir">data/</span>
+│       ├── translations.js    <span class="ft-note">(strings FR/AR)</span>
+│       ├── mockData.js        <span class="ft-note">(fallback si Supabase offline)</span>
+│       └── seoIntentPages.js  <span class="ft-note">(guides SEO thématiques)</span>
+│
+├── <span class="ft-dir">pipeline/</span>
+│   ├── dashboard.py              <span class="ft-note">(Admin UI — FastAPI + SSE)</span>
+│   ├── scraper.py                <span class="ft-note">(11 sources → PDFs)</span>
+│   ├── crawl_adala.py            <span class="ft-note">(justice.gov.ma — 7 867 textes)</span>
+│   ├── crawl_sgg.py              <span class="ft-note">(sgg.gov.ma consolidés)</span>
+│   ├── extract.py                <span class="ft-note">(PDF → texte → Supabase)</span>
+│   ├── enrich.py                 <span class="ft-note">(Résumés + TOC via IA)</span>
+│   ├── generate_adala_summaries.py  <span class="ft-note">(Résumés FR Adala)</span>
+│   ├── translate_summaries_ar.py    <span class="ft-note">(FR→AR via Gemini)</span>
+│   ├── translate_titles_batch.py    <span class="ft-note">(Titres FR→AR)</span>
+│   ├── assign_domains.py            <span class="ft-note">(Auto-classification)</span>
+│   ├── generate_sitemap.py          <span class="ft-note">(Régénère sitemap.xml)</span>
+│   ├── build_site_search_index.py   <span class="ft-note">(Index recherche)</span>
+│   ├── bo_monitor.py                <span class="ft-note">(Surveillance Bulletins Officiels)</span>
+│   ├── [+ 15 autres scripts]
+│   ├── requirements.txt
+│   ├── <span class="ft-warn">.env</span>             <span class="ft-note">⚠️  SECRETS — jamais sur Git</span>
+│   └── <span class="ft-warn">pdfs/</span>            <span class="ft-note">⚠️  PDFs locaux — gitignored</span>
+│
+├── <span class="ft-dir">supabase/</span>
+│   └── <span class="ft-dir">migrations/</span>      <span class="ft-note">(16 fichiers SQL, 001 → 016)</span>
+│
+├── <span class="ft-dir">public/</span>
+│   ├── sitemap.xml       <span class="ft-note">(généré par generate_sitemap.py)</span>
+│   ├── robots.txt
+│   ├── seo-preview.php   <span class="ft-note">(SSR meta tags pour bots sociaux)</span>
+│   └── <span class="ft-dir">data/</span>  bulletins-officiels.json · lois-adala.json
+│
+├── <span class="ft-dir">dist/</span>             <span class="ft-note">(Build production → upload Hostinger)</span>
+├── <span class="ft-warn">.env</span>              <span class="ft-note">(VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY)</span>
+├── .env.example      <span class="ft-note">(Template — variables sans valeurs)</span>
+├── .gitignore
+├── package.json
+├── vite.config.js
+└── tailwind.config.js
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 5 — INSTALLATION
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <h2>Installation complète</h2>
+    </div>
+
+    <h3>Prérequis système</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Outil</th><th>Version minimale</th><th>Vérification</th></tr></thead>
+        <tbody>
+          <tr><td>Node.js</td><td>≥ 18.x</td><td><code>node --version</code></td></tr>
+          <tr><td>npm</td><td>≥ 9.x</td><td><code>npm --version</code></td></tr>
+          <tr><td>Python</td><td>≥ 3.11</td><td><code>python --version</code></td></tr>
+          <tr><td>Git</td><td>≥ 2.x</td><td><code>git --version</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Cloner le dépôt</h4>
+          <pre>git clone https://github.com/[username]/lexbase.git
+cd lexbase</pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Installer les dépendances frontend</h4>
+          <pre>npm install</pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Créer le fichier <code>.env</code> (frontend)</h4>
+          <p>Créer à la racine du projet :</p>
+          <pre>VITE_SUPABASE_URL=https://bmargdbbcnhkrjeidmvh.supabase.co
+VITE_SUPABASE_ANON_KEY=sb_publishable_[clé anon — safe à partager]
+VITE_OPENROUTER_KEY=[clé OpenRouter — pour l'assistant IA]</pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Lancer en développement</h4>
+          <pre>npm run dev
+<span class="code-comment"># → http://localhost:5173</span></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Installer le pipeline Python</h4>
+          <pre>cd pipeline
+pip install -r requirements.txt
+pip install fastapi uvicorn</pre>
+          <p>⚠️ Sur Windows : préfixer toutes les commandes avec <code>python -X utf8</code></p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <h4>Créer <code>pipeline/.env</code> (secrets)</h4>
+          <div class="alert alert-danger">
+            <span class="alert-icon">🔒</span>
+            <span><strong>Ce fichier ne doit JAMAIS être commité sur Git.</strong> Il contient la clé <code>service_role</code> qui donne un accès administrateur complet à la base de données.</span>
+          </div>
+          <pre>SUPABASE_URL=https://bmargdbbcnhkrjeidmvh.supabase.co
+SUPABASE_SERVICE_KEY=[service_role key — droits admin complets]
+OPENROUTER_KEY=[clé OpenRouter]</pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-content">
+          <h4>Lancer le dashboard admin</h4>
+          <pre>python -X utf8 pipeline/dashboard.py
+<span class="code-comment"># → http://127.0.0.1:8000
+# Le token de sécurité est affiché dans le terminal</span></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">8</div>
+        <div class="step-content">
+          <h4>Build de production</h4>
+          <pre>npm run build
+<span class="code-comment"># → génère dist/
+# Uploader dist/ sur Hostinger via FTP ou cPanel</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 6 — BASE DE DONNÉES
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <h2>Base de données — Schéma</h2>
+    </div>
+
+    <h3>Tables principales</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Table</th><th>Rôle</th><th>Lignes (estimé)</th></tr></thead>
+        <tbody>
+          <tr><td><code>laws</code></td><td>Textes juridiques — table centrale</td><td>7 400+</td></tr>
+          <tr><td><code>domains</code></td><td>16 domaines juridiques</td><td>16</td></tr>
+          <tr><td><code>profiles</code></td><td>Utilisateurs (étend <code>auth.users</code>)</td><td>Variable</td></tr>
+          <tr><td><code>favorites</code></td><td>Favoris par utilisateur</td><td>Variable</td></tr>
+          <tr><td><code>videos</code></td><td>Vidéos YouTube éducatives</td><td>Variable</td></tr>
+          <tr><td><code>site_search_index</code></td><td>Index de recherche interne</td><td>~7 500</td></tr>
+          <tr><td><code>bulletins_officiels</code></td><td>Bulletins Officiels du Royaume</td><td>Variable</td></tr>
+          <tr><td><code>subscribers</code></td><td>Abonnés newsletter</td><td>Variable</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Colonnes clés de la table <code>laws</code></h3>
+    <div class="two-col">
+      <div class="schema-col">
+        <div class="schema-col-header">laws — identité &amp; contenu</div>
+        <div class="schema-col-body">
+          <div class="schema-row"><span class="schema-col-name">id</span><span class="schema-col-type">UUID</span><span class="schema-col-desc">Clé primaire auto</span></div>
+          <div class="schema-row"><span class="schema-col-name">number</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">Ex: "103-12", "1-11-91"</span></div>
+          <div class="schema-row"><span class="schema-col-name">type</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">Loi | Dahir | Décret | Code</span></div>
+          <div class="schema-row"><span class="schema-col-name">title_fr</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">Titre en français</span></div>
+          <div class="schema-row"><span class="schema-col-name">title_ar</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">Titre en arabe</span></div>
+          <div class="schema-row"><span class="schema-col-name">simple_summary_fr</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">Résumé IA français (350-450 ch.)</span></div>
+          <div class="schema-row"><span class="schema-col-name">simple_summary_ar</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">Résumé IA arabe (traduit)</span></div>
+          <div class="schema-row"><span class="schema-col-name">content_fr</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">Texte intégral FR (PDF)</span></div>
+          <div class="schema-row"><span class="schema-col-name">content_ar</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">Texte intégral AR</span></div>
+        </div>
+      </div>
+      <div class="schema-col">
+        <div class="schema-col-header">laws — métadonnées &amp; SEO</div>
+        <div class="schema-col-body">
+          <div class="schema-row"><span class="schema-col-name">domain_id</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">FK → domains.id (principal)</span></div>
+          <div class="schema-row"><span class="schema-col-name">domain_ids</span><span class="schema-col-type">TEXT[]</span><span class="schema-col-desc">Domaines secondaires</span></div>
+          <div class="schema-row"><span class="schema-col-name">status</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">En vigueur | Abrogé | Modifié</span></div>
+          <div class="schema-row"><span class="schema-col-name">date</span><span class="schema-col-type">DATE</span><span class="schema-col-desc">Date du texte</span></div>
+          <div class="schema-row"><span class="schema-col-name">language</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">Français | Arabe | Bilingue</span></div>
+          <div class="schema-row"><span class="schema-col-name">source_name</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">Ex: "Adala", "SGG", "BKAM"</span></div>
+          <div class="schema-row"><span class="schema-col-name">pdf_url</span><span class="schema-col-type">TEXT</span><span class="schema-col-desc">URL du PDF original</span></div>
+          <div class="schema-row"><span class="schema-col-name">tags</span><span class="schema-col-type">TEXT[]</span><span class="schema-col-desc">Mots-clés thématiques</span></div>
+          <div class="schema-row"><span class="schema-col-name">quality_score</span><span class="schema-col-type">SMALLINT</span><span class="schema-col-desc">Score qualité 0–100</span></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>16 Domaines juridiques</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+      <span class="badge badge-navy">civil</span>
+      <span class="badge badge-navy">penal</span>
+      <span class="badge badge-navy">commercial</span>
+      <span class="badge badge-navy">administratif</span>
+      <span class="badge badge-navy">travail</span>
+      <span class="badge badge-navy">fiscal</span>
+      <span class="badge badge-navy">constitutionnel</span>
+      <span class="badge badge-navy">numerique</span>
+      <span class="badge badge-navy">bancaire</span>
+      <span class="badge badge-navy">international</span>
+      <span class="badge badge-navy">finances_publiques</span>
+      <span class="badge badge-navy">collectivites</span>
+      <span class="badge badge-navy">transport</span>
+      <span class="badge badge-navy">environnement</span>
+      <span class="badge badge-navy">sante</span>
+      <span class="badge badge-navy">education</span>
+    </div>
+
+    <h3>Migrations (nouveau déploiement)</h3>
+    <p>Dans le Supabase SQL Editor, exécuter dans l'ordre <code>001</code> → <code>016</code> :</p>
+    <pre><span class="code-comment"># Chaque fichier dans supabase/migrations/</span>
+001_lexbase_schema.sql    <span class="code-comment">→ Tables de base + index</span>
+002_profiles.sql          <span class="code-comment">→ Table profiles + trigger auth</span>
+003_domains_seed.sql      <span class="code-comment">→ Données initiales des 16 domaines</span>
+004_rls_policies.sql      <span class="code-comment">→ Politiques Row Level Security</span>
+...
+016_[dernière].sql        <span class="code-comment">→ Évolutions récentes du schéma</span></pre>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 7 — SCRIPTS PIPELINE
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <h2>Scripts pipeline — Référence complète</h2>
+    </div>
+
+    <div class="alert alert-info">
+      <span class="alert-icon">💡</span>
+      <span>Tous les scripts se lancent depuis la <strong>racine du projet</strong> avec <code>python -X utf8 pipeline/[script].py</code>. Ou via le <strong>dashboard admin</strong> : <code>python -X utf8 pipeline/dashboard.py</code> → http://127.0.0.1:8000</span>
+    </div>
+
+    <h3>🕷️ Collecte de données</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Script</th><th>Commande</th><th>Durée</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>scraper.py</code></td><td><code>--source all</code></td><td>60+ min</td><td>11 sources officielles, ~706 PDFs</td></tr>
+          <tr><td><code>crawl_adala.py</code></td><td>—</td><td>30-60 min</td><td>justice.gov.ma — 7 867 textes Adala</td></tr>
+          <tr><td><code>crawl_sgg.py</code></td><td>—</td><td>10-20 min</td><td>sgg.gov.ma textes consolidés</td></tr>
+          <tr><td><code>extract.py</code></td><td><code>--limit 100</code></td><td>10-20 min</td><td>PDF → texte brut → Supabase</td></tr>
+          <tr><td><code>build_lois_adala.py</code></td><td><code>--limit 500</code></td><td>15-30 min</td><td>Fetch métadonnées Adala</td></tr>
+          <tr><td><code>import_lois_adala.py</code></td><td><code>--limit 500</code></td><td>5-10 min</td><td>Import JSON → Supabase</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>🧠 Enrichissement IA (OpenRouter)</h3>
+    <div class="alert alert-warn">
+      <span class="alert-icon">💰</span>
+      <span>Ces scripts consomment des crédits OpenRouter. Vérifier le solde sur <strong>openrouter.ai/settings/credits</strong> avant de lancer. Tester d'abord avec <code>--limit 10</code>.</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Script</th><th>Commande type</th><th>Coût estimé</th></tr></thead>
+        <tbody>
+          <tr><td><code>enrich.py</code></td><td><code>--limit 200</code></td><td>~$0.40 / 200 lois</td></tr>
+          <tr><td><code>generate_adala_summaries.py</code></td><td><code>--mode placeholders --limit 500</code></td><td>~$0.04 / 500 lois</td></tr>
+          <tr><td><code>translate_summaries_ar.py</code></td><td><code>--limit 500</code></td><td>~$0.03 / 500 lois</td></tr>
+          <tr><td><code>translate_titles_batch.py</code></td><td><code>--limit 200</code></td><td>~$0.01 / 200 lois</td></tr>
+          <tr><td><code>translate_titles_adala.py</code></td><td><code>--limit 200</code></td><td>~$0.01 / 200 lois</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Modes de <code>generate_adala_summaries.py</code> :</strong></p>
+    <pre><span class="code-comment">--mode null          # Lois sans résumé (nouveaux imports)</span>
+<span class="code-comment">--mode placeholders  # Remplace les résumés génériques (6 896 à traiter)</span>
+<span class="code-comment">--mode all           # Les deux combinés</span>
+<span class="code-comment">--dry-run            # Simulation sans écriture en base</span>
+<span class="code-comment">--limit N            # Limiter à N lois (test recommandé avec --limit 10)</span></pre>
+
+    <p><strong>Ordre recommandé pour la chaîne complète :</strong></p>
+    <pre><span class="code-keyword">1.</span> generate_adala_summaries.py --mode placeholders  <span class="code-comment">→ Résumés FR de qualité</span>
+<span class="code-keyword">2.</span> translate_summaries_ar.py                        <span class="code-comment">→ Traduction FR→AR</span>
+<span class="code-keyword">3.</span> Répéter jusqu'à 0 restants <span class="code-comment">(visible dans la sidebar du dashboard)</span></pre>
+
+    <h3>🔧 Maintenance &amp; SEO</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Script</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>generate_sitemap.py</code></td><td>Régénère <code>public/sitemap.xml</code></td></tr>
+          <tr><td><code>build_site_search_index.py</code></td><td>Reconstruit l'index de recherche interne</td></tr>
+          <tr><td><code>assign_domains.py</code></td><td>Auto-classifie les lois par domaine (<code>--limit 500</code>)</td></tr>
+          <tr><td><code>fix_adala_batch.py</code></td><td>Nettoie les titres mal formatés (<code>--titles</code>)</td></tr>
+          <tr><td><code>bo_monitor.py</code></td><td>Surveille les nouveaux Bulletins Officiels (<code>--dry-run</code>)</td></tr>
+          <tr><td><code>scrape_bulletins.py</code></td><td>Scrape les Bulletins Officiels</td></tr>
+          <tr><td><code>hide_sensitive_texts.py</code></td><td>Masque les textes sensibles (<code>--dry-run</code> obligatoire d'abord)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Commandes npm (frontend)</h3>
+    <pre>npm run dev       <span class="code-comment"># Démarrage serveur dev → http://localhost:5173</span>
+npm run build     <span class="code-comment"># Build production → dist/</span>
+npm run preview   <span class="code-comment"># Preview du build → http://localhost:4173</span>
+npm run lint      <span class="code-comment"># Vérification ESLint</span></pre>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 8 — SÉCURITÉ
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <h2>Sécurité</h2>
+    </div>
+
+    <h3>Mesures en place ✅</h3>
+    <div class="sec-grid">
+      <div class="sec-item">
+        <h5>🔒 RLS Supabase</h5>
+        <p>Row Level Security activée sur toutes les tables PostgreSQL</p>
+      </div>
+      <div class="sec-item">
+        <h5>🗝️ Clés séparées</h5>
+        <p>anon key (public, lecture seule) vs service_role (pipeline uniquement)</p>
+      </div>
+      <div class="sec-item">
+        <h5>📁 .gitignore</h5>
+        <p>.env, pipeline/.env, PDFs, rapports exclus du dépôt Git</p>
+      </div>
+      <div class="sec-item">
+        <h5>🪙 JWT Auth</h5>
+        <p>Tokens expirables gérés via Supabase Auth</p>
+      </div>
+      <div class="sec-item">
+        <h5>🖥️ Dashboard localhost</h5>
+        <p>Port 8000 lié à 127.0.0.1 — jamais accessible depuis le réseau</p>
+      </div>
+      <div class="sec-item">
+        <h5>🎲 Token aléatoire</h5>
+        <p>Nouveau token généré à chaque démarrage du dashboard</p>
+      </div>
+      <div class="sec-item">
+        <h5>📋 Whitelist scripts</h5>
+        <p>Seuls les 28 scripts autorisés sont exécutables via le dashboard</p>
+      </div>
+      <div class="sec-item">
+        <h5>🤖 robots.txt</h5>
+        <p>/admin, /connexion, /profil exclus des crawlers</p>
+      </div>
+      <div class="sec-item">
+        <h5>🔐 PHP seo-preview</h5>
+        <p>Côté serveur uniquement — ne divulgue aucune clé API</p>
+      </div>
+    </div>
+
+    <h3>Variables d'environnement</h3>
+    <div class="two-col">
+      <div>
+        <div class="alert alert-danger">
+          <span class="alert-icon">🔴</span>
+          <span><strong>SECRETS — Ne jamais publier</strong></span>
+        </div>
+        <pre><span class="code-comment"># pipeline/.env UNIQUEMENT</span>
+SUPABASE_SERVICE_KEY=sb_secret_[...]
+<span class="code-comment"># Droits admin complets sur la BDD</span>
+
+OPENROUTER_KEY=sk-or-v1-[...]
+<span class="code-comment"># Facturé à l'usage</span></pre>
+      </div>
+      <div>
+        <div class="alert alert-success">
+          <span class="alert-icon">🟢</span>
+          <span><strong>SAFE pour le public (frontend)</strong></span>
+        </div>
+        <pre><span class="code-comment"># .env — clé publique protégée par RLS</span>
+VITE_SUPABASE_URL=
+  https://bmargdbb...supabase.co
+
+VITE_SUPABASE_ANON_KEY=
+  sb_publishable_[...]</pre>
+      </div>
+    </div>
+
+    <h3>Recommandations pour GitHub</h3>
+    <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+      <li style="font-size:13px;color:var(--gray-600);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--gold);font-weight:700;">1.</span> Ne jamais committer <code>pipeline/.env</code>, <code>.env.local</code>, <code>pipeline/pdfs/</code></li>
+      <li style="font-size:13px;color:var(--gray-600);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--gold);font-weight:700;">2.</span> Utiliser <code>.env.example</code> comme template (noms de variables, sans valeurs)</li>
+      <li style="font-size:13px;color:var(--gray-600);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--gold);font-weight:700;">3.</span> Activer les <strong>Dependabot alerts</strong> GitHub sur le dépôt</li>
+      <li style="font-size:13px;color:var(--gray-600);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--gold);font-weight:700;">4.</span> Utiliser <strong>GitHub Secrets</strong> pour les clés en CI/CD</li>
+      <li style="font-size:13px;color:var(--gray-600);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--gold);font-weight:700;">5.</span> Protéger la branche <code>main</code> (require PR + review avant merge)</li>
+      <li style="font-size:13px;color:var(--gray-600);display:flex;gap:8px;align-items:flex-start;"><span style="color:var(--gold);font-weight:700;">6.</span> Effectuer une <strong>rotation des clés API tous les 6 mois</strong></li>
+    </ul>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 9 — DÉPLOIEMENT
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num">09</div>
+      <h2>Déploiement</h2>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-icon">🏠</div>
+          Frontend actuel — Hostinger
+        </div>
+        <p>Upload manuel du dossier <code>dist/</code> via FTP ou cPanel File Manager. HTTPS Let's Encrypt. <code>.htaccess</code> pour le SPA routing.</p>
+        <pre style="margin-top:8px;">npm run build
+<span class="code-comment"># → Upload dist/ vers public_html/</span></pre>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-icon">⚡</div>
+          Frontend recommandé — Vercel/Netlify
+        </div>
+        <p>Auto-deploy à chaque push sur <code>main</code>. HTTPS automatique, CDN mondial, rollback en 1 clic. Variables d'env dans le panel.</p>
+        <p style="margin-top:6px;"><em>Avantage : zéro manipulation manuelle après configuration initiale.</em></p>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-icon">🖥️</div>
+          Pipeline actuel — Windows local
+        </div>
+        <p>Scripts lancés manuellement ou via Windows Task Scheduler. Dépendance au PC local — risque si indisponible.</p>
+        <pre style="margin-top:8px;">python -X utf8 pipeline/dashboard.py</pre>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-icon">☁️</div>
+          Pipeline futur — VPS Linux
+        </div>
+        <p>Cron jobs pour les tâches récurrentes. Service <code>systemd</code> pour le dashboard. Indépendant du PC local.</p>
+        <pre style="margin-top:8px;"><span class="code-comment"># Cron : vérif BO tous les jours à 2h</span>
+0 2 * * * python -X utf8 bo_monitor.py</pre>
+      </div>
+    </div>
+
+    <h3>Post-déploiement — Checklist SEO</h3>
+    <ul class="checklist">
+      <li>Régénérer le sitemap : <code>python -X utf8 pipeline/generate_sitemap.py</code></li>
+      <li>Soumettre à Google Search Console : <code>https://juritheque.com/sitemap.xml</code></li>
+      <li>Vérifier le rendu SSR : <code>https://juritheque.com/seo-preview.php?url=/loi/[id]</code></li>
+      <li>Tester les meta OG sur opengraph.xyz</li>
+      <li>Vérifier les CWV (Core Web Vitals) sur PageSpeed Insights</li>
+    </ul>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 10 — ROADMAP
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="section" id="s10">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <h2>Projections &amp; Roadmap</h2>
+    </div>
+
+    <div class="roadmap-phase">
+      <span class="badge badge-orange">⏱ Court terme — 0 à 3 mois</span>
+      <ul class="checklist">
+        <li class="wip">Compléter les 6 896 résumés génériques Adala (<code>--mode placeholders</code>)</li>
+        <li class="wip">Compléter les 2 336 traductions arabes manquantes</li>
+        <li>Upload Hostinger + Google Search Console (soumettre sitemap.xml)</li>
+        <li>Jurisprudence : Cour de Cassation + Cour Administrative Suprême</li>
+        <li>Newsletter : alertes nouvelles lois par domaine</li>
+      </ul>
+    </div>
+
+    <div class="roadmap-phase">
+      <span class="badge badge-blue">📅 Moyen terme — 3 à 12 mois</span>
+      <ul class="checklist">
+        <li>Module QCM : questions/réponses juridiques pour étudiants</li>
+        <li>Espace contributeurs : juristes peuvent soumettre résumés/corrections</li>
+        <li>CI/CD GitHub Actions : build + tests automatiques à chaque push</li>
+        <li>Application mobile React Native (iOS + Android)</li>
+        <li>API publique JuriThèque : pour universités et LegalTech marocaines</li>
+        <li>Comparateur de versions : historique des modifications des textes</li>
+      </ul>
+    </div>
+
+    <div class="roadmap-phase">
+      <span class="badge badge-navy">🔭 Long terme — 1 an+</span>
+      <ul class="checklist">
+        <li>Chatbot avancé : mémoire de conversation + citations précises</li>
+        <li>Indexation jurisprudence arabe : décisions Cour Suprême</li>
+        <li>Tests unitaires : Vitest (React) + pytest (pipeline)</li>
+        <li>Monitoring : Sentry (erreurs frontend) + logs serveur</li>
+        <li>Sitemap dynamique généré côté serveur</li>
+        <li>VPS Linux pour le pipeline (indépendant du PC Windows)</li>
+      </ul>
+    </div>
+
+    <h3>Objectifs chiffrés</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Métrique</th><th>Actuel (Juin 2026)</th><th>Objectif 1 an</th></tr></thead>
+        <tbody>
+          <tr><td>Textes indexés</td><td>7 400</td><td>15 000+</td></tr>
+          <tr><td>Résumés en arabe</td><td>5 015</td><td>15 000</td></tr>
+          <tr><td>Domaines couverts</td><td>16</td><td>16 + jurisprudence</td></tr>
+          <tr><td>Sources officielles</td><td>11</td><td>20+</td></tr>
+          <tr><td>Visiteurs / mois</td><td>—</td><td>10 000+</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 11 — BESOINS
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="section" id="s11">
+    <div class="section-header">
+      <div class="section-num">11</div>
+      <h2>Besoins identifiés</h2>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-icon">⚙️</div>
+          Besoins techniques
+        </div>
+        <ul class="checklist" style="margin-top:8px;">
+          <li>Migrer vers Vercel/Netlify (CI/CD) au lieu de FTP Hostinger</li>
+          <li>VPS Linux pour le pipeline (hors dépendance Windows)</li>
+          <li>Tests automatisés avant chaque déploiement</li>
+          <li>Backup Supabase vérifié et automatisé</li>
+          <li>CDN pour assets et PDFs</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-icon">📝</div>
+          Besoins en contenu
+        </div>
+        <ul class="checklist" style="margin-top:8px;">
+          <li>2 336 résumés arabes manquants à compléter</li>
+          <li>6 896 résumés génériques Adala à remplacer</li>
+          <li>Descriptions pour chaque domaine (certaines vides)</li>
+          <li>Corpus de jurisprudence à intégrer</li>
+          <li>Vidéos pédagogiques YouTube à produire</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-icon">🔒</div>
+          Besoins sécurité
+        </div>
+        <ul class="checklist" style="margin-top:8px;">
+          <li>Rotation clés API tous les 6 mois</li>
+          <li>Audit RLS : tester avec compte utilisateur standard</li>
+          <li>Activer Dependabot alerts GitHub</li>
+          <li>Monitoring des erreurs (Sentry)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <div class="card-title-icon">🤝</div>
+          Besoins partenariaux
+        </div>
+        <ul class="checklist" style="margin-top:8px;">
+          <li>Validation scientifique par des juristes experts</li>
+          <li>Partenariat universités / facultés de droit</li>
+          <li>Contributions de juristes pour enrichir les résumés</li>
+          <li>Structuration éditoriale de la chaîne YouTube</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       ANNEXE
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="section" id="annexe">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold);color:var(--navy);">✦</div>
+      <h2>Annexe — Ressources utiles</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Ressource</th><th>URL</th></tr></thead>
+        <tbody>
+          <tr><td>Supabase Dashboard</td><td><code>https://supabase.com/dashboard/project/bmargdbbcnhkrjeidmvh</code></td></tr>
+          <tr><td>OpenRouter Credits</td><td><code>https://openrouter.ai/settings/credits</code></td></tr>
+          <tr><td>Google Search Console</td><td><code>https://search.google.com/search-console</code></td></tr>
+          <tr><td>Hostinger hPanel</td><td><code>https://hpanel.hostinger.com</code></td></tr>
+          <tr><td>Vite Documentation</td><td><code>https://vitejs.dev/guide/</code></td></tr>
+          <tr><td>Supabase Docs</td><td><code>https://supabase.com/docs</code></td></tr>
+          <tr><td>Tailwind CSS Docs</td><td><code>https://tailwindcss.com/docs</code></td></tr>
+          <tr><td>React Router Docs</td><td><code>https://reactrouter.com/en/main</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert alert-info" style="margin-top:20px;">
+      <span class="alert-icon">📄</span>
+      <span>Cette documentation est également disponible au format Markdown dans <code>DOCUMENTATION.md</code> à la racine du projet — lisible directement sur GitHub et convertible en PDF.</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="doc-footer">
+    <div>
+      <strong>JuriThèque</strong> / LexBase — Documentation Technique v2.0
+    </div>
+    <div>
+      📅 Juin 2026 &nbsp;·&nbsp; 🌐 <a href="https://juritheque.com">juritheque.com</a> &nbsp;·&nbsp; ⚖️ Droit marocain FR/AR
+    </div>
+  </div>
+
+</div><!-- /page-wrapper -->
+
+<script>
+  // Smooth scroll pour les ancres
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>

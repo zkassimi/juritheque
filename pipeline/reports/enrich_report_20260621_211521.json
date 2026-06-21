@@ -1,0 +1,102 @@
+{
+  "generated_at": "2026-06-21T20:15:21.766541+00:00",
+  "enrich_version": "1.0.0",
+  "dry_run": true,
+  "use_ai": true,
+  "args": {
+    "limit": 5,
+    "id": null,
+    "only_missing": false,
+    "force": false
+  },
+  "stats": {
+    "total": 5,
+    "updated": 5,
+    "skipped": 0,
+    "failed": 0,
+    "needs_review": 4,
+    "errors": []
+  },
+  "results": [
+    {
+      "id": 1,
+      "score": 85,
+      "status": "success",
+      "review": false,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 2,
+      "score": 69,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 3,
+      "score": 64,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 4,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 5,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    }
+  ]
+}

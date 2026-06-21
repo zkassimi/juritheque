@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-05-13T19:32:12.969811+00:00",
+  "enrich_version": "1.0.0",
+  "dry_run": true,
+  "use_ai": true,
+  "args": {
+    "limit": 3,
+    "id": null,
+    "only_missing": false,
+    "force": true
+  },
+  "stats": {
+    "total": 3,
+    "updated": 3,
+    "skipped": 0,
+    "failed": 0,
+    "needs_review": 3,
+    "errors": []
+  },
+  "results": [
+    {
+      "id": 1,
+      "score": 41,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords",
+        "canonical_slug",
+        "seo_title_fr",
+        "seo_description_fr"
+      ]
+    },
+    {
+      "id": 2,
+      "score": 69,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords",
+        "canonical_slug",
+        "seo_title_fr",
+        "seo_description_fr"
+      ]
+    },
+    {
+      "id": 3,
+      "score": 64,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords",
+        "canonical_slug",
+        "important_articles",
+        "seo_title_fr",
+        "seo_description_fr"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,768 @@
+{
+  "generated_at": "2026-05-12T22:05:26.701437+00:00",
+  "enrich_version": "1.0.0",
+  "dry_run": false,
+  "use_ai": true,
+  "args": {
+    "limit": 50,
+    "id": null,
+    "only_missing": false,
+    "force": false
+  },
+  "stats": {
+    "total": 50,
+    "updated": 50,
+    "skipped": 0,
+    "failed": 0,
+    "needs_review": 41,
+    "errors": []
+  },
+  "results": [
+    {
+      "id": 1,
+      "score": 41,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 2,
+      "score": 69,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 3,
+      "score": 64,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 4,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 5,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 6,
+      "score": 64,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 7,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 8,
+      "score": 80,
+      "status": "success",
+      "review": false,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count"
+      ]
+    },
+    {
+      "id": 9,
+      "score": 65,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 10,
+      "score": 70,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 11,
+      "score": 85,
+      "status": "success",
+      "review": false,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count"
+      ]
+    },
+    {
+      "id": 12,
+      "score": 77,
+      "status": "success",
+      "review": false,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 13,
+      "score": 70,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 14,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 15,
+      "score": 62,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 16,
+      "score": 62,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 17,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 18,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 19,
+      "score": 85,
+      "status": "success",
+      "review": false,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 20,
+      "score": 80,
+      "status": "success",
+      "review": false,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 21,
+      "score": 80,
+      "status": "success",
+      "review": false,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 22,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 23,
+      "score": 70,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count"
+      ]
+    },
+    {
+      "id": 24,
+      "score": 65,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 25,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 26,
+      "score": 77,
+      "status": "success",
+      "review": false,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 27,
+      "score": 65,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 28,
+      "score": 77,
+      "status": "success",
+      "review": false,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 29,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 30,
+      "score": 57,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 31,
+      "score": 70,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 32,
+      "score": 65,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 33,
+      "score": 57,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 34,
+      "score": 57,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 35,
+      "score": 57,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 36,
+      "score": 59,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 37,
+      "score": 65,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 38,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 39,
+      "score": 70,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 40,
+      "score": 62,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 41,
+      "score": 60,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 42,
+      "score": 65,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 43,
+      "score": 57,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 44,
+      "score": 62,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 45,
+      "score": 51,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 46,
+      "score": 65,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 47,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 48,
+      "score": 85,
+      "status": "success",
+      "review": false,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "public_article_count",
+        "legal_keywords"
+      ]
+    },
+    {
+      "id": 49,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 50,
+      "score": 72,
+      "status": "partial",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    }
+  ]
+}

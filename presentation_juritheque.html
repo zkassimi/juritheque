@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>JuriThèque — Présentation du Projet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+
+/* ══════════════════════════ VARIABLES ══════════════════════════ */
+:root {
+  --navy:      #1a2e4a;
+  --navy-deep: #0f1e31;
+  --navy-mid:  #243e5e;
+  --gold:      #c9a84c;
+  --gold-lt:   #e8c96a;
+  --gold-pale: #f5e9c8;
+  --cream:     #f8f5f0;
+  --gray-soft: #e8e4df;
+  --gray-mid:  #c8c4bf;
+  --gray-text: #6b6560;
+  --white:     #ffffff;
+  --text:      #2c2620;
+  --green:     #3a9d68;
+  --orange:    #d97706;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #aaa8a5;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--text);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ══════════════════════════ SLIDE BASE ══════════════════════════ */
+.slide {
+  width: 297mm; height: 167mm;
+  margin: 8mm auto;
+  background: var(--cream);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 44px rgba(0,0,0,.28);
+}
+
+/* ── Footer ── */
+.footer {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 8.5mm;
+  background: var(--navy);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 11mm; z-index: 10;
+}
+.footer .fb { font-family: 'Playfair Display', serif; font-size: 9pt; font-weight: 700; color: var(--gold); letter-spacing: .04em; }
+.footer .ft { font-size: 7.5pt; color: rgba(255,255,255,.38); letter-spacing: .08em; text-transform: uppercase; }
+.footer .fn { font-size: 7.5pt; color: rgba(255,255,255,.52); }
+
+/* ── Header bar ── */
+.hbar {
+  padding: 5.5mm 11mm 4mm;
+  border-bottom: .5pt solid var(--gray-soft);
+  display: flex; align-items: flex-end; gap: 4mm;
+}
+.hbar .num { font-size: 7.5pt; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: .14em; }
+.hbar .sep { width: .5pt; height: 16pt; background: var(--gray-mid); margin-bottom: 1pt; }
+.hbar h2 { font-family: 'Playfair Display', serif; font-size: 25pt; font-weight: 700; color: var(--navy); line-height: 1.1; }
+
+/* ── Body ── */
+.body { flex: 1; padding: 6mm 11mm; padding-bottom: 13mm; overflow: hidden; }
+
+/* ══════════════════════════ COMMONS ══════════════════════════ */
+.lead {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14pt; font-weight: 500; color: var(--navy); line-height: 1.55; margin-bottom: 5mm;
+}
+.lead strong { color: var(--gold); }
+
+.banner {
+  background: linear-gradient(90deg, var(--navy) 0%, var(--navy-mid) 100%);
+  border-radius: 2.5mm; padding: 3.5mm 6mm;
+  display: flex; align-items: center; gap: 5mm;
+}
+.banner p { font-family: 'Cormorant Garamond', serif; font-size: 11.5pt; font-style: italic; color: rgba(255,255,255,.85); line-height: 1.45; }
+.banner strong { color: var(--gold-lt); }
+.banner .bi { font-size: 17pt; flex-shrink: 0; }
+
+/* ══════════════════════════ SLIDE 1 — COVER ══════════════════════ */
+.s-cover { background: var(--navy-deep); }
+.cover-stripe { height: 1.5mm; background: linear-gradient(90deg, var(--gold) 0%, var(--gold-lt) 55%, transparent 100%); }
+.cover-grid { flex: 1; display: grid; grid-template-columns: 1fr 72mm; padding: 9mm 11mm 2mm; gap: 8mm; }
+.cover-l { display: flex; flex-direction: column; justify-content: space-between; }
+.cover-eyebrow { display: flex; align-items: center; gap: 3.5mm; margin-bottom: 5mm; }
+.cover-eyebrow .el { width: 12mm; height: .5pt; background: var(--gold); }
+.cover-eyebrow span { font-size: 7.5pt; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: .16em; }
+.cover-title { font-family: 'Playfair Display', serif; font-size: 36pt; font-weight: 800; color: var(--white); line-height: 1.06; letter-spacing: -.01em; margin-bottom: 4mm; }
+.cover-title em { color: var(--gold-lt); font-style: italic; }
+.cover-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 13.5pt; color: rgba(255,255,255,.72); line-height: 1.45; margin-bottom: 5mm; }
+.cover-sub { font-family: 'Cormorant Garamond', serif; font-size: 10.5pt; color: rgba(255,255,255,.48); line-height: 1.6; max-width: 110mm; margin-bottom: 5mm; }
+.cover-tags { display: flex; flex-wrap: wrap; gap: 2.5mm; }
+.cover-tag { font-size: 7.5pt; font-weight: 600; color: rgba(255,255,255,.58); border: .5pt solid rgba(255,255,255,.2); border-radius: 1.5mm; padding: 1.2mm 3mm; letter-spacing: .06em; text-transform: uppercase; }
+.cover-meta { display: flex; gap: 7mm; margin-top: 4mm; }
+.cover-meta-item .cml { font-size: 7pt; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: .12em; display: block; margin-bottom: 1mm; }
+.cover-meta-item .cmv { font-size: 9pt; color: rgba(255,255,255,.58); }
+.logo-box { background: rgba(255,255,255,.04); border: .5pt solid rgba(201,168,76,.3); border-radius: 3.5mm; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3mm; padding: 5mm; }
+.logo-box .li { font-size: 28pt; opacity: .55; }
+.logo-box .lt { font-family: 'Playfair Display', serif; font-size: 18pt; font-weight: 700; color: var(--gold-lt); }
+.logo-box .ls { font-size: 8pt; color: rgba(255,255,255,.3); text-align: center; line-height: 1.6; }
+.cover-bar { background: rgba(255,255,255,.04); border-top: .5pt solid rgba(255,255,255,.07); padding: 2.5mm 11mm; display: flex; align-items: center; justify-content: space-between; }
+.cover-tagline { font-family: 'Cormorant Garamond', serif; font-size: 11pt; font-style: italic; color: rgba(255,255,255,.42); }
+.cover-url { font-size: 9pt; color: var(--gold); letter-spacing: .05em; font-weight: 600; }
+
+/* ══════════════════════════ SLIDE 2 — CONTEXTE ═══════════════════ */
+.ctx-layout { display: flex; flex-direction: column; gap: 5mm; height: 100%; }
+.ctx-intro { font-family: 'Cormorant Garamond', serif; font-size: 13pt; color: var(--navy); line-height: 1.5; font-style: italic; }
+.ctx-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4.5mm; flex: 1; }
+.ctx-card { background: var(--white); border: 1pt solid var(--gray-soft); border-radius: 2.5mm; padding: 5.5mm 6mm; display: flex; flex-direction: column; gap: 3mm; position: relative; overflow: hidden; }
+.ctx-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3pt; }
+.ctx-card:nth-child(1)::before { background: #5a7ae5; }
+.ctx-card:nth-child(2)::before { background: var(--orange); }
+.ctx-card:nth-child(3)::before { background: #5aae82; }
+.ctx-icon { font-size: 19pt; }
+.ctx-card h3 { font-family: 'Playfair Display', serif; font-size: 13pt; font-weight: 700; color: var(--navy); line-height: 1.25; }
+.ctx-card p { font-size: 11pt; color: var(--gray-text); line-height: 1.6; }
+
+/* ══════════════════════════ SLIDE 3 — RÉPONSE ═══════════════════ */
+.resp-layout { display: flex; flex-direction: column; gap: 3mm; height: 100%; }
+.resp-tagline { font-family: 'Cormorant Garamond', serif; font-size: 12.5pt; color: var(--gray-text); font-style: italic; text-align: center; line-height: 1.4; }
+.resp-table { flex: 1; display: flex; flex-direction: column; gap: 2.5mm; }
+.resp-headers { display: grid; grid-template-columns: 1fr 15mm 1fr; gap: 2.5mm; padding-bottom: 1mm; }
+.resp-hprob { text-align: center; font-size: 8.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--gray-text); }
+.resp-hsol { text-align: center; font-size: 8.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--gold); }
+.resp-row { display: grid; grid-template-columns: 1fr 15mm 1fr; gap: 2.5mm; flex: 1; }
+.resp-prob {
+  background: var(--white); border: 1pt solid var(--gray-soft); border-radius: 2mm;
+  padding: 3.5mm 5mm; display: flex; align-items: center; gap: 4mm;
+}
+.resp-prob .ri { font-size: 17pt; flex-shrink: 0; }
+.resp-prob span { font-size: 12pt; color: var(--gray-text); font-weight: 400; line-height: 1.3; }
+.resp-arrow { display: flex; align-items: center; justify-content: center; font-size: 20pt; color: var(--gold); }
+.resp-sol {
+  background: var(--navy); border-radius: 2mm;
+  padding: 3.5mm 5mm; display: flex; align-items: center; gap: 4mm;
+}
+.resp-sol .ri { font-size: 17pt; flex-shrink: 0; }
+.resp-sol span { font-size: 12pt; color: rgba(255,255,255,.9); font-weight: 500; line-height: 1.3; }
+
+/* ══════════════════════════ SLIDE 4 — SITE WEB ═════════════════ */
+.site-layout { display: grid; grid-template-columns: 65mm 1fr; gap: 7mm; height: 100%; }
+
+/* Browser mockup */
+.browser-mock { background: var(--navy-deep); border-radius: 2.5mm; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 3px 12px rgba(0,0,0,.3); }
+.browser-chrome { background: #1e2a3a; padding: 2.5mm 3mm; display: flex; align-items: center; gap: 2.5mm; flex-shrink: 0; }
+.b-dots { display: flex; gap: 1.5mm; }
+.b-dot { width: 2.2mm; height: 2.2mm; border-radius: 50%; }
+.b-dot1 { background: #ff5f57; } .b-dot2 { background: #febc2e; } .b-dot3 { background: #28c840; }
+.b-url { flex: 1; background: rgba(255,255,255,.1); border-radius: 1mm; padding: 1mm 3mm; font-size: 7.5pt; color: rgba(255,255,255,.65); text-align: center; }
+.browser-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4mm; gap: 2.5mm; text-align: center; }
+.b-badge { background: rgba(255,255,255,.12); border: .5pt solid rgba(255,255,255,.22); border-radius: 10mm; padding: 1mm 4mm; font-size: 7.5pt; color: rgba(255,255,255,.72); display: inline-block; }
+.b-badge span { color: var(--gold); margin-right: 1.5mm; }
+.b-title { font-family: 'Playfair Display', serif; font-size: 13pt; font-weight: 800; color: white; line-height: 1.2; }
+.b-ar { font-size: 8.5pt; color: rgba(255,255,255,.5); direction: rtl; }
+.b-bar { height: .5pt; width: 14mm; background: var(--gold); margin: 1mm auto; opacity: .6; }
+.b-search { background: white; border-radius: 1.5mm; padding: 1.5mm 3mm; font-size: 7pt; color: rgba(0,0,0,.45); width: 100%; display: flex; align-items: center; gap: 1.5mm; }
+.b-search-btn { background: var(--navy); color: white; font-size: 6.5pt; font-weight: 700; padding: 1mm 2.5mm; border-radius: .8mm; margin-left: auto; flex-shrink: 0; }
+.b-btns { display: flex; gap: 2mm; width: 100%; }
+.b-btn-sec { flex: 1; background: rgba(255,255,255,.1); border: .5pt solid rgba(255,255,255,.18); border-radius: 1.5mm; padding: 1.5mm 2mm; font-size: 7pt; color: rgba(255,255,255,.65); text-align: center; }
+.b-btn-gold { flex: 1; background: var(--gold); border-radius: 1.5mm; padding: 1.5mm 2mm; font-size: 7pt; font-weight: 700; color: var(--navy-deep); text-align: center; }
+
+/* Module list */
+.mod-list { display: flex; flex-direction: column; gap: 1.2mm; justify-content: center; height: 100%; }
+.mod-item { display: flex; align-items: flex-start; gap: 3mm; padding: 1.8mm 3.5mm; background: var(--white); border: 1pt solid var(--gray-soft); border-radius: 2mm; border-left: 3pt solid var(--navy); }
+.mod-item.ai-item { border-left-color: var(--gold); }
+.mod-item .mi { font-size: 13pt; flex-shrink: 0; margin-top: .2mm; }
+.mod-item h4 { font-size: 10pt; font-weight: 700; color: var(--navy); font-family: 'Playfair Display', serif; line-height: 1.2; }
+.mod-item p { font-size: 8.5pt; color: var(--gray-text); line-height: 1.35; margin-top: .2mm; }
+.mod-badge { font-size: 6pt; font-weight: 700; padding: .3mm 1.5mm; border-radius: 1mm; text-transform: uppercase; letter-spacing: .06em; align-self: flex-start; margin-top: .3mm; }
+.mb-live { background: #e6f4ed; color: #2b7a4e; }
+.mb-exp { background: var(--gold-pale); color: #7a5c10; }
+
+/* ══════════════════════════ SLIDE 5 — YOUTUBE ═══════════════════ */
+.yt-layout { display: grid; grid-template-columns: 1fr 95mm; gap: 7mm; height: 100%; }
+.yt-left { display: flex; flex-direction: column; gap: 4mm; justify-content: center; }
+.yt-intro { font-family: 'Cormorant Garamond', serif; font-size: 12.5pt; line-height: 1.6; color: var(--navy); }
+.yt-intro strong { color: var(--gold); }
+.yt-feats { display: flex; flex-direction: column; gap: 3mm; }
+.yt-feat { display: flex; align-items: flex-start; gap: 4mm; padding: 3.5mm 4.5mm; background: var(--white); border: 1pt solid var(--gray-soft); border-radius: 2mm; }
+.yt-feat .yi { font-size: 14pt; flex-shrink: 0; margin-top: .3mm; }
+.yt-feat h4 { font-size: 11pt; font-weight: 600; color: var(--navy); }
+.yt-feat p { font-size: 9.5pt; color: var(--gray-text); line-height: 1.4; margin-top: .3mm; }
+.yt-synergy { background: rgba(26,46,74,.07); border-left: 3pt solid var(--gold); border-radius: 0 2mm 2mm 0; padding: 2.5mm 4mm; margin-top: 1mm; }
+.yt-synergy p { font-size: 9.5pt; color: var(--navy); font-style: italic; line-height: 1.4; }
+.yt-right { display: flex; flex-direction: column; }
+.vid-card { background: var(--navy); border-radius: 3mm; display: flex; flex-direction: column; overflow: hidden; flex: 1; }
+.vid-thumb { background: #111; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3.5mm; }
+.vid-thumb img { width: 100%; border-radius: 1.5mm; object-fit: cover; display: block; }
+.vid-thumb-placeholder { width: 100%; aspect-ratio: 16/9; background: #1a1a1a; border-radius: 1.5mm; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5mm; }
+.vid-thumb-placeholder .vtp { font-size: 22pt; }
+.vid-thumb-placeholder .vtl { font-size: 8pt; color: rgba(255,255,255,.38); text-align: center; line-height: 1.5; }
+.vid-meta { padding: 4mm 5mm; display: flex; flex-direction: column; gap: 2.5mm; }
+.vid-title-ar { font-size: 13pt; font-weight: 700; color: var(--gold-lt); text-align: right; direction: rtl; line-height: 1.4; font-family: 'Cormorant Garamond', serif; }
+.vid-title-fr { font-size: 9pt; color: rgba(255,255,255,.6); line-height: 1.4; }
+.vid-cta { display: inline-flex; align-items: center; gap: 2mm; background: var(--gold); color: var(--navy-deep); font-size: 8.5pt; font-weight: 700; padding: 2.5mm 5mm; border-radius: 1.5mm; text-transform: uppercase; letter-spacing: .06em; align-self: flex-start; text-decoration: none; }
+
+/* ══════════════════════════ SLIDE 6 — PUBLIC CIBLE ══════════════ */
+.aud-layout { display: flex; flex-direction: column; gap: 5mm; height: 100%; }
+.aud-intro { font-family: 'Cormorant Garamond', serif; font-size: 12.5pt; color: var(--gray-text); line-height: 1.5; }
+.aud-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4.5mm; flex: 1; }
+.aud-card { background: var(--white); border: 1pt solid var(--gray-soft); border-radius: 2.5mm; padding: 5.5mm 6mm; display: flex; align-items: flex-start; gap: 5mm; }
+.aud-icon { font-size: 21pt; flex-shrink: 0; margin-top: .3mm; }
+.aud-card h4 { font-family: 'Playfair Display', serif; font-size: 13pt; font-weight: 700; color: var(--navy); line-height: 1.2; margin-bottom: 1.5mm; }
+.aud-card p { font-size: 10.5pt; color: var(--gray-text); line-height: 1.5; }
+
+/* ══════════════════════════ SLIDE 7 — AVANCEMENT ════════════════ */
+.prog-blocks { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5mm; height: 100%; }
+.prog-block { border-radius: 2.5mm; border: 1pt solid var(--gray-soft); display: flex; flex-direction: column; overflow: hidden; }
+.prog-block-head { padding: 4mm 5.5mm; display: flex; align-items: center; gap: 3.5mm; flex-shrink: 0; }
+.prog-block-head.done { background: #e6f4ed; }
+.prog-block-head.prog { background: #fff5e6; }
+.prog-block-head.next { background: var(--gray-soft); }
+.prog-block-head .phi { font-size: 16pt; }
+.prog-block-head h3 { font-family: 'Playfair Display', serif; font-size: 13pt; font-weight: 700; line-height: 1.15; }
+.prog-block-head.done h3 { color: #2b7a4e; }
+.prog-block-head.prog h3 { color: #b86000; }
+.prog-block-head.next h3 { color: var(--gray-text); }
+.prog-block-body { padding: 4mm 5.5mm; flex: 1; background: var(--white); }
+.prog-list { list-style: none; display: flex; flex-direction: column; gap: 3mm; }
+.prog-list li { font-size: 10.5pt; color: var(--text); display: flex; align-items: flex-start; gap: 3mm; line-height: 1.4; }
+.prog-list li .pls { font-size: 11pt; flex-shrink: 0; margin-top: .1mm; }
+.prog-list li strong { color: var(--navy); font-weight: 600; }
+
+/* ══════════════════════════ SLIDE 8 — PERSPECTIVES ═════════════ */
+.persp-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5.5mm; height: 100%; }
+.persp-col { display: flex; flex-direction: column; gap: 3mm; }
+.persp-col-title { font-size: 8.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--gold); padding-bottom: 2.5mm; border-bottom: .5pt solid var(--gray-soft); margin-bottom: .5mm; }
+.persp-item { display: flex; align-items: flex-start; gap: 4mm; padding: 3.5mm 4.5mm; background: var(--white); border: 1pt solid var(--gray-soft); border-radius: 2mm; }
+.persp-item .pii { font-size: 14pt; flex-shrink: 0; margin-top: .2mm; }
+.persp-item h4 { font-size: 11pt; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.persp-item p { font-size: 9.5pt; color: var(--gray-text); line-height: 1.4; margin-top: .3mm; }
+
+/* ══════════════════════════ SLIDE 9 — BESOINS ═══════════════════ */
+.needs-layout { display: flex; flex-direction: column; gap: 4mm; height: 100%; }
+.needs-lead { font-family: 'Cormorant Garamond', serif; font-size: 13pt; color: var(--navy); line-height: 1.5; font-style: italic; text-align: center; }
+.needs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4.5mm; flex: 1; }
+.need-card { background: var(--white); border: 1pt solid var(--gray-soft); border-radius: 2.5mm; padding: 5mm; display: flex; flex-direction: column; gap: 2mm; }
+.need-card.highlight { background: var(--navy); border-color: var(--navy); }
+.need-card-head { display: flex; align-items: center; gap: 3mm; }
+.need-card-head .ni { font-size: 16pt; flex-shrink: 0; }
+.need-card h4 { font-family: 'Playfair Display', serif; font-size: 12pt; font-weight: 700; color: var(--navy); line-height: 1.25; }
+.need-card.highlight h4 { color: var(--gold-lt); }
+.need-card p { font-size: 10pt; color: var(--gray-text); line-height: 1.55; }
+.need-card.highlight p { color: rgba(255,255,255,.7); }
+.needs-cta { background: linear-gradient(90deg, var(--navy) 0%, var(--navy-mid) 100%); border-radius: 2.5mm; padding: 4mm 7mm; display: flex; align-items: center; gap: 5mm; }
+.needs-cta .nci { font-size: 22pt; flex-shrink: 0; }
+.needs-cta h3 { font-family: 'Playfair Display', serif; font-size: 12pt; font-weight: 700; color: var(--gold-lt); margin-bottom: 1mm; }
+.needs-cta p { font-size: 10pt; color: rgba(255,255,255,.72); line-height: 1.5; }
+
+/* ══════════════════════════ SLIDE 10 — CONCLUSION ═══════════════ */
+.s-concl { background: var(--navy-deep); }
+.concl-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 7mm 15mm 13mm; gap: 5mm; text-align: center; }
+.concl-orn { display: flex; align-items: center; gap: 5mm; width: 100%; }
+.concl-orn .ol { flex: 1; height: .4pt; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.concl-orn .oi { font-size: 16pt; color: var(--gold); }
+.concl-q1 { font-family: 'Playfair Display', serif; font-size: 15pt; font-weight: 700; font-style: italic; color: var(--white); line-height: 1.5; max-width: 210mm; }
+.concl-q1 em { color: var(--gold-lt); }
+.concl-q2 { font-family: 'Cormorant Garamond', serif; font-size: 11pt; color: rgba(255,255,255,.62); line-height: 1.65; max-width: 190mm; }
+.concl-note { background: rgba(255,255,255,.05); border: .5pt solid rgba(255,255,255,.1); border-radius: 2mm; padding: 2.5mm 7mm; }
+.concl-note p { font-size: 8pt; color: rgba(255,255,255,.35); font-style: italic; }
+.concl-cta { background: var(--gold); color: var(--navy-deep); border-radius: 2mm; padding: 3mm 8mm; font-size: 9pt; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+
+/* ══════════════════════════ PRINT ════════════════════════════════ */
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+  html, body { background: white; width: 297mm; height: 210mm; }
+  .slide {
+    width: 297mm; height: 210mm; margin: 0; box-shadow: none;
+    page-break-after: always; page-break-inside: avoid;
+    break-after: page; break-inside: avoid;
+  }
+  .slide:last-child { page-break-after: avoid; break-after: avoid; }
+}
+
+/* ══════════════════════════ LOGO ════════════════════════════════ */
+/* Balance or (sans fond) — affichée avant "JuriThèque" dans chaque footer */
+.footer .fb::before {
+  content: '';
+  display: inline-block;
+  width: 5mm; height: 5mm;
+  margin-right: 2mm;
+  vertical-align: middle;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none'><line x1='32' y1='12' x2='32' y2='52' stroke='%23C9A84C' stroke-width='2.5' stroke-linecap='round'/><line x1='14' y1='20' x2='50' y2='20' stroke='%23C9A84C' stroke-width='2.5' stroke-linecap='round'/><line x1='18' y1='20' x2='18' y2='32' stroke='%23C9A84C' stroke-width='1.8' stroke-linecap='round'/><path d='M10 34 Q18 38 26 34' stroke='%23C9A84C' stroke-width='2' fill='none' stroke-linecap='round'/><line x1='46' y1='20' x2='46' y2='32' stroke='%23C9A84C' stroke-width='1.8' stroke-linecap='round'/><path d='M38 34 Q46 38 54 34' stroke='%23C9A84C' stroke-width='2' fill='none' stroke-linecap='round'/><line x1='26' y1='52' x2='38' y2='52' stroke='%23C9A84C' stroke-width='2.5' stroke-linecap='round'/></svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Navbar réaliste dans le browser mockup (slide 4) */
+.b-nav {
+  background: #0d1a2b;
+  padding: 2mm 3mm;
+  display: flex; align-items: center; gap: 0;
+  flex-shrink: 0;
+  border-bottom: .5pt solid rgba(255,255,255,.08);
+}
+.b-logo-wrap { display: flex; align-items: center; gap: 2mm; margin-right: 4mm; }
+.b-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+.b-logo-text .blt1 { font-family: 'Playfair Display', serif; font-size: 7.5pt; font-weight: 700; color: white; }
+.b-logo-text .blt2 { font-size: 5.5pt; color: var(--gold); margin-top: .3mm; direction: rtl; }
+.b-nav-links { display: flex; gap: 0; flex: 1; }
+.b-nav-link { font-size: 6pt; color: rgba(255,255,255,.55); padding: 1.2mm 2.5mm; border-radius: 1mm 1mm 0 0; }
+.b-nav-link.active { color: white; font-weight: 600; background: rgba(255,255,255,.1); border-bottom: 1.5pt solid var(--gold); }
+.b-nav-right { display: flex; align-items: center; gap: 2mm; margin-left: auto; }
+.b-lang-btn { font-size: 6.5pt; color: white; border: .7pt solid rgba(201,168,76,.55); padding: .7mm 2.5mm; border-radius: 1mm; background: rgba(201,168,76,.1); }
+.b-user-avatar { width: 5mm; height: 5mm; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 6.5pt; font-weight: 700; color: var(--navy-deep); }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     01 — COUVERTURE
+════════════════════════════════════════════ -->
+<section class="slide s-cover">
+  <div class="cover-stripe"></div>
+  <div class="cover-grid">
+    <div class="cover-l">
+      <div>
+        <div class="cover-eyebrow">
+          <div class="el"></div>
+          <span>Présentation du projet — Version initiale</span>
+          <div class="el"></div>
+        </div>
+        <h1 class="cover-title">Juri<em>thèque</em></h1>
+        <p class="cover-subtitle">
+          Plateforme numérique de documentation<br/>et de vulgarisation juridique du droit marocain
+        </p>
+        <p class="cover-sub">
+          Site web · Base documentaire · Veille juridique · Guides pédagogiques · Assistant IA · Chaîne YouTube — bilingue français&nbsp;/&nbsp;عربي
+        </p>
+        <div class="cover-tags">
+          <span class="cover-tag">juritheque.com</span>
+          <span class="cover-tag">Chaîne YouTube</span>
+          <span class="cover-tag">Droit marocain</span>
+          <span class="cover-tag">FR · AR</span>
+        </div>
+      </div>
+      <div class="cover-meta">
+        <div class="cover-meta-item">
+          <span class="cml">Date</span>
+          <span class="cmv">Mai 2026</span>
+        </div>
+        <div class="cover-meta-item">
+          <span class="cml">Statut</span>
+          <span class="cmv">Première version opérationnelle</span>
+        </div>
+        <div class="cover-meta-item">
+          <span class="cml">Domaine</span>
+          <span class="cmv">Droit marocain · Numérique juridique</span>
+        </div>
+      </div>
+    </div>
+    <div class="logo-box">
+      <!-- Logo officiel JuriThèque — balance de justice -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" style="width:24mm;height:24mm;flex-shrink:0;">
+        <rect width="64" height="64" rx="14" fill="#1a2744"/>
+        <line x1="32" y1="12" x2="32" y2="52" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="14" y1="20" x2="50" y2="20" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="18" y1="20" x2="18" y2="32" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M10 34 Q18 38 26 34" stroke="#C9A84C" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <line x1="46" y1="20" x2="46" y2="32" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M38 34 Q46 38 54 34" stroke="#C9A84C" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <line x1="26" y1="52" x2="38" y2="52" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <div class="lt">JuriThèque</div>
+      <div class="ls">مكتبة القانون المغربي</div>
+    </div>
+  </div>
+  <div class="cover-bar">
+    <span class="cover-tagline">« Rendre le droit marocain accessible à tous »</span>
+    <span class="cover-url">juritheque.com</span>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     02 — CONTEXTE ET PROBLÈME
+════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="hbar"><span class="num">01</span><div class="sep"></div><h2>Contexte et problème identifié</h2></div>
+  <div class="body">
+    <div class="ctx-layout">
+      <p class="ctx-intro">
+        L'accès au droit marocain reste difficile pour de nombreux usagers — les ressources sont dispersées, le langage juridique est technique, et les outils pédagogiques accessibles restent limités.
+      </p>
+      <div class="ctx-cards">
+        <div class="ctx-card">
+          <span class="ctx-icon">📂</span>
+          <h3>Ressources dispersées</h3>
+          <p>Les textes officiels sont répartis sur de nombreux portails sans indexation commune. Retrouver un texte précis est une démarche longue et peu intuitive.</p>
+        </div>
+        <div class="ctx-card">
+          <span class="ctx-icon">🔤</span>
+          <h3>Langage juridique complexe</h3>
+          <p>Le vocabulaire technique constitue une vraie barrière pour les étudiants, les citoyens et les acteurs de terrain qui n'ont pas de formation juridique.</p>
+        </div>
+        <div class="ctx-card">
+          <span class="ctx-icon">🎓</span>
+          <h3>Peu d'outils pédagogiques</h3>
+          <p>La vulgarisation du droit marocain — notamment en darija — reste largement insuffisante dans l'espace numérique marocain.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span class="fb">JuriThèque</span><span class="ft">juritheque.com</span><span class="fn">02 / 10</span></div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     03 — NOTRE RÉPONSE
+════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="hbar"><span class="num">02</span><div class="sep"></div><h2>Notre réponse : organiser, rechercher, expliquer</h2></div>
+  <div class="body">
+    <div class="resp-layout">
+      <p class="resp-tagline">À chaque problème identifié, JuriThèque apporte une réponse concrète et progressive.</p>
+      <div class="resp-table">
+        <div class="resp-headers">
+          <div class="resp-hprob">Problème identifié</div>
+          <div></div>
+          <div class="resp-hsol">Réponse JuriThèque</div>
+        </div>
+        <div class="resp-row">
+          <div class="resp-prob"><span class="ri">📂</span><span>Ressources juridiques dispersées</span></div>
+          <div class="resp-arrow">→</div>
+          <div class="resp-sol"><span class="ri">📚</span><span>Base documentaire organisée et consultable</span></div>
+        </div>
+        <div class="resp-row">
+          <div class="resp-prob"><span class="ri">🔍</span><span>Recherche difficile et chronophage</span></div>
+          <div class="resp-arrow">→</div>
+          <div class="resp-sol"><span class="ri">🔍</span><span>Moteur de recherche bilingue FR / AR</span></div>
+        </div>
+        <div class="resp-row">
+          <div class="resp-prob"><span class="ri">🔤</span><span>Langage juridique inaccessible</span></div>
+          <div class="resp-arrow">→</div>
+          <div class="resp-sol"><span class="ri">💡</span><span>Guides pédagogiques + vidéos en darija académique</span></div>
+        </div>
+        <div class="resp-row">
+          <div class="resp-prob"><span class="ri">🌐</span><span>Peu d'outils numériques adaptés au Maroc</span></div>
+          <div class="resp-arrow">→</div>
+          <div class="resp-sol"><span class="ri">🤖</span><span>Interface FR/AR + assistant documentaire IA intégré</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span class="fb">JuriThèque</span><span class="ft">juritheque.com</span><span class="fn">03 / 10</span></div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     04 — LE SITE WEB
+════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="hbar"><span class="num">03</span><div class="sep"></div><h2>Le site web — juritheque.com</h2></div>
+  <div class="body">
+    <div class="site-layout">
+
+      <!-- Browser mockup reproduisant l'apparence réelle du site -->
+      <div class="browser-mock">
+        <div class="browser-chrome">
+          <div class="b-dots">
+            <div class="b-dot b-dot1"></div>
+            <div class="b-dot b-dot2"></div>
+            <div class="b-dot b-dot3"></div>
+          </div>
+          <div class="b-url">juritheque.com</div>
+        </div>
+        <!-- Navbar fidèle au vrai site -->
+        <div class="b-nav">
+          <div class="b-logo-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" style="width:6mm;height:6mm;flex-shrink:0;">
+              <rect width="64" height="64" rx="14" fill="#1a2744"/>
+              <line x1="32" y1="12" x2="32" y2="52" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="14" y1="20" x2="50" y2="20" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="18" y1="20" x2="18" y2="32" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M10 34 Q18 38 26 34" stroke="#C9A84C" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <line x1="46" y1="20" x2="46" y2="32" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M38 34 Q46 38 54 34" stroke="#C9A84C" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <line x1="26" y1="52" x2="38" y2="52" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+            <div class="b-logo-text">
+              <span class="blt1">JuriThèque</span>
+              <span class="blt2">مكتبة القانون</span>
+            </div>
+          </div>
+          <div class="b-nav-links">
+            <span class="b-nav-link active">Accueil</span>
+            <span class="b-nav-link">Base de données</span>
+            <span class="b-nav-link">Domaines</span>
+            <span class="b-nav-link">Vidéos</span>
+            <span class="b-nav-link">Assistant IA</span>
+            <span class="b-nav-link">Ressources ▾</span>
+          </div>
+          <div class="b-nav-right">
+            <span class="b-lang-btn">عربي</span>
+            <div class="b-user-avatar">K</div>
+          </div>
+        </div>
+        <div class="browser-content">
+          <div class="b-badge"><span>●</span> Droit marocain · مرجع قانوني</div>
+          <div class="b-title">La référence<br/>juridique marocaine</div>
+          <div class="b-ar">المرجع القانوني المغربي</div>
+          <div class="b-bar"></div>
+          <div class="b-search">
+            <span>🔍</span>
+            <span>Rechercher une loi, un décret...</span>
+            <div class="b-search-btn">Rechercher →</div>
+          </div>
+          <div class="b-btns">
+            <div class="b-btn-sec">📚 Parcourir les lois</div>
+            <div class="b-btn-gold">🤖 Demander à l'IA</div>
+            <div class="b-btn-sec">▶ Voir les vidéos</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modules du site -->
+      <div class="mod-list">
+        <div class="mod-item">
+          <span class="mi">📚</span>
+          <div><h4>Base documentaire</h4><p>Textes juridiques organisés par domaine, type et date.</p></div>
+        </div>
+        <div class="mod-item">
+          <span class="mi">🔍</span>
+          <div><h4>Recherche bilingue FR / AR</h4><p>Moteur de recherche avec filtres avancés.</p></div>
+        </div>
+        <div class="mod-item">
+          <span class="mi">📡</span>
+          <div><h4>Veille juridique</h4><p>Suivi des nouvelles publications législatives.</p></div>
+        </div>
+        <div class="mod-item">
+          <span class="mi">📖</span>
+          <div><h4>Guides pédagogiques</h4><p>Articles explicatifs par thème et domaine.</p></div>
+        </div>
+        <div class="mod-item ai-item">
+          <span class="mi">🤖</span>
+          <div>
+            <h4>Assistant documentaire IA</h4>
+            <p>Intégré — oriente l'utilisateur dans les ressources du site.</p>
+            <span class="mod-badge mb-live">Intégré</span>
+          </div>
+        </div>
+        <div class="mod-item">
+          <span class="mi">👥</span>
+          <div>
+            <h4>Espace contributeurs</h4>
+            <p>Ouvert — en cours de structuration éditoriale.</p>
+            <span class="mod-badge mb-live">Créé</span>
+          </div>
+        </div>
+        <div class="mod-item">
+          <span class="mi">📰</span>
+          <div><h4>Bulletins officiels</h4><p>Consultation et archivage des bulletins officiels du Maroc.</p></div>
+        </div>
+        <div class="mod-item">
+          <span class="mi">🎬</span>
+          <div><h4>Vidéos intégrées</h4><p>Contenus YouTube reliés aux guides et textes du site.</p></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="footer"><span class="fb">JuriThèque</span><span class="ft">juritheque.com</span><span class="fn">04 / 10</span></div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     05 — CHAÎNE YOUTUBE + PREMIÈRE VIDÉO
+════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="hbar"><span class="num">04</span><div class="sep"></div><h2>Chaîne YouTube — vulgarisation en darija académique</h2></div>
+  <div class="body">
+    <div class="yt-layout">
+      <div class="yt-left">
+        <p class="yt-intro">
+          La chaîne transforme des sujets juridiques complexes en vidéos accessibles, en <strong>darija marocaine académique</strong> — portées par un personnage pédagogique fictif reconnaissable et engageant.
+        </p>
+        <div class="yt-feats">
+          <div class="yt-feat">
+            <span class="yi">🎭</span>
+            <div>
+              <h4>Personnage pédagogique fictif</h4>
+              <p>Rend les notions juridiques mémorables et accessibles à tous les publics.</p>
+            </div>
+          </div>
+          <div class="yt-feat">
+            <span class="yi">📋</span>
+            <div>
+              <h4>Sujets traités</h4>
+              <p>Lois, procédures, droits et obligations — expliqués simplement, sans jargon.</p>
+            </div>
+          </div>
+          <div class="yt-feat">
+            <span class="yi">🔗</span>
+            <div>
+              <h4>Lien direct avec le site</h4>
+              <p>Chaque vidéo renvoie vers les textes et guides correspondants.</p>
+            </div>
+          </div>
+        </div>
+        <div class="yt-synergy">
+          <p>Le site apporte la <strong>profondeur documentaire</strong>. YouTube apporte l'<strong>accessibilité pédagogique</strong>.</p>
+        </div>
+      </div>
+      <div class="yt-right">
+        <div class="vid-card">
+          <div class="vid-thumb">
+            <img src="https://img.youtube.com/vi/JtJ4LqtOPGc/maxresdefault.jpg"
+                 alt="Première vidéo — عزل المنتخبين في الجماعات الترابية"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="vid-thumb-placeholder" style="display:none;">
+              <span class="vtp">▶️</span>
+              <span class="vtl">عزل المنتخبين<br/>في الجماعات الترابية</span>
+            </div>
+          </div>
+          <div class="vid-meta">
+            <div class="vid-title-ar">عزل المنتخبين في الجماعات الترابية</div>
+            <div class="vid-title-fr">Révocation des élus dans les collectivités territoriales</div>
+            <a class="vid-cta" href="https://www.youtube.com/watch?v=JtJ4LqtOPGc" target="_blank">▶ Première vidéo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span class="fb">JuriThèque</span><span class="ft">juritheque.com</span><span class="fn">05 / 10</span></div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     06 — PUBLIC CIBLE
+════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="hbar"><span class="num">05</span><div class="sep"></div><h2>Public cible</h2></div>
+  <div class="body">
+    <div class="aud-layout">
+      <p class="aud-intro">
+        JuriThèque s'adresse à un public varié — des spécialistes du droit aux citoyens ordinaires — pour qui l'accès aux ressources juridiques est un besoin réel et régulier.
+      </p>
+      <div class="aud-grid">
+        <div class="aud-card">
+          <span class="aud-icon">🎓</span>
+          <div>
+            <h4>Étudiants &amp; Chercheurs</h4>
+            <p>Textes sources, guides et références pour la recherche, la préparation des cours et des concours.</p>
+          </div>
+        </div>
+        <div class="aud-card">
+          <span class="aud-icon">⚖️</span>
+          <div>
+            <h4>Juristes &amp; Professionnels</h4>
+            <p>Accès aux textes officiels, veille législative et suivi des modifications en vigueur.</p>
+          </div>
+        </div>
+        <div class="aud-card">
+          <span class="aud-icon">🏛️</span>
+          <div>
+            <h4>Fonctionnaires &amp; Élus</h4>
+            <p>Droit administratif, collectivités territoriales et procédures publiques en FR et AR.</p>
+          </div>
+        </div>
+        <div class="aud-card">
+          <span class="aud-icon">👥</span>
+          <div>
+            <h4>Citoyens &amp; Grand public</h4>
+            <p>Comprendre ses droits et les procédures — en français, en arabe, et en darija sur YouTube.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span class="fb">JuriThèque</span><span class="ft">juritheque.com</span><span class="fn">06 / 10</span></div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     07 — ÉTAT D'AVANCEMENT RÉEL
+════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="hbar"><span class="num">06</span><div class="sep"></div><h2>État d'avancement réel</h2></div>
+  <div class="body">
+    <div class="prog-blocks">
+
+      <div class="prog-block">
+        <div class="prog-block-head done">
+          <span class="phi">✅</span>
+          <h3>Réalisé</h3>
+        </div>
+        <div class="prog-block-body">
+          <ul class="prog-list">
+            <li><span class="pls">🌐</span> Site web juritheque.com en ligne</li>
+            <li><span class="pls">🌍</span> Interface bilingue FR/AR avec RTL</li>
+            <li><span class="pls">🔍</span> Recherche documentaire fonctionnelle</li>
+            <li><span class="pls">📖</span> Guides et articles pédagogiques</li>
+            <li><span class="pls">🤖</span> <strong>Assistant documentaire IA intégré</strong></li>
+            <li><span class="pls">👥</span> <strong>Espace contributeurs créé</strong></li>
+            <li><span class="pls">▶️</span> Chaîne YouTube lancée — 1ère vidéo publiée</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="prog-block">
+        <div class="prog-block-head prog">
+          <span class="phi">🔄</span>
+          <h3>En amélioration</h3>
+        </div>
+        <div class="prog-block-body">
+          <ul class="prog-list">
+            <li><span class="pls">📚</span> Enrichissement de la base documentaire</li>
+            <li><span class="pls">📡</span> Veille juridique régulière</li>
+            <li><span class="pls">🤖</span> Amélioration continue de l'assistant IA</li>
+            <li><span class="pls">👥</span> Organisation des contributions</li>
+            <li><span class="pls">🎬</span> Production YouTube régulière</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="prog-block">
+        <div class="prog-block-head next">
+          <span class="phi">⬜</span>
+          <h3>Prochaines étapes</h3>
+        </div>
+        <div class="prog-block-body">
+          <ul class="prog-list">
+            <li><span class="pls">🔬</span> Cadre de validation scientifique</li>
+            <li><span class="pls">📜</span> Base de jurisprudence</li>
+            <li><span class="pls">🧩</span> Module QCM</li>
+            <li><span class="pls">📧</span> Newsletter thématique</li>
+            <li><span class="pls">🎓</span> Collaboration académique</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="footer"><span class="fb">JuriThèque</span><span class="ft">juritheque.com</span><span class="fn">07 / 10</span></div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     08 — PERSPECTIVES D'ÉVOLUTION
+════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="hbar"><span class="num">07</span><div class="sep"></div><h2>Perspectives d'évolution</h2></div>
+  <div class="body">
+    <div class="persp-layout">
+      <div class="persp-col">
+        <div class="persp-col-title">Évolution fonctionnelle</div>
+        <div class="persp-item">
+          <span class="pii">📜</span>
+          <div><h4>Base de jurisprudence</h4><p>Intégration progressive des décisions judiciaires de référence.</p></div>
+        </div>
+        <div class="persp-item">
+          <span class="pii">🧩</span>
+          <div><h4>Module QCM</h4><p>Auto-évaluation pour les étudiants et candidats aux concours.</p></div>
+        </div>
+        <div class="persp-item">
+          <span class="pii">📧</span>
+          <div><h4>Newsletter thématique</h4><p>Veille personnalisée par domaine juridique, sur abonnement.</p></div>
+        </div>
+        <div class="persp-item">
+          <span class="pii">▶️</span>
+          <div><h4>Stratégie YouTube régulière</h4><p>Calendrier éditorial structuré et publication continue.</p></div>
+        </div>
+      </div>
+      <div class="persp-col">
+        <div class="persp-col-title">Amélioration de la plateforme</div>
+        <div class="persp-item">
+          <span class="pii">🔍</span>
+          <div><h4>Amélioration de la recherche</h4><p>Indexation plus fine, suggestions intelligentes, filtres avancés.</p></div>
+        </div>
+        <div class="persp-item">
+          <span class="pii">🌍</span>
+          <div><h4>Enrichissement bilingue</h4><p>Couverture documentaire élargie, notamment en langue arabe.</p></div>
+        </div>
+        <div class="persp-item">
+          <span class="pii">🤖</span>
+          <div><h4>Assistant IA — version 2</h4><p>Amélioration de la pertinence, encadrement progressif des réponses.</p></div>
+        </div>
+        <div class="persp-item">
+          <span class="pii">📱</span>
+          <div><h4>Expérience mobile</h4><p>Optimisation continue pour les usages en mobilité.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span class="fb">JuriThèque</span><span class="ft">juritheque.com</span><span class="fn">08 / 10</span></div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     09 — BESOINS ET COLLABORATION ACADÉMIQUE
+════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="hbar"><span class="num">08</span><div class="sep"></div><h2>Besoins et collaboration académique</h2></div>
+  <div class="body">
+    <div class="needs-layout">
+      <p class="needs-lead">
+        Le développement de JuriThèque nécessite l'implication de la communauté académique — pour valider, enrichir et structurer les contenus.
+      </p>
+      <div class="needs-grid">
+        <div class="need-card">
+          <div class="need-card-head">
+            <span class="ni">🔬</span>
+            <h4>Validation scientifique des contenus</h4>
+          </div>
+          <p>Relecture et validation des guides et articles par des enseignants-chercheurs spécialisés en droit marocain.</p>
+        </div>
+        <div class="need-card">
+          <div class="need-card-head">
+            <span class="ni">📚</span>
+            <h4>Enrichissement documentaire</h4>
+          </div>
+          <p>Compléter la base existante, couvrir les domaines manquants et intégrer progressivement la jurisprudence.</p>
+        </div>
+        <div class="need-card">
+          <div class="need-card-head">
+            <span class="ni">✍️</span>
+            <h4>Cadre de contribution académique</h4>
+          </div>
+          <p>Structurer les règles de contribution, de relecture et de validation — impliquer étudiants, enseignants et juristes.</p>
+        </div>
+        <div class="need-card highlight">
+          <div class="need-card-head">
+            <span class="ni">🎓</span>
+            <h4>Collaboration avec les facultés</h4>
+          </div>
+          <p>L'implication universitaire — validation, promotion, partenariat éditorial — est déterminante pour la crédibilité et l'impact du projet.</p>
+        </div>
+      </div>
+      <div class="needs-cta">
+        <span class="nci">🤝</span>
+        <div>
+          <h3>Un projet ouvert à la collaboration académique et institutionnelle</h3>
+          <p>JuriThèque est conçu pour évoluer avec la contribution de la communauté juridique marocaine — universités, enseignants, étudiants et juristes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span class="fb">JuriThèque</span><span class="ft">juritheque.com</span><span class="fn">09 / 10</span></div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
+     10 — CONCLUSION
+════════════════════════════════════════════ -->
+<section class="slide s-concl">
+  <div class="cover-stripe"></div>
+  <div class="concl-body">
+    <div class="concl-orn">
+      <div class="ol"></div>
+      <span class="oi">⚖️</span>
+      <div class="ol"></div>
+    </div>
+    <p class="concl-q1">
+      « JuriThèque ambitionne de devenir <em>un espace numérique de documentation, de veille et de vulgarisation juridique</em> consacré au droit marocain. »
+    </p>
+    <p class="concl-q2">
+      Dans sa première version, il pose les bases d'un outil évolutif combinant site web, ressources juridiques, assistant documentaire et contenus pédagogiques en darija académique.<br/>
+      Son développement futur dépendra de l'enrichissement documentaire, de la validation scientifique et de la collaboration académique.
+    </p>
+    <div class="concl-note">
+      <p>Outil documentaire et pédagogique — ne remplace pas une consultation juridique professionnelle.</p>
+    </div>
+    <div class="concl-cta">juritheque.com — Accessible dès aujourd'hui</div>
+  </div>
+  <div class="footer"><span class="fb">JuriThèque</span><span class="ft">Merci de votre attention</span><span class="fn">10 / 10</span></div>
+</section>
+
+</body>
+</html>

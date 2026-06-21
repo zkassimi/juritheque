@@ -1,0 +1,11 @@
+{
+  "stats": {
+    "updated": 154,
+    "skipped": 7400,
+    "no_source": 0,
+    "bo_found": 24,
+    "errors": 0
+  },
+  "run_at": "20260621_210028",
+  "dry_run": false
+}

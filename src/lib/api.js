@@ -3,6 +3,7 @@
  * All data fetching goes through here.
  */
 import { supabase } from './supabase'
+import { expandQuery } from '../data/searchSynonyms'
 
 // ── Laws ──────────────────────────────────────────────────────────────────────
 
@@ -14,10 +15,26 @@ export async function fetchLaws({ q = '', types = [], domains = [], statuses = [
 
   if (q) {
     const isArabic = /[؀-ۿ]/.test(q)
+    const expanded = expandQuery(q)
+    const hasSynonyms = expanded.length > 1
+
     if (isArabic) {
-      query = query.or(
-        `title_ar.ilike.%${q}%,excerpt_ar.ilike.%${q}%,number.ilike.%${q}%`
-      )
+      if (hasSynonyms) {
+        // Synonymes trouvés : OR sur tous les termes élargis
+        const orParts = expanded.map(s => `title_ar.ilike.%${s.trim()}%,number.ilike.%${s.trim()}%`).join(',')
+        query = query.or(orParts)
+      } else {
+        query = query.or(
+          `title_ar.ilike.%${q}%,excerpt_ar.ilike.%${q}%,number.ilike.%${q}%`
+        )
+      }
+    } else if (hasSynonyms) {
+      // Synonymes trouvés (moudawana, darija, etc.) : OR sur tous les termes élargis
+      const orParts = expanded.map(s => {
+        const t = s.trim()
+        return `title_fr.ilike.%${t}%,title_ar.ilike.%${t}%,number.ilike.%${t}%`
+      }).join(',')
+      query = query.or(orParts)
     } else {
       const terms = q.trim().split(/\s+/).filter(t => t.length >= 1)
       if (terms.length === 1 && q.length >= 4) {
@@ -25,7 +42,6 @@ export async function fetchLaws({ q = '', types = [], domains = [], statuses = [
         query = query.textSearch('search_vector', q, { type: 'websearch', config: 'french' })
       } else {
         // Plusieurs mots ou requête courte : ILIKE par terme (gère les mots partiels)
-        // "marché pu" → term[0]=ilike.%marché% AND term[1]=ilike.%pu% → trouve "marchés publics"
         for (const term of terms) {
           query = query.or(`title_fr.ilike.%${term}%,number.ilike.%${term}%,title_ar.ilike.%${term}%`)
         }

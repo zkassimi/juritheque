@@ -5,6 +5,7 @@ import { useLang } from '../contexts/LangContext'
 import { supabase } from '../lib/supabase'
 import { lawPath } from '../lib/lawUtils'
 import { SEO_INTENT_PAGES } from '../data/seoIntentPages'
+import { expandQuery } from '../data/searchSynonyms'
 
 // ── Debounce hook ────────────────────────────────────────────────────────────
 function useDebounce(value, delay) {
@@ -62,27 +63,46 @@ export default function SearchBar({ size = 'md', onSearch, className = '' }) {
 
     const isArabic = /[؀-ۿ]/.test(dq)
     const ql = dq.toLowerCase()
+    const expanded = expandQuery(dq)
+    const expandedLower = expanded.map(s => s.toLowerCase())
 
-    // 1. Guides — local (instant)
-    const guides = SEO_INTENT_PAGES.filter(g =>
-      g.h1.toLowerCase().includes(ql) ||
-      g.title.toLowerCase().includes(ql) ||
-      (g.category || '').toLowerCase().includes(ql) ||
-      (g.keywords || []).some(k => k.toLowerCase().includes(ql))
-    ).slice(0, 3)
+    // 1. Guides — local (instant) avec synonymes
+    const guides = SEO_INTENT_PAGES.filter(g => {
+      const h1 = g.h1.toLowerCase()
+      const title = g.title.toLowerCase()
+      const cat = (g.category || '').toLowerCase()
+      const kws = (g.keywords || []).map(k => k.toLowerCase())
+      const h1ar = (g.h1_ar || '').toLowerCase()
+      return expandedLower.some(term =>
+        h1.includes(term) || title.includes(term) || cat.includes(term) ||
+        kws.some(k => k.includes(term)) || h1ar.includes(term)
+      )
+    }).slice(0, 3)
 
     setLoading(true)
 
-    // 2. Laws — Supabase (split on spaces for partial word matching)
-    // "marché pu" → ["marché","pu"] → each term ANDed: finds "marchés publics"
+    // 2. Laws — Supabase avec expansion synonymes (moudawana → famille, أسرة, etc.)
     const terms = dq.trim().split(/\s+/).filter(t => t.length >= 1)
     let lawQ = supabase.from('laws')
       .select('id,title_fr,title_ar,number,type,canonical_slug,status,domain_id')
       .limit(5)
-    for (const term of terms) {
-      lawQ = isArabic
-        ? lawQ.or(`title_ar.ilike.%${term}%,number.ilike.%${term}%`)
-        : lawQ.or(`title_fr.ilike.%${term}%,number.ilike.%${term}%,title_ar.ilike.%${term}%`)
+
+    if (expanded.length > 1) {
+      // Requête avec synonymes : OR sur tous les termes élargis (chaque synonyme = un OR)
+      const orParts = expanded.map(syn => {
+        const s = syn.trim()
+        return isArabic
+          ? `title_ar.ilike.%${s}%,number.ilike.%${s}%`
+          : `title_fr.ilike.%${s}%,title_ar.ilike.%${s}%,number.ilike.%${s}%`
+      }).join(',')
+      lawQ = lawQ.or(orParts)
+    } else {
+      // Pas de synonymes : cherche terme par terme (AND) pour précision sur requête multi-mots
+      for (const term of terms) {
+        lawQ = isArabic
+          ? lawQ.or(`title_ar.ilike.%${term}%,number.ilike.%${term}%`)
+          : lawQ.or(`title_fr.ilike.%${term}%,number.ilike.%${term}%,title_ar.ilike.%${term}%`)
+      }
     }
 
     // 3. Videos — Supabase
@@ -161,7 +181,7 @@ export default function SearchBar({ size = 'md', onSearch, className = '' }) {
           autoComplete="off"
           spellCheck={false}
           className={`
-            w-full ${sizes[size]} pl-10 pr-28
+            w-full ${sizes[size]} pl-10 pr-16 sm:pr-28
             bg-white rounded-xl border border-gray-200
             text-navy placeholder-navy-400
             focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20
@@ -174,19 +194,22 @@ export default function SearchBar({ size = 'md', onSearch, className = '' }) {
           <button
             type="button"
             onClick={() => { setQuery(''); setResults({ laws: [], videos: [], guides: [] }); inputRef.current?.focus() }}
-            className="absolute right-[76px] top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-navy transition-colors"
+            className="absolute right-[52px] sm:right-[76px] top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-navy transition-colors"
             aria-label="Effacer"
           >
             <X size={13} />
           </button>
         )}
 
-        {/* Submit button */}
+        {/* Submit button — text+icon on sm+, icon-only on mobile */}
         <button
           type="submit"
-          className="absolute right-2 top-1/2 -translate-y-1/2 px-3.5 py-1.5 bg-navy text-white text-xs font-semibold rounded-lg hover:bg-gold hover:text-navy transition-colors flex items-center gap-1 whitespace-nowrap"
+          className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 sm:px-3.5 bg-navy text-white text-xs font-semibold rounded-lg hover:bg-gold hover:text-navy transition-colors flex items-center gap-1 whitespace-nowrap"
+          aria-label={t('common.search')}
         >
-          {t('common.search')} <ArrowRight size={11} />
+          <Search size={14} className="sm:hidden" />
+          <span className="hidden sm:inline">{t('common.search')}</span>
+          <ArrowRight size={11} className="hidden sm:inline" />
         </button>
       </form>
 

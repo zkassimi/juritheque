@@ -317,6 +317,34 @@ SCRIPTS: Dict[str, Any] = {
     "danger":   False,
     "risk":     "safe",
   },
+  "git_push": {
+    "label":    "🚀 Git Push → Vercel",
+    "desc":     "git add . + commit + push → Vercel rebuilde et déploie www.juritheque.com automatiquement",
+    "category": "🔨 Build & Deploy",
+    "cmd":      ["powershell", "-Command",
+                 f"Set-Location '{ROOT_DIR}'; git add .; "
+                 "$msg = 'deploy: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm'); "
+                 "git commit -m $msg --allow-empty; "
+                 "git push origin main"],
+    "danger":   False,
+    "risk":     "sensitive",
+  },
+  "build_and_push": {
+    "label":    "🏗️ Build + Push → Vercel",
+    "desc":     "npm run build:full → git push → Vercel déploie (tout en une commande)",
+    "category": "🔨 Build & Deploy",
+    "cmd":      ["powershell", "-Command",
+                 f"Set-Location '{ROOT_DIR}'; npm.cmd run build:full; "
+                 "if ($LASTEXITCODE -eq 0) { "
+                 "git add .; "
+                 "$msg = 'build: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm'); "
+                 "git commit -m $msg --allow-empty; "
+                 "git push origin main; "
+                 "Write-Output 'Deploy envoyé à Vercel OK' "
+                 "} else { Write-Output 'Build échoué — push annulé' }"],
+    "danger":   False,
+    "risk":     "sensitive",
+  },
 }
 
 # ── Catégories ordonnées ───────────────────────────────────────────────────────

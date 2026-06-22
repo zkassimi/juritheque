@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, BookOpen, Bot, PlayCircle, TrendingUp, FileSearch, Bell, Newspaper } from 'lucide-react'
+import { ArrowRight, BookOpen, Bot, PlayCircle, TrendingUp, FileSearch, Bell, Newspaper, Library, Database, Scale } from 'lucide-react'
 import { SEO_INTENT_PAGES } from '../data/seoIntentPages'
+import { GLOSSAIRE } from '../data/glossaire'
 import { useLang } from '../contexts/LangContext'
 import { DOMAINS as DOMAINS_FALLBACK, VIDEOS as VIDEOS_FALLBACK, STATS as STATS_FALLBACK } from '../data/mockData'
 import { fetchRecentLaws, fetchDomains, fetchStats } from '../lib/api'
@@ -19,10 +20,8 @@ function AnimatedCounter({ target, duration = 1500 }) {
   const started = useRef(false)
 
   useEffect(() => {
-    // Réinitialiser à chaque changement de target (ex: quand Supabase répond)
     started.current = false
     setCount(0)
-
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && !started.current) {
         started.current = true
@@ -44,6 +43,17 @@ function AnimatedCounter({ target, duration = 1500 }) {
   return <span ref={ref}>{count.toLocaleString()}</span>
 }
 
+const FEATURED_GUIDES = [
+  'licenciement-maroc',
+  'sarl-maroc',
+  'divorce-maroc',
+  'code-du-travail-maroc',
+  'bail-commercial-maroc',
+  'cheque-sans-provision-maroc',
+  'recouvrement-maroc',
+  'collectivites-territoriales-maroc',
+]
+
 export default function Home() {
   const { t, lang } = useLang()
 
@@ -54,19 +64,15 @@ export default function Home() {
     type: 'website',
   })
 
-  const [activeVideo, setActiveVideo]   = useState(null)
-  const [recentLaws, setRecentLaws]     = useState([])
-  const [domains, setDomains]           = useState(DOMAINS_FALLBACK)
-  const [stats, setStats]               = useState(STATS_FALLBACK)
+  const [activeVideo, setActiveVideo]       = useState(null)
+  const [recentLaws, setRecentLaws]         = useState([])
+  const [domains, setDomains]               = useState(DOMAINS_FALLBACK)
+  const [stats, setStats]                   = useState(STATS_FALLBACK)
   const [featuredVideos, setFeaturedVideos] = useState(VIDEOS_FALLBACK.slice(0, 3))
 
   useEffect(() => {
     fetchRecentLaws(6).then(setRecentLaws).catch(() => {})
-
-    fetchDomains()
-      .then(data => { if (data.length) setDomains(data) })
-      .catch(() => {})
-
+    fetchDomains().then(data => { if (data.length) setDomains(data) }).catch(() => {})
     fetchStats()
       .then(({ lawsCount, domainsCount }) => {
         setStats(prev => prev.map(s => {
@@ -77,19 +83,14 @@ export default function Home() {
       })
       .catch(() => {})
 
-    // Charger les vraies vidéos depuis Supabase
     import('../lib/supabase').then(({ supabase }) => {
-      supabase
-        .from('videos')
-        .select('*')
-        .order('views', { ascending: false })
-        .limit(3)
-        .then(({ data }) => {
-          if (data && data.length > 0) setFeaturedVideos(data)
-        })
+      supabase.from('videos').select('*').order('views', { ascending: false }).limit(3)
+        .then(({ data }) => { if (data && data.length > 0) setFeaturedVideos(data) })
         .catch(() => {})
     })
   }, [])
+
+  const glossaireSample = GLOSSAIRE.slice(0, 6)
 
   return (
     <div className="min-h-screen">
@@ -99,42 +100,30 @@ export default function Home() {
       <section className="hero-bg noise-overlay min-h-[88vh] flex items-center relative pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 lg:py-14 w-full">
           <div className="max-w-2xl mx-auto text-center">
-            {/* Eyebrow */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-gold text-xs font-medium mb-5 animate-fade-in">
               <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
               {t('hero.eyebrow')}
             </div>
-
-            {/* Headline */}
             <h1 className="font-playfair font-bold text-white text-4xl sm:text-5xl lg:text-5xl xl:text-6xl leading-tight mb-2 animate-fade-in animate-stagger-1">
               {t('hero.title')}
             </h1>
             <p className="font-arabic text-white/60 text-lg sm:text-xl mb-5 animate-fade-in animate-stagger-2">
               {t('hero.title_ar')}
             </p>
-
-            {/* Gold divider */}
             <div className="gold-line w-24 mx-auto mb-5" />
-
             <p className="text-white/70 text-sm sm:text-base leading-relaxed mb-6 max-w-lg mx-auto animate-fade-in animate-stagger-2">
               {t('hero.subtitle')}
             </p>
-
-            {/* Search */}
             <div className="animate-fade-in animate-stagger-3 relative z-20">
               <SearchBar size="lg" className="max-w-xl mx-auto shadow-2xl" />
             </div>
-
-            {/* CTA cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl mx-auto mt-5 animate-fade-in animate-stagger-4 relative z-10">
               {[
                 { to: '/base',      icon: BookOpen,   label: t('hero.cta_browse'), bg: 'bg-white/10 hover:bg-white/20' },
                 { to: '/assistant', icon: Bot,        label: t('hero.cta_ai'),     bg: 'bg-gold/80 hover:bg-gold' },
                 { to: '/videos',    icon: PlayCircle, label: t('hero.cta_videos'), bg: 'bg-white/10 hover:bg-white/20' },
               ].map(({ to, icon: Icon, label, bg }) => (
-                <Link
-                  key={to}
-                  to={to}
+                <Link key={to} to={to}
                   className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-white text-sm font-medium ${bg} border border-white/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg`}
                 >
                   <Icon size={16} />{label}
@@ -143,8 +132,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* Bottom fade — pointer-events-none pour ne pas bloquer les boutons */}
         <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-[#f8fafc] to-transparent pointer-events-none" />
       </section>
 
@@ -167,7 +154,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ DOMAINS ═══ */}
+      {/* ═══ DOMAINES ═══ */}
       <section className="py-16 bg-[#f8fafc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between mb-8">
@@ -187,80 +174,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ EXPLORER PAR BESOIN ═══ */}
-      <section className="py-14 bg-white border-y border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-1">
-                <FileSearch size={11} className="inline mr-1" />Guides &amp; Veille
-              </p>
-              <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">Explorer par besoin juridique</h2>
-            </div>
-            <Link to="/fr/guides" className="hidden sm:flex items-center gap-1.5 text-sm text-gold font-medium hover:gap-2.5 transition-all">
-              Tous les guides <ArrowRight size={14} />
-            </Link>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {/* Veille juridique — mise en avant */}
-            <Link
-              to="/fr/veille-juridique"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-navy border border-navy rounded-xl text-xs font-semibold text-white hover:bg-gold hover:border-gold hover:text-navy transition-colors"
-            >
-              <Bell size={12} className="flex-shrink-0" />
-              Veille juridique
-            </Link>
-            {/* Bulletins Officiels */}
-            <Link
-              to="/fr/bulletins-officiels"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-navy/80 border border-navy/60 rounded-xl text-xs font-semibold text-white hover:bg-gold hover:border-gold hover:text-navy transition-colors"
-            >
-              <Newspaper size={12} className="flex-shrink-0" />
-              Bulletins Officiels
-            </Link>
-            {/* 8 guides prioritaires selon les intentions de recherche principales */}
-            {[
-              'code-du-travail-maroc',
-              'sarl-maroc',
-              'divorce-maroc',
-              'bail-commercial-maroc',
-              'licenciement-maroc',
-              'recouvrement-maroc',
-              'cheque-sans-provision-maroc',
-              'collectivites-territoriales-maroc',
-            ].map(slug => {
-              const guide = SEO_INTENT_PAGES.find(g => g.slug === slug)
-              if (!guide) return null
-              return (
-                <Link
-                  key={guide.slug}
-                  to={`/fr/guides/${guide.slug}`}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#f8fafc] border border-gray-200 rounded-xl text-xs font-medium text-navy-700 hover:border-gold hover:text-gold transition-colors"
-                >
-                  <BookOpen size={12} className="text-gold flex-shrink-0" />
-                  {guide.h1}
-                </Link>
-              )
-            })}
-            <Link
-              to="/fr/guides"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-gold/10 border border-gold/30 rounded-xl text-xs font-semibold text-gold hover:bg-gold hover:text-navy transition-colors"
-            >
-              + {SEO_INTENT_PAGES.length - 8} autres <ArrowRight size={11} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ RECENT TEXTS ═══ */}
+      {/* ═══ BASE DE DONNÉES ═══ */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between mb-8">
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-1">
-                <TrendingUp size={11} className="inline mr-1" />Récent
+                <Database size={11} className="inline mr-1" />Base de données
               </p>
-              <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">{t('home.recent_title')}</h2>
+              <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">Textes juridiques récents</h2>
             </div>
             <Link to="/base" className="hidden sm:flex items-center gap-1.5 text-sm text-gold font-medium hover:gap-2.5 transition-all">
               {t('common.view_all')} <ArrowRight size={14} />
@@ -273,40 +195,186 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="mt-6 text-center">
-            <Link
-              to="/base"
+          <div className="mt-8 text-center">
+            <Link to="/base"
               className="inline-flex items-center gap-2 px-6 py-3 bg-navy text-white rounded-xl text-sm font-semibold hover:bg-gold hover:text-navy transition-colors"
             >
-              {t('db.title')} <ArrowRight size={14} />
+              Consulter la base de données <ArrowRight size={14} />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ═══ VIDEOS ═══ */}
-      <section className="py-16 bg-navy relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-gold/5 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-blue-500/5 blur-3xl" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+      {/* ═══ GUIDES JURIDIQUES ═══ */}
+      <section className="py-16 bg-[#f8fafc]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-1">Vidéos</p>
-              <h2 className="font-playfair font-bold text-white text-2xl sm:text-3xl">{t('home.videos_title')}</h2>
+              <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-1">
+                <BookOpen size={11} className="inline mr-1" />Guides juridiques
+              </p>
+              <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">Explorer par besoin juridique</h2>
+            </div>
+            <Link to="/fr/guides" className="hidden sm:flex items-center gap-1.5 text-sm text-gold font-medium hover:gap-2.5 transition-all">
+              Tous les guides <ArrowRight size={14} />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {FEATURED_GUIDES.map(slug => {
+              const guide = SEO_INTENT_PAGES.find(g => g.slug === slug)
+              if (!guide) return null
+              return (
+                <Link key={guide.slug} to={`/fr/guides/${guide.slug}`}
+                  className="group flex items-start gap-3 p-4 bg-white rounded-xl border border-gray-100 hover:border-gold hover:shadow-md transition-all duration-200"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <BookOpen size={14} className="text-gold" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-navy group-hover:text-gold transition-colors leading-snug">
+                      {guide.h1}
+                    </p>
+                    {guide.category && (
+                      <p className="text-[10px] text-navy-400 mt-1 uppercase tracking-wide">{guide.category}</p>
+                    )}
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+          <div className="mt-6 text-center">
+            <Link to="/fr/guides"
+              className="inline-flex items-center gap-2 px-5 py-2.5 border border-gold text-gold rounded-xl text-sm font-semibold hover:bg-gold hover:text-navy transition-colors"
+            >
+              Voir les {SEO_INTENT_PAGES.length} guides <ArrowRight size={14} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ VEILLE & BULLETINS ═══ */}
+      <section className="py-16 bg-white border-y border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="mb-8">
+            <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-1">
+              <TrendingUp size={11} className="inline mr-1" />Actualité juridique
+            </p>
+            <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">Restez informé</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* Veille juridique */}
+            <Link to="/fr/veille-juridique"
+              className="group relative overflow-hidden rounded-2xl bg-navy p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gold/10 blur-2xl" />
+              <div className="relative z-10">
+                <div className="w-12 h-12 rounded-xl bg-gold/20 flex items-center justify-center mb-5">
+                  <Bell size={22} className="text-gold" />
+                </div>
+                <h3 className="font-playfair font-bold text-white text-xl mb-2">Veille juridique</h3>
+                <p className="text-white/60 text-sm mb-5 leading-relaxed">
+                  Suivez les dernières évolutions législatives et réglementaires au Maroc en temps réel.
+                </p>
+                <span className="inline-flex items-center gap-2 text-gold text-sm font-semibold group-hover:gap-3 transition-all">
+                  Accéder à la veille <ArrowRight size={14} />
+                </span>
+              </div>
+            </Link>
+
+            {/* Bulletins Officiels */}
+            <Link to="/fr/bulletins-officiels"
+              className="group relative overflow-hidden rounded-2xl bg-[#f8fafc] border border-gray-200 p-8 hover:border-gold hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gold/5 blur-2xl" />
+              <div className="relative z-10">
+                <div className="w-12 h-12 rounded-xl bg-navy/10 flex items-center justify-center mb-5">
+                  <Newspaper size={22} className="text-navy" />
+                </div>
+                <h3 className="font-playfair font-bold text-navy text-xl mb-2">Bulletins Officiels</h3>
+                <p className="text-navy-500 text-sm mb-5 leading-relaxed">
+                  Consultez les Bulletins Officiels du Maroc et retrouvez tous les textes publiés au BO.
+                </p>
+                <span className="inline-flex items-center gap-2 text-gold text-sm font-semibold group-hover:gap-3 transition-all">
+                  Consulter les BO <ArrowRight size={14} />
+                </span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ GLOSSAIRE ═══ */}
+      <section className="py-14 bg-[#f8fafc]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-1">
+                <Library size={11} className="inline mr-1" />Glossaire juridique
+              </p>
+              <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">Vocabulaire du droit marocain</h2>
+            </div>
+            <Link to="/glossaire" className="hidden sm:flex items-center gap-1.5 text-sm text-gold font-medium hover:gap-2.5 transition-all">
+              Voir les {GLOSSAIRE.length} termes <ArrowRight size={14} />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {glossaireSample.map(entry => (
+              <Link key={entry.term} to="/glossaire"
+                className="group flex items-start gap-3 p-4 bg-white rounded-xl border border-gray-100 hover:border-gold hover:shadow-sm transition-all duration-200"
+              >
+                <div className="w-8 h-8 rounded-lg bg-navy/5 flex items-center justify-center flex-shrink-0 mt-0.5 font-playfair font-bold text-navy text-sm">
+                  {entry.term[0]}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-navy group-hover:text-gold transition-colors truncate">{entry.term}</p>
+                  {entry.term_ar && (
+                    <p className="font-arabic text-xs text-navy-400 truncate">{entry.term_ar}</p>
+                  )}
+                  {entry.definition && (
+                    <p className="text-[11px] text-navy-500 mt-1 line-clamp-2 leading-relaxed">{entry.definition}</p>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-6 text-center">
+            <Link to="/glossaire"
+              className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-200 text-navy rounded-xl text-sm font-semibold hover:border-gold hover:text-gold transition-colors"
+            >
+              <Library size={14} />Consulter le glossaire complet
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ VIDÉOS ═══ */}
+      <section className="py-16 bg-white border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-1">
+                <PlayCircle size={11} className="inline mr-1" />Vidéos pédagogiques
+              </p>
+              <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">{t('home.videos_title')}</h2>
             </div>
             <Link to="/videos" className="hidden sm:flex items-center gap-1.5 text-sm text-gold font-medium hover:gap-2.5 transition-all">
               {t('common.view_all')} <ArrowRight size={14} />
             </Link>
           </div>
-          <p className="text-sm text-white/60 mb-6 max-w-2xl">
+          <p className="text-sm text-navy-500 mb-7 max-w-2xl">
             Sélection de vidéos pédagogiques pour comprendre les principales notions du droit marocain.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {featuredVideos.map(video => (
               <VideoCard key={video.id} video={video} onClick={setActiveVideo} />
             ))}
+          </div>
+          <div className="mt-8 text-center">
+            <Link to="/videos"
+              className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-200 text-navy rounded-xl text-sm font-semibold hover:border-gold hover:text-gold transition-colors"
+            >
+              <PlayCircle size={14} />Voir toutes les vidéos
+            </Link>
           </div>
         </div>
       </section>

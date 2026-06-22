@@ -1,11 +1,1 @@
-{
-  "version": "0.0.1",
-  "configurations": [
-    {
-      "name": "lexbase-dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--", "--port", "5174"],
-      "port": 5174
-    }
-  ]
-}
+{"version":"0.0.1","configurations":[{"name":"juritheque-dev","runtimeExecutable":"npm","runtimeArgs":["run","dev"],"port":5173}]}

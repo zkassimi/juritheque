@@ -63,7 +63,7 @@ export default function FilterSidebar({ filters, onChange, resultCount, domains:
       </div>
 
       {/* Search */}
-      <SearchBar size="sm" onSearch={q => onChange({ ...filters, q })} className="mb-4" />
+      <SearchBar size="sm" compact onSearch={q => onChange({ ...filters, q })} className="mb-4" />
 
       {/* Results count */}
       {resultCount !== undefined && (

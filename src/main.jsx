@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import { AuthProvider } from './contexts/AuthContext'
 import { LangProvider } from './contexts/LangContext'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import './index.css'
 
 // ── Error Boundary — affiche un message utile au lieu d'une page blanche ──────
@@ -52,6 +53,7 @@ const app = (
         <LangProvider>
           <AuthProvider>
             <App />
+            <SpeedInsights />
           </AuthProvider>
         </LangProvider>
       </BrowserRouter>

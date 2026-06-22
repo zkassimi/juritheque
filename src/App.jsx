@@ -1,5 +1,6 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import { useLang } from './contexts/LangContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -83,6 +84,7 @@ export default function App() {
       </main>
       <Footer />
       <FeedbackButton />
+      <SpeedInsights />
     </div>
   )
 }

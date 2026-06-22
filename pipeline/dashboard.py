@@ -885,7 +885,7 @@ function handleBtnClick(btn) {{
     document.getElementById('modal-title').textContent =
       risk === 'ai' ? '🤖 Action IA (coût API)' : '⚠️ Action sensible';
     document.getElementById('modal-msg').textContent =
-      label + (isDanger ? ' peut modifier des données importantes.' : ' utilise l\'API Gemini.') + ' Confirmer ?';
+      label + (isDanger ? ` peut modifier des données importantes.` : ` utilise l'API Gemini.`) + ` Confirmer ?`;
     var costDiv = document.getElementById('modal-ai-cost');
     if (aiCost) {{ document.getElementById('modal-ai-cost-text').textContent = aiCost; costDiv.style.display = 'block'; }}
     else {{ costDiv.style.display = 'none'; }}
@@ -1005,7 +1005,7 @@ function loadStatus() {{
         var jid = entries[i][0]; var job = entries[i][1];
         var m = Math.floor(job.elapsed/60); var s = job.elapsed % 60;
         var sBtn = job.status === 'running'
-          ? '<button class="btn-stop-sm" onclick="stopJob(\'' + jid + '\')">Stop</button>' : '';
+          ? `<button class="btn-stop-sm" onclick="stopJob('${{jid}}')">Stop</button>` : ``;
         html += '<div class="job-item ' + job.status + '"><div class="job-hd">'
           + '<span class="job-name">' + job.label + '</span>'
           + '<span class="job-badge ' + job.status + '">' + job.status + '</span>'

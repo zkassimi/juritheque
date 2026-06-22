@@ -1,0 +1,104 @@
+Priorité;Domaine;Catégorie;Type;Numéro;Titre_FR;Titre_AR;Texte_parent;Règle_de_vérification
+1;Marchés publics;Texte principal;Décret;2-22-431;Décret relatif aux marchés publics;مرسوم الصفقات العمومية;Commande publique;Très prioritaire, vérifier version officielle BO
+1;Marchés publics;Institution;Décret;2-14-867;Décret relatif à la Commission nationale de la commande publique;مرسوم اللجنة الوطنية للطلبيات العمومية;Commande publique;Vérifier version consolidée et modifications
+1;Marchés publics;CCAG;Décret;2-14-394;CCAG-T applicable aux marchés de travaux;دفتر الشروط الإدارية العامة المطبقة على صفقات الأشغال;Marchés publics;Très prioritaire
+1;Marchés publics;CCAG historique;Décret;2-99-1087;Ancien CCAG-T 2000 applicable aux anciens marchés de travaux;دفتر الشروط الإدارية العامة القديم للأشغال;Marchés publics;Conserver comme historique
+1;Marchés publics;CCAG;Décret;2-01-2332;CCAG-EMO applicable aux marchés de services portant sur les études et la maîtrise d'œuvre;دفتر الشروط الإدارية العامة للدراسات وتتبع الأشغال;Marchés publics;Très prioritaire
+2;Marchés publics;CCAG;Texte à vérifier;;CCAG-F ou CCAG fournitures;دفتر الشروط الإدارية العامة للتوريدات;Marchés publics;Ne pas valider sans BO, vérifier s'il existe comme texte définitif ou seulement projet
+1;Marchés publics;Arrêté;Arrêté;3-302-15;Arrêté fixant les règles et conditions de révision des prix des marchés publics;قرار مراجعة أثمان الصفقات العمومية;Marchés publics;Très prioritaire
+1;Marchés publics;Arrêté;Arrêté;1692-23;Arrêté relatif à la dématérialisation des procédures, documents et pièces des marchés publics;قرار تجريد مساطر ووثائق الصفقات العمومية من الطابع المادي;Marchés publics;Très prioritaire
+1;Marchés publics;Modèles;Arrêté conjoint;;Modèles des ordres de service, PV de réception, décomptes, mise en demeure, décision de résiliation;نماذج أوامر الخدمة ومحاضر التسلم والكشوفات;CCAG-T;Chercher par référence au décret 2-14-394
+1;Marchés publics;Garanties;Texte réglementaire;;Cautionnement provisoire, cautionnement définitif et retenue de garantie;الضمان المؤقت والنهائي والضمانة المالية;Marchés publics;Vérifier décret + arrêtés + modèles
+1;Marchés publics;Prix;Texte réglementaire;;Index de révision des prix des marchés publics;مؤشرات مراجعة الأثمان;Arrêté 3-302-15;Vérifier annexes et mises à jour
+1;Marchés publics;Dématérialisation;Texte réglementaire;;Portail des marchés publics et dépôt électronique des plis;البوابة الإلكترونية للصفقات العمومية والإيداع الإلكتروني;Décret 2-22-431;Vérifier arrêté 1692-23 et textes liés
+1;Marchés publics;Procédure;Texte réglementaire;;Règlement de consultation des marchés publics;نظام الاستشارة في الصفقات العمومية;Décret 2-22-431;Vérifier modèles et clauses obligatoires
+1;Marchés publics;Procédure;Texte réglementaire;;Acte d'engagement;التزام المتعهد;Décret 2-22-431;Vérifier modèle réglementaire
+1;Marchés publics;Procédure;Texte réglementaire;;Déclaration sur l'honneur des concurrents;التصريح بالشرف للمتنافسين;Décret 2-22-431;Vérifier modèle réglementaire
+1;Marchés publics;Exécution;Texte réglementaire;;Ordres de service dans les marchés publics;أوامر الخدمة في الصفقات العمومية;CCAG-T / CCAG-EMO;Vérifier modèles et articles
+1;Marchés publics;Exécution;Texte réglementaire;;Avenants aux marchés publics;ملاحق الصفقات العمومية;Décret 2-22-431 / CCAG;Vérifier règles et limites
+1;Marchés publics;Exécution;Texte réglementaire;;Réception provisoire et réception définitive;التسلم المؤقت والتسلم النهائي;CCAG-T;Vérifier modèles réglementaires
+1;Marchés publics;Exécution;Texte réglementaire;;Décomptes provisoires, décompte définitif et décompte général définitif;الكشوفات المؤقتة والنهائية;CCAG-T;Vérifier modèles réglementaires
+1;Marchés publics;Exécution;Texte réglementaire;;Pénalités de retard dans les marchés publics;غرامات التأخير في الصفقات العمومية;CCAG / Décret marchés publics;Vérifier règles applicables
+1;Marchés publics;Exécution;Texte réglementaire;;Résiliation des marchés publics;فسخ الصفقات العمومية;CCAG / Décret marchés publics;Vérifier procédures et modèles
+2;Marchés publics;Technique;CCTG;;Cahiers des clauses techniques générales applicables aux travaux;دفاتر الشروط التقنية العامة للأشغال;Marchés publics;Créer catégorie CCTG
+2;Marchés publics;Technique;CCTG;;CCTG travaux routiers;دفتر الشروط التقنية العامة للأشغال الطرقية;Marchés publics;Vérifier textes sectoriels
+2;Marchés publics;Technique;CCTG;;CCTG bâtiment;دفتر الشروط التقنية العامة للبناء;Marchés publics;Vérifier textes sectoriels
+2;Marchés publics;Technique;CCTG;;CCTG hydraulique;دفتر الشروط التقنية العامة للأشغال المائية;Marchés publics;Vérifier textes sectoriels
+2;Marchés publics;Technique;CCTG;;CCTG électricité;دفتر الشروط التقنية العامة للكهرباء;Marchés publics;Vérifier textes sectoriels
+2;Marchés publics;Technique;CCTG;;CCTG assainissement;دفتر الشروط التقنية العامة للتطهير;Marchés publics;Vérifier textes sectoriels
+1;Collectivités territoriales;Textes d'application;Décret;2-16-276;Décret fixant les modalités d'organisation des sessions de formation continue au profit des membres des conseils des collectivités territoriales;مرسوم تنظيم التكوين المستمر لأعضاء مجالس الجماعات الترابية;Lois organiques 111-14 / 112-14 / 113-14;Très prioritaire
+1;Collectivités territoriales;Planification;Décret;2-16-301;Procédure d'élaboration du plan d'action de la commune, suivi, actualisation, évaluation et dialogue;مسطرة إعداد برنامج عمل الجماعة وتتبعه وتحيينه وتقييمه;Loi organique 113-14;Vérifier numéro exact et BO
+1;Collectivités territoriales;Planification;Décret;2-16-305;Programmation triennale du budget de la région;البرمجة الممتدة على ثلاث سنوات لميزانية الجهة;Loi organique 111-14;Vérifier texte officiel
+1;Collectivités territoriales;Planification;Décret;2-16-306;Programmation triennale du budget de la préfecture ou province;البرمجة الممتدة على ثلاث سنوات لميزانية العمالة أو الإقليم;Loi organique 112-14;Vérifier texte officiel
+1;Collectivités territoriales;Planification;Décret;2-16-307;Programmation triennale du budget de la commune;البرمجة الممتدة على ثلاث سنوات لميزانية الجماعة;Loi organique 113-14;Très prioritaire
+1;Collectivités territoriales;Budget;Décret;2-16-314;Documents devant être joints au budget de la région;الوثائق المرفقة بميزانية الجهة;Loi organique 111-14;Vérifier numéro exact
+1;Collectivités territoriales;Budget;Décret;2-16-315;Documents devant être joints au budget de la préfecture ou province;الوثائق المرفقة بميزانية العمالة أو الإقليم;Loi organique 112-14;Vérifier numéro exact
+1;Collectivités territoriales;Budget;Décret;2-16-316;Documents devant être joints au budget de la commune;الوثائق المرفقة بميزانية الجماعة;Loi organique 113-14;Très prioritaire
+1;Collectivités territoriales;Budget;Décret;2-16-319;États financiers et comptables accompagnant le budget de la commune;القوائم المالية والمحاسبية المرفقة بميزانية الجماعة;Loi organique 113-14;Vérifier texte officiel
+1;Collectivités territoriales;Budget;Décret;2-17-291;Équilibres des budgets, budgets annexes et comptes spéciaux de la région dans un état consolidé;توازنات ميزانيات الجهة في بيان مجمع;Loi organique 111-14;Vérifier numéro exact
+1;Collectivités territoriales;Budget;Décret;2-17-292;Équilibres des budgets de la préfecture ou province dans un état consolidé;توازنات ميزانيات العمالة أو الإقليم في بيان مجمع;Loi organique 112-14;Vérifier texte officiel
+1;Collectivités territoriales;Budget;Décret;2-17-293;Équilibres des budgets de la commune dans un état consolidé;توازنات ميزانيات الجماعة في بيان مجمع;Loi organique 113-14;Vérifier texte officiel
+1;Collectivités territoriales;Emprunts;Décret;2-17-294;Règles régissant les opérations d'emprunt contractées par la région;قواعد الاقتراض بالنسبة للجهة;Loi organique 111-14;Vérifier texte + modifications
+1;Collectivités territoriales;Emprunts;Décret;2-17-295;Règles régissant les opérations d'emprunt contractées par la préfecture ou province;قواعد الاقتراض بالنسبة للعمالة أو الإقليم;Loi organique 112-14;Vérifier texte
+1;Collectivités territoriales;Emprunts;Décret;2-17-296;Règles régissant les opérations d'emprunt contractées par la commune;قواعد الاقتراض بالنسبة للجماعة;Loi organique 113-14;Vérifier texte
+1;Collectivités territoriales;Gouvernance;Décret;2-17-306;Mécanismes et outils d'accompagnement de la commune pour atteindre une bonne gouvernance;آليات وأدوات مواكبة الجماعة لبلوغ حكامة جيدة;Loi organique 113-14;Très prioritaire
+1;Collectivités territoriales;Adressage;Décret;2-17-307;Contenu du système d'adressage de la commune et modalités d'élaboration et d'actualisation;نظام عنونة الجماعة وكيفيات إعداده وتحيينه;Loi organique 113-14;Très prioritaire
+1;Collectivités territoriales;Arrondissements;Décret;2-17-308;Seuil minimum de la part relative à l'animation locale des arrondissements;الحد الأدنى للحصة المتعلقة بالتنشيط المحلي للمقاطعات;Loi organique 113-14;Vérifier texte
+1;Collectivités territoriales;Nomenclature budgétaire;Décret;2-17-351;Nomenclature budgétaire de la région;تبويب ميزانية الجهة;Loi organique 111-14;Vérifier numéro exact
+1;Collectivités territoriales;Nomenclature budgétaire;Décret;2-17-352;Nomenclature budgétaire de la préfecture ou province;تبويب ميزانية العمالة أو الإقليم;Loi organique 112-14;Vérifier texte
+1;Collectivités territoriales;Nomenclature budgétaire;Décret;2-17-353;Nomenclature budgétaire de la commune;تبويب ميزانية الجماعة;Loi organique 113-14;Très prioritaire
+1;Collectivités territoriales;Comptabilité publique;Décret;2-17-449;Comptabilité publique des régions et de leurs groupements;المحاسبة العمومية للجهات ومجموعاتها;Loi organique 111-14;Très prioritaire
+1;Collectivités territoriales;Comptabilité publique;Décret;2-17-450;Comptabilité publique des préfectures, provinces et leurs groupements;المحاسبة العمومية للعمالات والأقاليم ومجموعاتها;Loi organique 112-14;Très prioritaire
+1;Collectivités territoriales;Comptabilité publique;Décret;2-17-451;Comptabilité publique des communes et établissements de coopération intercommunale;المحاسبة العمومية للجماعات ومؤسسات التعاون بين الجماعات;Loi organique 113-14;Très prioritaire
+1;Collectivités territoriales;Arrêté;Arrêté conjoint;;Nomenclature budgétaire des communes;تبويب ميزانية الجماعات;Loi organique 113-14;Vérifier arrêté conjoint Intérieur + Finances
+1;Collectivités territoriales;Arrêté;Décision ministérielle;;Modèle de programmation triennale des communes;نموذج البرمجة الممتدة على ثلاث سنوات للجماعات;Décret 2-16-307;Vérifier décision du ministre de l'Intérieur
+1;Collectivités territoriales;Circulaire;Circulaire annuelle;;Circulaire de préparation et d'exécution des budgets des collectivités territoriales;دورية إعداد وتنفيذ ميزانيات الجماعات الترابية;Budget CT;Vérifier par année
+1;Collectivités territoriales;Fiscalité locale;Arrêté fiscal local;;Arrêtés fiscaux des communes;القرارات الجبائية للجماعات;Loi 47-06;Créer catégorie séparée car textes locaux
+2;Collectivités territoriales;BOCT;Publication officielle;;Bulletin Officiel des Collectivités Territoriales;النشرة الرسمية للجماعات الترابية;Collectivités territoriales;Créer source/catégorie BOCT
+1;Finances publiques;Application LOF;Décret;2-15-426;Décret relatif à l'élaboration et à l'exécution des lois de finances;مرسوم إعداد وتنفيذ قوانين المالية;Loi organique 130-13;Très prioritaire
+1;Finances publiques;Modification LOF;Décret;2-17-607;Décret modifiant et complétant le décret 2-15-426;مرسوم يغير ويتمم مرسوم إعداد وتنفيذ قوانين المالية;Décret 2-15-426;Vérifier version consolidée
+1;Finances publiques;Budget;Circulaire annuelle;;Note d'orientation du Chef du Gouvernement relative au projet de loi de finances;منشور رئيس الحكومة حول إعداد مشروع قانون المالية;LOF;Vérifier par année
+1;Finances publiques;Budget;Circulaire annuelle;;Circulaire du Ministre des Finances relative à la préparation du projet de loi de finances;دورية وزير المالية حول إعداد مشروع قانون المالية;LOF;Vérifier par année
+1;Finances publiques;Budget;Document officiel annuel;;Morasses budgétaires;الميزانيات التفصيلية;Loi de finances;Vérifier par année
+1;Finances publiques;Budget;Document officiel annuel;;Rapports accompagnant le projet de loi de finances;التقارير المرفقة بمشروع قانون المالية;PLF;Vérifier par année
+1;Finances publiques;Comptabilité publique;Décret royal;330-66;Règlement général de comptabilité publique;النظام العام للمحاسبة العمومية;Finances publiques;Très prioritaire
+1;Finances publiques;Contrôle dépenses;Décret;2-07-1235;Contrôle des dépenses de l'État;مراقبة نفقات الدولة;Comptabilité publique;Vérifier version consolidée
+1;Finances publiques;Paiement public;Texte réglementaire;;Délais de paiement et intérêts moratoires dans les marchés publics;آجال الأداء وفوائد التأخير في الصفقات العمومية;Marchés publics / finances;Vérifier texte exact
+1;Fiscalité;Application CGI;Décret/Arrêté annuel;;Notes circulaires fiscales de la loi de finances;الدوريات الجبائية لقانون المالية;CGI / Loi de finances;Vérifier par année
+1;Fiscalité;Application CGI;Texte annuel;;Code général des impôts version annuelle;المدونة العامة للضرائب نسخة سنوية;CGI;Conserver chaque année séparément
+1;Fiscalité;Application CGI;Arrêté;;Modèles de déclarations fiscales;نماذج التصريحات الضريبية;CGI;Vérifier DGI
+1;Fiscalité;Fiscalité locale;Décret/Arrêté;;Textes d'application de la loi 47-06 relative à la fiscalité locale;نصوص تطبيق القانون 47-06 المتعلق بالجبايات المحلية;Loi 47-06;Très prioritaire
+1;Fiscalité;Douanes;Décret/Arrêté;;Textes d'application du Code des douanes et impôts indirects;نصوص تطبيق مدونة الجمارك والضرائب غير المباشرة;Code des douanes;Vérifier version consolidée
+1;Urbanisme;Application;Décret/Arrêté;;Textes d'application de la loi 12-90 relative à l'urbanisme;نصوص تطبيق قانون التعمير;Loi 12-90;Très prioritaire
+1;Urbanisme;Application;Décret/Arrêté;;Textes d'application de la loi 25-90 relative aux lotissements;نصوص تطبيق قانون التجزئات العقارية والمجموعات السكنية وتقسيم العقارات;Loi 25-90;Très prioritaire
+1;Urbanisme;Construction;Décret/Arrêté;;Règlement général de construction;ضابط البناء العام;Urbanisme;Très prioritaire
+1;Urbanisme;Construction;Décret/Arrêté;;Règlement parasismique de construction;ضابط البناء المضاد للزلازل;Construction;Très prioritaire
+1;Urbanisme;Autorisation;Décret/Arrêté;;Permis de construire et autorisations d'urbanisme;رخص البناء والتراخيص العمرانية;Urbanisme;Vérifier textes d'application
+1;Urbanisme;Infractions;Décret/Arrêté;;Contrôle et répression des infractions urbanistiques;مراقبة وزجر مخالفات التعمير;Urbanisme;Vérifier textes récents
+1;Urbanisme;Agences urbaines;Décret/Arrêté;;Textes relatifs aux agences urbaines;نصوص الوكالات الحضرية;Urbanisme;Vérifier textes fondateurs et modifications
+1;Fonction publique;Application;Décret;;Décret d'application du statut général de la fonction publique;مرسوم تطبيق النظام الأساسي العام للوظيفة العمومية;Statut fonction publique;Vérifier version consolidée
+1;Fonction publique;Concours;Décret;;Décret relatif aux concours de recrutement dans les emplois publics;مرسوم مباريات التوظيف في المناصب العمومية;Fonction publique;Très prioritaire
+1;Fonction publique;Discipline;Décret/Arrêté;;Textes relatifs à la discipline dans la fonction publique;النصوص المتعلقة بالتأديب في الوظيفة العمومية;Fonction publique;Vérifier textes principaux
+1;Fonction publique;Indemnités;Décret/Arrêté;;Indemnités, primes et rémunération dans la fonction publique;التعويضات والمنح والأجور في الوظيفة العمومية;Fonction publique;Créer catégorie par corps/statut
+1;Fonction publique;Statuts particuliers;Décret;;Statuts particuliers des fonctionnaires;الأنظمة الأساسية الخاصة بالموظفين;Fonction publique;Créer sous-catégories
+1;Justice;Application;Décret/Arrêté;;Textes d'application de la loi relative à l'organisation judiciaire;نصوص تطبيق قانون التنظيم القضائي;Loi 38-15;Très prioritaire
+1;Justice;Professions juridiques;Décret/Arrêté;;Textes d'application relatifs aux avocats;نصوص تطبيق مهنة المحاماة;Profession avocat;Vérifier décrets et arrêtés
+1;Justice;Professions juridiques;Décret/Arrêté;;Textes d'application relatifs aux notaires;نصوص تطبيق مهنة التوثيق;Profession notaire;Vérifier décrets et arrêtés
+1;Justice;Professions juridiques;Décret/Arrêté;;Textes d'application relatifs aux adouls;نصوص تطبيق مهنة العدول;Profession adoul;Vérifier décrets et arrêtés
+1;Justice;Professions juridiques;Décret/Arrêté;;Textes d'application relatifs aux huissiers de justice;نصوص تطبيق مهنة المفوضين القضائيين;Huissiers de justice;Vérifier décrets et arrêtés
+1;Justice;Professions juridiques;Décret/Arrêté;;Textes d'application relatifs aux experts judiciaires;نصوص تطبيق مهنة الخبراء القضائيين;Experts judiciaires;Vérifier décrets et arrêtés
+1;Justice;Professions juridiques;Décret/Arrêté;;Textes d'application relatifs aux traducteurs agréés;نصوص تطبيق مهنة التراجمة المقبولين لدى المحاكم;Traducteurs agréés;Vérifier décrets et arrêtés
+1;Travail;Application;Décret/Arrêté;;Textes d'application du Code du travail;نصوص تطبيق مدونة الشغل;Code du travail;Très prioritaire
+1;Travail;Salaire;Décret/Arrêté;;SMIG, SMAG et salaire minimum;الحد الأدنى للأجر;Code du travail;Vérifier mises à jour
+1;Travail;Santé et sécurité;Décret/Arrêté;;Santé et sécurité au travail;الصحة والسلامة في العمل;Code du travail;Vérifier textes sectoriels
+1;Travail;Inspection;Décret/Arrêté;;Inspection du travail;تفتيش الشغل;Code du travail;Vérifier textes
+1;Travail;Élections professionnelles;Décret/Arrêté;;Délégués des salariés et élections professionnelles;مندوبي الأجراء والانتخابات المهنية;Code du travail;Vérifier textes
+1;Santé;Application;Décret/Arrêté;;Textes d'application du Code du médicament et de la pharmacie;نصوص تطبيق مدونة الأدوية والصيدلة;Code médicament pharmacie;Très prioritaire
+1;Santé;Professions;Décret/Arrêté;;Textes relatifs à l'exercice de la médecine;نصوص مزاولة مهنة الطب;Santé;Vérifier textes d'application
+1;Santé;Établissements;Décret/Arrêté;;Textes relatifs aux cliniques et établissements de santé;نصوص المصحات والمؤسسات الصحية;Santé;Vérifier textes
+1;Santé;AMO;Décret/Arrêté;;Textes d'application de l'assurance maladie obligatoire;نصوص تطبيق التأمين الإجباري الأساسي عن المرض;AMO;Vérifier versions récentes
+1;Environnement;Application;Décret/Arrêté;;Textes d'application de la loi sur l'eau;نصوص تطبيق قانون الماء;Loi 36-15;Très prioritaire
+1;Environnement;Application;Décret/Arrêté;;Textes d'application de la loi sur les déchets;نصوص تطبيق قانون تدبير النفايات;Loi 28-00;Très prioritaire
+1;Environnement;Impact;Décret/Arrêté;;Textes relatifs aux études d'impact sur l'environnement;نصوص دراسات التأثير على البيئة;Environnement;Vérifier textes
+1;Environnement;Carrières;Décret/Arrêté;;Textes d'application relatifs aux carrières;نصوص تطبيق قانون المقالع;Carrières;Vérifier textes
+1;Énergie;Application;Décret/Arrêté;;Textes d'application de la loi sur les énergies renouvelables;نصوص تطبيق قانون الطاقات المتجددة;Loi 13-09;Vérifier textes

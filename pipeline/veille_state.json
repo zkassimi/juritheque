@@ -1,0 +1,113 @@
+{
+  "last_bo_number": 7517,
+  "last_run": "2026-06-22T21:25:11.349013",
+  "sources": {
+    "sgg_home": {
+      "last_checked": "2026-06-22",
+      "items_found": 4
+    },
+    "sgg_bo_increment": {
+      "last_checked": "2026-06-22",
+      "items_found": 0
+    },
+    "adala": {
+      "last_checked": "2026-06-22",
+      "items_found": 12
+    },
+    "finances": {
+      "last_checked": "2026-06-22",
+      "items_found": 9
+    },
+    "lof": {
+      "last_checked": "2026-06-22",
+      "items_found": 1
+    },
+    "bkam": {
+      "last_checked": "2026-06-22",
+      "items_found": 1
+    },
+    "anrt_lois_telecom": {
+      "last_checked": "2026-06-22",
+      "items_found": 8
+    },
+    "anrt_lois_autres": {
+      "last_checked": "2026-06-22",
+      "items_found": 10
+    },
+    "anrt_decrets": {
+      "last_checked": "2026-06-22",
+      "items_found": 10
+    },
+    "cndp": {
+      "last_checked": "2026-06-22",
+      "items_found": 0
+    },
+    "mcinet": {
+      "last_checked": "2026-06-22",
+      "items_found": 0
+    }
+  },
+  "processed_urls": [
+    "https://www.anrt.ma/sites/default/files/2024-09/Loi%2024-96%20consolid%C3%A9e%20%28site%20web%20anrt%29%20-2019%20%20%20-%20V7%20compil%C3%A9e.pdf",
+    "https://adala.justice.gov.ma/api/uploads/2026/06/11/%D9%85%D8%B1%D8%B3%D9%88%D9%85%20%D8%B1%D9%82%D9%85%202.08.69%20%20%D8%A8%D8%B4%D8%A3%D9%86%20%D8%A7%D9%84%D9%86%D8%B8%D8%A7%D9%85%20%D8%A7%D9%84%D8%A3%D8%B3%D8%A7%D8%B3%D9%8A%20%D8%A7%D9%84%D8%AE%D8%A7%D8%B5%20%D8%A8%D9%87%D9%8A%D8%A6%D8%A9%20%20%D8%AA%D9%81%D8%AA%D9%8A%D8%B4%20%D8%A7%D9%84%D8%B4%D8%BA%D9%84%20%D8%B5%D9%8A%D8%BA%D8%A9%20%D9%85%D8%AD%D9%8A%D9%86%D8%A9-1781179217661.pdf#toolbar=0&statusbar=0",
+    "https://www.anrt.ma/sites/default/files/2009-1-09-15-09-08-protec-pers-physique-donnees-caractere-personnel-fr_0.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/decret_relatif_a_la_procedures_de_traitement_de_litiges-2-05-772-version_consolidee.pdf",
+    "https://adala.justice.gov.ma/api/uploads/2026/06/03/%D9%82%D8%B1%D8%A7%D8%B1%20%D9%84%D9%88%D8%B2%D9%8A%D8%B1%20%D8%A7%D9%84%D8%B9%D8%AF%D9%84%20%D8%B1%D9%82%D9%85%20935.26%20%D8%A8%D8%AA%D8%B9%D9%8A%D9%8A%D9%86%20%D8%A2%D9%85%D8%B1%D9%8A%D9%86%20%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%D9%8A%D9%86%20%D8%A8%D8%A7%D9%84%D8%B5%D8%B1%D9%81%20%D9%88%D9%86%D9%88%D8%A7%D8%A8%20%D8%B9%D9%86%D9%87%D9%85.docx-1780480605565.pdf#toolbar=0&statusbar=0",
+    "https://www.sgg.gov.ma/BO/AR/3111/2026/BOAL_5927.pdf",
+    "https://adala.justice.gov.ma/api/uploads/2026/06/19/%D9%82%D8%B1%D8%A7%D8%B1%20%D9%84%D9%88%D8%B2%D9%8A%D8%B1%20%D8%A7%D9%84%D8%B4%D8%A8%D8%A7%D8%A8%20%D9%88%D8%A7%D9%84%D8%AB%D9%82%D8%A7%D9%81%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D8%B1%D9%82%D9%85%20737.26%20%D8%A8%D8%AA%D8%AD%D8%AF%D9%8A%D8%AF%20%D9%88%D8%AA%D9%86%D8%B8%D9%8A%D9%85-1781870445944.pdf#toolbar=0&statusbar=0",
+    "https://www.finances.gov.ma/Publication/depp/2018/4%20-MEF-Circulaire%20Delaispaiement%20EEP_18092018.pdf",
+    "https://www.finances.gov.ma/Publication/depp/2023/note-circulaire734.pdf",
+    "https://www.anrt.ma/sites/default/files/2024-10/D%C3%A9cret_%20Membres%20du%20CA%20ANRT%202024%20-%20VAR.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/decret_1026_version.consolide.pdf",
+    "https://www.finances.gov.ma/Publication/depp/2023/Circulaire-D-1265.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/loi_121.12_modifiant_loi_24.96_vf_0.pdf",
+    "https://adala.justice.gov.ma/api/uploads/2026/06/09/%D9%85%D8%B1%D8%B3%D9%88%D9%85%20%D8%B1%D9%82%D9%85%202.25.970%20%D9%8A%D8%AA%D8%B9%D9%84%D9%82%20%D8%A8%D8%AA%D8%AD%D8%AF%D9%8A%D8%AF%20%D9%85%D9%87%D8%A7%D9%85%20%D9%82%D8%B6%D8%A7%D8%A9%20%D8%A7%D9%84%D8%A7%D8%AA%D8%B5%D8%A7%D9%84%20%D9%88%D9%85%D8%B3%D8%B7%D8%B1%D8%A9%20%D8%A7%D9%86%D8%AA%D9%82%D8%A7%D8%A6%D9%87%D9%85%20%D9%88%D8%AA%D8%B9%D9%8A%D9%8A%D9%86%D9%87%D9%85-1781018613185.pdf#toolbar=0&statusbar=0",
+    "https://www.anrt.ma/sites/default/files/2007-1-07-129-53-05-echang-elect-donnees-jurid-fr.pdf",
+    "https://www.anrt.ma/sites/default/files/2013-1-13-57-93-12-24-96-loi-telecom-fr_0.pdf",
+    "https://www.finances.gov.ma/Publication/depp/2019/CirculaireD%C3%A9laisPaiement_Juin2019_fr.pdf",
+    "https://www.sgg.gov.ma/BO/AR/3111/2025/ECI_21_Ar.pdf",
+    "https://adala.justice.gov.ma/api/uploads/2026/06/08/%D8%B1%D8%A3%D9%8A%20%D8%A7%D9%84%D9%85%D8%AC%D9%84%D8%B3%20%D8%A7%D9%84%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF%D9%8A%20%D9%88%D8%A7%D9%84%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF%D9%8A%20%D9%88%D8%A7%D9%84%D8%A8%D9%8A%D8%A6%D9%8A%20%D8%AD%D9%88%D9%84%20%D9%85%D8%B4%D8%B1%D9%88%D8%B9%20%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%B1%D9%82%D9%85%2016.22-1780915944236.pdf#toolbar=0&statusbar=0",
+    "https://www.anrt.ma/sites/default/files/2022-02/loi-haca.pdf",
+    "https://www.finances.gov.ma/Publication/depp/2018/decretn2-17-696_fr.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/loi-_com-audiosuelle-fr.pdf",
+    "https://www.finances.gov.ma/Publication/depp/2018/decretn2-16-344_fr.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/decret_nomination_membres_du_ca_de_lanrt_2008.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/loi-concurrence.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/2016-2-16-800-pnf-fr.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/decret_1025_version.consolide.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/decret_2-16-347_revision_du_decret_2-05-772_-_mai_2016_bo-fr.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/loi_05-20_cybersecurite_fr.pdf",
+    "https://www.finances.gov.ma/Publication/depp/2023/Loi%2069-21%20code%20de%20commerce%20d%C3%A9lais%20de%20paiement.pdf",
+    "https://www.anrt.ma/sites/default/files/2024-07/decret_1024_consolide-_vf-3-7-24__0.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/1997-1-97-162-24-96-loi-telecom-fr.pdf",
+    "https://adala.justice.gov.ma/api/uploads/2026/06/11/%D9%85%D8%B1%D8%B3%D9%88%D9%85%20%D8%B1%D9%82%D9%85%202.08.70%20%D8%A8%D8%B4%D8%A3%D9%86%20%D9%85%D9%86%D8%AD%20%D9%87%D9%8A%D8%A6%D8%A9%20%D8%AA%D9%81%D8%AA%D9%8A%D8%B4%20%D8%A7%D9%84%D8%B4%D8%BA%D9%84%20%D8%AA%D8%B9%D9%88%D9%8A%D8%B6%D8%A7%20%D8%B9%D9%86%20%D8%A7%D9%84%D8%AC%D9%88%D9%84%D8%A7%D8%AA%20%D8%B5%D9%8A%D8%BA%D8%A9%20%D9%85%D8%AD%D9%8A%D9%86%D8%A9-1781171994863.pdf#toolbar=0&statusbar=0",
+    "https://adala.justice.gov.ma/api/uploads/2026/06/03/%D9%85%D8%B1%D8%B3%D9%88%D9%85%20%D8%B1%D9%82%D9%85%202.25.261%20%D8%A8%D8%A7%D9%84%D9%85%D8%B5%D8%A7%D8%AF%D9%82%D8%A9%20%D8%B9%D9%84%D9%89%20%D9%85%D9%8A%D8%AB%D8%A7%D9%82%20%D8%A7%D9%84%D8%B3%D9%84%D9%88%D9%83%D9%8A%D8%A7%D8%AA-1780483095706.pdf#toolbar=0&statusbar=0",
+    "https://www.anrt.ma/sites/default/files/2022-02/loi_16.18_modifiant_la_loi_77.03_relative_a_la_communication_audiovisuelle_vf.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/2011-1-11-03-31-08-protec-conso-fr.pdf",
+    "https://www.sgg.gov.ma/BO/AR/3111/2026/BO_7517_Ar.pdf",
+    "https://adala.justice.gov.ma/api/uploads/2026/06/03/%D9%82%D8%B1%D8%A7%D8%B1%20%D9%84%D9%88%D8%B2%D9%8A%D8%B1%20%D8%A7%D9%84%D8%B9%D8%AF%D9%84%20%D8%B1%D9%82%D9%85%20934.26-1780479412935.pdf#toolbar=0&statusbar=0",
+    "https://adala.justice.gov.ma/api/uploads/2026/06/09/%D9%85%D8%B1%D8%B3%D9%88%D9%85%20%D8%B1%D9%82%D9%85%202.07.995%20%D8%A8%D8%B4%D8%A3%D9%86%20%D8%A7%D8%AE%D8%AA%D8%B5%D8%A7%D8%B5%D8%A7%D8%AA%20%D9%88%D8%AA%D9%86%D8%B8%D9%8A%D9%85%20%D9%88%D8%B2%D8%A7%D8%B1%D8%A9%20%D8%A7%D9%84%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF%20%D9%88%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-1781010993222.pdf#toolbar=0&statusbar=0",
+    "https://adala.justice.gov.ma/api/uploads/2026/06/18/%D9%82%D8%B1%D8%A7%D8%B1%20%D9%84%D9%88%D8%B2%D9%8A%D8%B1%20%D8%A7%D9%84%D8%B4%D8%A8%D8%A7%D8%A8%20%D9%88%D8%A7%D9%84%D8%AB%D9%82%D8%A7%D9%81%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D8%B1%D9%82%D9%85%20855.26-1781796822522.pdf#toolbar=0&statusbar=0",
+    "https://adala.justice.gov.ma/api/uploads/2026/06/09/%D9%85%D8%B1%D8%B3%D9%88%D9%85%20%D8%B1%D9%82%D9%85%202.08.69%20%20%D8%A8%D8%B4%D8%A3%D9%86%20%D8%A7%D9%84%D9%86%D8%B8%D8%A7%D9%85%20%D8%A7%D9%84%D8%A3%D8%B3%D8%A7%D8%B3%D9%8A-1781003949071.pdf#toolbar=0&statusbar=0",
+    "https://www.bkam.ma/content/download/814412/8935685/Recueil des textes législatifs et réglementaires de BAM _ VF.pdf",
+    "https://www.anrt.ma/sites/default/files/2011-1-11-86-59-10-24-96-loi-telecom-fr.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/la_loi_96-14_modifiant_et_completant_la_loi_77-03_fr.pdf",
+    "https://lof.finances.gov.ma/sites/default/files/bsfpavril2026.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/decret_2-05-772_-_litiges_et_saisines_-_juillet_2005_bo_fr.pdf",
+    "https://www.anrt.ma/sites/default/files/2004-1-04-154-55-01-24-96-loi-telecom-fr.pdf",
+    "https://adala.justice.gov.ma/api/uploads/2026/06/11/%D9%88%D8%A7%D9%84%D9%85%D8%B5%D8%A7%D9%84%D8%AD%20%D8%A7%D9%84%D8%AA%D8%A7%D8%A8%D8%B9%D8%A9-1781171876606.pdf#toolbar=0&statusbar=0",
+    "https://www.anrt.ma/sites/default/files/2022-02/2001-1-01-123-79-99-24-96-fr-loi-telecom%20%281%29.pdf",
+    "https://www.anrt.ma/sites/default/files/2022-02/decret_membres_du_ca_de_lanrt_avril_2013_.pdf",
+    "https://www.sgg.gov.ma/BO/AR/3111/2026/BOACF_1432.pdf",
+    "https://www.finances.gov.ma/Publication/depp/2018/decretn2-17-696ar.pdf",
+    "https://www.anrt.ma/sites/default/files/2024-06/loi%2040.21%20modifiant%20et%20compl%C3%A9tant%20la%20loi%20n%20104-12relative%20%C3%A0%20la%20libert%C3%A9%20des%20prix%20et%20de%20la%20concurrence.pdf",
+    "https://www.anrt.ma/sites/default/files/2007-1-07-43-29-06-24-96-loi-telecom-fr_0.pdf",
+    "https://www.finances.gov.ma/Publication/depp/2018/decretn2-16-344_ar.pdf"
+  ],
+  "stats": {
+    "total_detected": 55,
+    "total_queued": 47,
+    "total_updated": 2,
+    "total_repealed": 1
+  }
+}

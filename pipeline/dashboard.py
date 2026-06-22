@@ -322,6 +322,40 @@ SCRIPTS: Dict[str, Any] = {
     "danger":   True,
     "risk":     "sensitive",
   },
+
+  # ── Import depuis la queue ──────────────────────────────────────────────────
+  "import_queue_dry": {
+    "label":    "🔍 Import queue — aperçu (dry-run)",
+    "desc":     "Aperçu des textes à importer depuis import_queue SANS écriture en base",
+    "category": "📬 Veille juridique",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--dry-run"],
+    "danger":   False,
+    "risk":     "safe",
+  },
+  "import_queue_run": {
+    "label":    "📥 Importer depuis la queue (5 textes)",
+    "desc":     "Télécharge les PDFs + extrait le texte + insère 5 entrées 'pending' dans laws",
+    "category": "📬 Veille juridique",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--limit", "5"],
+    "danger":   True,
+    "risk":     "sensitive",
+  },
+  "import_queue_all": {
+    "label":    "📥 Importer tout (queue complète)",
+    "desc":     "Importe toutes les entrées 'pending' de import_queue dans laws (long)",
+    "category": "📬 Veille juridique",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--limit", "100"],
+    "danger":   True,
+    "risk":     "sensitive",
+  },
+  "import_queue_skip_pdf": {
+    "label":    "📋 Import metadata seule (sans PDF)",
+    "desc":     "Insère les métadonnées dans laws sans télécharger les PDFs — rapide",
+    "category": "📬 Veille juridique",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--skip-pdf", "--limit", "50"],
+    "danger":   True,
+    "risk":     "sensitive",
+  },
   "check_laws_v3": {
     "label":    "✅ Vérifier liste v3 (textes d'application)",
     "desc":     "Vérifie ~100 textes d'application : CCAG, décrets CT, finances, urbanisme, travail, santé, énergie — affiche seulement les manquants",

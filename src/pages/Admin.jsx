@@ -5,7 +5,8 @@ import {
   LayoutDashboard, FileText, Users, Plus, Edit2, Trash2,
   Search, TrendingUp, BarChart2, Eye, Shield, RefreshCw,
   CheckCircle2, XCircle, Save, X, Database, UserPlus, Mail, Lock, User, Briefcase,
-  Video, Play, ExternalLink, Menu, AlertTriangle, Flag, CheckCheck, Clock, Inbox, Download
+  Video, Play, ExternalLink, Menu, AlertTriangle, Flag, CheckCheck, Clock, Inbox, Download,
+  Bell, FileInput, Link2, RotateCcw
 } from 'lucide-react'
 import { useLang } from '../contexts/LangContext'
 import { useAuth } from '../contexts/AuthContext'
@@ -92,6 +93,15 @@ export default function Admin() {
   const [subscribersLoading, setSubscribersLoading] = useState(false)
   const [subscribersSearch, setSubscribersSearch]   = useState('')
 
+  // Veille & Import queue
+  const [queue, setQueue]               = useState([])
+  const [queueLoading, setQueueLoading] = useState(false)
+  const [queueCount, setQueueCount]     = useState(0)
+  const [needsUpdate, setNeedsUpdate]   = useState([])
+  const [needsUpdateLoading, setNeedsUpdateLoading] = useState(false)
+  const [needsUpdateCount, setNeedsUpdateCount]     = useState(0)
+  const [veilleTab, setVeilleTab]       = useState('queue') // 'queue' | 'updates'
+
   // Stats
   const [stats, setStats]       = useState({ laws: 0, users: 0, thisMonth: 0 })
 
@@ -117,19 +127,74 @@ export default function Admin() {
 
   // ── Fetch stats ──
   const loadStats = useCallback(async () => {
-    const [{ count: lawCount }, { count: userCount }, { count: monthCount }, { count: revCount }] = await Promise.all([
+    const [{ count: lawCount }, { count: userCount }, { count: monthCount }, { count: revCount }, { count: qCount }, { count: nuCount }] = await Promise.all([
       supabase.from('laws').select('*', { count: 'exact', head: true }),
       supabase.from('profiles').select('*', { count: 'exact', head: true }),
       supabase.from('laws').select('*', { count: 'exact', head: true })
         .gte('created_at', new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()),
       supabase.from('laws').select('*', { count: 'exact', head: true })
         .eq('needs_human_review', true),
+      supabase.from('import_queue').select('*', { count: 'exact', head: true })
+        .eq('status', 'pending'),
+      supabase.from('laws').select('*', { count: 'exact', head: true })
+        .eq('needs_update', true),
     ])
     setStats({ laws: lawCount || 0, users: userCount || 0, thisMonth: monthCount || 0 })
     setLawsTotal(lawCount || 0)
     setUsersTotal(userCount || 0)
     setReviewCount(revCount || 0)
+    setQueueCount(qCount || 0)
+    setNeedsUpdateCount(nuCount || 0)
   }, [])
+
+  // ── Fetch import_queue ──
+  const loadQueue = useCallback(async () => {
+    setQueueLoading(true)
+    const { data, count } = await supabase
+      .from('import_queue')
+      .select('*', { count: 'exact' })
+      .eq('status', 'pending')
+      .order('detected_at', { ascending: false })
+      .limit(100)
+    setQueue(data || [])
+    setQueueCount(count || 0)
+    setQueueLoading(false)
+  }, [])
+
+  // ── Fetch laws à mettre à jour ──
+  const loadNeedsUpdate = useCallback(async () => {
+    setNeedsUpdateLoading(true)
+    const { data, count } = await supabase
+      .from('laws')
+      .select('id,number,title_fr,title_ar,type,status,domain_id,needs_update,pending_bo,last_checked', { count: 'exact' })
+      .eq('needs_update', true)
+      .order('last_checked', { ascending: true })
+      .limit(100)
+    setNeedsUpdate(data || [])
+    setNeedsUpdateCount(count || 0)
+    setNeedsUpdateLoading(false)
+  }, [])
+
+  const rejectQueueItem = async (id) => {
+    await supabase.from('import_queue').update({ status: 'rejected' }).eq('id', id)
+    setQueue(prev => prev.filter(q => q.id !== id))
+    setQueueCount(c => Math.max(0, c - 1))
+    notify('Entrée rejetée')
+  }
+
+  const doneQueueItem = async (id) => {
+    await supabase.from('import_queue').update({ status: 'done' }).eq('id', id)
+    setQueue(prev => prev.filter(q => q.id !== id))
+    setQueueCount(c => Math.max(0, c - 1))
+    notify('Marqué comme traité ✓')
+  }
+
+  const clearNeedsUpdate = async (id) => {
+    await supabase.from('laws').update({ needs_update: false, pending_bo: null }).eq('id', id)
+    setNeedsUpdate(prev => prev.filter(l => l.id !== id))
+    setNeedsUpdateCount(c => Math.max(0, c - 1))
+    notify('Marqué comme traité ✓')
+  }
 
   // ── Fetch laws ──
   const loadLaws = useCallback(async (q = '', reviewOnly = false, page = 1) => {
@@ -258,6 +323,7 @@ export default function Admin() {
   useEffect(() => { if (section === 'users')   loadUsers(userSearch) },  [section])
   useEffect(() => { if (section === 'reports')     loadReports(reportsFilter) }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (section === 'subscribers') loadSubscribers(subscribersSearch) }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (section === 'veille') { loadQueue(); loadNeedsUpdate() } }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Subscribers ──
   const loadSubscribers = useCallback(async (q = '') => {
@@ -385,6 +451,7 @@ export default function Admin() {
   const MENU = [
     ...(isAdmin ? [{ key: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' }] : []),
     { key: 'texts',   icon: FileText, label: 'Textes juridiques' },
+    { key: 'veille',  icon: Bell,     label: 'Veille & Import', badge: (queueCount + needsUpdateCount) || null },
     { key: 'videos',  icon: Video,    label: 'Vidéos' },
     { key: 'reports',     icon: Flag,     label: 'Signalements' },
     { key: 'subscribers', icon: Inbox,    label: 'Abonnés' },
@@ -417,7 +484,7 @@ export default function Admin() {
         <span className="text-xs font-bold text-navy uppercase tracking-wide">{isAdmin ? 'Admin' : 'Éditeur'}</span>
       </div>
       <nav className="space-y-1">
-        {MENU.map(({ key, icon: Icon, label }) => (
+        {MENU.map(({ key, icon: Icon, label, badge }) => (
           <button
             key={key}
             onClick={() => { setSection(key); onSelect?.() }}
@@ -425,7 +492,13 @@ export default function Admin() {
               section === key ? 'bg-navy text-white' : 'text-navy-700 hover:bg-gray-50'
             }`}
           >
-            <Icon size={15} />{label}
+            <Icon size={15} />
+            <span className="flex-1 text-left">{label}</span>
+            {badge > 0 && (
+              <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${section === key ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700'}`}>
+                {badge}
+              </span>
+            )}
           </button>
         ))}
       </nav>
@@ -1052,6 +1125,224 @@ export default function Admin() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ══ VEILLE & IMPORT ══ */}
+        {section === 'veille' && (
+          <div>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div>
+                <h1 className="font-playfair font-bold text-navy text-2xl">Veille & Import</h1>
+                <p className="text-sm text-navy-500 mt-1">Textes détectés par la veille automatique — à valider avant import</p>
+              </div>
+              <button
+                onClick={() => { loadQueue(); loadNeedsUpdate() }}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 text-xs text-navy-600 hover:border-gold"
+              >
+                <RefreshCw size={13} /> Actualiser
+              </button>
+            </div>
+
+            {/* Onglets */}
+            <div className="flex gap-2 mb-5">
+              <button
+                onClick={() => setVeilleTab('queue')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-colors ${
+                  veilleTab === 'queue'
+                    ? 'bg-navy text-white border-navy'
+                    : 'bg-white text-navy-600 border-gray-200 hover:border-gold'
+                }`}
+              >
+                <FileInput size={14} />
+                À importer
+                {queueCount > 0 && (
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${veilleTab === 'queue' ? 'bg-white/20' : 'bg-amber-100 text-amber-700'}`}>
+                    {queueCount}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => setVeilleTab('updates')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-colors ${
+                  veilleTab === 'updates'
+                    ? 'bg-amber-500 text-white border-amber-500'
+                    : 'bg-white text-navy-600 border-gray-200 hover:border-gold'
+                }`}
+              >
+                <AlertTriangle size={14} />
+                À mettre à jour
+                {needsUpdateCount > 0 && (
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${veilleTab === 'updates' ? 'bg-white/20' : 'bg-red-100 text-red-700'}`}>
+                    {needsUpdateCount}
+                  </span>
+                )}
+              </button>
+            </div>
+
+            {/* ── Onglet : File d'import (import_queue) ── */}
+            {veilleTab === 'queue' && (
+              <div>
+                {queueLoading ? (
+                  <div className="flex items-center justify-center py-16 text-navy-400 text-sm">Chargement…</div>
+                ) : queue.length === 0 ? (
+                  <div className="bg-white rounded-2xl border border-gray-100 py-16 text-center">
+                    <CheckCircle2 size={36} className="text-emerald-300 mx-auto mb-3" />
+                    <p className="text-sm text-navy-500 font-medium">File d'import vide</p>
+                    <p className="text-xs text-navy-400 mt-1">Lancez la veille depuis le dashboard pipeline pour détecter de nouveaux textes.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {queue.map(item => {
+                      const actionColor = item.action === 'new' ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                        : item.action === 'update' ? 'bg-amber-50 text-amber-700 border-amber-200'
+                        : 'bg-red-50 text-red-700 border-red-200'
+                      const actionLabel = item.action === 'new' ? '🆕 Nouveau' : item.action === 'update' ? '✏️ Modification' : '🗑 Abrogation'
+                      return (
+                        <div key={item.id} className="bg-white rounded-xl border border-gray-100 p-4 hover:border-gray-200 transition-all">
+                          <div className="flex items-start gap-3 flex-wrap">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap mb-1">
+                                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${actionColor}`}>
+                                  {actionLabel}
+                                </span>
+                                <span className="text-[10px] text-navy-400 bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-full">
+                                  {item.source}
+                                </span>
+                                {item.law_type && (
+                                  <span className="text-[10px] text-navy-500 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">
+                                    {item.law_type}
+                                  </span>
+                                )}
+                                {item.domain_guess && (
+                                  <span className="text-[10px] text-gold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full">
+                                    {item.domain_guess}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-sm font-medium text-navy leading-snug line-clamp-2">
+                                {item.title_fr || item.law_number || item.pdf_url?.split('/').pop() || '—'}
+                              </p>
+                              {item.law_number && (
+                                <p className="text-xs text-navy-500 mt-0.5">Réf. : <span className="font-mono">{item.law_number}</span></p>
+                              )}
+                              <p className="text-[10px] text-navy-400 mt-1">
+                                Détecté le {new Date(item.detected_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                              </p>
+                            </div>
+
+                            {/* Actions */}
+                            <div className="flex items-center gap-1.5 flex-shrink-0">
+                              {item.pdf_url && (
+                                <a
+                                  href={item.pdf_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-1 text-[10px] font-medium px-2.5 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors"
+                                  title="Voir le PDF"
+                                >
+                                  <Link2 size={10} /> PDF
+                                </a>
+                              )}
+                              <button
+                                onClick={() => doneQueueItem(item.id)}
+                                className="flex items-center gap-1 text-[10px] font-medium px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors"
+                                title="Marquer traité"
+                              >
+                                <CheckCircle2 size={10} /> Traité
+                              </button>
+                              <button
+                                onClick={() => rejectQueueItem(item.id)}
+                                className="flex items-center gap-1 text-[10px] font-medium px-2.5 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                                title="Rejeter"
+                              >
+                                <XCircle size={10} /> Rejeter
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ── Onglet : Textes à mettre à jour ── */}
+            {veilleTab === 'updates' && (
+              <div>
+                {needsUpdateLoading ? (
+                  <div className="flex items-center justify-center py-16 text-navy-400 text-sm">Chargement…</div>
+                ) : needsUpdate.length === 0 ? (
+                  <div className="bg-white rounded-2xl border border-gray-100 py-16 text-center">
+                    <CheckCircle2 size={36} className="text-emerald-300 mx-auto mb-3" />
+                    <p className="text-sm text-navy-500 font-medium">Aucun texte à mettre à jour</p>
+                    <p className="text-xs text-navy-400 mt-1">La veille signale ici les textes existants qui ont été modifiés ou abrogés.</p>
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+                    <table className="w-full text-sm">
+                      <thead className="bg-gray-50 text-xs text-navy-500 uppercase tracking-wide">
+                        <tr>
+                          <th className="px-4 py-3 text-start">Référence</th>
+                          <th className="px-4 py-3 text-start">Titre</th>
+                          <th className="px-4 py-3 text-start">Domaine</th>
+                          <th className="px-4 py-3 text-start">BO signalé</th>
+                          <th className="px-4 py-3 text-start">Vérifié le</th>
+                          <th className="px-4 py-3 text-end">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-50">
+                        {needsUpdate.map(law => (
+                          <tr key={law.id} className="hover:bg-amber-50/30 transition-colors border-l-2 border-amber-400">
+                            <td className="px-4 py-3 text-xs font-mono text-navy-700">{law.number || '—'}</td>
+                            <td className="px-4 py-3 max-w-[280px]">
+                              <p className="text-navy font-medium text-xs truncate">{law.title_fr || '—'}</p>
+                              {law.title_ar && <p className="text-[11px] text-navy-400 font-arabic truncate">{law.title_ar}</p>}
+                            </td>
+                            <td className="px-4 py-3 text-xs text-gold font-medium">{law.domain_id || '—'}</td>
+                            <td className="px-4 py-3 text-xs text-navy-600">
+                              {law.pending_bo ? (
+                                <span className="font-mono text-amber-700 bg-amber-50 px-2 py-0.5 rounded">{law.pending_bo}</span>
+                              ) : '—'}
+                            </td>
+                            <td className="px-4 py-3 text-xs text-navy-500">
+                              {law.last_checked ? new Date(law.last_checked).toLocaleDateString('fr-FR') : '—'}
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="flex items-center justify-end gap-1">
+                                <Link
+                                  to={lawPath(law)}
+                                  target="_blank"
+                                  className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors"
+                                  title="Voir le texte"
+                                >
+                                  <Eye size={13} />
+                                </Link>
+                                <button
+                                  onClick={() => { setEditLaw({ ...law }); setSection('texts') }}
+                                  className="p-1.5 rounded-lg hover:bg-gold/10 text-amber-600 transition-colors"
+                                  title="Modifier"
+                                >
+                                  <Edit2 size={13} />
+                                </button>
+                                <button
+                                  onClick={() => clearNeedsUpdate(law.id)}
+                                  className="p-1.5 rounded-lg hover:bg-emerald-50 text-emerald-600 transition-colors"
+                                  title="Marquer traité"
+                                >
+                                  <CheckCheck size={13} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             )}
           </div>

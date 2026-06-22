@@ -16,7 +16,7 @@ Usage :
 import os, sys, re, json, argparse, tempfile, time, unicodedata
 from pathlib import Path
 from datetime import date, datetime
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
 
 from dotenv import load_dotenv
 from rich.console import Console
@@ -242,6 +242,12 @@ def import_item(item: dict, dry_run: bool, skip_pdf: bool) -> dict:
     action    = item.get("action", "new")
     source    = item.get("source", "")
 
+    # ── Nettoyer le titre dès le départ ────────────────────────────────────────
+    # Strip extension .pdf et décoder URL encoding (%20, %C3%A9, etc.)
+    if title_fr:
+        title_fr = unquote(title_fr)                       # decode URL encoding
+        title_fr = re.sub(r'\.(pdf|PDF)$', '', title_fr).strip()
+
     result = {
         "id": iid[:8] + "…",
         "title": title_fr[:55] or pdf_url.split('/')[-1][:55],
@@ -281,9 +287,12 @@ def import_item(item: dict, dry_run: bool, skip_pdf: bool) -> dict:
     # ── Générer un numéro fallback si absent ────────────────────────────────
     # La colonne `number` est NOT NULL dans laws — toujours fournir une valeur
     if not law_num:
-        filename = Path(urlparse(pdf_url).path).stem if pdf_url else ""
+        # Décoder le nom du fichier PDF (URL-encoding → texte lisible)
+        raw_stem = Path(urlparse(pdf_url).path).stem if pdf_url else ""
+        filename = unquote(raw_stem)   # ex: D%C3%A9cret_%20... → Décret_ ...
+        filename = re.sub(r'\s+', ' ', filename).strip()
         if filename and len(filename) > 3:
-            law_num = filename[:60]          # nom du fichier PDF comme numéro
+            law_num = filename[:60]
         else:
             ts = date.today().strftime("%Y%m%d")
             law_num = f"VEILLE-{source.upper()[:10]}-{ts}-{iid.split('-')[0]}"
@@ -315,7 +324,8 @@ def import_item(item: dict, dry_run: bool, skip_pdf: bool) -> dict:
     if item.get("bo_number"):
         law_data["bo_number"] = item["bo_number"]
     if item.get("bo_date"):
-        law_data["bo_date"] = item["bo_date"]
+        law_data["bo_date"]   = item["bo_date"]
+        law_data["date"]      = item["bo_date"]   # aussi le champ date principal
 
     if dry_run:
         result["status"] = "🔍 DRY-RUN"

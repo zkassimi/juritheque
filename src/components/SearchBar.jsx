@@ -88,16 +88,30 @@ export default function SearchBar({ size = 'md', onSearch, className = '' }) {
       .limit(5)
 
     if (expanded.length > 1) {
-      // Requête avec synonymes : OR sur tous les termes élargis (chaque synonyme = un OR)
-      const orParts = expanded.map(syn => {
-        const s = syn.trim()
+      // Synonymes précis trouvés (numéros de loi, titres arabes exacts)
+      // Stratégie : (termes originaux en AND) OR (synonymes spécifiques)
+      // PostgREST : and(a,b),c = (a AND b) OR c
+      const synParts = expanded.slice(1).map(s => {
+        const t = s.trim()
         return isArabic
-          ? `title_ar.ilike.%${s}%,number.ilike.%${s}%`
-          : `title_fr.ilike.%${s}%,title_ar.ilike.%${s}%,number.ilike.%${s}%`
+          ? `title_ar.ilike.%${t}%,number.ilike.%${t}%`
+          : `title_fr.ilike.%${t}%,title_ar.ilike.%${t}%,number.ilike.%${t}%`
       }).join(',')
-      lawQ = lawQ.or(orParts)
+
+      if (terms.length <= 1) {
+        // Terme unique : OR simple entre original + synonymes
+        const termParts = isArabic
+          ? `title_ar.ilike.%${dq}%,number.ilike.%${dq}%`
+          : `title_fr.ilike.%${dq}%,title_ar.ilike.%${dq}%,number.ilike.%${dq}%`
+        lawQ = lawQ.or(`${termParts},${synParts}`)
+      } else {
+        // Multi-termes : and(term1,term2) OR synonymes
+        // → trouve "Code de la Famille" via AND, et via l'arabe/numéro
+        const andTerms = terms.map(t => `title_fr.ilike.%${t}%`).join(',')
+        lawQ = lawQ.or(`and(${andTerms}),${synParts}`)
+      }
     } else {
-      // Pas de synonymes : cherche terme par terme (AND) pour précision sur requête multi-mots
+      // Pas de synonymes : cherche terme par terme (AND) — comportement normal
       for (const term of terms) {
         lawQ = isArabic
           ? lawQ.or(`title_ar.ilike.%${term}%,number.ilike.%${term}%`)

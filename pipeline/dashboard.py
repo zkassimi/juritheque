@@ -256,6 +256,22 @@ SCRIPTS: Dict[str, Any] = {
     "danger":   False,
     "risk":     "safe",
   },
+  "check_laws_v2": {
+    "label":    "✅ Vérifier liste élargie v2 (~250 lois)",
+    "desc":     "Vérifie les ~250 textes prioritaires (Constitution, Codes, Finances, Justice, Urbanisme, Travail, Santé, Environnement...) — affiche seulement les manquants groupés par domaine",
+    "category": "🔍 SEO & Index",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/check_laws_list.py", "--csv", "pipeline/laws_priority_list_v2.csv", "--missing-only"],
+    "danger":   False,
+    "risk":     "safe",
+  },
+  "check_laws_v2_export": {
+    "label":    "📊 Vérifier liste v2 + export CSV",
+    "desc":     "Même vérification v2 mais exporte le rapport complet dans laws_report_v2.csv (Excel-compatible)",
+    "category": "🔍 SEO & Index",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/check_laws_list.py", "--csv", "pipeline/laws_priority_list_v2.csv", "--export", "pipeline/laws_report_v2.csv"],
+    "danger":   False,
+    "risk":     "safe",
+  },
   "hide_sensitive": {
     "label":    "Masquer textes sensibles (dry-run)",
     "desc":     "Détecte les textes à masquer (données perso, < 30 mots) — dry-run par défaut",

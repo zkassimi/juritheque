@@ -1,0 +1,254 @@
+Priorité;Domaine;Type;Numéro;Titre_FR;Titre_AR;Mots_clés_variantes;Règle_de_vérification
+1;Constitution et institutions;Constitution;2011;Constitution du Royaume du Maroc;دستور المملكة المغربية;constitution maroc 2011 دستور 2011;Vérifier texte principal
+1;Constitution et institutions;Loi organique;130-13;Loi organique relative à la loi de finances;القانون التنظيمي لقانون المالية;LOF loi organique finances;Vérifier version consolidée
+1;Constitution et institutions;Loi organique;02-12;Nomination aux fonctions supérieures;التعيين في المناصب العليا;fonctions supérieures articles 49 92 constitution;Vérifier version consolidée
+1;Constitution et institutions;Loi organique;44-14;Pétitions aux pouvoirs publics;تقديم العرائض إلى السلطات العمومية;pétitions pouvoirs publics;Vérifier version consolidée
+1;Constitution et institutions;Loi organique;64-14;Motions en matière législative;تقديم الملتمسات في مجال التشريع;motions législatives;Vérifier version consolidée
+1;Constitution et institutions;Loi organique;;Chambre des représentants;مجلس النواب;loi organique chambre représentants;Vérifier par titre
+1;Constitution et institutions;Loi organique;;Chambre des conseillers;مجلس المستشارين;loi organique chambre conseillers;Vérifier par titre
+1;Constitution et institutions;Loi organique;;Partis politiques;الأحزاب السياسية;loi organique partis politiques;Vérifier par titre
+1;Constitution et institutions;Loi organique;;Élection des membres des conseils des collectivités territoriales;انتخاب أعضاء مجالس الجماعات الترابية;élections collectivités territoriales;Vérifier par titre
+1;Constitution et institutions;Loi organique;;Cour constitutionnelle;المحكمة الدستورية;loi organique cour constitutionnelle;Vérifier par titre
+1;Constitution et institutions;Loi organique;;Conseil économique social et environnemental;المجلس الاقتصادي والاجتماعي والبيئي;CESE conseil économique;Vérifier par titre
+1;Constitution et institutions;Loi organique;;Conseil supérieur du pouvoir judiciaire;المجلس الأعلى للسلطة القضائية;CSPJ pouvoir judiciaire;Vérifier version consolidée
+1;Constitution et institutions;Loi organique;;Statut des magistrats;النظام الأساسي للقضاة;magistrats statut;Vérifier version consolidée
+1;Codes fondamentaux;Code;;Code des obligations et des contrats;قانون الالتزامات والعقود;DOC obligations contrats;Texte indispensable
+1;Codes fondamentaux;Code;;Code pénal;القانون الجنائي;droit pénal code criminel;Vérifier version consolidée
+1;Codes fondamentaux;Code;;Code de procédure pénale;قانون المسطرة الجنائية;CPP procédure pénale;Vérifier version consolidée
+1;Codes fondamentaux;Code;;Code de procédure civile;قانون المسطرة المدنية;CPC procédure civile;Vérifier version consolidée
+1;Codes fondamentaux;Code;;Code de la famille;مدونة الأسرة;moudawana famille mariage divorce;Vérifier version consolidée
+1;Codes fondamentaux;Code;65-99;Code du travail;مدونة الشغل;travail salarié licenciement;Vérifier version consolidée
+1;Codes fondamentaux;Code;15-95;Code de commerce;مدونة التجارة;commerce entreprise commerçant;Vérifier version consolidée
+1;Codes fondamentaux;Code;39-08;Code des droits réels;مدونة الحقوق العينية;droits réels immobilier foncier;Vérifier version consolidée
+1;Codes fondamentaux;Code;15-97;Code de recouvrement des créances publiques;مدونة تحصيل الديون العمومية;recouvrement créances publiques;Vérifier version consolidée
+1;Codes fondamentaux;Code;;Code général des impôts;المدونة العامة للضرائب;CGI impôts fiscalité;Vérifier versions annuelles
+1;Codes fondamentaux;Code;;Code des douanes et impôts indirects;مدونة الجمارك والضرائب غير المباشرة;douanes taxes indirectes;Vérifier version consolidée
+1;Codes fondamentaux;Code;52-05;Code de la route;مدونة السير على الطرق;permis circulation infractions;Vérifier version consolidée
+2;Codes fondamentaux;Code;;Code des assurances;مدونة التأمينات;assurance ACAPS;Vérifier version consolidée
+2;Codes fondamentaux;Code;;Code du médicament et de la pharmacie;مدونة الأدوية والصيدلة;médicament pharmacie;Vérifier version consolidée
+2;Codes fondamentaux;Code;;Code des Habous;مدونة الأوقاف;habous awqaf;Vérifier version consolidée
+2;Codes fondamentaux;Code;;Code de la nationalité marocaine;قانون الجنسية المغربية;nationalité citoyenneté;Vérifier version applicable
+2;Codes fondamentaux;Code;;Code électoral;مدونة الانتخابات;élections listes électorales;Vérifier version applicable
+1;Collectivités territoriales;Loi organique;111-14;Loi organique relative aux régions;القانون التنظيمي المتعلق بالجهات;régions conseil régional;Très prioritaire
+1;Collectivités territoriales;Loi organique;112-14;Loi organique relative aux préfectures et provinces;القانون التنظيمي المتعلق بالعمالات والأقاليم;préfectures provinces;Très prioritaire
+1;Collectivités territoriales;Loi organique;113-14;Loi organique relative aux communes;القانون التنظيمي المتعلق بالجماعات;communes conseil communal;Très prioritaire
+1;Collectivités territoriales;Loi;47-06;Fiscalité des collectivités territoriales;جبايات الجماعات الترابية;taxes communales fiscalité locale;Vérifier version consolidée
+1;Collectivités territoriales;Texte réglementaire;;Régime financier des collectivités territoriales;النظام المالي للجماعات الترابية;budget commune région;Vérifier décrets
+1;Collectivités territoriales;Texte réglementaire;;Comptabilité publique des collectivités territoriales;المحاسبة العمومية للجماعات الترابية;comptable public ordonnateur;Vérifier décrets
+1;Collectivités territoriales;Texte réglementaire;;Patrimoine des collectivités territoriales;أملاك الجماعات الترابية;patrimoine communal domaine privé communal;Vérifier par titre
+1;Collectivités territoriales;Texte réglementaire;;Domaine public communal;الملك العام الجماعي;occupation domaine public;Vérifier par titre
+1;Collectivités territoriales;Texte réglementaire;;Police administrative communale;الشرطة الإدارية الجماعية;hygiène sécurité tranquillité;Vérifier par titre
+1;Collectivités territoriales;Texte réglementaire;;Indemnités des élus locaux;تعويضات المنتخبين المحليين;indemnités président vice-président conseiller;Vérifier par titre
+1;Collectivités territoriales;Texte réglementaire;;Statut de l'élu local;وضعية المنتخب المحلي;élu local incompatibilités révocation;Vérifier par titre
+1;Collectivités territoriales;Texte réglementaire;;Plan d'action communal;برنامج عمل الجماعة;PAC commune planification;Vérifier textes d'application
+1;Collectivités territoriales;Texte réglementaire;;Programme de développement régional;برنامج التنمية الجهوية;PDR région;Vérifier textes d'application
+1;Collectivités territoriales;Texte réglementaire;;Programme de développement de la préfecture ou province;برنامج تنمية العمالة أو الإقليم;PDP province préfecture;Vérifier textes d'application
+1;Collectivités territoriales;Texte réglementaire;;Groupements de collectivités territoriales;مجموعات الجماعات الترابية;groupement intercommunal coopération;Vérifier textes
+1;Collectivités territoriales;Bulletin officiel;;Bulletin Officiel des Collectivités Territoriales;النشرة الرسمية للجماعات الترابية;BOCT décisions arrêtés;Vérifier catégorie/source
+1;Finances publiques;Loi organique;130-13;Loi organique relative à la loi de finances;القانون التنظيمي لقانون المالية;LOF budget;Vérifier version consolidée
+1;Finances publiques;Décret;2-15-426;Décret relatif à l'élaboration et à l'exécution des lois de finances;مرسوم إعداد وتنفيذ قوانين المالية;exécution loi finances;Vérifier version consolidée
+1;Finances publiques;Loi annuelle;;Loi de finances 2026;قانون المالية 2026;LF 2026 budget 2026;Vérifier version annuelle
+1;Finances publiques;Loi annuelle;;Loi de finances 2025;قانون المالية 2025;LF 2025 budget 2025;Vérifier version annuelle
+1;Finances publiques;Loi annuelle;;Loi de finances 2024;قانون المالية 2024;LF 2024 budget 2024;Vérifier version annuelle
+1;Finances publiques;Loi annuelle;;Loi de finances 2023;قانون المالية 2023;LF 2023 budget 2023;Vérifier version annuelle
+1;Finances publiques;Loi annuelle;;Loi de règlement;قانون التصفية;budget règlement loi finances;Vérifier par année
+1;Finances publiques;Décret royal;330-66;Règlement général de comptabilité publique;النظام العام للمحاسبة العمومية;RGCP comptabilité publique;Vérifier version consolidée
+1;Finances publiques;Loi;69-00;Contrôle financier de l'État sur les entreprises publiques et autres organismes;المراقبة المالية للدولة على المنشآت العامة;contrôle financier EEP;Vérifier version consolidée
+1;Finances publiques;Loi;15-97;Code de recouvrement des créances publiques;مدونة تحصيل الديون العمومية;recouvrement public;Vérifier version consolidée
+2;Finances publiques;Loi;86-12;Contrats de partenariat public-privé;عقود الشراكة بين القطاعين العام والخاص;PPP partenariat public privé;Vérifier version consolidée
+2;Finances publiques;Texte réglementaire;;Gestion budgétaire et comptable des ministères;التدبير الميزانياتي والمحاسبي;GBCP budget État;Vérifier texte applicable
+2;Finances publiques;Texte réglementaire;;Services de l'État gérés de manière autonome;مصالح الدولة المسيرة بصورة مستقلة;SEGMA;Vérifier textes
+2;Finances publiques;Texte réglementaire;;Comptes spéciaux du Trésor;الحسابات الخصوصية للخزينة;CST trésor;Vérifier textes
+1;Marchés publics;Décret;2-22-431;Décret relatif aux marchés publics;مرسوم الصفقات العمومية;marchés publics commande publique;Très prioritaire
+1;Marchés publics;Arrêté;;Arrêtés d'application du décret relatif aux marchés publics;قرارات تطبيقية متعلقة بالصفقات العمومية;arrêtés marchés publics;Vérifier textes d'application
+1;Marchés publics;Texte réglementaire;;Cahiers des clauses administratives générales;دفاتر الشروط الإدارية العامة;CCAG travaux services fournitures;Vérifier CCAG
+1;Marchés publics;Texte réglementaire;;Bons de commande;سندات الطلب;commande publique bons commande;Vérifier règles applicables
+1;Marchés publics;Texte réglementaire;;Commission nationale de la commande publique;اللجنة الوطنية للطلبيات العمومية;CNCP commande publique;Vérifier textes
+1;Marchés publics;Texte réglementaire;;Dématérialisation des marchés publics;التدبير الإلكتروني للصفقات العمومية;portail marchés publics;Vérifier textes
+2;Marchés publics;Texte réglementaire;;Architecture et maîtrise d'œuvre;الهندسة المعمارية وتتبع الأشغال;concours architectural maîtrise œuvre;Vérifier textes
+2;Marchés publics;Texte réglementaire;;Contrôle et audit des marchés publics;مراقبة وتدقيق الصفقات العمومية;audit marchés;Vérifier textes
+1;Justice;Loi;38-15;Organisation judiciaire;التنظيم القضائي;tribunaux organisation judiciaire;Très prioritaire
+1;Justice;Code;;Code de procédure civile;قانون المسطرة المدنية;procédure civile;Vérifier version consolidée
+1;Justice;Code;;Code de procédure pénale;قانون المسطرة الجنائية;procédure pénale;Vérifier version consolidée
+1;Justice;Code;;Code pénal;القانون الجنائي;infractions sanctions;Vérifier version consolidée
+1;Justice;Loi;;Tribunaux administratifs;المحاكم الإدارية;justice administrative;Vérifier texte fondateur
+1;Justice;Loi;;Cours d'appel administratives;محاكم الاستئناف الإدارية;appel administratif;Vérifier texte fondateur
+1;Justice;Loi;;Tribunaux de commerce;المحاكم التجارية;justice commerciale;Vérifier texte fondateur
+1;Justice;Loi;;Cour de cassation;محكمة النقض;organisation cour cassation;Vérifier texte applicable
+1;Justice;Loi;;Aide judiciaire;المساعدة القضائية;aide juridictionnelle;Vérifier texte
+1;Justice;Loi;;Casier judiciaire;السجل العدلي;casier bulletin judiciaire;Vérifier texte
+1;Justice;Loi;;Arbitrage et médiation conventionnelle;التحكيم والوساطة الاتفاقية;arbitrage médiation;Vérifier version consolidée
+2;Justice;Texte réglementaire;;Notification et exécution des jugements;التبليغ وتنفيذ الأحكام;exécution jugement;Vérifier textes
+2;Justice;Texte réglementaire;;Frais judiciaires;الصوائر القضائية;taxes judiciaires;Vérifier textes
+1;Professions juridiques;Loi;;Profession d'avocat;مهنة المحاماة;avocat barreau;Vérifier version consolidée
+1;Professions juridiques;Loi;;Profession de notaire;مهنة التوثيق;notaire;Vérifier version consolidée
+1;Professions juridiques;Loi;;Profession d'adoul;مهنة العدول;adoul actes adoulaires;Vérifier version consolidée
+1;Professions juridiques;Loi;;Huissiers de justice;المفوضون القضائيون;huissier notification exécution;Vérifier version consolidée
+1;Professions juridiques;Loi;;Experts judiciaires;الخبراء القضائيون;expert judiciaire;Vérifier version consolidée
+2;Professions juridiques;Loi;;Traducteurs agréés près les juridictions;التراجمة المقبولون لدى المحاكم;traducteur assermenté;Vérifier version consolidée
+2;Professions juridiques;Loi;;Copistes;النساخ;copiste judiciaire;Vérifier texte
+2;Professions juridiques;Texte réglementaire;;Greffiers;كتابة الضبط;greffe tribunal;Vérifier textes
+1;Administration publique;Dahir;;Statut général de la fonction publique;النظام الأساسي العام للوظيفة العمومية;fonctionnaires statut général;Très prioritaire
+1;Administration publique;Décret;;Concours de recrutement dans les emplois publics;مباريات التوظيف في المناصب العمومية;recrutement public concours;Vérifier version consolidée
+1;Administration publique;Charte;;Charte des services publics;ميثاق المرافق العمومية;service public qualité accueil;Vérifier texte officiel
+1;Administration publique;Loi;;Droit d'accès à l'information;الحق في الحصول على المعلومات;accès information documents administratifs;Très prioritaire
+1;Administration publique;Loi;7-81;Expropriation pour cause d'utilité publique et occupation temporaire;نزع الملكية لأجل المنفعة العامة والاحتلال المؤقت;expropriation utilité publique;Très prioritaire
+1;Administration publique;Texte réglementaire;;Déconcentration administrative;اللاتمركز الإداري;charte déconcentration;Vérifier décret principal
+1;Administration publique;Texte réglementaire;;Établissements publics;المؤسسات العمومية;EEP établissement public;Vérifier textes généraux
+1;Administration publique;Texte réglementaire;;Discipline dans la fonction publique;التأديب في الوظيفة العمومية;sanction disciplinaire;Vérifier textes applicables
+2;Administration publique;Texte réglementaire;;Télétravail dans l'administration;العمل عن بعد بالإدارة;télétravail administration;Vérifier texte si existant
+2;Administration publique;Texte réglementaire;;Simplification des procédures administratives;تبسيط المساطر والإجراءات الإدارية;simplification autorisations;Vérifier textes
+2;Administration publique;Texte réglementaire;;Signature électronique administrative;التوقيع الإلكتروني الإداري;digitalisation administration;Vérifier textes
+1;Urbanisme et foncier;Loi;12-90;Urbanisme;التعمير;urbanisme plan aménagement;Très prioritaire
+1;Urbanisme et foncier;Loi;25-90;Lotissements groupes d'habitations et morcellements;التجزئات العقارية والمجموعات السكنية وتقسيم العقارات;lotissement morcellement;Très prioritaire
+1;Urbanisme et foncier;Loi;39-08;Code des droits réels;مدونة الحقوق العينية;foncier droits réels;Vérifier version consolidée
+1;Urbanisme et foncier;Dahir;;Immatriculation foncière;التحفيظ العقاري;titre foncier conservation foncière;Très prioritaire
+1;Urbanisme et foncier;Loi;18-00;Copropriété des immeubles bâtis;نظام الملكية المشتركة للعقارات المبنية;copropriété syndic;Très prioritaire
+1;Urbanisme et foncier;Loi;;Baux d'habitation ou à usage professionnel;كراء المحلات المعدة للسكنى أو للاستعمال المهني;loyer bail habitation;Vérifier texte exact
+1;Urbanisme et foncier;Loi;;Baux commerciaux;كراء المحلات التجارية;bail commercial fonds commerce;Vérifier texte exact
+1;Urbanisme et foncier;Texte réglementaire;;Autorisations de construire;رخص البناء;permis construire;Vérifier textes d'application
+1;Urbanisme et foncier;Texte réglementaire;;Agences urbaines;الوكالات الحضرية;agence urbaine avis;Vérifier textes
+1;Urbanisme et foncier;Texte réglementaire;;Règlement général de construction;ضابط البناء العام;RGC construction;Vérifier textes applicables
+1;Urbanisme et foncier;Texte réglementaire;;Règlement parasismique de construction;ضابط البناء المضاد للزلازل;RPS parasismique;Vérifier textes applicables
+2;Urbanisme et foncier;Texte réglementaire;;Domaine privé de l'État;الملك الخاص للدولة;domaine privé État;Vérifier textes
+2;Urbanisme et foncier;Texte réglementaire;;Domaine public de l'État;الملك العام للدولة;domaine public État;Vérifier textes
+2;Urbanisme et foncier;Texte réglementaire;;Terres collectives;الأراضي السلالية;collectivités ethniques soulaliyates;Vérifier textes récents
+2;Urbanisme et foncier;Texte réglementaire;;Melk et indivision;الملك والشياع;indivision sortie indivision;Vérifier textes
+2;Urbanisme et foncier;Texte réglementaire;;Vente en l'état futur d'achèvement;البيع في طور الإنجاز;VEFA immobilier;Vérifier texte
+2;Urbanisme et foncier;Texte réglementaire;;Résidences immobilières de promotion touristique;الإقامات العقارية للإنعاش السياحي;immobilier touristique;Vérifier texte
+1;Affaires et entreprises;Code;15-95;Code de commerce;مدونة التجارة;commerce commerçant;Très prioritaire
+1;Affaires et entreprises;Loi;17-95;Sociétés anonymes;شركات المساهمة;SA société anonyme;Très prioritaire
+1;Affaires et entreprises;Loi;5-96;Sociétés commerciales autres que les sociétés anonymes;باقي الشركات التجارية;SARL SNC SCS SCA;Très prioritaire
+1;Affaires et entreprises;Loi;;Difficultés de l'entreprise;صعوبات المقاولة;redressement liquidation sauvegarde;Vérifier dans Code de commerce
+1;Affaires et entreprises;Loi;;Registre de commerce;السجل التجاري;RC entreprise;Vérifier textes
+1;Affaires et entreprises;Loi;;Auto-entrepreneur;المقاول الذاتي;auto entrepreneur;Vérifier texte principal
+1;Affaires et entreprises;Loi;;Coopératives;التعاونيات;coopérative;Vérifier version consolidée
+1;Affaires et entreprises;Loi;;Groupements d'intérêt économique;مجموعات ذات النفع الاقتصادي;GIE;Vérifier texte
+1;Affaires et entreprises;Loi;;Délais de paiement;آجال الأداء;retard paiement entreprises;Vérifier texte + modifications
+1;Affaires et entreprises;Loi;;Sûretés mobilières;الضمانات المنقولة;sûretés garanties registre;Vérifier texte
+1;Concurrence;Loi;104-12;Liberté des prix et de la concurrence;حرية الأسعار والمنافسة;prix concurrence;Très prioritaire
+1;Concurrence;Loi;20-13;Conseil de la concurrence;مجلس المنافسة;conseil concurrence;Très prioritaire
+1;Consommation;Loi;31-08;Protection du consommateur;حماية المستهلك;consommateur crédit garantie;Très prioritaire
+1;Banque et finance;Loi;103-12;Établissements de crédit et organismes assimilés;مؤسسات الائتمان والهيئات المعتبرة في حكمها;banque crédit;Très prioritaire
+1;Banque et finance;Loi;40-17;Statut de Bank Al-Maghrib;النظام الأساسي لبنك المغرب;BAM banque centrale;Vérifier version consolidée
+1;Banque et finance;Loi;43-12;Autorité marocaine du marché des capitaux;الهيئة المغربية لسوق الرساميل;AMMC marché capitaux;Vérifier version consolidée
+1;Banque et finance;Loi;;Bourse des valeurs;بورصة القيم;bourse Casablanca;Vérifier texte
+1;Banque et finance;Loi;;Organismes de placement collectif en valeurs mobilières;هيئات التوظيف الجماعي للقيم المنقولة;OPCVM;Vérifier texte
+1;Banque et finance;Loi;;Microfinance;التمويل الأصغر;microcrédit;Vérifier texte
+1;Assurances;Code;;Code des assurances;مدونة التأمينات;assurance ACAPS;Vérifier version consolidée
+1;Investissement;Loi;47-18;Centres régionaux d'investissement;المراكز الجهوية للاستثمار;CRI investissement;Vérifier version consolidée
+2;Investissement;Charte;;Charte de l'investissement;ميثاق الاستثمار;investissement avantages;Vérifier texte récent
+2;Propriété intellectuelle;Loi;2-00;Droits d'auteur et droits voisins;حقوق المؤلف والحقوق المجاورة;copyright droits voisins;Vérifier version consolidée
+2;Propriété industrielle;Loi;;Propriété industrielle;الملكية الصناعية;marques brevets OMPIC;Vérifier texte principal
+2;Numérique;Loi;;Commerce électronique;التجارة الإلكترونية;e-commerce contrat électronique;Vérifier textes
+2;Numérique;Loi;;Cybersécurité;الأمن السيبراني;sécurité systèmes information;Vérifier textes
+2;Numérique;Loi;;Confiance numérique et signature électronique;الثقة الرقمية والتوقيع الإلكتروني;signature électronique;Vérifier textes
+1;Travail et social;Code;65-99;Code du travail;مدونة الشغل;contrat travail licenciement congé;Très prioritaire
+1;Travail et social;Texte;;Régime de sécurité sociale CNSS;نظام الضمان الاجتماعي;CNSS cotisations;Vérifier textes principaux
+1;Travail et social;Texte;;Accidents du travail;حوادث الشغل;accident travail indemnisation;Vérifier loi principale
+1;Travail et social;Texte;;Maladies professionnelles;الأمراض المهنية;maladie professionnelle;Vérifier textes
+1;Travail et social;Loi;;Assurance maladie obligatoire AMO;التأمين الإجباري الأساسي عن المرض;AMO couverture médicale;Vérifier textes principaux
+1;Travail et social;Loi;98-15;AMO des travailleurs indépendants;التأمين الإجباري الأساسي عن المرض للمهنيين والعمال المستقلين;indépendants AMO;Vérifier version consolidée
+1;Travail et social;Loi;99-15;Pension des travailleurs indépendants;نظام المعاشات للمهنيين والعمال المستقلين;indépendants retraite;Vérifier version consolidée
+1;Travail et social;Loi;60-22;Régime de l'AMO;نظام التأمين الإجباري الأساسي عن المرض;AMO réforme;Vérifier version consolidée
+1;Travail et social;Loi;58-23;Régime d'aide sociale directe;نظام الدعم الاجتماعي المباشر;aide sociale directe;Vérifier version consolidée
+1;Travail et social;Texte;;Indemnité pour perte d'emploi;التعويض عن فقدان الشغل;IPE chômage;Vérifier textes
+1;Travail et social;Texte;;Relations collectives de travail;علاقات الشغل الجماعية;syndicats conventions collectives;Vérifier textes
+2;Travail et social;Texte;;Inspection du travail;تفتيش الشغل;inspecteur travail;Vérifier textes
+2;Travail et social;Texte;;Santé et sécurité au travail;الصحة والسلامة في العمل;hygiène sécurité travail;Vérifier textes
+2;Travail et social;Texte;;Travail domestique;العمال المنزليون;domestiques;Vérifier texte
+2;Travail et social;Texte;;Travail temporaire;الشغل المؤقت;intérim;Vérifier textes
+1;Famille et personnes;Code;;Code de la famille;مدونة الأسرة;mariage divorce garde pension;Très prioritaire
+1;Famille et personnes;Loi;;État civil;الحالة المدنية;acte naissance décès mariage;Très prioritaire
+1;Famille et personnes;Code;;Code de la nationalité marocaine;قانون الجنسية المغربية;nationalité marocaine;Très prioritaire
+1;Famille et personnes;Loi;;Kafala des enfants abandonnés;كفالة الأطفال المهملين;kafala enfant abandonné;Vérifier texte
+1;Famille et personnes;Loi;;Protection de l'enfance;حماية الطفولة;enfant mineur protection;Vérifier textes
+1;Famille et personnes;Loi;;Personnes en situation de handicap;الأشخاص في وضعية إعاقة;handicap accessibilité;Vérifier textes
+2;Famille et personnes;Loi;;Étrangers au Maroc;الأجانب بالمغرب;séjour entrée étrangers;Vérifier texte
+2;Famille et personnes;Loi;;Immigration et émigration;الهجرة;résidence visa;Vérifier textes
+2;Famille et personnes;Loi;;Nom et prénom;الاسم الشخصي والعائلي;nom patronymique prénom;Vérifier textes
+1;Libertés publiques;Dahir;1958;Droit d'association;حق تأسيس الجمعيات;association déclaration;Très prioritaire
+1;Libertés publiques;Dahir;;Rassemblements publics;التجمعات العمومية;manifestations réunions publiques;Très prioritaire
+1;Libertés publiques;Loi;;Presse et édition;الصحافة والنشر;presse journalistes édition;Très prioritaire
+1;Libertés publiques;Loi;;Droit d'accès à l'information;الحق في الحصول على المعلومات;information publique;Très prioritaire
+1;Libertés publiques;Loi;09-08;Protection des données personnelles;حماية المعطيات ذات الطابع الشخصي;CNDP données personnelles;Très prioritaire
+1;Libertés publiques;Loi;;Communication audiovisuelle;الاتصال السمعي البصري;HACA audiovisuel;Vérifier texte
+1;Libertés publiques;Loi;;Partis politiques;الأحزاب السياسية;parti politique;Vérifier loi organique
+1;Libertés publiques;Loi;;Syndicats professionnels;النقابات المهنية;syndicat;Vérifier textes
+2;Libertés publiques;Loi;;Élections générales;الانتخابات العامة;scrutin campagne vote;Vérifier textes applicables
+2;Libertés publiques;Loi;;Listes électorales générales;اللوائح الانتخابية العامة;inscription listes électorales;Vérifier textes
+2;Libertés publiques;Loi;;Observation électorale;ملاحظة الانتخابات;observateurs élections;Vérifier textes
+1;Santé;Code;;Code du médicament et de la pharmacie;مدونة الأدوية والصيدلة;médicament pharmacie;Très prioritaire
+1;Santé;Loi;;Exercice de la médecine;مزاولة مهنة الطب;médecins ordre médecins;Vérifier texte
+1;Santé;Loi;;Établissements de santé;المؤسسات الصحية;cliniques hôpitaux;Vérifier textes
+1;Santé;Loi;;Ordre national des médecins;الهيئة الوطنية للطبيبات والأطباء;ordre médecins;Vérifier texte
+1;Santé;Loi;;Professions infirmières;مهن التمريض;infirmiers professionnels santé;Vérifier texte
+1;Santé;Loi;;Santé publique;الصحة العامة;ministère santé prévention;Vérifier textes
+2;Santé;Loi;;Bioéthique et don d'organes;أخلاقيات الطب والتبرع بالأعضاء;greffe organes;Vérifier textes
+2;Santé;Loi;;Protection contre les maladies transmissibles;الوقاية من الأمراض السارية;épidémie maladies;Vérifier textes
+2;Santé;Loi;;Sécurité sanitaire des produits alimentaires;السلامة الصحية للمنتجات الغذائية;ONSSA sécurité alimentaire;Vérifier textes
+1;Éducation et recherche;Loi-cadre;;Système d'éducation de formation et de recherche scientifique;منظومة التربية والتكوين والبحث العلمي;loi-cadre éducation formation;Très prioritaire
+1;Éducation et recherche;Loi;;Enseignement supérieur;التعليم العالي;universités établissements;Vérifier textes
+1;Éducation et recherche;Loi;;Universités;الجامعات;université autonomie;Vérifier textes
+1;Éducation et recherche;Loi;;Formation professionnelle;التكوين المهني;OFPPT formation;Vérifier textes
+2;Éducation et recherche;Loi;;Enseignement privé;التعليم الخصوصي;écoles privées;Vérifier textes
+2;Éducation et recherche;Loi;;Recherche scientifique;البحث العلمي;recherche innovation;Vérifier textes
+2;Éducation et recherche;Texte réglementaire;;Bourses universitaires;المنح الجامعية;bourse étudiant;Vérifier textes
+1;Environnement;Loi;36-15;Eau;الماء;eau domaine hydraulique;Très prioritaire
+1;Environnement;Loi;28-00;Gestion des déchets et élimination;تدبير النفايات والتخلص منها;déchets collecte traitement;Très prioritaire
+1;Environnement;Loi-cadre;;Protection de l'environnement;حماية البيئة;environnement développement durable;Vérifier texte principal
+1;Environnement;Loi;;Études d'impact sur l'environnement;دراسات التأثير على البيئة;EIE impact environnemental;Vérifier texte principal
+1;Environnement;Loi;;Lutte contre la pollution de l'air;محاربة تلوث الهواء;pollution air;Vérifier texte principal
+1;Environnement;Loi;;Littoral;الساحل;littoral côte;Vérifier texte
+1;Environnement;Loi;;Carrières;المقالع;exploitation carrières;Vérifier texte
+1;Environnement;Loi;;Forêts;الغابات;eaux et forêts;Vérifier texte
+1;Environnement;Texte réglementaire;;Domaine public hydraulique;الملك العام المائي;autorisation eau;Vérifier textes
+1;Énergie;Loi;13-09;Énergies renouvelables;الطاقات المتجددة;solaire éolien renouvelable;Très prioritaire
+1;Énergie;Loi;48-15;Régulation du secteur de l'électricité;ضبط قطاع الكهرباء;ANRE électricité;Vérifier version consolidée
+2;Énergie;Loi;;Efficacité énergétique;النجاعة الطاقية;économie énergie;Vérifier textes
+2;Énergie;Loi;;Hydrocarbures;المحروقات;carburants énergie;Vérifier textes
+2;Énergie;Loi;;Mines;المناجم;exploitation minière;Vérifier textes
+1;Agriculture et rural;Loi;;Agrégation agricole;التجميع الفلاحي;agriculture agrégation;Vérifier textes
+1;Agriculture et rural;Loi;;Produits agricoles et alimentaires;المنتجات الفلاحية والغذائية;ONSSA qualité;Vérifier textes
+1;Agriculture et rural;Loi;;Signes distinctifs d'origine et de qualité;علامات المنشأ والجودة;IGP AOP label;Vérifier textes
+1;Agriculture et rural;Loi;;Pêche maritime;الصيد البحري;pêche maritime;Vérifier textes
+2;Agriculture et rural;Loi;;Aquaculture marine;تربية الأحياء البحرية;aquaculture;Vérifier textes
+2;Agriculture et rural;Loi;;Coopératives agricoles;التعاونيات الفلاحية;coopérative agricole;Vérifier textes
+2;Agriculture et rural;Loi;;Domaine forestier;الملك الغابوي;forêts exploitation;Vérifier textes
+1;Transport et logistique;Code;52-05;Code de la route;مدونة السير على الطرق;permis infractions;Très prioritaire
+1;Transport et logistique;Loi;;Transport routier de marchandises;النقل الطرقي للبضائع;transport marchandises;Vérifier textes
+1;Transport et logistique;Loi;;Transport public de voyageurs;النقل العمومي للمسافرين;autobus taxi transport voyageurs;Vérifier textes
+1;Transport et logistique;Loi;;Permis de conduire;رخصة السياقة;permis visite médicale points;Vérifier textes
+1;Transport et logistique;Loi;;Contrôle technique des véhicules;المراقبة التقنية للعربات;visite technique;Vérifier textes
+2;Transport et logistique;Loi;;Transport ferroviaire;النقل السككي;ONCF ferroviaire;Vérifier textes
+2;Transport et logistique;Loi;;Aviation civile;الطيران المدني;aviation aéroport;Vérifier textes
+2;Transport et logistique;Loi;;Ports et transport maritime;الموانئ والنقل البحري;ports maritime;Vérifier textes
+1;Tourisme et culture;Loi;;Établissements touristiques;المؤسسات السياحية;hôtels hébergement touristique;Vérifier textes
+1;Tourisme et culture;Loi;;Agences de voyages;وكالات الأسفار;voyage tourisme;Vérifier textes
+1;Tourisme et culture;Loi;;Guides de tourisme;المرشدون السياحيون;guide touristique;Vérifier textes
+1;Tourisme et culture;Loi;;Patrimoine culturel;التراث الثقافي;monuments historiques;Vérifier textes
+2;Tourisme et culture;Loi;;Artisanat;الصناعة التقليدية;artisanat métiers;Vérifier textes
+2;Tourisme et culture;Loi;;Cinéma;السينما;CCM cinéma;Vérifier textes
+2;Tourisme et culture;Loi;;Musées;المتاحف;musées patrimoine;Vérifier textes
+1;Sécurité juridique et pénal spécial;Loi;;Lutte contre le blanchiment de capitaux;مكافحة غسل الأموال;blanchiment capitaux;Vérifier texte consolidé
+1;Sécurité juridique et pénal spécial;Loi;;Lutte contre le terrorisme;مكافحة الإرهاب;terrorisme financement;Vérifier textes officiels
+1;Sécurité juridique et pénal spécial;Loi;;Infractions informatiques;جرائم نظم المعالجة الآلية للمعطيات;cybercriminalité données;Vérifier textes
+1;Sécurité juridique et pénal spécial;Loi;;Protection des témoins et victimes;حماية الشهود والضحايا;témoins victimes dénonciateurs;Vérifier textes
+1;Sécurité juridique et pénal spécial;Loi;;Traite des êtres humains;الاتجار بالبشر;traite personnes;Vérifier textes
+2;Sécurité juridique et pénal spécial;Loi;;Textes relatifs aux substances réglementées;النصوص المتعلقة بالمواد الخاضعة للتنظيم;contrôle substances réglementées;Vérifier textes officiels sans contenu pratique
+2;Sécurité juridique et pénal spécial;Loi;;Textes relatifs à la sécurité publique;النصوص المتعلقة بالأمن العام;sécurité ordre public;Vérifier textes officiels sans contenu pratique
+1;Fiscalité SEO;Code;;Code général des impôts 2026;المدونة العامة للضرائب 2026;CGI 2026 impôts;Version annuelle obligatoire
+1;Fiscalité SEO;Code;;Code général des impôts 2025;المدونة العامة للضرائب 2025;CGI 2025 impôts;Version annuelle obligatoire
+1;Fiscalité SEO;Code;;Code général des impôts 2024;المدونة العامة للضرائب 2024;CGI 2024 impôts;Version annuelle obligatoire
+1;Fiscalité SEO;Code;;Code général des impôts 2023;المدونة العامة للضرائب 2023;CGI 2023 impôts;Version annuelle obligatoire
+1;Fiscalité SEO;Loi annuelle;;Loi de finances 2026;قانون المالية 2026;LF 2026;Version annuelle obligatoire
+1;Fiscalité SEO;Loi annuelle;;Loi de finances 2025;قانون المالية 2025;LF 2025;Version annuelle obligatoire
+1;Fiscalité SEO;Loi annuelle;;Loi de finances 2024;قانون المالية 2024;LF 2024;Version annuelle obligatoire
+1;Fiscalité SEO;Loi annuelle;;Loi de finances 2023;قانون المالية 2023;LF 2023;Version annuelle obligatoire
+1;Fiscalité SEO;Texte fiscal;;Taxe sur la valeur ajoutée;الضريبة على القيمة المضافة;TVA;Vérifier dans CGI
+1;Fiscalité SEO;Texte fiscal;;Impôt sur le revenu;الضريبة على الدخل;IR;Vérifier dans CGI
+1;Fiscalité SEO;Texte fiscal;;Impôt sur les sociétés;الضريبة على الشركات;IS;Vérifier dans CGI
+1;Fiscalité SEO;Texte fiscal;;Droits d'enregistrement;واجبات التسجيل;enregistrement;Vérifier dans CGI
+1;Fiscalité SEO;Texte fiscal;;Taxe professionnelle;الرسم المهني;taxe professionnelle;Vérifier fiscalité locale + CGI
+1;Fiscalité SEO;Texte fiscal;;Taxe de services communaux;رسم الخدمات الجماعية;TSC fiscalité locale;Vérifier loi 47-06
+1;Fiscalité SEO;Texte fiscal;;Taxe d'habitation;رسم السكن;taxe habitation;Vérifier loi 47-06

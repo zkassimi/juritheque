@@ -37,24 +37,24 @@ export default function DomainCard({ domain }) {
       className="group block bg-white rounded-2xl border border-gray-100 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
       style={{ borderTop: `3px solid ${s.color}` }}
     >
-      <div className="p-6">
+      <div className="p-4">
 
         {/* Icon — fully controlled by inline styles, no Tailwind size classes */}
         <div style={{
-          width: 48,
-          height: 48,
-          minWidth: 48,
-          minHeight: 48,
-          borderRadius: 12,
+          width: 40,
+          height: 40,
+          minWidth: 40,
+          minHeight: 40,
+          borderRadius: 10,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginBottom: 16,
+          marginBottom: 12,
           background: s.light,
           border: `1px solid ${s.border}`,
           flexShrink: 0,
         }}>
-          <Icon size={22} style={{ color: s.color }} />
+          <Icon size={18} style={{ color: s.color }} />
         </div>
 
         {/* Names */}

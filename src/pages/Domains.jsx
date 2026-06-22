@@ -34,13 +34,13 @@ export default function Domains() {
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {Array.from({ length: 9 }).map((_, i) => (
-              <div key={i} className="h-40 bg-white rounded-xl border border-gray-100 animate-pulse" />
+              <div key={i} className="h-36 bg-white rounded-xl border border-gray-100 animate-pulse" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {domains.map((domain, i) => (
               <div key={domain.id} className="animate-fade-in" style={{ animationDelay: `${i * 70}ms` }}>
                 <DomainCard domain={domain} />

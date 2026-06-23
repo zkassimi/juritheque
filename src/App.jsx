@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react'
-import { Routes, Route, Navigate, useParams } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { useLang } from './contexts/LangContext'
 import Navbar from './components/Navbar'
@@ -33,12 +33,6 @@ const Glossaire          = lazy(() => import('./pages/Glossaire'))
 const Methodologie       = lazy(() => import('./pages/Methodologie'))
 const APropos            = lazy(() => import('./pages/APropos'))
 
-// Redirect /loi/:slug → /fr/loi/:slug (rétrocompatibilité)
-function LawLegacyRedirect() {
-  const { slug } = useParams()
-  return <Navigate to={`/fr/loi/${slug}`} replace />
-}
-
 // ── Fallback de chargement ────────────────────────────────────────────────────
 function PageLoader() {
   return (
@@ -63,9 +57,8 @@ export default function App() {
           <Routes>
             <Route path="/"                              element={<Home />} />
             <Route path="/base"                          element={<Database />} />
-            <Route path="/fr/loi/:slug"                  element={<LawDetail />} />
+            <Route path="/loi/:slug"                     element={<LawDetail />} />
             <Route path="/ar/loi/:slug"                  element={<LawDetail />} />
-            <Route path="/loi/:slug"                     element={<LawLegacyRedirect />} />
             <Route path="/domaines"                      element={<Domains />} />
             <Route path="/domaine/:slug"                 element={<DomainView />} />
             <Route path="/videos"                        element={<Videos />} />

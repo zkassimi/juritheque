@@ -8,7 +8,9 @@
  */
 export const lawPath = (law, lang = 'fr') => {
   const id = law?.canonical_slug || law?.id
-  return `/${lang}/loi/${id}`
+  // FR : URL canonique sans préfixe (préserve l'indexation Google existante)
+  // AR : préfixe /ar/ pour les liens partageables en arabe
+  return lang === 'ar' ? `/ar/loi/${id}` : `/loi/${id}`
 }
 
 /**

@@ -147,8 +147,10 @@ export default function Navbar() {
           <button
             onClick={() => {
               const newLang = lang === 'fr' ? 'ar' : 'fr'
-              const lawMatch = location.pathname.match(/^\/(fr|ar)\/loi\/(.+)$/)
-              if (lawMatch) { navigate(`/${newLang}/loi/${lawMatch[2]}`); return }
+              const arFrMatch = location.pathname.match(/^\/(fr|ar)\/loi\/(.+)$/)
+              const legacyMatch = location.pathname.match(/^\/loi\/(.+)$/)
+              if (arFrMatch) { navigate(`/${newLang}/loi/${arFrMatch[2]}`); return }
+              if (legacyMatch) { navigate(`/${newLang}/loi/${legacyMatch[1]}`); return }
               toggleLang()
             }}
             className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-all duration-150 ${
@@ -252,8 +254,10 @@ export default function Navbar() {
               <button
                 onClick={() => {
                   const newLang = lang === 'fr' ? 'ar' : 'fr'
-                  const lawMatch = location.pathname.match(/^\/(fr|ar)\/loi\/(.+)$/)
-                  if (lawMatch) { navigate(`/${newLang}/loi/${lawMatch[2]}`); setOpen(false); return }
+                  const arFrMatch = location.pathname.match(/^\/(fr|ar)\/loi\/(.+)$/)
+                  const legacyMatch = location.pathname.match(/^\/loi\/(.+)$/)
+                  if (arFrMatch) { navigate(`/${newLang}/loi/${arFrMatch[2]}`); setOpen(false); return }
+                  if (legacyMatch) { navigate(`/${newLang}/loi/${legacyMatch[1]}`); setOpen(false); return }
                   toggleLang(); setOpen(false)
                 }}
                 className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium text-navy-700 hover:bg-gray-50 transition-colors"

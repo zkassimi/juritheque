@@ -120,7 +120,7 @@ export default function LawDetail() {
   useSEO({
     title:       seoTitle,
     description: seoDesc,
-    canonical:   law ? lawPath(law, lang) : `/${lang}/loi/${slug}`,
+    canonical:   law ? lawPath(law) : `/loi/${slug}`,
     type:        'article',
     noindex:     shouldNoIndex,
     hreflang:    law ? [

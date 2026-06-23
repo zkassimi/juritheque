@@ -182,7 +182,7 @@ def main():
             else:
                 status = "🔍"
 
-            table.add_row(law_id[:8] + "…", before, after, status)
+            table.add_row(str(law_id)[:8] + "…", before, after, status)
 
         console.print(table)
         if not args.dry_run:

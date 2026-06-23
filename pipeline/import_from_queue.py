@@ -181,6 +181,39 @@ def extract_title_from_text(text: str) -> str:
             return line[:300]
     return ""
 
+# ── Supabase Storage ─────────────────────────────────────────────────────────
+
+STORAGE_BUCKET = "legal-documents"
+
+def upload_to_storage(pdf_bytes: bytes, source: str, filename: str) -> str | None:
+    """Upload le PDF dans Supabase Storage et retourne l'URL publique."""
+    # Chemin dans le bucket : veille/{source}/{filename}.pdf
+    safe_name = re.sub(r'[^a-zA-Z0-9._-]', '_', filename)[:100]
+    if not safe_name.lower().endswith('.pdf'):
+        safe_name += '.pdf'
+    storage_path = f"veille/{source}/{safe_name}"
+
+    try:
+        resp = requests.post(
+            f"{SUPABASE_URL}/storage/v1/object/{STORAGE_BUCKET}/{storage_path}",
+            headers={
+                "apikey":         SUPABASE_KEY,
+                "Authorization":  f"Bearer {SUPABASE_KEY}",
+                "Content-Type":   "application/pdf",
+                "x-upsert":       "true",
+            },
+            data=pdf_bytes,
+            timeout=60,
+        )
+        if resp.status_code in (200, 201):
+            return f"{SUPABASE_URL}/storage/v1/object/public/{STORAGE_BUCKET}/{storage_path}"
+        console.print(f"    [yellow]Storage upload {resp.status_code}: {resp.text[:80]}[/]")
+        return None
+    except Exception as e:
+        console.print(f"    [yellow]Storage upload error: {str(e)[:60]}[/]")
+        return None
+
+
 # ── Supabase ─────────────────────────────────────────────────────────────────
 
 def get_queue(limit: int = 100, item_id: str = None) -> list[dict]:
@@ -278,7 +311,13 @@ def import_item(item: dict, dry_run: bool, skip_pdf: bool) -> dict:
                 if extracted:
                     title_fr = extracted
             if text_ar and (not title_fr or len(title_fr) < 5):
-                extracted_ar = extract_title_from_text(text_ar)
+                extract_title_from_text(text_ar)
+            # Uploader dans Supabase Storage pour avoir un vrai pdf_url hébergé
+            raw_filename = Path(unquote(urlparse(pdf_url).path)).name
+            storage_url = upload_to_storage(pdf_bytes, source, raw_filename)
+            if storage_url:
+                pdf_url = storage_url   # remplace l'URL externe par notre URL
+                console.print(f"    [green]✓ Uploadé vers Storage[/]")
         time.sleep(0.5)  # politesse
 
     # Générer le slug

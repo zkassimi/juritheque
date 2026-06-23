@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom'
 import {
   ChevronRight, Download, Share2, Heart, Bot, FileText, Calendar, Tag, Eye,
   ExternalLink, AlertTriangle, CheckCircle, ChevronDown, ChevronUp, BookOpen,
@@ -48,7 +48,14 @@ function parseTOC(raw) {
 export default function LawDetail() {
   const { slug } = useParams()
   const navigate = useNavigate()
-  const { t, lang } = useLang()
+  const { pathname } = useLocation()
+  const { t, lang, setLang } = useLang()
+
+  // Synchroniser la langue depuis l'URL (/ar/loi/… → AR, /fr/loi/… → FR)
+  useEffect(() => {
+    const urlLang = pathname.startsWith('/ar/') ? 'ar' : 'fr'
+    if (urlLang !== lang) setLang(urlLang)
+  }, [pathname]) // eslint-disable-line react-hooks/exhaustive-deps
   const { user, toggleFavorite, isFavorite, addToHistory } = useAuth()
   const [loading, setLoading]         = useState(true)
   const [law, setLaw]                 = useState(null)
@@ -113,9 +120,13 @@ export default function LawDetail() {
   useSEO({
     title:       seoTitle,
     description: seoDesc,
-    canonical:   law ? lawPath(law) : `/loi/${slug}`,
+    canonical:   law ? lawPath(law, lang) : `/${lang}/loi/${slug}`,
     type:        'article',
     noindex:     shouldNoIndex,
+    hreflang:    law ? [
+      { lang: 'fr', url: lawPath(law, 'fr') },
+      { lang: 'ar', url: lawPath(law, 'ar') },
+    ] : undefined,
     article: law ? {
       publishedTime: law.date || undefined,
       section:       domain?.name_fr || undefined,
@@ -247,7 +258,7 @@ export default function LawDetail() {
     { name: t('law.breadcrumb_home'), url: '/' },
     { name: t('law.breadcrumb_base'), url: '/base' },
     ...(domain ? [{ name: (lang === 'ar' && domain.name_ar) ? domain.name_ar : domain.name_fr, url: `/domaine/${domain.id}` }] : []),
-    { name: (displayNumber || (lang === 'ar' ? (law.title_ar || law.title_fr) : (law.title_fr || law.title_ar)) || 'Texte juridique').slice(0, 50), url: lawPath(law) },
+    { name: (displayNumber || (lang === 'ar' ? (law.title_ar || law.title_fr) : (law.title_fr || law.title_ar)) || 'Texte juridique').slice(0, 50), url: lawPath(law, lang) },
   ]
 
   // FAQ générée depuis les données disponibles (FAQPage JSON-LD + affichage visible)

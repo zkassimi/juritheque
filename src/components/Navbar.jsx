@@ -145,7 +145,12 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           {/* Lang toggle */}
           <button
-            onClick={toggleLang}
+            onClick={() => {
+              const newLang = lang === 'fr' ? 'ar' : 'fr'
+              const lawMatch = location.pathname.match(/^\/(fr|ar)\/loi\/(.+)$/)
+              if (lawMatch) { navigate(`/${newLang}/loi/${lawMatch[2]}`); return }
+              toggleLang()
+            }}
             className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-all duration-150 ${
               !isTransparent
                 ? 'border-navy/20 text-navy hover:border-gold hover:text-gold'
@@ -245,7 +250,12 @@ export default function Navbar() {
             {/* Toggle langue mobile */}
             <div className="pt-3 border-t border-gray-100 mt-1">
               <button
-                onClick={() => { toggleLang(); setOpen(false) }}
+                onClick={() => {
+                  const newLang = lang === 'fr' ? 'ar' : 'fr'
+                  const lawMatch = location.pathname.match(/^\/(fr|ar)\/loi\/(.+)$/)
+                  if (lawMatch) { navigate(`/${newLang}/loi/${lawMatch[2]}`); setOpen(false); return }
+                  toggleLang(); setOpen(false)
+                }}
                 className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium text-navy-700 hover:bg-gray-50 transition-colors"
               >
                 <span>{lang === 'fr' ? 'Basculer en arabe' : 'التبديل إلى الفرنسية'}</span>

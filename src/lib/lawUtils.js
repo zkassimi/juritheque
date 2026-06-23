@@ -6,14 +6,16 @@
  * Retourne le chemin React Router vers une loi.
  * Priorité : canonical_slug (SEO) → id numérique (rétrocompatiblité)
  */
-export const lawPath = (law) =>
-  law?.canonical_slug ? `/loi/${law.canonical_slug}` : `/loi/${law?.id}`
+export const lawPath = (law, lang = 'fr') => {
+  const id = law?.canonical_slug || law?.id
+  return `/${lang}/loi/${id}`
+}
 
 /**
  * Retourne l'URL canonique absolue d'une loi.
  */
-export const lawCanonical = (law, baseUrl = '') =>
-  `${baseUrl}${lawPath(law)}`
+export const lawCanonical = (law, baseUrl = '', lang = 'fr') =>
+  `${baseUrl}${lawPath(law, lang)}`
 
 /**
  * Mapping source_name → site officiel source

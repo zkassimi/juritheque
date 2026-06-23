@@ -4037,6 +4037,308 @@ export const SEO_INTENT_PAGES = [
       },
     ],
   },
+
+  // ─── Réforme marchés publics — décret 2-22-431 ───────────────────────────
+  {
+    lastUpdated:      '2026-06',
+    slug:             'reforme-marches-publics-maroc',
+    category:         'administratif',
+    legalDomain:      'administratif',
+    title:            'Réforme des marchés publics au Maroc : modifications du décret n° 2-22-431',
+    title_ar:         'إصلاح الصفقات العمومية بالمغرب : تعديلات المرسوم رقم 2.22.431',
+    metaDescription:  'Bons de commande à 800 000 DH TTC, appel d\'offres ouvert simplifié à 1 500 000 DH HT, offres anormalement basses à −15 % : les principales modifications proposées au décret n° 2-22-431 relatif aux marchés publics.',
+    metaDescription_ar: 'سندات الطلب بحد 800.000 درهم، طلب العروض المفتوح المبسط بحد 1.500.000 درهم، العرض المنخفض بكيفية غير عادية عند −15 % : أبرز التعديلات المقترحة على المرسوم رقم 2.22.431 المتعلق بالصفقات العمومية.',
+    h1:               'Réforme des marchés publics au Maroc : ce qui change dans le décret n° 2-22-431',
+    h1_ar:            'إصلاح الصفقات العمومية في المغرب : أبرز تعديلات المرسوم رقم 2.22.431',
+    intro:            '⚠ Avertissement — Ce guide est fondé sur un projet de décret modificatif non encore publié au Bulletin officiel. Les dispositions présentées constituent des modifications proposées et ne sont pas encore applicables. En cas de divergence avec le texte définitif, seule la version publiée officiellement fait foi.\n\nLe régime marocain de la commande publique s\'apprête à connaître de nouvelles évolutions. Un projet de décret modifiant et complétant le décret n° 2-22-431 du 15 chaabane 1444 (8 mars 2023) relatif aux marchés publics a été élaboré par le Ministère de l\'Économie et des Finances. Ce projet, soumis à l\'avis de la Commission nationale des marchés publics, vise à ajuster le dispositif réglementaire au regard des enseignements tirés des premières années d\'application du décret de 2023. Vingt-neuf articles sont concernés par les modifications proposées.',
+    intro_ar:         '⚠ تنبيه — يستند هذا الدليل إلى مشروع مرسوم تعديلي لم يُنشر بعد في الجريدة الرسمية. الأحكام المعروضة هي تعديلات مقترحة وليست سارية المفعول بعد. وفي حال وجود تعارض مع النص الرسمي النهائي، يُعتدّ فقط بالنص المنشور رسمياً.\n\nتستعد منظومة الطلبيات العمومية في المغرب لمستجدات جوهرية، إذ أعدّت وزارة الاقتصاد والمالية مشروع مرسوم لتغيير وتتميم المرسوم رقم 2.22.431 الصادر في 15 شعبان 1444 (8 مارس 2023) المتعلق بالصفقات العمومية. ويُعدّ هذا المشروع، الذي يطال تسعةً وعشرين مادة، امتداداً للإصلاح المنجز في 2023، ويرمي إلى معالجة الإشكاليات المُستخلصة من السنوات الأولى لتطبيق المرسوم.',
+    keywords:         ['réforme marchés publics Maroc', 'décret 2-22-431', 'bons de commande marchés publics', 'appel d\'offres ouvert simplifié Maroc', 'offre anormalement basse marchés publics Maroc', 'offre excessive marchés publics', 'préférence nationale marchés publics Maroc', 'TPE PME marchés publics Maroc', 'coopératives marchés publics', 'auto-entrepreneur marchés publics', 'commande publique Maroc', 'maître d\'ouvrage', 'concurrent marchés publics'],
+    keywords_ar:      ['إصلاح الصفقات العمومية المغرب', 'مرسوم الصفقات العمومية 2.22.431', 'سندات الطلب', 'طلب العروض المفتوح المبسط', 'العرض المنخفض بكيفية غير عادية', 'العرض المفرط', 'الأفضلية الوطنية', 'المقاولات الصغرى والمتوسطة', 'التعاونيات', 'المقاول الذاتي', 'الطلبيات العمومية المغرب', 'صاحب المشروع'],
+    searchTerms:      ['marchés publics', 'bons de commande', 'appel offres', 'décret 2-22-431', 'commande publique', 'offre anormalement basse'],
+    specificNumbers:  ['2-22-431'],
+    relatedSlugs:     ['marches-publics-maroc', 'collectivites-territoriales-maroc', 'droit-administratif-maroc'],
+
+    sections: [
+      {
+        icon: '📋',
+        h2: 'Contexte et portée du projet de réforme',
+        content: [
+          'Le décret n° 2-22-431 du 15 chaabane 1444 (8 mars 2023) constitue le texte de référence régissant les marchés de l\'État, des collectivités territoriales et des établissements publics depuis le 1er octobre 2023. Le projet de modification s\'inscrit dans la continuité de la réforme engagée et répond aux difficultés pratiques exprimées par les maîtres d\'ouvrage et les opérateurs économiques au cours des trois premières années d\'application.',
+          'Le projet de décret, préparé par le Ministère de l\'Économie et des Finances et soumis à l\'avis de la Commission nationale des marchés publics, modifie vingt-neuf articles du décret n° 2-22-431. Il a été signé par le ministre délégué auprès de la ministre de l\'Économie et des Finances, chargé du Budget, en vue de sa délibération en Conseil de gouvernement.',
+        ],
+        bullets: [
+          'Répondre aux attentes des maîtres d\'ouvrage et des opérateurs économiques exprimées lors des premières années d\'application du décret de 2023',
+          'Clarifier les responsabilités de chaque intervenant dans la procédure de passation et simplifier la maîtrise d\'ouvrage déléguée',
+          'Rationaliser le recours aux bons de commande et aux contrats de droit commun',
+          'Renforcer la dimension sociale dans l\'estimation du coût des prestations (gardiennage, nettoyage, entretien des espaces verts)',
+          'Encourager le tissu entrepreneurial local via la préférence territoriale et la promotion de l\'emploi local au lieu d\'exécution',
+          'Réorienter l\'évaluation des offres vers la protection du coût réel du travail pour les marchés à forte composante sociale',
+          'Favoriser la participation des TPE, PME, coopératives, auto-entrepreneurs et entreprises innovantes par le relèvement de certains seuils',
+          'Renforcer l\'efficacité, l\'intégrité et la transparence de la commande publique',
+        ],
+      },
+      {
+        icon: '📊',
+        h2: 'Les seuils et taux qui évoluent selon le projet',
+        content: [
+          'Les modifications les plus structurantes du projet portent sur les seuils de passation et les taux d\'appréciation des offres. Le tableau de synthèse ci-dessous présente les principales évolutions chiffrées, telles qu\'elles ressortent du texte du projet de décret. Il convient de souligner que ces chiffres sont issus d\'un projet et restent susceptibles d\'être modifiés dans le texte définitif.',
+        ],
+        bullets: [
+          'Bons de commande (Art. 91) — Avant : 500 000 DH TTC → Projet : 800 000 DH TTC — Élargissement du champ de recours aux bons de commande sans procédure formelle d\'appel d\'offres',
+          'Appel d\'offres ouvert simplifié (Art. 19) — Avant : 1 000 000 DH HT → Projet : 1 500 000 DH HT — Davantage de marchés éligibles à la procédure allégée',
+          'Offre excessive (Art. 44 et 144) — Avant : > 20 % du montant estimatif → Projet : > 15 % — Seuil plus strict pour écarter les offres disproportionnées',
+          'Offre anormalement basse (Art. 44 et 144) — Avant : < −20 % (marchés de travaux, fournitures, services) → Projet : < −15 % — Harmonisation et lutte renforcée contre le bradage des prix',
+          'Délai de publicité des bons de commande (Art. 91) — Avant : 48 heures → Projet : 5 jours minimum — Transparence accrue et meilleure accessibilité pour les concurrents',
+          'Prime dialogue compétitif et offre spontanée (Art. 12 et 13) — Avant : non plafonnée → Projet : 0,5 % de l\'offre financière retenue, plafond 200 000 DH — Encadrement financier des primes accordées',
+          'Garantie de bonne exécution — bons de commande (Art. 91) — Avant : non prévue → Projet : 2 % du montant estimatif, entre 1 000 DH et 5 000 DH — Nouvelle garantie pour sécuriser l\'exécution',
+          'Prolongation de la validité des offres (Art. 143) — Avant : accord sans plafond → Projet : 30 jours au plus, 90 jours au total maximum — Protection des concurrents contre des délais d\'approbation excessifs',
+        ],
+      },
+      {
+        icon: '📦',
+        h2: 'Bons de commande : le seuil annuel passerait à 800 000 DH TTC (Art. 91)',
+        content: [
+          'Le projet de décret prévoit de relever le seuil annuel des prestations réalisées par bons de commande de 500 000 DH TTC à 800 000 DH TTC, par ordonnateur, sous-ordonnateur ou personne habilitée, au cours d\'une même année budgétaire. Ce relèvement concerne les marchés de travaux, de fournitures et de services courants qui ne requièrent pas, en raison de leur nature ou de leur montant, le recours aux procédures formelles d\'appel d\'offres.',
+          'Selon le projet, ce seuil de 800 000 DH TTC s\'apprécie sur la base du montant annuel total des commandes passées par un même ordonnateur pour un même objet de prestations. Le projet renforce également les obligations de publicité et introduit la possibilité d\'exiger une garantie de bonne exécution, renforçant ainsi la transparence de cette procédure.',
+          'Cette modification est particulièrement importante pour les administrations, les collectivités territoriales et les établissements publics qui recourent fréquemment aux bons de commande pour couvrir leurs besoins courants.',
+        ],
+        bullets: [
+          'Seuil annuel proposé : 800 000 DH TTC par ordonnateur et par objet de prestations (Art. 91)',
+          'Délai de publicité de l\'avis : au moins 5 jours (contre 48 heures actuellement)',
+          'Garantie de bonne exécution possible : 2 % du montant estimatif, entre 1 000 DH minimum et 5 000 DH maximum',
+          'Possibilité de substituer la garantie par une caution personnelle et solidaire d\'un établissement agréé',
+          'L\'avis de bon de commande doit préciser : objet, spécifications techniques, montant estimatif, lieu de retrait des documents, licences et autorisations requises',
+          'Possibilité de dépôt des offres par voie électronique selon les modalités prévues par l\'avis',
+        ],
+      },
+      {
+        icon: '⚖️',
+        h2: 'Évaluation des offres : mieux-disant, offres anormales et préférence territoriale (Art. 43 et 44)',
+        content: [
+          'Important — Le projet maintient le critère du concurrent le moins disant comme règle générale d\'attribution : l\'offre la plus avantageuse s\'entend, pour les marchés de travaux, fournitures et services (hors études), de l\'offre financière la moins chère par rapport au prix de référence (Art. 43 du projet). La note de présentation évoque un passage à la culture du mieux-disant, mais le texte du projet conserve le moins-disant comme critère principal pour la majorité des marchés.',
+          'Exception pour les marchés à forte composante sociale — Pour les marchés de gardiennage des bâtiments administratifs, de nettoyage et d\'entretien des espaces verts, l\'offre la plus avantageuse est celle qui propose le taux de majoration le plus élevé, c\'est-à-dire la meilleure protection du coût réel de la main-d\'œuvre. Cette règle constitue une application du mieux-disant social et vise à lutter contre le bradage des prix au détriment des obligations sociales des prestataires.',
+          'En cas d\'égalité entre plusieurs offres financièrement avantageuses, le projet prévoit une préférence territoriale : priorité au concurrent qui exerce son activité dans la commune d\'exécution des travaux, à défaut dans la province ou la préfecture, à défaut dans la région, et en dernier recours tirage au sort entre les concurrents à égalité (Art. 43).',
+          'Les seuils d\'appréciation des offres excessives et anormalement basses sont harmonisés à 15 %, qu\'il s\'agisse de l\'offre financière globale ou des prix unitaires (Art. 44 et 144).',
+        ],
+        bullets: [
+          'Critère général d\'attribution : offre financière la moins chère par rapport au prix de référence (moins-disant maintenu pour la majorité des marchés)',
+          'Exception marchés sociaux : gardiennage / nettoyage / espaces verts → taux de majoration le plus élevé (protection de la main-d\'œuvre)',
+          'Offre excessive harmonisée : > 15 % du montant estimatif du maître d\'ouvrage (Art. 44 et 144)',
+          'Offre anormalement basse harmonisée : < −15 % du montant estimatif, pour travaux, fournitures et services hors études (Art. 44 et 144)',
+          'Préférence territoriale en cas d\'égalité : commune → province / préfecture → région → tirage au sort (Art. 43)',
+          'Appréciation des offres sur la base du montant hors taxes par le maître d\'ouvrage (Art. 44)',
+        ],
+      },
+      {
+        icon: '🏢',
+        h2: 'Dimension sociale, marchés réservés aux TPE/PME et préférence nationale (Art. 6, 147 et 148)',
+        content: [
+          'Art. 6 — Estimation du coût des prestations : Pour les marchés de gardiennage des bâtiments administratifs, de nettoyage et d\'entretien des espaces verts, le maître d\'ouvrage est désormais tenu, lors de l\'élaboration du coût estimatif, de prendre en compte le salaire minimum légal (SMIG) et les cotisations sociales obligatoires. Le coût estimatif doit être consigné dans un document écrit mentionnant les montants hors taxes, le taux et le montant de TVA, et le montant toutes taxes comprises. Cette mesure vise à mettre fin aux pratiques d\'offres financièrement irréalistes dans ces secteurs.',
+          'Art. 147 — Préférence nationale : Le projet maintient et précise la majoration de 15 % applicable aux offres des concurrents non établis au Maroc lors de la comparaison avec les offres des concurrents nationaux, pour les marchés de travaux, de fournitures et certains marchés de services portant sur des études.',
+          'Art. 148 — Marchés réservés : Le projet encourage et précise le recours aux marchés réservés en faveur des très petites entreprises, des PME, des coopératives, des unions de coopératives et des auto-entrepreneurs, ainsi que des entreprises innovantes. Les conditions et modalités d\'application peuvent être fixées par arrêté du ministre chargé des Finances.',
+        ],
+        bullets: [
+          'SMIG et cotisations sociales obligatoirement intégrés dans l\'estimation des marchés de gardiennage, nettoyage et entretien des espaces verts (Art. 6)',
+          'Majoration de 15 % appliquée aux offres des concurrents non établis au Maroc lors de la comparaison des offres (Art. 147 — préférence nationale)',
+          'Marchés réservés possibles pour les TPE, PME, coopératives, unions de coopératives et auto-entrepreneurs (Art. 148)',
+          'Conditions des marchés réservés fixées par arrêté du ministre de l\'Économie et des Finances — à surveiller lors de la publication du texte définitif',
+          'Préférence territoriale en cas d\'égalité : avantage supplémentaire pour les concurrents exerçant dans la zone d\'exécution (Art. 43)',
+        ],
+      },
+      {
+        icon: '📁',
+        h2: 'Simplifications administratives et procédurales (Art. 28, 136, 143 et 154)',
+        content: [
+          'Le projet apporte plusieurs simplifications en faveur des concurrents et des maîtres d\'ouvrage, en cohérence avec la politique de dématérialisation progressive de la commande publique marocaine.',
+          'Art. 28 — Preuve des capacités et qualités : Dans le cadre des marchés conclus par voie d\'appel d\'offres ouvert simplifié, le concurrent peut produire une attestation ou un certificat délivré dans le cadre du système de qualification, de classification ou d\'agrément, en lieu et place de certaines pièces du dossier administratif ou technique visées à l\'article 28, lorsque les marchés concernent les mêmes prestations.',
+          'Art. 143 — Délais d\'approbation : Le projet plafonne la prolongation de la validité des offres à 30 jours, pour un total ne pouvant excéder 90 jours à compter de la date d\'ouverture des plis. Cette mesure protège les concurrents contre des délais d\'approbation excessifs de la part de l\'autorité approbatrice.',
+          'Art. 154 — Maîtrise d\'ouvrage déléguée : Lorsque le ministre concerné a préalablement signé la convention de maîtrise d\'ouvrage déléguée, le maître d\'ouvrage délégué est dispensé du visa ou de l\'autorisation normalement requis pour la passation des marchés relevant de cette convention, simplifiant ainsi la gestion de certains projets publics.',
+        ],
+        bullets: [
+          'Certificat de qualification ou de classification remplace certaines pièces du dossier technique dans le cadre de l\'AO ouvert simplifié (Art. 28)',
+          'Ouverture et évaluation électroniques des plis encadrées par les textes d\'application (Art. 136)',
+          'Prolongation de la validité des offres : 30 jours maximum, 90 jours au total — protection des concurrents (Art. 143)',
+          'Maîtrise d\'ouvrage déléguée : dispense de visa si convention préalable signée par le ministre compétent (Art. 154)',
+          'Réorganisation de la composition des commissions d\'appel d\'offres selon la nature de l\'organisme maître d\'ouvrage (État, établissements publics, personnes morales de droit public) — Art. 38',
+        ],
+      },
+    ],
+
+    sections_ar: [
+      {
+        icon: '📋',
+        h2: 'سياق مشروع الإصلاح ونطاقه',
+        content: [
+          'يُشكّل المرسوم رقم 2.22.431 الصادر في 15 شعبان 1444 (8 مارس 2023) الإطار التشريعي المرجعي لإبرام صفقات الدولة والجماعات الترابية والمؤسسات العامة منذ فاتح أكتوبر 2023. ويأتي مشروع التعديل في سياق استكمال هذا الإصلاح، استجابةً للإشكاليات العملية التي أبدت عنها أصحاب المشاريع والمتعاملين الاقتصاديين خلال السنوات الثلاث الأولى من تطبيق المرسوم.',
+          'أُعدّ المشروع من طرف وزارة الاقتصاد والمالية، وعُرض على اللجنة الوطنية للطلبيات العمومية، ويطال تسعةً وعشرين مادة من مرسوم 2023.',
+        ],
+        bullets: [
+          'الاستجابة لتطلعات أصحاب المشاريع والمتعاملين الاقتصاديين المُعبَّر عنها خلال السنوات الأولى من تطبيق المرسوم',
+          'توضيح مسؤوليات المتدخلين في مسطرة إبرام الصفقات وتبسيط الإشراف المنتدب على المشروع',
+          'ترشيد اللجوء إلى سندات الطلب والعقود الخاضعة للقانون العادي',
+          'تعزيز البعد الاجتماعي في إعداد تقدير كلفة الأعمال، لا سيما بالنسبة لصفقات الحراسة والنظافة وصيانة المساحات الخضراء',
+          'تشجيع النسيج المقاولاتي المحلي عبر الأفضلية الترابية وإنعاش التشغيل المحلي',
+          'إعادة توجيه تقييم العروض نحو حماية الكلفة الحقيقية للعمل في الصفقات ذات الطابع الاجتماعي',
+          'تيسير ولوج المقاولات الصغيرة جداً والمتوسطة والتعاونيات والمقاولين الذاتيين والمقاولات المبتكرة إلى الطلبيات العمومية',
+          'تعزيز فعالية ونزاهة وشفافية إبرام الصفقات العمومية',
+        ],
+      },
+      {
+        icon: '📊',
+        h2: 'العتبات والنسب التي تشملها التعديلات المقترحة',
+        content: [
+          'تنصبّ أبرز تعديلات المشروع على عتبات إبرام الصفقات ونسب تقييم العروض. وتجدر الإشارة إلى أن الأرقام الواردة أدناه مستقاة من نص المشروع، وتظل قابلة للتعديل في النص النهائي.',
+        ],
+        bullets: [
+          'سندات الطلب (م. 91) — قبل : 500.000 درهم ش.ج → المشروع : 800.000 درهم ش.ج — توسيع نطاق اللجوء إلى سندات الطلب',
+          'طلب العروض المفتوح المبسط (م. 19) — قبل : 1.000.000 درهم خ.ر → المشروع : 1.500.000 درهم خ.ر — تمكين عدد أكبر من الصفقات من الاستفادة من المسطرة المبسطة',
+          'العرض المفرط (م. 44 و144) — قبل : > 20 % → المشروع : > 15 % — تشديد عتبة الإقصاء',
+          'العرض المنخفض بكيفية غير عادية (م. 44 و144) — قبل : < −20 % → المشروع : < −15 % — تعزيز الحماية من ظاهرة كسر الأسعار',
+          'مدة إشهار سند الطلب (م. 91) — قبل : 48 ساعة → المشروع : 5 أيام على الأقل — تقوية الشفافية وتكافؤ الفرص',
+          'جائزة الحوار التنافسي والعرض التلقائي (م. 12 و13) — قبل : غير محددة → المشروع : 0,5 % من العرض المالي المقبول، بسقف 200.000 درهم',
+          'ضمان حسن التنفيذ لسندات الطلب (م. 91) — قبل : غير مقرر → المشروع : 2 % من مبلغ تقدير الأعمال، بين 1.000 و5.000 درهم',
+          'مدة سريان العروض (م. 143) — قبل : بالتراضي دون سقف → المشروع : 30 يوماً على الأكثر، 90 يوماً في المجموع — حماية المتنافسين من تأخيرات المصادقة',
+        ],
+      },
+      {
+        icon: '📦',
+        h2: 'سندات الطلب : العتبة السنوية ترتفع إلى 800.000 درهم ش.ج (م. 91)',
+        content: [
+          'يرمي المشروع إلى رفع العتبة السنوية للأشغال المُنجزة بواسطة سندات الطلب من 500.000 درهم ش.ج إلى 800.000 درهم ش.ج، بالنسبة لكل آمر بالصرف أو آمر بالصرف فرعي أو شخص مفوض، وذلك في إطار سنة مالية واحدة.',
+          'وتُقدَّر هذه العتبة على أساس إجمالي قيمة الطلبيات الصادرة عن نفس الآمر بالصرف لنفس موضوع الأشغال في السنة المالية الواحدة. كما يُدخل المشروع التزامات جديدة تتعلق بالإشهار واحتمال اشتراط ضمان حسن التنفيذ، مما يعزز شفافية هذه المسطرة.',
+        ],
+        bullets: [
+          'العتبة السنوية المقترحة : 800.000 درهم ش.ج لكل آمر بالصرف ولكل موضوع أشغال (م. 91)',
+          'مدة إشهار الإعلان : 5 أيام على الأقل (عوضاً عن 48 ساعة حالياً)',
+          'ضمان حسن التنفيذ المحتمل : 2 % من مبلغ تقدير الأعمال، بين 1.000 درهم و5.000 درهم',
+          'إمكانية تعويض الضمان بكفالة شخصية وتضامنية صادرة عن مؤسسة معتمدة',
+          'يجب أن يتضمن إعلان سند الطلب : الموضوع، المواصفات التقنية، التقدير المالي، مكان تسلّم الوثائق، الرخص والتراخيص المطلوبة',
+          'إمكانية إيداع العروض إلكترونياً وفق الشروط المحددة في الإعلان',
+        ],
+      },
+      {
+        icon: '⚖️',
+        h2: 'تقييم العروض : العرض الأفضل والعروض الشاذة والأفضلية الترابية (م. 43 و44)',
+        content: [
+          'ملاحظة جوهرية — يُبقي المشروع على معيار "العرض الأقل ثمناً" بالنسبة للثمن المرجعي كمعيار عام لإسناد الصفقات، وذلك بالنسبة لصفقات الأشغال والتوريدات والخدمات غير المتعلقة بالدراسات (م. 43). أما مفهوم "أفضل عرض" الذي أشارت إليه المذكرة التقديمية، فتطبيقه الفعلي في نص المشروع يقتصر على فئة معينة من الصفقات.',
+          'استثناء اجتماعي — بالنسبة لصفقات حراسة المباني الإدارية وتنظيفها وصيانة المساحات الخضراء، يُعدّ العرض الأكثر أفضلية هو العرض الذي يقترح نسبة الزيادة الأعلى، أي الذي يُوفّر أفضل حماية لكلفة اليد العاملة. ويستهدف هذا الاستثناء الحدّ من ظاهرة كسر الأسعار على حساب الالتزامات الاجتماعية للمقاولات.',
+          'عند التساوي في العروض الأكثر أفضلية، يُرجّح المشروع المتنافسَ الذي يزاول نشاطه في مكان تنفيذ الأعمال بالنفوذ الترابي للجماعة، ثم للإقليم أو العمالة، ثم للجهة، وأخيراً يُجرى قرعة بين المتنافسين المتساوين (م. 43).',
+          'تتم مواءمة عتبات العرض المفرط والعرض المنخفض بكيفية غير عادية عند 15 % سواء بالنسبة للثمن الإجمالي أو للأثمان الأحادية (م. 44 و144).',
+        ],
+        bullets: [
+          'المعيار العام لإسناد الصفقات : العرض المالي الأقل ثمناً بالنسبة للثمن المرجعي (يُحتفظ بمعيار الأقل ثمناً بوجه عام)',
+          'استثناء صفقات الحراسة والنظافة والمساحات الخضراء : نسبة الزيادة الأعلى هي المعيار (حماية كلفة اليد العاملة)',
+          'العرض المفرط : > 15 % من المبلغ التقديري لكلفة الأعمال (م. 44 و144)',
+          'العرض المنخفض بكيفية غير عادية : < −15 % من المبلغ التقديري، لصفقات الأشغال والتوريدات والخدمات غير المتعلقة بالدراسات (م. 44 و144)',
+          'الأفضلية الترابية عند التساوي : الجماعة → الإقليم أو العمالة → الجهة → القرعة (م. 43)',
+          'تُقيَّم العروض على أساس المبلغ الخارج عن الرسوم من قِبَل صاحب المشروع (م. 44)',
+        ],
+      },
+      {
+        icon: '🏢',
+        h2: 'البعد الاجتماعي والصفقات المخصصة للمقاولات الصغرى ومتوسطة الحجم (م. 6 و147 و148)',
+        content: [
+          'المادة 6 — إعداد تقدير كلفة الأعمال : بالنسبة لصفقات حراسة المباني الإدارية وتنظيفها وصيانة المساحات الخضراء، يتعين على صاحب المشروع، عند إعداد تقدير كلفة الأعمال، أن يأخذ بعين الاعتبار الحد الأدنى القانوني للأجور (SMIG) والمساهمات الاجتماعية الإلزامية. ويُضمَّن تقدير كلفة الأعمال في وثيقة مكتوبة تُبرز المبلغ خارج الرسوم ونسبة الضريبة على القيمة المضافة ومبلغها والمبلغ مع احتساب جميع الرسوم.',
+          'المادة 147 — الأفضلية الوطنية : يُقرّ المشروع تطبيق نسبة زيادة قدرها 15 % على العروض المالية للمتنافسين غير المؤسَّسين بالمغرب عند المقارنة مع عروض المتنافسين الوطنيين، بالنسبة لصفقات الأشغال والتوريدات وبعض صفقات الخدمات المتعلقة بالدراسات.',
+          'المادة 148 — الصفقات المخصصة : يحثّ المشروع على اللجوء إلى الصفقات المخصصة لفائدة المقاولات الصغيرة جداً والمقاولات الصغيرة والمتوسطة والتعاونيات واتحاداتها والمقاولين الذاتيين والمقاولات المبتكرة، ويمكن أن تُحدَّد شروط وكيفيات تطبيق ذلك بقرار للوزير المكلف بالمالية.',
+        ],
+        bullets: [
+          'الحد الأدنى القانوني للأجور والمساهمات الاجتماعية الإلزامية يجب إدماجها في تقدير كلفة صفقات الحراسة والنظافة والمساحات الخضراء (م. 6)',
+          'زيادة 15 % تُطبَّق على عروض المتنافسين غير المؤسَّسين بالمغرب عند المقارنة (م. 147 — الأفضلية الوطنية)',
+          'صفقات مخصصة ممكنة للمقاولات الصغيرة جداً والمتوسطة والتعاونيات والمقاولين الذاتيين (م. 148)',
+          'شروط الصفقات المخصصة تُحدَّد بقرار للوزير المكلف بالمالية — للمتابعة عند نشر النص النهائي',
+          'الأفضلية الترابية عند التساوي : ميزة إضافية للمتنافسين الممارسين نشاطهم في منطقة تنفيذ الأشغال (م. 43)',
+        ],
+      },
+      {
+        icon: '📁',
+        h2: 'التبسيطات الإدارية والمسطرية (م. 28 و136 و143 و154)',
+        content: [
+          'يُدخل المشروع جملةً من التبسيطات لفائدة المتنافسين وأصحاب المشاريع، في سياق التحول الرقمي التدريجي لمنظومة الطلبيات العمومية المغربية.',
+          'المادة 28 — إثبات القدرات والمؤهلات : في إطار الصفقات المبرمة بواسطة طلب العروض المفتوح المبسط، يمكن للمتنافس الإدلاء بالشهادة المسلمة في إطار نظام التأهيل والتصنيف أو الاعتماد، عوضاً عن بعض الوثائق المطلوبة في الملف الإداري أو التقني المشار إليها في المادة 28، متى كانت الصفقة تهم نفس الأعمال.',
+          'المادة 143 — آجال المصادقة : يُقيّد المشروع تمديد صلاحية العروض في 30 يوماً، بحيث لا يتجاوز مجموع مدة الصلاحية 90 يوماً ابتداءً من تاريخ فتح الأظرفة، حماية للمتنافسين من آجال المصادقة المفرطة.',
+          'المادة 154 — الإشراف المنتدب على المشروع : متى كان الوزير المعني قد وقّع مسبقاً على اتفاقية الإشراف المنتدب، يُعفى صاحب المشروع المنتدب من التأشيرة أو الإذن المطلوبَين عادةً لإبرام الصفقات المندرجة ضمن تلك الاتفاقية.',
+        ],
+        bullets: [
+          'شهادة التأهيل أو التصنيف أو الاعتماد تحلّ محل بعض وثائق الملف التقني في إطار طلب العروض المبسط (م. 28)',
+          'فتح الأظرفة وتقييم العروض إلكترونياً مُؤطَّران بالنصوص التطبيقية (م. 136)',
+          'تمديد صلاحية العروض : 30 يوماً على الأكثر، 90 يوماً في المجموع — حماية المتنافسين (م. 143)',
+          'الإشراف المنتدب : إعفاء من التأشيرة إذا سبق للوزير المعني التوقيع على الاتفاقية (م. 154)',
+          'إعادة تنظيم تشكيلة لجنة طلب العروض بحسب طبيعة الجهة صاحبة المشروع — الدولة، المؤسسات العامة، هيئات القانون العام الأخرى (م. 38)',
+        ],
+      },
+    ],
+
+    faq: [
+      {
+        question: 'Le seuil des bons de commande change-t-il dans le cadre de la réforme des marchés publics au Maroc ?',
+        answer:   'Selon le projet de décret, le seuil annuel des prestations réalisées par bons de commande passerait de 500 000 DH TTC à 800 000 DH TTC, par ordonnateur, sous-ordonnateur ou personne habilitée, au cours d\'une même année budgétaire (Art. 91). Ce relèvement reste soumis à la publication officielle du texte définitif au Bulletin officiel.',
+      },
+      {
+        question: 'Quel est le nouveau seuil de l\'appel d\'offres ouvert simplifié selon le projet de réforme ?',
+        answer:   'Le projet prévoit de relever le seuil de l\'appel d\'offres ouvert simplifié de 1 000 000 DH HT à 1 500 000 DH HT (Art. 19). Les marchés-cadres et les marchés reconductibles passés par cette procédure bénéficieraient d\'une appréciation du coût sur la base du montant annuel.',
+      },
+      {
+        question: 'Qu\'est-ce qu\'une offre anormalement basse dans les marchés publics marocains ?',
+        answer:   'Une offre anormalement basse est une offre dont le prix est inférieur de manière importante au montant estimatif du maître d\'ouvrage. Selon le projet de décret, le seuil serait fixé à −15 % du montant estimatif pour les marchés de travaux, fournitures et services hors études (Art. 44 et 144), contre −20 % à −25 % selon les catégories actuellement. Le maître d\'ouvrage peut demander des justifications au concurrent avant de décider de l\'écarter.',
+      },
+      {
+        question: 'Qu\'est-ce qu\'une offre excessive dans les marchés publics au Maroc ?',
+        answer:   'Selon le projet de décret, est réputée excessive toute offre dont le montant dépasse de plus de 15 % le montant estimatif du maître d\'ouvrage (Art. 44 et 144), contre 20 % dans le dispositif actuel. Le maître d\'ouvrage peut confier l\'examen de ces offres à une commission subalterne.',
+      },
+      {
+        question: 'La réforme du décret n° 2-22-431 est-elle déjà applicable ?',
+        answer:   'Non. Ce guide présente les modifications contenues dans un projet de décret non encore publié au Bulletin officiel. L\'applicabilité des nouvelles dispositions est conditionnée à la publication du texte définitif. En cas de divergence entre les dispositions présentées et le texte officiel publié, ce dernier prévaut.',
+      },
+      {
+        question: 'Qui est concerné par le projet de réforme du décret n° 2-22-431 ?',
+        answer:   'Le projet concerne l\'ensemble des acteurs de la commande publique : les administrations de l\'État, les collectivités territoriales, les établissements publics, ainsi que les opérateurs économiques candidats aux marchés publics — notamment les architectes, bureaux d\'études, entreprises de travaux, prestataires de services, TPE, PME, coopératives et auto-entrepreneurs.',
+      },
+      {
+        question: 'Pourquoi le projet insiste-t-il sur les marchés de gardiennage, de nettoyage et d\'entretien des espaces verts ?',
+        answer:   'Ces secteurs font appel à une main-d\'œuvre importante et ont été marqués par des pratiques de bradage des prix au détriment des obligations sociales des prestataires. Le projet impose au maître d\'ouvrage d\'intégrer le SMIG et les cotisations sociales obligatoires dans le coût estimatif (Art. 6), et prévoit que l\'offre la plus avantageuse est celle qui propose le taux de majoration le plus élevé pour la main-d\'œuvre (Art. 43).',
+      },
+      {
+        question: 'Quels avantages le projet prévoit-il pour les TPE, PME et coopératives dans les marchés publics ?',
+        answer:   'Le projet prévoit plusieurs mesures : le relèvement du seuil des bons de commande à 800 000 DH TTC facilite l\'accès à de petites commandes ; le relèvement du seuil de l\'appel d\'offres ouvert simplifié à 1 500 000 DH HT ouvre l\'accès à une procédure allégée ; et les marchés réservés aux TPE, PME, coopératives, unions de coopératives et auto-entrepreneurs (Art. 148) constituent une opportunité directe d\'accès à la commande publique.',
+      },
+    ],
+
+    faq_ar: [
+      {
+        question: 'هل تتغير عتبة سندات الطلب في إطار إصلاح الصفقات العمومية بالمغرب؟',
+        answer:   'وفق مشروع المرسوم، ترتفع العتبة السنوية للأشغال المُنجزة بواسطة سندات الطلب من 500.000 درهم ش.ج إلى 800.000 درهم ش.ج، لكل آمر بالصرف أو آمر فرعي أو شخص مفوض، في إطار سنة مالية واحدة (م. 91). ويظل هذا الرفع رهيناً بنشر النص الرسمي النهائي في الجريدة الرسمية.',
+      },
+      {
+        question: 'ما هي العتبة الجديدة لطلب العروض المفتوح المبسط وفق المشروع؟',
+        answer:   'يُقترح في المشروع رفع عتبة طلب العروض المفتوح المبسط من 1.000.000 درهم خ.ر إلى 1.500.000 درهم خ.ر (م. 19)، مما يُتيح لعدد أكبر من الصفقات الاستفادة من هذه المسطرة المبسطة.',
+      },
+      {
+        question: 'ما المقصود بالعرض المنخفض بكيفية غير عادية في الصفقات العمومية بالمغرب؟',
+        answer:   'العرض المنخفض بكيفية غير عادية هو كل عرض يقل ثمنه بصورة مهمة عن المبلغ التقديري لكلفة الأعمال لدى صاحب المشروع. ووفق المشروع، تُحدَّد العتبة في −15 % من المبلغ التقديري لصفقات الأشغال والتوريدات والخدمات غير المتعلقة بالدراسات (م. 44 و144)، عوضاً عن −20 % إلى −25 % حالياً.',
+      },
+      {
+        question: 'ما المقصود بالعرض المفرط في الصفقات العمومية؟',
+        answer:   'وفق المشروع، يُعدّ مفرطاً كل عرض يتجاوز بأكثر من 15 % المبلغ التقديري لكلفة الأعمال لدى صاحب المشروع (م. 44 و144)، عوضاً عن 20 % في النص الحالي. ويمكن لصاحب المشروع إحالة دراسة هذه العروض إلى لجنة فرعية.',
+      },
+      {
+        question: 'هل تعديلات المرسوم رقم 2.22.431 سارية المفعول الآن؟',
+        answer:   'لا. يستند هذا الدليل إلى مشروع مرسوم تعديلي لم يُنشر بعد في الجريدة الرسمية. تطبيق الأحكام الجديدة مشروط بنشر النص الرسمي النهائي، والذي يسمو على أي معلومة أخرى في حالة التعارض.',
+      },
+      {
+        question: 'من يعنيه مشروع تعديل المرسوم رقم 2.22.431؟',
+        answer:   'يمسّ المشروع جميع أطراف منظومة الطلبيات العمومية : إدارات الدولة والجماعات الترابية والمؤسسات العامة، وكذلك المتعاملين الاقتصاديين المترشحين للصفقات العمومية، لا سيما المهندسين المعماريين ومكاتب الدراسات ومقاولات الأشغال ومقدمي الخدمات والمقاولات الصغيرة والمتوسطة والتعاونيات والمقاولين الذاتيين.',
+      },
+      {
+        question: 'لماذا يُولي المشروع اهتماماً خاصاً لصفقات الحراسة والنظافة وصيانة المساحات الخضراء؟',
+        answer:   'تتطلب هذه القطاعات يداً عاملة كثيفة وشهدت ظاهرة كسر الأسعار على حساب الالتزامات الاجتماعية للمقاولات. يُلزم المشروع صاحب المشروع بإدماج الحد الأدنى القانوني للأجور والمساهمات الاجتماعية الإلزامية في تقدير الكلفة (م. 6)، ويجعل العرض الأكثر أفضلية هو الذي يقترح نسبة الزيادة الأعلى لحماية كلفة اليد العاملة (م. 43).',
+      },
+      {
+        question: 'ما المزايا التي يُقررها المشروع للمقاولات الصغيرة والمتوسطة والتعاونيات والمقاولين الذاتيين؟',
+        answer:   'يتضمن المشروع عدة تدابير : رفع عتبة سندات الطلب إلى 800.000 درهم ش.ج يُيسّر الوصول إلى الطلبيات الصغيرة ؛ ورفع عتبة طلب العروض المبسط إلى 1.500.000 درهم خ.ر يفتح المجال أمام مسطرة مخففة ؛ فيما تُتيح الصفقات المخصصة للمقاولات الصغيرة جداً والمتوسطة والتعاونيات واتحاداتها والمقاولين الذاتيين (م. 148) ولوجاً مباشراً إلى الطلبيات العمومية.',
+      },
+    ],
+  },
 ]
 
 // ── Helpers ───────────────────────────────────────────────────────────────────

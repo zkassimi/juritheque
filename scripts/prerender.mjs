@@ -57,6 +57,8 @@ const GUIDE_SLUGS = [
   // Spokes — Urbanisme
   'permis-construire-maroc',
   'infractions-urbanistiques-maroc',
+  // Réforme marchés publics
+  'reforme-marches-publics-maroc',
 ]
 
 const STATIC_ROUTES = [

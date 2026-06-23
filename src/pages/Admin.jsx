@@ -93,6 +93,12 @@ export default function Admin() {
   const [subscribersLoading, setSubscribersLoading] = useState(false)
   const [subscribersSearch, setSubscribersSearch]   = useState('')
 
+  // Qualité
+  const [qualityStats, setQualityStats]     = useState(null)
+  const [qualityLaws, setQualityLaws]       = useState([])
+  const [qualityLoading, setQualityLoading] = useState(false)
+  const [qualityFilter, setQualityFilter]   = useState('all') // 'all' | 'no_summary' | 'no_date' | 'no_pdf'
+
   // Veille & Import queue
   const [queue, setQueue]               = useState([])
   const [queueLoading, setQueueLoading] = useState(false)
@@ -173,6 +179,37 @@ export default function Admin() {
     setNeedsUpdate(data || [])
     setNeedsUpdateCount(count || 0)
     setNeedsUpdateLoading(false)
+  }, [])
+
+  const loadQuality = useCallback(async (filter = 'all') => {
+    setQualityLoading(true)
+    try {
+      // Stat counts
+      const [{ count: noSum }, { count: noDate }, { count: noPdf }, { count: pending }] = await Promise.all([
+        supabase.from('laws').select('*', { count: 'exact', head: true }).is('simple_summary_fr', null),
+        supabase.from('laws').select('*', { count: 'exact', head: true }).is('date', null),
+        supabase.from('laws').select('*', { count: 'exact', head: true }).is('pdf_url', null).is('source_url', null),
+        supabase.from('laws').select('*', { count: 'exact', head: true }).eq('extraction_status', 'pending'),
+      ])
+      setQualityStats({ noSum: noSum || 0, noDate: noDate || 0, noPdf: noPdf || 0, pending: pending || 0 })
+
+      // Filtered list
+      let q = supabase
+        .from('laws')
+        .select('id,number,title_fr,date,extraction_status,pdf_url,source_url,simple_summary_fr,canonical_slug,source_name')
+        .order('created_at', { ascending: false })
+        .limit(50)
+
+      if (filter === 'no_summary') q = q.is('simple_summary_fr', null)
+      else if (filter === 'no_date') q = q.is('date', null)
+      else if (filter === 'no_pdf') q = q.is('pdf_url', null).is('source_url', null)
+      else q = q.or('simple_summary_fr.is.null,date.is.null,canonical_slug.is.null')
+
+      const { data } = await q
+      setQualityLaws(data || [])
+    } finally {
+      setQualityLoading(false)
+    }
   }, [])
 
   const rejectQueueItem = async (id) => {
@@ -324,6 +361,7 @@ export default function Admin() {
   useEffect(() => { if (section === 'reports')     loadReports(reportsFilter) }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (section === 'subscribers') loadSubscribers(subscribersSearch) }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (section === 'veille') { loadQueue(); loadNeedsUpdate() } }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (section === 'quality') loadQuality(qualityFilter) }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Subscribers ──
   const loadSubscribers = useCallback(async (q = '') => {
@@ -452,6 +490,7 @@ export default function Admin() {
     ...(isAdmin ? [{ key: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' }] : []),
     { key: 'texts',   icon: FileText, label: 'Textes juridiques' },
     { key: 'veille',  icon: Bell,     label: 'Veille & Import', badge: (queueCount + needsUpdateCount) || null },
+    { key: 'quality', icon: BarChart2, label: 'Qualité' },
     { key: 'videos',  icon: Video,    label: 'Vidéos' },
     { key: 'reports',     icon: Flag,     label: 'Signalements' },
     { key: 'subscribers', icon: Inbox,    label: 'Abonnés' },
@@ -1443,6 +1482,158 @@ export default function Admin() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ══ QUALITÉ ══ */}
+        {section === 'quality' && (
+          <div>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div>
+                <h1 className="font-playfair font-bold text-navy text-2xl">Qualité des données</h1>
+                <p className="text-sm text-navy-500 mt-1">Textes incomplets — résumés manquants, dates absentes, sans PDF ni source</p>
+              </div>
+              <button
+                onClick={() => loadQuality(qualityFilter)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 text-xs text-navy-600 hover:border-gold"
+              >
+                <RefreshCw size={13} /> Actualiser
+              </button>
+            </div>
+
+            {/* Stat-cards */}
+            {qualityStats && (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                <div className="bg-white rounded-2xl border border-amber-100 p-4">
+                  <p className="font-playfair font-bold text-2xl text-amber-600">{qualityStats.noSum.toLocaleString('fr-FR')}</p>
+                  <p className="text-xs text-navy-600 mt-0.5 font-medium">Sans résumé FR</p>
+                  <p className="text-[10px] text-navy-400 mt-0.5">simple_summary_fr vide</p>
+                </div>
+                <div className="bg-white rounded-2xl border border-amber-100 p-4">
+                  <p className="font-playfair font-bold text-2xl text-amber-600">{qualityStats.noDate.toLocaleString('fr-FR')}</p>
+                  <p className="text-xs text-navy-600 mt-0.5 font-medium">Sans date</p>
+                  <p className="text-[10px] text-navy-400 mt-0.5">date introuvable</p>
+                </div>
+                <div className="bg-white rounded-2xl border border-amber-100 p-4">
+                  <p className="font-playfair font-bold text-2xl text-amber-600">{qualityStats.pending.toLocaleString('fr-FR')}</p>
+                  <p className="text-xs text-navy-600 mt-0.5 font-medium">Extraction pending</p>
+                  <p className="text-[10px] text-navy-400 mt-0.5">texte non encore extrait</p>
+                </div>
+                <div className="bg-white rounded-2xl border border-red-100 p-4">
+                  <p className="font-playfair font-bold text-2xl text-red-500">{qualityStats.noPdf.toLocaleString('fr-FR')}</p>
+                  <p className="text-xs text-navy-600 mt-0.5 font-medium">Sans PDF ni source</p>
+                  <p className="text-[10px] text-navy-400 mt-0.5">aucun lien disponible</p>
+                </div>
+              </div>
+            )}
+
+            {/* Filtres */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {[
+                { key: 'all',        label: 'Tous' },
+                { key: 'no_summary', label: 'Sans résumé' },
+                { key: 'no_date',    label: 'Sans date' },
+                { key: 'no_pdf',     label: 'Sans PDF' },
+              ].map(f => (
+                <button
+                  key={f.key}
+                  onClick={() => { setQualityFilter(f.key); loadQuality(f.key) }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                    qualityFilter === f.key
+                      ? 'bg-navy text-white border-navy'
+                      : 'bg-white text-navy-600 border-gray-200 hover:border-gold'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Table */}
+            {qualityLoading ? (
+              <div className="flex items-center justify-center py-16 text-navy-400 text-sm">Chargement…</div>
+            ) : qualityLaws.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-gray-100 py-16 text-center">
+                <CheckCircle2 size={36} className="text-emerald-300 mx-auto mb-3" />
+                <p className="text-sm text-navy-500 font-medium">Aucun texte incomplet trouvé</p>
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="bg-gray-50 text-xs text-navy-500 uppercase tracking-wide">
+                      <tr>
+                        <th className="px-4 py-3 text-start">Référence</th>
+                        <th className="px-4 py-3 text-start">Titre</th>
+                        <th className="px-4 py-3 text-start">Manque</th>
+                        <th className="px-4 py-3 text-start hidden md:table-cell">Source</th>
+                        <th className="px-4 py-3 text-end">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50">
+                      {qualityLaws.map(law => {
+                        const missing = []
+                        if (!law.simple_summary_fr) missing.push('résumé FR')
+                        if (!law.date)              missing.push('date')
+                        if (!law.pdf_url && !law.source_url) missing.push('PDF/source')
+                        if (!law.canonical_slug)    missing.push('slug')
+                        return (
+                          <tr key={law.id} className="hover:bg-gray-50 transition-colors">
+                            <td className="px-4 py-3">
+                              <span className="font-mono text-xs text-navy-600 whitespace-nowrap">
+                                {law.number || '—'}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 max-w-[220px]">
+                              <p className="text-xs text-navy font-medium line-clamp-2">{law.title_fr || '—'}</p>
+                              {law.extraction_status === 'pending' && (
+                                <span className="text-[10px] text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded mt-0.5 inline-block">pending</span>
+                              )}
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="flex flex-wrap gap-1">
+                                {missing.map(m => (
+                                  <span key={m} className="text-[10px] font-medium bg-red-50 text-red-600 border border-red-100 px-1.5 py-0.5 rounded-full">
+                                    {m}
+                                  </span>
+                                ))}
+                              </div>
+                            </td>
+                            <td className="px-4 py-3 text-xs text-navy-500 hidden md:table-cell">
+                              {law.source_name || '—'}
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="flex items-center justify-end gap-1">
+                                {law.canonical_slug && (
+                                  <Link
+                                    to={`/loi/${law.canonical_slug}`}
+                                    className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-600 transition-colors"
+                                    title="Voir la loi"
+                                    target="_blank"
+                                  >
+                                    <Eye size={13} />
+                                  </Link>
+                                )}
+                                <button
+                                  onClick={() => { setSection('texts'); setEditLaw({ ...law }) }}
+                                  className="p-1.5 rounded-lg hover:bg-gold/10 text-yellow-700 transition-colors"
+                                  title="Modifier"
+                                >
+                                  <Edit2 size={13} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="px-4 py-3 border-t border-gray-50 text-xs text-navy-400">
+                  {qualityLaws.length} textes affichés (50 max) — utilisez les filtres pour cibler
+                </div>
               </div>
             )}
           </div>

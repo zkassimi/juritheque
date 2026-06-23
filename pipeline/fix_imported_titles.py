@@ -109,11 +109,27 @@ def upload_to_storage(pdf_bytes: bytes, source: str, filename: str) -> str | Non
         return None
 
 
+def looks_like_filename(t: str) -> bool:
+    """Détecte un titre qui ressemble à un nom de fichier (sans espace, avec _ ou kebab numérique)."""
+    t = (t or '').strip()
+    if not t or len(t) > 200:
+        return False
+    return ' ' not in t and ('_' in t or bool(re.search(r'\d{4}[-_]\d', t)))
+
+def humanize_filename(t: str) -> str:
+    """Convertit un nom de fichier en titre lisible."""
+    t = re.sub(r'\.(pdf|PDF|doc|docx)$', '', t)
+    t = t.replace('_', ' ').replace('-', ' ')
+    t = re.sub(r'\s+', ' ', t).strip()
+    return t.capitalize()
+
+
 def main():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dry-run",       action="store_true", help="Aperçu sans écriture")
-    parser.add_argument("--reupload-pdfs", action="store_true", help="Re-télécharger et uploader les PDFs externes vers Storage")
+    parser.add_argument("--dry-run",        action="store_true", help="Aperçu sans écriture")
+    parser.add_argument("--reupload-pdfs",  action="store_true", help="Re-télécharger et uploader les PDFs externes vers Storage")
+    parser.add_argument("--fix-filenames",  action="store_true", help="Humaniser les titres type nom-de-fichier (underscores, kebab)")
     args = parser.parse_args()
 
     if args.dry_run:
@@ -186,7 +202,49 @@ def main():
 
         console.print(table)
         if not args.dry_run:
-            console.print(f"  ✅ {fixed}/{len(to_fix)} titres/numéros corrigés.\n")
+            console.print(f"  OK {fixed}/{len(to_fix)} titres/numeros corriges.\n")
+
+    # ── Phase 1b : humaniser les titres type nom-de-fichier ──────────────────
+    if args.fix_filenames:
+        console.print("\n[bold]Phase 1b — Humaniser les titres bruts (type nom-de-fichier)[/]\n")
+
+        filename_rows = [r for r in rows if looks_like_filename(r.get("title_fr", ""))]
+        console.print(f"  [bold]{len(filename_rows)}[/] titres à humaniser\n")
+
+        if filename_rows:
+            table2 = Table(show_header=True, header_style="bold")
+            table2.add_column("ID",     width=10)
+            table2.add_column("Avant",  width=48)
+            table2.add_column("Après",  width=48)
+            table2.add_column("Status", width=8)
+
+            fixed2 = 0
+            for row in filename_rows:
+                old_title = row.get("title_fr", "")
+                new_title = humanize_filename(old_title)
+                if old_title == new_title:
+                    continue
+
+                if not args.dry_run:
+                    r = requests.patch(
+                        f"{SUPABASE_URL}/rest/v1/laws",
+                        headers=HEADERS,
+                        params={"id": f"eq.{row['id']}"},
+                        json={"title_fr": new_title},
+                        timeout=10,
+                    )
+                    ok = r.status_code in (200, 204)
+                    status = "✅" if ok else f"❌{r.status_code}"
+                    if ok:
+                        fixed2 += 1
+                else:
+                    status = "🔍"
+
+                table2.add_row(str(row["id"])[:8] + "…", old_title[:46], new_title[:46], status)
+
+            console.print(table2)
+            if not args.dry_run:
+                console.print(f"  OK {fixed2}/{len(filename_rows)} titres humanises.\n")
 
     # ── Phase 2 : re-upload PDFs externes vers Storage ────────────────────────
     if not args.reupload_pdfs:
@@ -199,7 +257,7 @@ def main():
     console.print(f"  [bold]{len(to_upload)}[/] PDFs externes à uploader\n")
 
     if not to_upload:
-        console.print("  ✅ Tous les PDFs sont déjà sur Storage.")
+        console.print("  Tous les PDFs sont deja sur Storage.")
         return
 
     uploaded = failed = 0
@@ -239,8 +297,8 @@ def main():
 
         time.sleep(0.3)
 
-    console.print(f"\n  ✅ Uploadés : [green]{uploaded}[/]")
-    console.print(f"  ❌ Échecs   : [red]{failed}[/]")
+    console.print(f"\n  Uploades : [green]{uploaded}[/]")
+    console.print(f"  Echecs   : [red]{failed}[/]")
 
 
 if __name__ == "__main__":

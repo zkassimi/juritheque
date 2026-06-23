@@ -463,6 +463,40 @@ SCRIPTS: Dict[str, Any] = {
     "danger":   False,
     "risk":     "sensitive",
   },
+  # ── Corrections qualité ──────────────────────────────────────────────────────
+  "fix_titles_dry": {
+    "label":    "🔍 Aperçu corrections titres",
+    "desc":     "Affiche les titres/numéros URL-encodés ou avec .pdf à corriger (dry-run, aucune écriture)",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/fix_imported_titles.py", "--dry-run"],
+    "danger":   False,
+    "risk":     "safe",
+  },
+  "fix_titles": {
+    "label":    "✏️ Corriger titres/numéros",
+    "desc":     "Corrige les titres avec .pdf et les numéros URL-encodés dans les lois veille",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/fix_imported_titles.py"],
+    "danger":   False,
+    "risk":     "sensitive",
+  },
+  "fix_filenames": {
+    "label":    "🏷 Humaniser titres bruts",
+    "desc":     "Convertit les titres type nom-de-fichier (underscores, kebab) en titres lisibles",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/fix_imported_titles.py", "--fix-filenames"],
+    "danger":   False,
+    "risk":     "sensitive",
+  },
+  "reupload_pdfs": {
+    "label":    "☁️ Re-upload PDFs → Storage",
+    "desc":     "Re-télécharge les PDFs externes (ANRT, Adala…) et les uploade vers Supabase Storage pour l'aperçu intégré",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/fix_imported_titles.py", "--reupload-pdfs"],
+    "danger":   False,
+    "risk":     "long",
+  },
+
   "build_and_push": {
     "label":    "🏗️ Build + Push → Vercel",
     "desc":     "npm run build:full → git push → Vercel déploie (tout en une commande)",
@@ -488,6 +522,7 @@ CATEGORIES = [
   "🔍 SEO & Index",
   "📰 Bulletins Officiels",
   "📬 Veille juridique",
+  "🔧 Corrections",
   "🔨 Build & Deploy",
 ]
 
@@ -544,6 +579,11 @@ def get_stats():
         pdf_done    = len(list(done_dir.glob("*.pdf")))     if done_dir.exists()    else 0
         pdf_errors  = len(list(errors_dir.glob("*.pdf")))   if errors_dir.exists()  else 0
 
+        # ── Qualité ─────────────────────────────────────────────────────
+        no_date        = _count(h, base, {"select": "id", "date": "is.null"})
+        pending_extract= _count(h, base, {"select": "id", "extraction_status": "eq.pending"})
+        no_pdf_no_src  = _count(h, base, {"select": "id", "pdf_url": "is.null", "source_url": "is.null"})
+
         # ── Google Indexing ─────────────────────────────────────────────
         today = date.today().isoformat().replace("-", "")
         log_today = _p.parent / f"pipeline/indexing_log_{date.today()}.json"
@@ -577,6 +617,8 @@ def get_stats():
             "pdf_pending": pdf_pending, "pdf_done": pdf_done, "pdf_errors": pdf_errors,
             # SEO
             "guide_count": guide_count, "indexed_today": indexed_today,
+            # Qualité
+            "no_date": no_date, "pending_extract": pending_extract, "no_pdf_no_src": no_pdf_no_src,
         }
     except Exception as e:
         return {"ok": False, "error": str(e), "total": "?", "ar": "?", "to_translate": "?", "review": "?"}
@@ -907,6 +949,14 @@ def build_html():
           <button class="stats-refresh" onclick="loadStats()">↻ Actualiser les stats</button>
         </div>
 
+        <div class="stat-group amber">
+          <div class="sg-title">🔎 Qualité des données</div>
+          <div class="stat-row"><span class="stat-label">Sans résumé FR ⚠</span><span class="stat-value amber" id="stat-q-no-sum">…</span></div>
+          <div class="stat-row"><span class="stat-label">Sans date ⚠</span><span class="stat-value amber" id="stat-q-no-date">…</span></div>
+          <div class="stat-row"><span class="stat-label">Extraction pending ⚠</span><span class="stat-value amber" id="stat-q-pending">…</span></div>
+          <div class="stat-row"><span class="stat-label">Sans PDF ni source ⚠</span><span class="stat-value red" id="stat-q-no-pdf">…</span></div>
+        </div>
+
       </div>
       <div class="jobs-section">
         <h4>📋 Jobs récents</h4>
@@ -1191,6 +1241,10 @@ function loadStats() {{
       set('stat-totrans',   s.to_translate, true);
       set('stat-guides',  s.guide_count);
       set('stat-indexed', s.indexed_today);
+      set('stat-q-no-sum',  s.no_sum_fr,        true);
+      set('stat-q-no-date', s.no_date,           true);
+      set('stat-q-pending', s.pending_extract,   true);
+      set('stat-q-no-pdf',  s.no_pdf_no_src,     true);
     }} catch(ex) {{ console.error('stats error', ex); }}
   }};
   xhr.send();

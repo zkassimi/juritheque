@@ -416,16 +416,14 @@ def process_item(item: dict, dry_run: bool) -> str:
     if number != "N/A" and sb_number_exists(number):
         return "duplicate"
 
-    # Générer canonical_slug
+    # Générer canonical_slug — convention {type}-{number} (titre_fr pas encore connu ici)
+    import hashlib as _hl
+    type_slug = slugify(type_fr)
     if number != "N/A":
-        type_slug = slugify(type_fr)
-        number_slug = re.sub(r'[^a-z0-9]+', '-', number.lower())
+        number_slug = re.sub(r'[^a-z0-9]+', '-', number.lower()).strip('-')
         canonical_slug = f"{type_slug}-{number_slug}"
     else:
-        # Slug depuis le titre arabe translittéré (peu fiable) — utiliser hash
-        import hashlib
-        h = hashlib.md5(source_url.encode()).hexdigest()[:8]
-        type_slug = slugify(type_fr)
+        h = _hl.md5(source_url.encode()).hexdigest()[:8]
         canonical_slug = f"{type_slug}-adala-{h}"
 
     if sb_slug_exists(canonical_slug):

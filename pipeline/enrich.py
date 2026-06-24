@@ -329,39 +329,42 @@ def extract_keywords(law: dict) -> list[str]:
 
 # ── Génération du slug canonique ──────────────────────────────────────────────
 
+_SLUG_STOPWORDS = {
+    'le','la','les','du','de','des','au','aux','et','ou','un','une',
+    'n','no','n°','par','sur','en','a','à','dans','pour','avec','sans',
+    'relatif','relative','relatifs','relatives',
+    'portant','fixant','instituant','modifiant','abrogeant','approuvant',
+    'dahir','decret','loi','arrete','circulaire','texte','ordonnance',
+    'code','reglement','avis','bulletin',
+}
+
 def make_canonical_slug(law: dict) -> str:
-    """Génère un slug URL-friendly depuis le numéro + titre.
+    """Convention : {type}-{number}-{mots-clés-titre} tout en minuscules sans accents."""
 
-    Évite la duplication : si title_fr commence déjà par le numéro
-    (ex: number="Dahir n°1-21-65" et title="Dahir n°1-21-65 du ..."),
-    on utilise uniquement le titre pour ne pas répéter le numéro.
-    """
-
-    def _to_slug_fragment(text: str) -> str:
-        """Normalise un texte en fragment de slug (sans truncation)."""
-        norm = unicodedata.normalize("NFD", text.lower())
+    def _s(t: str) -> str:
+        norm = unicodedata.normalize("NFD", (t or "").lower())
         norm = "".join(c for c in norm if unicodedata.category(c) != "Mn")
         return re.sub(r"[^a-z0-9]+", "-", norm).strip("-")
 
-    number = (law.get("number", "") or "").strip()
-    title  = (law.get("title_fr", "") or "").strip()
+    type_slug   = _s(law.get("type") or "texte")
+    number_slug = _s(law.get("number") or "")
+    title       = (law.get("title_fr") or "").strip()
 
-    num_slug   = _to_slug_fragment(number)
-    title_slug = _to_slug_fragment(title[:80])
+    # Extraire les mots significatifs du titre (sans stopwords, sans répétition du numéro, max 7 mots)
+    num_tokens = set(number_slug.split("-")) if number_slug else set()
+    words = re.sub(r"[^a-zA-Z\xc0-\xff0-9\s]", " ", title).lower().split()
+    keywords = []
+    for w in words:
+        sw = _s(w)
+        if sw and w not in _SLUG_STOPWORDS and len(w) > 2 and sw not in num_tokens:
+            keywords.append(sw)
+        if len(keywords) >= 7:
+            break
+    kw_slug = "-".join(keywords)
 
-    # Si le titre slugifié commence déjà par le numéro slugifié → titre seul
-    # (évite "dahir-n-1-21-65-dahir-n-1-21-65-du-...")
-    if num_slug and title_slug.startswith(num_slug):
-        raw = title[:80]
-    else:
-        raw = f"{number} {title}"[:80]
-
-    # Normalisation finale
-    normalized = unicodedata.normalize("NFD", raw.lower())
-    normalized = "".join(c for c in normalized if unicodedata.category(c) != "Mn")
-
-    slug = re.sub(r"[^a-z0-9]+", "-", normalized).strip("-")[:80]
-    return slug or f"loi-{law.get('id', 'unknown')}"
+    parts = [p for p in [type_slug, number_slug, kw_slug] if p]
+    slug  = re.sub(r"-+", "-", "-".join(parts)).strip("-")[:100]
+    return slug or f"texte-{law.get('id', 'unknown')}"
 
 
 # ── Hash du contenu brut ───────────────────────────────────────────────────────

@@ -85,13 +85,39 @@ def slugify(text: str) -> str:
     text = re.sub(r'[^a-z0-9]+', '-', text)
     return text.strip('-')[:100]
 
+_SLUG_STOPWORDS = {
+    'le','la','les','du','de','des','au','aux','et','ou','un','une',
+    'n','no','n°','par','sur','en','a','à','dans','pour','avec','sans',
+    'relatif','relative','relatifs','relatives',
+    'portant','fixant','instituant','modifiant','abrogeant','approuvant',
+    'dahir','decret','loi','arrete','circulaire','texte','ordonnance',
+    'code','reglement','avis','bulletin',
+}
+
 def make_slug(law_type: str, number: str, title_fr: str) -> str:
-    if number:
-        base = f"{law_type}-{number}".replace(' ', '-').replace('/', '-')
-        return slugify(base)
-    # fallback : premiers mots du titre
-    words = title_fr.split()[:5]
-    return slugify('-'.join(words))
+    """Convention : {type}-{number}-{mots-clés-titre} tout en minuscules sans accents."""
+    import unicodedata as _ud
+    def _s(t):
+        norm = _ud.normalize("NFD", (t or "").lower())
+        norm = "".join(c for c in norm if _ud.category(c) != "Mn")
+        return re.sub(r"[^a-z0-9]+", "-", norm).strip("-")
+
+    type_slug   = _s(law_type)
+    number_slug = _s(number)
+    num_tokens = set(number_slug.split("-")) if number_slug else set()
+    words = re.sub(r"[^a-zA-Z\xc0-\xff0-9\s]", " ", title_fr or "").lower().split()
+    keywords = []
+    for w in words:
+        sw = _s(w)
+        if sw and w not in _SLUG_STOPWORDS and len(w) > 2 and sw not in num_tokens:
+            keywords.append(sw)
+        if len(keywords) >= 7:
+            break
+    kw_slug = "-".join(keywords)
+
+    parts = [p for p in [type_slug, number_slug, kw_slug] if p]
+    slug  = re.sub(r"-+", "-", "-".join(parts)).strip("-")[:100]
+    return slug or slugify(title_fr or "texte")
 
 # ── Types & domaines ─────────────────────────────────────────────────────────
 

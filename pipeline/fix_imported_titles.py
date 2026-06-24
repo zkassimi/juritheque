@@ -92,6 +92,36 @@ def is_purely_numeric(t: str) -> bool:
     t = (t or '').strip().replace('_', '').replace('-', '').replace('.', '')
     return bool(t) and t.isdigit() and len(t) <= 10
 
+# Titres génériques à remplacer
+GENERIC_TITLES = {
+    '(version en arabe)', 'version en arabe', 'version arabe',
+    '(version française)', 'version française', 'version fr',
+    'texte juridique', 'texte réglementaire', 'document', 'loi', 'décret',
+    'arrêté', 'dahir', 'circulaire', 'ordonnance', 'n/a', 'sans titre',
+}
+
+def is_generic_title(t: str) -> bool:
+    """Titre trop générique / inutile."""
+    return (t or '').strip().lower() in GENERIC_TITLES
+
+def is_gibberish(t: str) -> bool:
+    """Détecte un titre composé majoritairement de bruit (OCR raté, chars spéciaux aléatoires)."""
+    t = (t or '').strip()
+    if len(t) < 5:
+        return False
+    # Ratio de caractères non-imprimables / symboles bizarres
+    noise = sum(1 for c in t if not (c.isalnum() or c in ' .,;:()[]/-\'\"àâäéèêëîïôùûüçœæ°–—«»؀-ۿA-z'))
+    if noise / len(t) > 0.30:
+        return True
+    # Aussi : trop de chiffres isolés entremêlés (OCR de tableau de BO)
+    tokens = t.split()
+    if len(tokens) >= 5:
+        digit_tokens = sum(1 for w in tokens if re.match(r'^\d+[\.\-]?\d*$', w))
+        non_alpha = sum(1 for w in tokens if not any(c.isalpha() for c in w))
+        if non_alpha / len(tokens) > 0.5:
+            return True
+    return False
+
 def needs_fix(row: dict) -> list[str]:
     """Retourne la liste des problèmes détectés pour une ligne."""
     problems = []
@@ -105,10 +135,17 @@ def needs_fix(row: dict) -> list[str]:
         problems.append("title_encoded")
     if is_garbled_arabic(ar):
         problems.append("arabic_garbled")
-    if is_filename_title(title) and "title_encoded" not in problems:
+    # title_fr peut aussi contenir de l'arabe corrompu (mauvais encodage à l'import)
+    if is_garbled_arabic(title) and "title_encoded" not in problems:
+        problems.append("title_fr_garbled")
+    if is_filename_title(title) and "title_encoded" not in problems and "title_fr_garbled" not in problems:
         problems.append("title_filename")
     if is_purely_numeric(title):
         problems.append("title_numeric")
+    if is_generic_title(title):
+        problems.append("title_generic")
+    if is_gibberish(title) and "title_fr_garbled" not in problems and "title_encoded" not in problems:
+        problems.append("title_gibberish")
     return problems
 
 # ── Corrections simples ────────────────────────────────────────────────────────
@@ -246,11 +283,14 @@ def main():
             counts[prob] = counts.get(prob, 0) + 1
             val = row.get("title_fr") or row.get("title_ar") or row.get("number") or ""
             fix_label = {
-                "number_encoded":  "Décodage URL",
-                "title_encoded":   "Décodage URL",
-                "title_filename":  "IA" if OPENROUTER_KEY else "Humaniser",
-                "title_numeric":   "Formatage",
-                "arabic_garbled":  "Effacer title_ar",
+                "number_encoded":   "Décodage URL",
+                "title_encoded":    "Décodage URL",
+                "title_filename":   "IA" if OPENROUTER_KEY else "Humaniser",
+                "title_numeric":    "Formatage",
+                "title_generic":    "IA",
+                "title_gibberish":  "Effacer",
+                "title_fr_garbled": "Effacer",
+                "arabic_garbled":   "Effacer title_ar",
             }.get(prob, "?")
             preview.add_row(prob, val[:48], fix_label)
 
@@ -283,35 +323,44 @@ def main():
             elif prob == "arabic_garbled":
                 patch_data["title_ar"] = None
 
-            elif prob in ("title_filename", "title_numeric"):
-                bad = row.get("title_fr", "") or ""
-                number  = row.get("number", "") or ""
-                source  = row.get("source_name", "") or ""
-                # Récupérer content_fr uniquement pour cette loi (requête ciblée)
-                content = ""
-                if OPENROUTER_KEY:
-                    try:
-                        cr = requests.get(
-                            f"{SUPABASE_URL}/rest/v1/laws",
-                            headers=HEADERS,
-                            params={"id": f"eq.{law_id}", "select": "content_fr"},
-                            timeout=15,
-                        )
-                        if cr.status_code == 200 and cr.json():
-                            content = (cr.json()[0].get("content_fr", "") or "")[:600]
-                    except Exception:
-                        pass
+            elif prob in ("title_fr_garbled", "title_gibberish"):
+                # title_fr corrompu ou illisible → effacer, LawCard affichera le numéro
+                patch_data["title_fr"] = None
 
-                # Essayer l'IA si clé disponible et contenu ou numéro exploitable
+            elif prob in ("title_filename", "title_numeric", "title_generic"):
+                bad    = row.get("title_fr", "") or ""
+                number = row.get("number", "") or ""
+                source = row.get("source_name", "") or ""
                 new_title = None
-                if OPENROUTER_KEY and (content or number):
-                    new_title = ai_fix_title(number, source, bad, content)
-                    if new_title:
-                        ai_used += 1
 
-                # Fallback : humanisation simple
-                if not new_title:
-                    new_title = humanize(bad) if prob == "title_filename" else f"Texte N° {number}" if number else bad
+                if prob == "title_generic" and number:
+                    # Formatage simple — pas besoin d'IA
+                    new_title = f"Texte N° {number}"
+                elif prob == "title_numeric" and number:
+                    new_title = f"Texte N° {number}"
+                else:
+                    # Filename complexe → IA (récupérer content_fr ciblé)
+                    content = ""
+                    if OPENROUTER_KEY:
+                        try:
+                            cr = requests.get(
+                                f"{SUPABASE_URL}/rest/v1/laws",
+                                headers=HEADERS,
+                                params={"id": f"eq.{law_id}", "select": "content_fr"},
+                                timeout=15,
+                            )
+                            if cr.status_code == 200 and cr.json():
+                                content = (cr.json()[0].get("content_fr", "") or "")[:600]
+                        except Exception:
+                            pass
+
+                    if OPENROUTER_KEY and (content or number):
+                        new_title = ai_fix_title(number, source, bad, content)
+                        if new_title:
+                            ai_used += 1
+
+                    if not new_title:
+                        new_title = humanize(bad) if prob == "title_filename" else f"Texte N° {number}" if number else bad
 
                 if new_title and new_title != bad:
                     patch_data["title_fr"] = new_title

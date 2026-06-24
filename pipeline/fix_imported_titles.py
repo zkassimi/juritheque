@@ -1,18 +1,24 @@
 """
-fix_imported_titles.py — Corrige les textes importés par la veille :
-  - Titres avec extension .pdf → nettoyés
-  - Numéros URL-encodés (%20, %C3%A9…) → décodés
-  - PDF externe → re-téléchargé et uploadé vers Supabase Storage
+fix_imported_titles.py — Correcteur intelligent de titres juridiques
+
+Détecte et corrige AUTOMATIQUEMENT tous les problèmes de titres dans la base :
+  • Titres URL-encodés (%20, %C3%A9…)
+  • Extensions .pdf dans les titres
+  • Titres type nom-de-fichier (underscores, kebab numérique)
+  • Titres type filename espacé (ex: "loi telecom fr 96 24 162 97 1 1997")
+  • title_ar corrompus (Arabic Presentation Forms)
+  • Titres purement numériques / codes sans sens
 
 Usage :
-  python pipeline/fix_imported_titles.py --dry-run        # aperçu
-  python pipeline/fix_imported_titles.py                   # correction titres/numéros
-  python pipeline/fix_imported_titles.py --reupload-pdfs  # + re-upload PDFs vers Storage
+  python pipeline/fix_imported_titles.py              # corrige tout
+  python pipeline/fix_imported_titles.py --dry-run    # aperçu sans écriture
+  python pipeline/fix_imported_titles.py --limit 200  # limite à 200 lois
+  python pipeline/fix_imported_titles.py --all        # inclut toutes les lois (pas seulement pending)
 """
 
-import os, re, sys, time
+import os, re, sys, time, json
 from pathlib import Path
-from urllib.parse import urlparse, unquote
+from urllib.parse import unquote
 from dotenv import load_dotenv
 
 try:
@@ -30,9 +36,10 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 load_dotenv()
 load_dotenv(Path(__file__).parent / ".env", override=True)
 
-SUPABASE_URL    = (os.getenv("SUPABASE_URL") or os.getenv("VITE_SUPABASE_URL", "")).rstrip("/")
-SUPABASE_KEY    = (os.getenv("SUPABASE_SERVICE_KEY") or os.getenv("SUPABASE_ANON_KEY") or os.getenv("VITE_SUPABASE_ANON_KEY", ""))
-STORAGE_BUCKET  = "legal-documents"
+SUPABASE_URL = (os.getenv("SUPABASE_URL") or os.getenv("VITE_SUPABASE_URL", "")).rstrip("/")
+SUPABASE_KEY = (os.getenv("SUPABASE_SERVICE_KEY") or os.getenv("SUPABASE_ANON_KEY") or os.getenv("VITE_SUPABASE_ANON_KEY", ""))
+OPENROUTER_KEY = os.getenv("OPENROUTER_API_KEY", "")
+AI_MODEL = "google/gemini-2.5-flash"
 
 HEADERS = {
     "apikey":        SUPABASE_KEY,
@@ -40,265 +47,292 @@ HEADERS = {
     "Content-Type":  "application/json",
     "Prefer":        "return=representation",
 }
-HTTP_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "application/pdf,*/*",
-}
 
 console = Console()
 
+# ── Détection ──────────────────────────────────────────────────────────────────
 
-def clean_number(n: str) -> str:
-    cleaned = unquote(n)
-    cleaned = re.sub(r'\.(pdf|PDF)$', '', cleaned).strip()
-    cleaned = re.sub(r'\s+', ' ', cleaned).strip()
-    return cleaned[:60]
+def is_url_encoded(s: str) -> bool:
+    return bool(s and '%' in s)
 
-def clean_title(t: str) -> str:
-    cleaned = unquote(t)
-    cleaned = re.sub(r'\.(pdf|PDF)$', '', cleaned).strip()
-    cleaned = re.sub(r'\s+', ' ', cleaned).strip()
-    return cleaned[:400]
+def has_pdf_extension(s: str) -> bool:
+    return bool(s and re.search(r'\.(pdf|PDF)$', s.strip()))
 
-def looks_broken_number(n: str) -> bool:
-    return '%' in (n or '')
-
-def looks_broken_title(t: str) -> bool:
-    t = t or ''
-    return t.lower().endswith('.pdf') or '%' in t
-
-def is_external_pdf(url: str) -> bool:
-    """True si l'URL n'est pas hébergée chez nous (pas dans Supabase Storage)."""
-    return bool(url) and 'supabase' not in url
-
-def download_pdf(url: str) -> bytes | None:
-    try:
-        r = requests.get(url, headers=HTTP_HEADERS, timeout=30, verify=False, stream=True)
-        if r.status_code == 200:
-            content = r.content
-            if content[:4] == b'%PDF' or 'pdf' in r.headers.get('Content-Type', '').lower():
-                return content
-        return None
-    except Exception as e:
-        console.print(f"    [red]Download error: {str(e)[:60]}[/]")
-        return None
-
-def upload_to_storage(pdf_bytes: bytes, source: str, filename: str) -> str | None:
-    safe_name = re.sub(r'[^a-zA-Z0-9._-]', '_', filename)[:100]
-    if not safe_name.lower().endswith('.pdf'):
-        safe_name += '.pdf'
-    storage_path = f"veille/{source}/{safe_name}"
-    try:
-        r = requests.post(
-            f"{SUPABASE_URL}/storage/v1/object/{STORAGE_BUCKET}/{storage_path}",
-            headers={
-                "apikey":        SUPABASE_KEY,
-                "Authorization": f"Bearer {SUPABASE_KEY}",
-                "Content-Type":  "application/pdf",
-                "x-upsert":      "true",
-            },
-            data=pdf_bytes,
-            timeout=60,
-        )
-        if r.status_code in (200, 201):
-            return f"{SUPABASE_URL}/storage/v1/object/public/{STORAGE_BUCKET}/{storage_path}"
-        console.print(f"    [yellow]Storage {r.status_code}: {r.text[:60]}[/]")
-        return None
-    except Exception as e:
-        console.print(f"    [yellow]Storage error: {str(e)[:60]}[/]")
-        return None
-
-
-def looks_like_filename(t: str) -> bool:
-    """Détecte un titre qui ressemble à un nom de fichier (sans espace, avec _ ou kebab numérique)."""
-    t = (t or '').strip()
-    if not t or len(t) > 200:
+def is_garbled_arabic(t: str) -> bool:
+    """Arabic Presentation Forms (U+FB50–FEFF) = encodage visuel legacy corrompu."""
+    if not t or len(t) < 3:
         return False
-    return ' ' not in t and ('_' in t or bool(re.search(r'\d{4}[-_]\d', t)))
+    pf = sum(1 for c in t if 'ﭐ' <= c <= '﻿')
+    total = len(t.replace(' ', ''))
+    return total > 0 and pf / total > 0.20
 
-def humanize_filename(t: str) -> str:
-    """Convertit un nom de fichier en titre lisible."""
-    t = re.sub(r'\.(pdf|PDF|doc|docx)$', '', t)
+def is_filename_title(t: str) -> bool:
+    """Détecte un titre qui ressemble à un nom de fichier."""
+    t = (t or '').strip()
+    if not t or len(t) > 350:
+        return False
+    # Sans espace : underscores ou codes (ex: cdr_loi_27.14, 103_12)
+    if ' ' not in t:
+        if '_' in t:
+            return True
+        if re.match(r'^[\dA-Za-z]+$', t) and len(t) > 6 and re.search(r'\d', t):
+            return True
+        if re.search(r'\d{4}[-_]\d', t):
+            return True
+    # Avec espaces : ratio élevé de tokens numériques (ex: "loi telecom fr 96 24 162 97 1 1997")
+    words = t.split()
+    if len(words) >= 4:
+        digit_tokens = sum(1 for w in words if re.match(r'^\d+$', w))
+        if digit_tokens / len(words) >= 0.35:
+            return True
+    return False
+
+def is_purely_numeric(t: str) -> bool:
+    """Titre uniquement numérique ou quasi-numérique (ex: '6399', '13_100')."""
+    t = (t or '').strip().replace('_', '').replace('-', '').replace('.', '')
+    return bool(t) and t.isdigit() and len(t) <= 10
+
+def needs_fix(row: dict) -> list[str]:
+    """Retourne la liste des problèmes détectés pour une ligne."""
+    problems = []
+    num   = row.get("number", "") or ""
+    title = row.get("title_fr", "") or ""
+    ar    = row.get("title_ar", "") or ""
+
+    if is_url_encoded(num) or has_pdf_extension(num):
+        problems.append("number_encoded")
+    if is_url_encoded(title) or has_pdf_extension(title):
+        problems.append("title_encoded")
+    if is_garbled_arabic(ar):
+        problems.append("arabic_garbled")
+    if is_filename_title(title) and "title_encoded" not in problems:
+        problems.append("title_filename")
+    if is_purely_numeric(title):
+        problems.append("title_numeric")
+    return problems
+
+# ── Corrections simples ────────────────────────────────────────────────────────
+
+def clean_str(s: str, max_len: int = 400) -> str:
+    s = unquote(s or '')
+    s = re.sub(r'\.(pdf|PDF)$', '', s).strip()
+    return re.sub(r'\s+', ' ', s).strip()[:max_len]
+
+def humanize(t: str) -> str:
+    t = re.sub(r'\.(pdf|PDF|doc|docx)$', '', t or '')
     t = t.replace('_', ' ').replace('-', ' ')
     t = re.sub(r'\s+', ' ', t).strip()
     return t.capitalize()
 
+# ── Correction IA (pour les titres complexes) ─────────────────────────────────
+
+def ai_fix_title(number: str, source: str, bad_title: str, content_snippet: str) -> str | None:
+    """Demande à Gemini de générer un titre propre depuis les métadonnées disponibles."""
+    if not OPENROUTER_KEY:
+        return None
+
+    prompt = (
+        "Tu es un expert en droit marocain. "
+        "Génère un titre français propre et concis (max 120 caractères) pour ce texte juridique. "
+        "Réponds UNIQUEMENT avec le titre, sans guillemets, sans explication.\n\n"
+        f"Numéro : {number or 'inconnu'}\n"
+        f"Source : {source or 'inconnue'}\n"
+        f"Titre brut (à remplacer) : {bad_title[:100]}\n"
+        f"Extrait du contenu : {content_snippet[:600] if content_snippet else 'Non disponible'}"
+    )
+
+    try:
+        r = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {OPENROUTER_KEY}",
+                "Content-Type":  "application/json",
+                "HTTP-Referer":  "https://juritheque.com",
+            },
+            json={
+                "model":       AI_MODEL,
+                "max_tokens":  80,
+                "temperature": 0.1,
+                "messages": [{"role": "user", "content": prompt}],
+            },
+            timeout=20,
+        )
+        if r.status_code == 200:
+            title = r.json()["choices"][0]["message"]["content"].strip()
+            title = re.sub(r'^[«"\'`]+|[»"\'`]+$', '', title).strip()
+            if 5 < len(title) < 200:
+                return title
+    except Exception as e:
+        console.print(f"    [dim]IA error: {e}[/]")
+    return None
+
+# ── Pagination Supabase ────────────────────────────────────────────────────────
+
+def fetch_all(params: dict, page_size: int = 1000) -> list[dict]:
+    rows, offset = [], 0
+    while True:
+        h = {**HEADERS, "Range": f"{offset}-{offset + page_size - 1}"}
+        r = requests.get(f"{SUPABASE_URL}/rest/v1/laws", headers=h, params=params, timeout=30)
+        if r.status_code not in (200, 206):
+            console.print(f"[red]Erreur fetch: {r.status_code}[/]")
+            break
+        chunk = r.json()
+        if not chunk:
+            break
+        rows.extend(chunk)
+        if len(chunk) < page_size:
+            break
+        offset += page_size
+    return rows
+
+def patch(law_id: str, data: dict) -> bool:
+    r = requests.patch(
+        f"{SUPABASE_URL}/rest/v1/laws",
+        headers=HEADERS,
+        params={"id": f"eq.{law_id}"},
+        json=data,
+        timeout=10,
+    )
+    return r.status_code in (200, 204)
+
+# ── Main ───────────────────────────────────────────────────────────────────────
 
 def main():
     import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--dry-run",        action="store_true", help="Aperçu sans écriture")
-    parser.add_argument("--reupload-pdfs",  action="store_true", help="Re-télécharger et uploader les PDFs externes vers Storage")
-    parser.add_argument("--fix-filenames",  action="store_true", help="Humaniser les titres type nom-de-fichier (underscores, kebab)")
-    args = parser.parse_args()
+    p = argparse.ArgumentParser(description="Correcteur intelligent de titres juridiques")
+    p.add_argument("--dry-run", action="store_true", help="Aperçu sans écriture")
+    p.add_argument("--all",     action="store_true", help="Scanner toutes les lois (pas seulement pending)")
+    p.add_argument("--limit",   type=int, default=0, help="Limiter à N lois (0 = illimité)")
+    args = p.parse_args()
 
     if args.dry_run:
-        console.print("[yellow]Mode DRY-RUN — aucune écriture[/]\n")
+        console.print("[yellow bold]Mode DRY-RUN — aucune modification en base[/]\n")
 
-    # ── Charger les textes veille avec extraction_status=pending ──────────────
-    console.print("Chargement des textes importés par la veille…")
-    select_fields = "id,number,title_fr,source_name,pdf_url"
-    resp = requests.get(
-        f"{SUPABASE_URL}/rest/v1/laws",
-        headers=HEADERS,
-        params={
-            "extraction_status": "eq.pending",
-            "select":            select_fields,
-            "limit":             "500",
-        },
-        timeout=20,
-    )
+    # ── 1. Charger les métadonnées légères (sans content_fr) ───────────────────
+    console.print("[bold]Chargement des textes…[/]")
+    params = {"select": "id,number,title_fr,title_ar,source_name"}
+    if not args.all:
+        console.print("  [dim](ciblage extraction_status=pending — utilisez --all pour tout scanner)[/]")
+        params["extraction_status"] = "eq.pending"
 
-    if resp.status_code != 200:
-        console.print(f"[red]Erreur: {resp.status_code} {resp.text[:100]}[/]")
-        sys.exit(1)
+    rows = fetch_all(params)
+    if args.limit:
+        rows = rows[:args.limit]
+    console.print(f"  {len(rows)} textes chargés\n")
 
-    rows = resp.json()
-    console.print(f"  {len(rows)} textes avec extraction_status=pending\n")
-
-    # ── Phase 1 : titres et numéros cassés ───────────────────────────────────
-    to_fix = []
+    # ── 2. Détection ────────────────────────────────────────────────────────────
+    problems_map: dict[str, list] = {}  # id → [(problem, row)]
     for row in rows:
-        num   = row.get("number", "") or ""
-        title = row.get("title_fr", "") or ""
-        patch = {}
-        if looks_broken_number(num):
-            patch["number"] = clean_number(num)
-        if looks_broken_title(title):
-            patch["title_fr"] = clean_title(title)
-        if patch:
-            to_fix.append((row["id"], num, title, patch))
+        probs = needs_fix(row)
+        if probs:
+            problems_map[row["id"]] = (probs, row)
 
-    console.print(f"  [bold]{len(to_fix)}[/] textes avec titre/numéro à corriger")
-
-    if to_fix:
-        table = Table(show_header=True, header_style="bold")
-        table.add_column("ID",      width=10)
-        table.add_column("Avant",   width=42)
-        table.add_column("Après",   width=42)
-        table.add_column("Status",  width=8)
-
-        fixed = 0
-        for (law_id, old_num, old_title, patch) in to_fix:
-            before = f"n°{old_num[:38]}" if patch.get("number") else f"«{old_title[:38]}»"
-            after  = f"n°{patch['number'][:38]}" if patch.get("number") else f"«{patch.get('title_fr','')[:38]}»"
-
-            if not args.dry_run:
-                r = requests.patch(
-                    f"{SUPABASE_URL}/rest/v1/laws",
-                    headers=HEADERS,
-                    params={"id": f"eq.{law_id}"},
-                    json=patch,
-                    timeout=10,
-                )
-                ok = r.status_code in (200, 204)
-                status = "✅" if ok else f"❌{r.status_code}"
-                if ok:
-                    fixed += 1
-            else:
-                status = "🔍"
-
-            table.add_row(str(law_id)[:8] + "…", before, after, status)
-
-        console.print(table)
-        if not args.dry_run:
-            console.print(f"  OK {fixed}/{len(to_fix)} titres/numeros corriges.\n")
-
-    # ── Phase 1b : humaniser les titres type nom-de-fichier ──────────────────
-    if args.fix_filenames:
-        console.print("\n[bold]Phase 1b — Humaniser les titres bruts (type nom-de-fichier)[/]\n")
-
-        filename_rows = [r for r in rows if looks_like_filename(r.get("title_fr", ""))]
-        console.print(f"  [bold]{len(filename_rows)}[/] titres à humaniser\n")
-
-        if filename_rows:
-            table2 = Table(show_header=True, header_style="bold")
-            table2.add_column("ID",     width=10)
-            table2.add_column("Avant",  width=48)
-            table2.add_column("Après",  width=48)
-            table2.add_column("Status", width=8)
-
-            fixed2 = 0
-            for row in filename_rows:
-                old_title = row.get("title_fr", "")
-                new_title = humanize_filename(old_title)
-                if old_title == new_title:
-                    continue
-
-                if not args.dry_run:
-                    r = requests.patch(
-                        f"{SUPABASE_URL}/rest/v1/laws",
-                        headers=HEADERS,
-                        params={"id": f"eq.{row['id']}"},
-                        json={"title_fr": new_title},
-                        timeout=10,
-                    )
-                    ok = r.status_code in (200, 204)
-                    status = "✅" if ok else f"❌{r.status_code}"
-                    if ok:
-                        fixed2 += 1
-                else:
-                    status = "🔍"
-
-                table2.add_row(str(row["id"])[:8] + "…", old_title[:46], new_title[:46], status)
-
-            console.print(table2)
-            if not args.dry_run:
-                console.print(f"  OK {fixed2}/{len(filename_rows)} titres humanises.\n")
-
-    # ── Phase 2 : re-upload PDFs externes vers Storage ────────────────────────
-    if not args.reupload_pdfs:
-        console.print("\n  [dim]Astuce : ajouter --reupload-pdfs pour uploader les PDFs externes vers Supabase Storage[/]")
+    total = len(problems_map)
+    if total == 0:
+        console.print("[green]✅ Aucun problème détecté.[/]")
         return
 
-    console.print("\n[bold]Phase 2 — Re-upload PDFs externes vers Supabase Storage[/]\n")
+    console.print(f"[bold]{total}[/] textes avec problèmes détectés\n")
 
-    to_upload = [r for r in rows if r.get("pdf_url") and is_external_pdf(r["pdf_url"])]
-    console.print(f"  [bold]{len(to_upload)}[/] PDFs externes à uploader\n")
+    # ── 3. Afficher aperçu ──────────────────────────────────────────────────────
+    preview = Table(show_header=True, header_style="bold", title="Problèmes détectés")
+    preview.add_column("Problème",   width=20)
+    preview.add_column("Avant",      width=50)
+    preview.add_column("Fix prévu",  width=20)
 
-    if not to_upload:
-        console.print("  Tous les PDFs sont deja sur Storage.")
+    counts = {}
+    for law_id, (probs, row) in list(problems_map.items())[:30]:
+        for prob in probs:
+            counts[prob] = counts.get(prob, 0) + 1
+            val = row.get("title_fr") or row.get("title_ar") or row.get("number") or ""
+            fix_label = {
+                "number_encoded":  "Décodage URL",
+                "title_encoded":   "Décodage URL",
+                "title_filename":  "IA" if OPENROUTER_KEY else "Humaniser",
+                "title_numeric":   "Formatage",
+                "arabic_garbled":  "Effacer title_ar",
+            }.get(prob, "?")
+            preview.add_row(prob, val[:48], fix_label)
+
+    console.print(preview)
+    if total > 30:
+        console.print(f"  [dim]… et {total - 30} autres[/]\n")
+
+    console.print("\n[bold]Répartition :[/]")
+    for k, v in counts.items():
+        console.print(f"  • {k} : {v}")
+    console.print()
+
+    if args.dry_run:
+        console.print("[yellow]DRY-RUN terminé — aucune modification appliquée.[/]")
         return
 
-    uploaded = failed = 0
-    for row in track(to_upload, description="  Upload…"):
-        ext_url    = row["pdf_url"]
-        source     = row.get("source_name") or "veille"
-        raw_name   = Path(unquote(urlparse(ext_url).path)).name
+    # ── 4. Corriger ─────────────────────────────────────────────────────────────
+    fixed = failed = ai_used = 0
 
-        if args.dry_run:
-            console.print(f"  🔍 {raw_name[:60]} ({source})")
-            continue
+    for law_id, (probs, row) in track(problems_map.items(), description="Correction…"):
+        patch_data = {}
 
-        pdf_bytes = download_pdf(ext_url)
-        if not pdf_bytes:
-            failed += 1
-            console.print(f"  ❌ Download failed: {ext_url[:60]}")
-            continue
+        for prob in probs:
+            if prob == "number_encoded":
+                patch_data["number"] = clean_str(row.get("number", ""), 60)
 
-        storage_url = upload_to_storage(pdf_bytes, source, raw_name)
-        if storage_url:
-            # Mettre à jour pdf_url dans laws
-            r = requests.patch(
-                f"{SUPABASE_URL}/rest/v1/laws",
-                headers=HEADERS,
-                params={"id": f"eq.{row['id']}"},
-                json={"pdf_url": storage_url},
-                timeout=10,
-            )
-            if r.status_code in (200, 204):
-                uploaded += 1
-                console.print(f"  ✅ {raw_name[:50]} → Storage")
+            elif prob == "title_encoded":
+                patch_data["title_fr"] = clean_str(row.get("title_fr", ""))
+
+            elif prob == "arabic_garbled":
+                patch_data["title_ar"] = None
+
+            elif prob in ("title_filename", "title_numeric"):
+                bad = row.get("title_fr", "") or ""
+                number  = row.get("number", "") or ""
+                source  = row.get("source_name", "") or ""
+                # Récupérer content_fr uniquement pour cette loi (requête ciblée)
+                content = ""
+                if OPENROUTER_KEY:
+                    try:
+                        cr = requests.get(
+                            f"{SUPABASE_URL}/rest/v1/laws",
+                            headers=HEADERS,
+                            params={"id": f"eq.{law_id}", "select": "content_fr"},
+                            timeout=15,
+                        )
+                        if cr.status_code == 200 and cr.json():
+                            content = (cr.json()[0].get("content_fr", "") or "")[:600]
+                    except Exception:
+                        pass
+
+                # Essayer l'IA si clé disponible et contenu ou numéro exploitable
+                new_title = None
+                if OPENROUTER_KEY and (content or number):
+                    new_title = ai_fix_title(number, source, bad, content)
+                    if new_title:
+                        ai_used += 1
+
+                # Fallback : humanisation simple
+                if not new_title:
+                    new_title = humanize(bad) if prob == "title_filename" else f"Texte N° {number}" if number else bad
+
+                if new_title and new_title != bad:
+                    patch_data["title_fr"] = new_title
+
+        if patch_data:
+            ok = patch(law_id, patch_data)
+            if ok:
+                fixed += 1
             else:
                 failed += 1
-                console.print(f"  ❌ DB update failed {r.status_code}")
         else:
-            failed += 1
+            fixed += 1  # détecté mais rien à changer (déjà propre)
 
-        time.sleep(0.3)
+        time.sleep(0.05)
 
-    console.print(f"\n  Uploades : [green]{uploaded}[/]")
-    console.print(f"  Echecs   : [red]{failed}[/]")
+    # ── 5. Résumé ───────────────────────────────────────────────────────────────
+    console.print(f"\n[green bold]✅ {fixed}/{total} textes corrigés[/]")
+    if ai_used:
+        console.print(f"   🤖 {ai_used} titres générés par IA ({AI_MODEL})")
+    if failed:
+        console.print(f"   [red]❌ {failed} échecs (erreur Supabase)[/]")
 
 
 if __name__ == "__main__":

@@ -52,7 +52,7 @@ function getWatchBadge(law, lang = 'fr') {
 
 // ── Carte d'un texte ──────────────────────────────────────────────────────────
 function WatchCard({ law }) {
-  const { lang } = useLang()
+  const { lang, t } = useLang()
   const badge    = getWatchBadge(law, lang)
   const title    = (lang === 'ar' && law.title_ar) ? law.title_ar : (law.title_fr || law.title_ar || `Texte n°${law.id}`)
   const desc     = law.simple_summary_fr || law.excerpt_fr || law.excerpt_ar || null
@@ -101,7 +101,7 @@ function WatchCard({ law }) {
           to={lawPath(law)}
           className="flex items-center gap-1 text-xs text-gold font-medium hover:underline"
         >
-          Lire <ChevronRight size={11} />
+          {t('watch.read')} <ChevronRight size={11} />
         </Link>
         {law.pdf_url && (
           <a
@@ -138,12 +138,13 @@ function WatchSkeleton() {
 
 // ── Empty state ───────────────────────────────────────────────────────────────
 function EmptyState({ label }) {
+  const { t } = useLang()
   return (
     <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
       <FileText size={36} className="text-gray-200 mb-3" />
       <p className="text-sm text-navy-500 mb-2">{label}</p>
       <Link to="/base" className="text-xs text-gold hover:underline">
-        Rechercher dans la base →
+        {t('watch.search_base')}
       </Link>
     </div>
   )
@@ -151,6 +152,7 @@ function EmptyState({ label }) {
 
 // ── Pagination simple ─────────────────────────────────────────────────────────
 function Pagination({ page, total, pageSize, onPage }) {
+  const { t } = useLang()
   const totalPages = Math.ceil(total / pageSize)
   if (totalPages <= 1) return null
   return (
@@ -162,7 +164,7 @@ function Pagination({ page, total, pageSize, onPage }) {
       >
         <ChevronLeft size={15} />
       </button>
-      <span className="text-xs text-navy-500">Page {page} / {totalPages}</span>
+      <span className="text-xs text-navy-500">{t('watch.page')} {page} / {totalPages}</span>
       <button
         onClick={() => onPage(page + 1)}
         disabled={page >= totalPages}
@@ -175,11 +177,12 @@ function Pagination({ page, total, pageSize, onPage }) {
 }
 
 // ── Types de textes disponibles ───────────────────────────────────────────────
-const LAW_TYPES = ['Loi', 'Décret', 'Arrêté', 'Dahir', 'Circulaire', 'Code', 'Ordonnance']
+const LAW_TYPES_FR = ['Loi', 'Décret', 'Arrêté', 'Dahir', 'Circulaire', 'Code', 'Ordonnance']
+const LAW_TYPES_AR = ['قانون', 'مرسوم', 'قرار', 'ظهير', 'دورية', 'مدونة', 'منشور']
 
 // ── Page principale ───────────────────────────────────────────────────────────
 export default function LegalWatch() {
-  const { lang } = useLang()
+  const { lang, t } = useLang()
   const [searchParams, setSearchParams] = useSearchParams()
 
   // Filtres depuis l'URL
@@ -247,6 +250,8 @@ export default function LegalWatch() {
   const clearFilters = () => setSearchParams({}, { replace: true })
 
   const hasFilters = domain || type
+  const LAW_TYPES = lang === 'ar' ? LAW_TYPES_AR : LAW_TYPES_FR
+  const LAW_TYPES_DISPLAY = LAW_TYPES_FR.map((fr, i) => ({ value: fr, label: lang === 'ar' ? LAW_TYPES_AR[i] : fr }))
 
   const breadcrumbs = [
     { name: 'Accueil',            url: '/' },
@@ -287,9 +292,9 @@ export default function LegalWatch() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           {/* Fil d'Ariane */}
           <nav className="flex items-center gap-1.5 text-xs text-white/50 mb-5" aria-label="Fil d'Ariane">
-            <Link to="/"              className="hover:text-gold transition-colors">Accueil</Link>
+            <Link to="/"              className="hover:text-gold transition-colors">{t('watch.home')}</Link>
             <ChevronRight size={10} />
-            <span className="text-white/80">Veille juridique</span>
+            <span className="text-white/80">{t('watch.breadcrumb')}</span>
           </nav>
 
           <div className="flex items-start gap-4">
@@ -298,11 +303,10 @@ export default function LegalWatch() {
             </div>
             <div>
               <h1 className="font-playfair font-bold text-2xl sm:text-3xl mb-2">
-                Veille juridique au Maroc
+                {t('watch.title')}
               </h1>
               <p className="text-white/60 text-sm max-w-2xl leading-relaxed">
-                Suivez les derniers textes juridiques publiés ou modifiés : lois, décrets, arrêtés, dahirs.
-                Données issues de la base officielle JuriThèque.
+                {t('watch.subtitle')}
               </p>
             </div>
           </div>
@@ -310,14 +314,14 @@ export default function LegalWatch() {
           {/* Badges légende */}
           <div className="flex flex-wrap gap-2 mt-6">
             {[
-              { label: 'Nouveau',    bg: 'bg-emerald-500/20 text-emerald-300', dot: 'bg-emerald-400' },
-              { label: 'Mis à jour', bg: 'bg-blue-500/20 text-blue-300',       dot: 'bg-blue-400' },
-              { label: 'Validé',     bg: 'bg-gold/20 text-gold',               dot: 'bg-gold' },
-              { label: 'En vigueur', bg: 'bg-white/10 text-white/50',          dot: 'bg-gray-400' },
+              { labelKey: 'watch.badge_new',       bg: 'bg-emerald-500/20 text-emerald-300', dot: 'bg-emerald-400' },
+              { labelKey: 'watch.badge_updated',    bg: 'bg-blue-500/20 text-blue-300',       dot: 'bg-blue-400' },
+              { labelKey: 'watch.badge_validated',  bg: 'bg-gold/20 text-gold',               dot: 'bg-gold' },
+              { labelKey: 'watch.badge_active',     bg: 'bg-white/10 text-white/50',          dot: 'bg-gray-400' },
             ].map(b => (
-              <span key={b.label} className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full ${b.bg}`}>
+              <span key={b.labelKey} className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full ${b.bg}`}>
                 <span className={`w-1.5 h-1.5 rounded-full ${b.dot}`} />
-                {b.label}
+                {t(b.labelKey)}
               </span>
             ))}
           </div>
@@ -334,10 +338,10 @@ export default function LegalWatch() {
             onChange={e => setFilter('domain', e.target.value)}
             className="px-3 py-1.5 text-xs border border-gray-200 rounded-xl bg-white text-navy-700 focus:outline-none focus:border-gold"
           >
-            <option value="">Tous les domaines</option>
+            <option value="">{t('watch.all_domains')}</option>
             {domains.map(d => (
               <option key={d.id} value={d.id}>
-                {d.name_fr || d.fr || d.id}
+                {(lang === 'ar' && d.name_ar) ? d.name_ar : (d.name_fr || d.fr || d.id)}
               </option>
             ))}
           </select>
@@ -348,15 +352,15 @@ export default function LegalWatch() {
               onClick={() => setFilter('type', '')}
               className={`px-3 py-1.5 text-xs font-medium transition-colors ${!type ? 'bg-navy text-white' : 'text-navy-600 hover:text-navy'}`}
             >
-              Tous
+              {t('watch.all_types')}
             </button>
-            {LAW_TYPES.map(t => (
+            {LAW_TYPES_DISPLAY.map(({ value, label }) => (
               <button
-                key={t}
-                onClick={() => setFilter('type', type === t ? '' : t)}
-                className={`px-3 py-1.5 text-xs font-medium border-l border-gray-200 transition-colors ${type === t ? 'bg-navy text-white' : 'text-navy-600 hover:text-navy'}`}
+                key={value}
+                onClick={() => setFilter('type', type === value ? '' : value)}
+                className={`px-3 py-1.5 text-xs font-medium border-l border-gray-200 transition-colors ${type === value ? 'bg-navy text-white' : 'text-navy-600 hover:text-navy'}`}
               >
-                {t}
+                {label}
               </button>
             ))}
           </div>
@@ -367,7 +371,7 @@ export default function LegalWatch() {
               onClick={clearFilters}
               className="flex items-center gap-1 text-xs text-red-500 hover:text-red-700 transition-colors"
             >
-              <RefreshCw size={11} /> Réinitialiser
+              <RefreshCw size={11} /> {t('watch.reset')}
             </button>
           )}
 
@@ -376,7 +380,7 @@ export default function LegalWatch() {
             to={`/base?${domain ? `domain=${domain}&` : ''}${type ? `type=${type}&` : ''}sort=date`}
             className="ml-auto flex items-center gap-1 text-xs text-gold hover:underline whitespace-nowrap"
           >
-            Vue complète <ChevronRight size={11} />
+            {t('watch.full_view')} <ChevronRight size={11} />
           </Link>
         </div>
       </div>
@@ -392,20 +396,20 @@ export default function LegalWatch() {
             </div>
             <div>
               <h2 className="font-playfair font-semibold text-navy text-lg">
-                Derniers textes ajoutés
+                {t('watch.new_title')}
                 {!loadingNew && newTotal > 0 && (
                   <span className="ml-2 text-sm font-normal text-navy-400">({newTotal})</span>
                 )}
               </h2>
-              <p className="text-xs text-navy-400">Textes récemment intégrés à la base JuriThèque</p>
+              <p className="text-xs text-navy-400">{t('watch.new_sub')}</p>
             </div>
           </div>
 
           {errorNew ? (
             <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-600">
               <AlertCircle size={14} />
-              Impossible de charger les textes.
-              <button onClick={loadNew} className="ml-auto text-xs hover:underline">Réessayer</button>
+              {t('watch.load_error')}
+              <button onClick={loadNew} className="ml-auto text-xs hover:underline">{t('watch.retry')}</button>
             </div>
           ) : (
             <>
@@ -413,7 +417,7 @@ export default function LegalWatch() {
                 {loadingNew
                   ? [...Array(6)].map((_, i) => <WatchSkeleton key={i} />)
                   : newLaws.length === 0
-                    ? <EmptyState label="Aucun nouveau texte pour ces filtres." />
+                    ? <EmptyState label={t('watch.no_new')} />
                     : newLaws.map(law => <WatchCard key={law.id} law={law} />)
                 }
               </div>
@@ -435,20 +439,20 @@ export default function LegalWatch() {
             </div>
             <div>
               <h2 className="font-playfair font-semibold text-navy text-lg">
-                Récemment modifiés
+                {t('watch.mod_title')}
                 {!loadingMod && modTotal > 0 && (
                   <span className="ml-2 text-sm font-normal text-navy-400">({modTotal})</span>
                 )}
               </h2>
-              <p className="text-xs text-navy-400">Textes dont le statut est "Modifié"</p>
+              <p className="text-xs text-navy-400">{t('watch.mod_sub')}</p>
             </div>
           </div>
 
           {errorMod ? (
             <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-600">
               <AlertCircle size={14} />
-              Impossible de charger les textes.
-              <button onClick={loadMod} className="ml-auto text-xs hover:underline">Réessayer</button>
+              {t('watch.load_error')}
+              <button onClick={loadMod} className="ml-auto text-xs hover:underline">{t('watch.retry')}</button>
             </div>
           ) : (
             <>
@@ -456,7 +460,7 @@ export default function LegalWatch() {
                 {loadingMod
                   ? [...Array(3)].map((_, i) => <WatchSkeleton key={i} />)
                   : modLaws.length === 0
-                    ? <EmptyState label='Aucun texte avec statut "Modifié" pour ces filtres.' />
+                    ? <EmptyState label={t('watch.no_mod')} />
                     : modLaws.map(law => <WatchCard key={law.id} law={law} />)
                 }
               </div>
@@ -478,8 +482,8 @@ export default function LegalWatch() {
           >
             <Bot size={22} className="flex-shrink-0 group-hover:scale-110 transition-transform" />
             <div>
-              <p className="font-semibold text-sm">Analyser un texte avec l'IA</p>
-              <p className="text-xs opacity-70 mt-0.5">L'assistant répond en français et arabe</p>
+              <p className="font-semibold text-sm">{t('watch.cta_ai')}</p>
+              <p className="text-xs opacity-70 mt-0.5">{t('watch.cta_ai_desc')}</p>
             </div>
           </Link>
           <Link
@@ -488,8 +492,8 @@ export default function LegalWatch() {
           >
             <Search size={22} className="flex-shrink-0 text-gold" />
             <div>
-              <p className="font-semibold text-sm text-navy">Explorer la base complète</p>
-              <p className="text-xs text-navy-500 mt-0.5">Tous les textes, filtres avancés</p>
+              <p className="font-semibold text-sm text-navy">{t('watch.cta_explore')}</p>
+              <p className="text-xs text-navy-500 mt-0.5">{t('watch.cta_explore_desc')}</p>
             </div>
           </Link>
         </section>
@@ -498,7 +502,7 @@ export default function LegalWatch() {
         <section>
           <h2 className="font-playfair font-semibold text-navy text-lg mb-4 flex items-center gap-2">
             <BookOpen size={16} className="text-gold" />
-            Guides thématiques
+            {t('watch.guides_section')}
           </h2>
           <div className="flex flex-wrap gap-2">
             {SEO_INTENT_PAGES.slice(0, 8).map(guide => (
@@ -508,28 +512,28 @@ export default function LegalWatch() {
                 className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs text-navy-700 hover:border-gold hover:text-gold transition-colors"
               >
                 <BookOpen size={11} className="text-gold flex-shrink-0" />
-                {guide.h1}
+                {(lang === 'ar' && guide.h1_ar) ? guide.h1_ar : guide.h1}
               </Link>
             ))}
             <Link
               to="/fr/guides"
               className="inline-flex items-center gap-1.5 px-3 py-2 bg-gold/10 border border-gold/30 rounded-xl text-xs font-semibold text-gold hover:bg-gold hover:text-navy transition-colors"
             >
-              Tous les guides <ChevronRight size={11} />
+              {t('watch.all_guides')} <ChevronRight size={11} />
             </Link>
             <Link
               to="/fr/bulletins-officiels"
               className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-medium text-navy-700 hover:border-gold hover:text-gold transition-colors"
             >
               <Newspaper size={11} className="text-gold flex-shrink-0" />
-              Bulletins Officiels
+              {t('watch.bo_link')}
             </Link>
             <Link
               to="/fr/lois-complementaires"
               className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-medium text-navy-700 hover:border-gold hover:text-gold transition-colors"
             >
               <FileText size={11} className="text-gold flex-shrink-0" />
-              Lois Adala
+              {t('watch.adala_link')}
             </Link>
           </div>
         </section>
@@ -538,7 +542,7 @@ export default function LegalWatch() {
         {domains.length > 0 && (
           <section>
             <h2 className="font-playfair font-semibold text-navy text-lg mb-4">
-              Veille par domaine
+              {t('watch.domain_watch')}
             </h2>
             <div className="flex flex-wrap gap-2">
               {domains.map(d => (

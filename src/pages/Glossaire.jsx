@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Search, BookOpen, ChevronRight, X } from 'lucide-react'
 import { useSEO } from '../hooks/useSEO'
+import { useLang } from '../contexts/LangContext'
 import { GLOSSAIRE, getGlossaireByLetter, getAvailableLetters, searchGlossaire } from '../data/glossaire'
 
 // ── Correspondance domaine → page ────────────────────────────────────────────
@@ -18,7 +19,7 @@ const DOMAIN_LINKS = {
   international:   '/domaine/international',
 }
 
-const DOMAIN_LABELS = {
+const DOMAIN_LABELS_FR = {
   civil:           'Droit civil',
   penal:           'Droit pénal',
   commercial:      'Droit commercial',
@@ -29,6 +30,19 @@ const DOMAIN_LABELS = {
   numerique:       'Droit numérique',
   bancaire:        'Droit bancaire',
   international:   'Droit international',
+}
+
+const DOMAIN_LABELS_AR = {
+  civil:           'القانون المدني',
+  penal:           'القانون الجنائي',
+  commercial:      'القانون التجاري',
+  administratif:   'القانون الإداري',
+  travail:         'قانون الشغل',
+  fiscal:          'القانون الضريبي',
+  constitutionnel: 'القانون الدستوري',
+  numerique:       'القانون الرقمي',
+  bancaire:        'القانون البنكي',
+  international:   'القانون الدولي',
 }
 
 const DOMAIN_COLORS = {
@@ -46,6 +60,8 @@ const DOMAIN_COLORS = {
 
 // ── Composant termes ──────────────────────────────────────────────────────────
 function TermCard({ entry, highlight = '' }) {
+  const { lang } = useLang()
+  const DOMAIN_LABELS = lang === 'ar' ? DOMAIN_LABELS_AR : DOMAIN_LABELS_FR
   const domainLabel = entry.domain ? DOMAIN_LABELS[entry.domain] : null
   const domainColor = entry.domain ? DOMAIN_COLORS[entry.domain] : ''
   const domainLink  = entry.domain ? DOMAIN_LINKS[entry.domain] : null
@@ -63,9 +79,9 @@ function TermCard({ entry, highlight = '' }) {
   return (
     <div id={`term-${entry.term.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
          className="bg-white rounded-xl border border-gray-100 p-5 hover:border-gold/40 hover:shadow-sm transition-all group">
-      <div className="flex items-start justify-between gap-3 mb-2">
-        <div>
-          <h3 className="font-playfair font-semibold text-navy text-base group-hover:text-gold transition-colors">
+      <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+        <div className="min-w-0 flex-1">
+          <h3 className="font-playfair font-semibold text-navy text-base group-hover:text-gold transition-colors break-words">
             {highlightText(entry.term)}
           </h3>
           <p className="text-xs font-arabic text-navy-400 mt-0.5 leading-relaxed" dir="rtl">
@@ -83,8 +99,11 @@ function TermCard({ entry, highlight = '' }) {
               </span>
         )}
       </div>
-      <p className="text-sm text-navy-600 leading-relaxed">
-        {highlightText(entry.definition)}
+      <p className={`text-sm text-navy-600 leading-relaxed ${lang === 'ar' ? 'font-arabic' : ''}`}
+         dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+        {lang === 'ar' && entry.definition_ar
+          ? highlightText(entry.definition_ar)
+          : highlightText(entry.definition)}
       </p>
     </div>
   )
@@ -92,6 +111,8 @@ function TermCard({ entry, highlight = '' }) {
 
 // ── Page principale ───────────────────────────────────────────────────────────
 export default function Glossaire() {
+  const { lang, t } = useLang()
+
   useSEO({
     title: 'Glossaire juridique marocain — Définitions FR/AR | JuriThèque',
     description: `Glossaire de ${GLOSSAIRE.length}+ termes juridiques marocains bilingues (français/arabe). Définitions claires du droit civil, commercial, pénal, du travail et administratif au Maroc.`,
@@ -143,9 +164,9 @@ export default function Glossaire() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-white/50 text-xs mb-6">
-            <Link to="/" className="hover:text-gold transition-colors">Accueil</Link>
+            <Link to="/" className="hover:text-gold transition-colors">{t('glossary.home')}</Link>
             <ChevronRight size={12} />
-            <span className="text-white/80">Glossaire juridique</span>
+            <span className="text-white/80">{t('glossary.breadcrumb')}</span>
           </nav>
 
           <div className="flex items-start gap-4">
@@ -154,29 +175,29 @@ export default function Glossaire() {
             </div>
             <div>
               <h1 className="font-playfair font-bold text-3xl md:text-4xl mb-2">
-                Glossaire juridique marocain
+                {t('glossary.title')}
               </h1>
               <p className="text-white/60 text-sm md:text-base leading-relaxed max-w-2xl">
-                {GLOSSAIRE.length}+ termes du droit marocain avec définitions détaillées et traductions en arabe.
-                Du droit civil au droit des sociétés, tous les concepts essentiels expliqués clairement.
+                {t('glossary.desc').replace('{n}', GLOSSAIRE.length)}
               </p>
             </div>
           </div>
 
           {/* Barre de recherche */}
           <div className="mt-8 relative max-w-xl">
-            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
+            <Search size={16} className={`absolute ${lang === 'ar' ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-white/40`} />
             <input
               ref={searchRef}
               type="text"
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Rechercher un terme (ex: hypothèque, procuration, bail…)"
-              className="w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl pl-10 pr-10 py-3 text-sm focus:outline-none focus:border-gold focus:bg-white/15 transition-all"
+              placeholder={t('glossary.search_placeholder')}
+              className={`w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl ${lang === 'ar' ? 'pr-10 pl-10' : 'pl-10 pr-10'} py-3 text-sm focus:outline-none focus:border-gold focus:bg-white/15 transition-all`}
+              dir={lang === 'ar' ? 'rtl' : 'ltr'}
             />
             {query && (
               <button onClick={() => setQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors">
+                      className={`absolute ${lang === 'ar' ? 'left-3' : 'right-3'} top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors`}>
                 <X size={15} />
               </button>
             )}
@@ -184,13 +205,13 @@ export default function Glossaire() {
 
           {/* Stats */}
           <div className="flex flex-wrap gap-4 mt-6 text-xs text-white/50">
-            <span>{GLOSSAIRE.length} termes</span>
+            <span>{GLOSSAIRE.length} {t('glossary.stat_terms')}</span>
             <span>·</span>
-            <span>{letters.length} lettres</span>
+            <span>{letters.length} {t('glossary.stat_letters')}</span>
             <span>·</span>
-            <span>Bilingue FR / العربية</span>
+            <span>{t('glossary.stat_bilingual')}</span>
             <span>·</span>
-            <span>10 domaines juridiques</span>
+            <span>{t('glossary.stat_domains')}</span>
           </div>
         </div>
       </div>
@@ -203,8 +224,8 @@ export default function Glossaire() {
           <div>
             <p className="text-sm text-navy-500 mb-4">
               {searchResults.length > 0
-                ? <><strong className="text-navy">{searchResults.length} résultat{searchResults.length > 1 ? 's' : ''}</strong> pour « {query} »</>
-                : <>Aucun résultat pour « {query} » — essayez un autre terme</>
+                ? <><strong className="text-navy">{searchResults.length}</strong> {t('glossary.results_for').replace('{q}', query)}</>
+                : <>{t('glossary.no_results').replace('{q}', query)}</>
               }
             </p>
             <div className="space-y-3">
@@ -286,20 +307,19 @@ export default function Glossaire() {
               <div className="border-t border-gray-200 pt-8 pb-4">
                 <div className="bg-gold/5 border border-gold/20 rounded-xl p-5">
                   <h3 className="font-playfair font-semibold text-navy text-base mb-2">
-                    Un terme manque dans ce glossaire ?
+                    {t('glossary.missing_title')}
                   </h3>
                   <p className="text-sm text-navy-500 leading-relaxed mb-3">
-                    Ce glossaire est en constante évolution. Si vous ne trouvez pas un terme juridique,
-                    consultez notre base de données complète ou contactez-nous.
+                    {t('glossary.missing_desc')}
                   </p>
                   <div className="flex flex-wrap gap-3">
                     <Link to="/base"
                           className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy bg-gold px-3 py-1.5 rounded-lg hover:bg-gold-light transition-colors">
-                      <Search size={12} /> Rechercher dans la base
+                      <Search size={12} /> {t('glossary.search_db')}
                     </Link>
                     <Link to="/contact"
                           className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-600 border border-navy-200 px-3 py-1.5 rounded-lg hover:border-gold hover:text-navy transition-colors">
-                      Suggérer un terme
+                      {t('glossary.suggest_term')}
                     </Link>
                   </div>
                 </div>

@@ -244,19 +244,19 @@ export default function SearchBar({ size = 'md', onSearch, compact = false, clas
           {loading && total === 0 && (
             <div className="flex items-center gap-2 px-4 py-3 text-xs text-navy-500">
               <Loader2 size={12} className="animate-spin text-gold" />
-              Recherche dans la base…
+              {t('search.loading')}
             </div>
           )}
 
           {/* Empty state */}
           {!loading && total === 0 && (
             <div className="px-4 py-5 text-center">
-              <p className="text-sm text-navy-500 mb-1">Aucun résultat pour <strong className="text-navy">« {query} »</strong></p>
+              <p className="text-sm text-navy-500 mb-1">{t('search.no_results_for')} <strong className="text-navy">« {query} »</strong></p>
               <button
                 onClick={handleSubmit}
                 className="text-xs text-gold font-medium hover:underline"
               >
-                Recherche avancée dans la base →
+                {t('search.advanced')}
               </button>
             </div>
           )}
@@ -264,7 +264,7 @@ export default function SearchBar({ size = 'md', onSearch, compact = false, clas
           {/* ── Section : Textes juridiques ───────────────────────────── */}
           {results.laws.length > 0 && (
             <div>
-              <SectionHeader icon={<Scale size={11} />} label="Textes juridiques" count={results.laws.length} />
+              <SectionHeader icon={<Scale size={11} />} label={t('search.section_laws')} count={results.laws.length} />
               {results.laws.map(law => (
                 <button
                   key={law.id}
@@ -293,12 +293,12 @@ export default function SearchBar({ size = 'md', onSearch, compact = false, clas
                   </div>
                   {law.status === 'En vigueur' && (
                     <span className="flex-shrink-0 self-center text-[9px] bg-emerald-50 text-emerald-700 border border-emerald-200 rounded px-1.5 py-0.5 font-semibold">
-                      En vigueur
+                      {t('search.status_active')}
                     </span>
                   )}
                   {law.status === 'Abrogé' && (
                     <span className="flex-shrink-0 self-center text-[9px] bg-red-50 text-red-600 border border-red-200 rounded px-1.5 py-0.5 font-semibold">
-                      Abrogé
+                      {t('search.status_repealed')}
                     </span>
                   )}
                 </button>
@@ -309,7 +309,7 @@ export default function SearchBar({ size = 'md', onSearch, compact = false, clas
           {/* ── Section : Guides thématiques ──────────────────────────── */}
           {results.guides.length > 0 && (
             <div>
-              <SectionHeader icon={<BookOpen size={11} />} label="Guides thématiques" count={results.guides.length} />
+              <SectionHeader icon={<BookOpen size={11} />} label={t('search.section_guides')} count={results.guides.length} />
               {results.guides.map(guide => (
                 <button
                   key={guide.slug}
@@ -330,7 +330,7 @@ export default function SearchBar({ size = 'md', onSearch, compact = false, clas
           {/* ── Section : Vidéos ──────────────────────────────────────── */}
           {results.videos.length > 0 && (
             <div>
-              <SectionHeader icon={<PlayCircle size={11} />} label="Vidéos explicatives" count={results.videos.length} />
+              <SectionHeader icon={<PlayCircle size={11} />} label={t('search.section_videos')} count={results.videos.length} />
               {results.videos.map(video => (
                 <button
                   key={video.id}
@@ -365,7 +365,7 @@ export default function SearchBar({ size = 'md', onSearch, compact = false, clas
                 onClick={handleSubmit}
                 className="text-xs text-gold font-semibold hover:underline flex items-center gap-1"
               >
-                Tous les résultats pour « {query} » <ArrowRight size={11} />
+                {t('search.all_results')} « {query} » <ArrowRight size={11} />
               </button>
             </div>
           )}

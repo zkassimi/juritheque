@@ -180,9 +180,9 @@ export default function Home() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-1">
-                <Database size={11} className="inline mr-1" />Base de données
+                <Database size={11} className="inline mr-1" />{t('home.db_badge')}
               </p>
-              <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">Textes juridiques récents</h2>
+              <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">{t('home.recent_laws_title')}</h2>
             </div>
             <Link to="/base" className="hidden sm:flex items-center gap-1.5 text-sm text-gold font-medium hover:gap-2.5 transition-all">
               {t('common.view_all')} <ArrowRight size={14} />
@@ -199,7 +199,7 @@ export default function Home() {
             <Link to="/base"
               className="inline-flex items-center gap-2 px-6 py-3 bg-navy text-white rounded-xl text-sm font-semibold hover:bg-gold hover:text-navy transition-colors"
             >
-              Consulter la base de données <ArrowRight size={14} />
+              {t('home.view_database')} <ArrowRight size={14} />
             </Link>
           </div>
         </div>
@@ -211,12 +211,12 @@ export default function Home() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-1">
-                <BookOpen size={11} className="inline mr-1" />Guides juridiques
+                <BookOpen size={11} className="inline mr-1" />{t('home.guides_badge')}
               </p>
-              <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">Explorer par besoin juridique</h2>
+              <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">{t('home.guides_explore')}</h2>
             </div>
             <Link to="/fr/guides" className="hidden sm:flex items-center gap-1.5 text-sm text-gold font-medium hover:gap-2.5 transition-all">
-              Tous les guides <ArrowRight size={14} />
+              {t('home.all_guides')} <ArrowRight size={14} />
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -232,7 +232,7 @@ export default function Home() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-navy group-hover:text-gold transition-colors leading-snug">
-                      {guide.h1}
+                      {(lang === 'ar' && guide.h1_ar) ? guide.h1_ar : guide.h1}
                     </p>
                     {guide.category && (
                       <p className="text-[10px] text-navy-400 mt-1 uppercase tracking-wide">{guide.category}</p>
@@ -246,7 +246,7 @@ export default function Home() {
             <Link to="/fr/guides"
               className="inline-flex items-center gap-2 px-5 py-2.5 border border-gold text-gold rounded-xl text-sm font-semibold hover:bg-gold hover:text-navy transition-colors"
             >
-              Voir les {SEO_INTENT_PAGES.length} guides <ArrowRight size={14} />
+              {t('home.see_n_guides').replace('{n}', SEO_INTENT_PAGES.length)} <ArrowRight size={14} />
             </Link>
           </div>
         </div>
@@ -257,9 +257,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="mb-8">
             <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-1">
-              <TrendingUp size={11} className="inline mr-1" />Actualité juridique
+              <TrendingUp size={11} className="inline mr-1" />{t('home.news_badge')}
             </p>
-            <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">Restez informé</h2>
+            <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">{t('home.newsletter_title')}</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {/* Veille juridique */}
@@ -271,12 +271,12 @@ export default function Home() {
                 <div className="w-12 h-12 rounded-xl bg-gold/20 flex items-center justify-center mb-5">
                   <Bell size={22} className="text-gold" />
                 </div>
-                <h3 className="font-playfair font-bold text-white text-xl mb-2">Veille juridique</h3>
+                <h3 className="font-playfair font-bold text-white text-xl mb-2">{t('home.watch_card_title')}</h3>
                 <p className="text-white/60 text-sm mb-5 leading-relaxed">
-                  Suivez les dernières évolutions législatives et réglementaires au Maroc en temps réel.
+                  {t('home.watch_card_desc')}
                 </p>
                 <span className="inline-flex items-center gap-2 text-gold text-sm font-semibold group-hover:gap-3 transition-all">
-                  Accéder à la veille <ArrowRight size={14} />
+                  {t('home.watch_card_cta')} <ArrowRight size={14} />
                 </span>
               </div>
             </Link>
@@ -290,12 +290,12 @@ export default function Home() {
                 <div className="w-12 h-12 rounded-xl bg-navy/10 flex items-center justify-center mb-5">
                   <Newspaper size={22} className="text-navy" />
                 </div>
-                <h3 className="font-playfair font-bold text-navy text-xl mb-2">Bulletins Officiels</h3>
+                <h3 className="font-playfair font-bold text-navy text-xl mb-2">{t('home.bo_card_title')}</h3>
                 <p className="text-navy-500 text-sm mb-5 leading-relaxed">
-                  Consultez les Bulletins Officiels du Maroc et retrouvez tous les textes publiés au BO.
+                  {t('home.bo_card_desc')}
                 </p>
                 <span className="inline-flex items-center gap-2 text-gold text-sm font-semibold group-hover:gap-3 transition-all">
-                  Consulter les BO <ArrowRight size={14} />
+                  {t('home.bo_card_cta')} <ArrowRight size={14} />
                 </span>
               </div>
             </Link>
@@ -309,12 +309,12 @@ export default function Home() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-1">
-                <Library size={11} className="inline mr-1" />Glossaire juridique
+                <Library size={11} className="inline mr-1" />{t('home.glossary_badge')}
               </p>
-              <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">Vocabulaire du droit marocain</h2>
+              <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">{t('home.glossary_title')}</h2>
             </div>
             <Link to="/glossaire" className="hidden sm:flex items-center gap-1.5 text-sm text-gold font-medium hover:gap-2.5 transition-all">
-              Voir les {GLOSSAIRE.length} termes <ArrowRight size={14} />
+              {t('home.see_terms').replace('{n}', GLOSSAIRE.length)} <ArrowRight size={14} />
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -341,7 +341,7 @@ export default function Home() {
             <Link to="/glossaire"
               className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-200 text-navy rounded-xl text-sm font-semibold hover:border-gold hover:text-gold transition-colors"
             >
-              <Library size={14} />Consulter le glossaire complet
+              <Library size={14} />{t('home.full_glossary')}
             </Link>
           </div>
         </div>
@@ -353,7 +353,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-1">
-                <PlayCircle size={11} className="inline mr-1" />Vidéos pédagogiques
+                <PlayCircle size={11} className="inline mr-1" />{t('home.videos_badge')}
               </p>
               <h2 className="font-playfair font-bold text-navy text-2xl sm:text-3xl">{t('home.videos_title')}</h2>
             </div>
@@ -362,7 +362,7 @@ export default function Home() {
             </Link>
           </div>
           <p className="text-sm text-navy-500 mb-7 max-w-2xl">
-            Sélection de vidéos pédagogiques pour comprendre les principales notions du droit marocain.
+            {t('home.videos_desc')}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {featuredVideos.map(video => (
@@ -373,7 +373,7 @@ export default function Home() {
             <Link to="/videos"
               className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-200 text-navy rounded-xl text-sm font-semibold hover:border-gold hover:text-gold transition-colors"
             >
-              <PlayCircle size={14} />Voir toutes les vidéos
+              <PlayCircle size={14} />{t('home.all_videos')}
             </Link>
           </div>
         </div>

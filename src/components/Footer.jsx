@@ -35,17 +35,17 @@ export default function Footer() {
   ]
 
   const colRessources = [
-    { to: '/fr/guides',              icon: BookOpen,  label: 'Guides thématiques' },
-    { to: '/glossaire',              icon: Library,   label: 'Glossaire juridique' },
-    { to: '/fr/veille-juridique',    icon: Bell,      label: 'Veille juridique' },
-    { to: '/fr/bulletins-officiels', icon: Newspaper, label: 'Bulletins Officiels' },
+    { to: '/fr/guides',              icon: BookOpen,  label: t('footer.guides_thematic') },
+    { to: '/glossaire',              icon: Library,   label: t('footer.glossary') },
+    { to: '/fr/veille-juridique',    icon: Bell,      label: t('footer.legal_watch') },
+    { to: '/fr/bulletins-officiels', icon: Newspaper, label: t('footer.bulletins') },
   ]
 
   const colInfo = [
-    { to: '/a-propos',                  label: 'À propos' },
-    { to: '/methodologie',              label: 'Méthodologie' },
+    { to: '/a-propos',                  label: t('footer.about') },
+    { to: '/methodologie',              label: t('footer.methodology') },
     { to: '/mentions-legales',          label: t('footer.legal') },
-    { to: '/politique-confidentialite', label: 'Confidentialité' },
+    { to: '/politique-confidentialite', label: t('footer.privacy') },
     { to: '/contact',                   label: t('footer.contact') },
   ]
 
@@ -63,12 +63,12 @@ export default function Footer() {
               {subStatus === 'success' ? (
                 <p className="text-gold text-sm font-medium flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-                  Abonnement confirmé ! Bienvenue 🎉
+                  {t('footer.subscribe_success')}
                 </p>
               ) : subStatus === 'duplicate' ? (
                 <p className="text-white/70 text-sm flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-white/40" />
-                  Vous êtes déjà abonné à cette adresse.
+                  {t('footer.subscribe_dup')}
                 </p>
               ) : (
                 <>
@@ -123,7 +123,7 @@ export default function Footer() {
 
           {/* Plateforme col */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-widest text-gold mb-4">Plateforme</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-widest text-gold mb-4">{t('footer.platform')}</h4>
             <ul className="space-y-2.5">
               {colPlateforme.map(item => (
                 <li key={item.to}>
@@ -135,7 +135,7 @@ export default function Footer() {
 
           {/* Ressources col */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-widest text-gold mb-4">Ressources</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-widest text-gold mb-4">{t('footer.col2')}</h4>
             <ul className="space-y-2.5">
               {colRessources.map(({ to, icon: Icon, label }) => (
                 <li key={to}>

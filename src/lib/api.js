@@ -12,6 +12,7 @@ export async function fetchLaws({ q = '', types = [], domains = [], statuses = [
   page = 1, pageSize = 9 } = {}) {
 
   let query = supabase.from('laws').select('*', { count: 'exact' })
+    .eq('is_published', true)
 
   if (q) {
     const isArabic = /[؀-ۿ]/.test(q)
@@ -174,7 +175,7 @@ export async function fetchLawsByDomain(domainId, { page = 1, pageSize = 18 } = 
   const { data, error, count } = await supabase
     .from('laws')
     .select('*', { count: 'exact' })
-    // Inclure lois primaires ET multi-domaine (domain_ids contient ce domaine)
+    .eq('is_published', true)
     .or(`domain_ids.cs.{${domainId}},domain_id.eq.${domainId}`)
     .order('date', { ascending: false, nullsFirst: false })
     .range(from, from + pageSize - 1)
@@ -186,6 +187,7 @@ export async function fetchRecentLaws(limit = 6) {
   const { data, error } = await supabase
     .from('laws')
     .select('*')
+    .eq('is_published', true)
     .order('created_at', { ascending: false })
     .limit(limit)
   if (error) throw error
@@ -214,6 +216,7 @@ export async function fetchWatchLaws({
   let query = supabase
     .from('laws')
     .select(WATCH_FIELDS, { count: 'exact' })
+    .eq('is_published', true)
     .eq('is_publicly_indexable', true)
 
   if (domain) query = query.or(`domain_ids.cs.{${domain}},domain_id.eq.${domain}`)
@@ -256,6 +259,7 @@ export async function fetchRelatedLaws(domainId, excludeId, limit = 3) {
   const { data, error } = await supabase
     .from('laws')
     .select('*')
+    .eq('is_published', true)
     .or(`domain_ids.cs.{${domainId}},domain_id.eq.${domainId}`)
     .neq('id', excludeId)
     .order('date', { ascending: false, nullsFirst: false })
@@ -301,7 +305,7 @@ export async function fetchDomainById(id) {
 
 export async function fetchStats() {
   const [lawsRes, domainsRes] = await Promise.all([
-    supabase.from('laws').select('*', { count: 'exact', head: true }),
+    supabase.from('laws').select('*', { count: 'exact', head: true }).eq('is_published', true),
     supabase.from('domains').select('*', { count: 'exact', head: true }),
   ])
   return {

@@ -13,6 +13,8 @@ Usage :
 """
 import os, re, sys, argparse, unicodedata, requests
 from dotenv import load_dotenv
+sys.path.insert(0, os.path.dirname(__file__))
+from slug_utils import make_slug_from_law as _make_slug_full, _s, _GENERIC_TYPES
 
 load_dotenv()
 load_dotenv("pipeline/.env", override=True)
@@ -33,13 +35,14 @@ STOPWORDS = {
     'promulgation','promulguant','application','execution',
     # Types de textes (éviter répétition)
     'dahir','decret','loi','arrete','circulaire','texte','ordonnance',
+    'juridique','reglementaire','legislatif','administrative',
     'code','reglement','avis','bulletin','projet','version','cadre',
     # Sources / références inutiles
     'sgg','adala','portail','officiel','bulletin','journal',
     # Mois hijri (bruit dans les titres)
     'muharram','safar','rabia','joumada','rajab','chaabane','ramadan',
     'chaoual','doulkaada','doulhijja','hija','hijja','awal','thani',
-    # Mots datés inutiles
+    # Mois grégoriens inutiles
     'juillet','janvier','fevrier','mars','avril','mai','juin',
     'aout','septembre','octobre','novembre','decembre',
     # Numéros / abréviations
@@ -72,15 +75,40 @@ def _clean_number(raw: str) -> str:
         return num
     return _s(raw)
 
+_GENERIC_TYPES = {'texte-juridique', 'texte-reglementaire', 'texte', 'document', 'autre'}
+
+def _infer_type_from_number(number: str, current_type: str) -> str:
+    """Déduit le type légal depuis le format du numéro marocain standard."""
+    ct = (current_type or "").strip().lower()
+    if ct and ct not in ('texte juridique', 'texte réglementaire', 'texte', 'document', ''):
+        return current_type  # Type déjà précis → garder
+    n = re.sub(r'[\s_\.\s]+', '-', (number or '').strip())
+    if re.match(r'^1-\d{2}-\d+$', n):   return "Dahir"    # 1-xx-xxx
+    if re.match(r'^2-\d{2}-\d+$', n):   return "Décret"   # 2-xx-xxx
+    if re.match(r'^\d{2,3}-\d{2}$', n): return "Loi"      # xx-xx (loi)
+    if re.match(r'^\d{4}-\d+$', n):     return "Arrêté"   # xxxx-x
+    return current_type or ""
+
 def make_slug(law: dict) -> str:
     """Convention : {type}-{number_clean}-{mots-clés-titre}."""
-    type_slug   = _s(law.get("type") or "texte")
+    current_type = (law.get("type") or "").strip()
+    number_raw   = law.get("number") or ""
+    # Tenter d'inférer le vrai type depuis le numéro si type générique
+    inferred     = _infer_type_from_number(_clean_number(number_raw), current_type)
+    raw_type     = _s(inferred or current_type or "")
+    # Toujours exclure les types génériques du slug
+    type_slug    = "" if raw_type in _GENERIC_TYPES else raw_type
     number_raw  = law.get("number") or ""
-    number_slug = _s(_clean_number(number_raw))
+    # Ignorer les IDs internes adala dans le slug
+    if re.match(r'^adala-[0-9a-f]+$', number_raw.lower()) or not number_raw:
+        number_slug = ""
+    else:
+        number_slug = _s(_clean_number(number_raw))
     title       = (law.get("title_fr") or "").strip()
+    date        = (law.get("date") or "")
 
     # Tokens à exclure des keywords : type + number + stopwords
-    type_tokens = set(type_slug.split("-"))
+    type_tokens = set(raw_type.split("-"))
     num_tokens  = set(number_slug.split("-")) if number_slug else set()
     excluded    = STOPWORDS | type_tokens | num_tokens | {''}
 
@@ -88,19 +116,35 @@ def make_slug(law: dict) -> str:
     keywords = []
     for w in words:
         sw = _s(w)
-        # Ignorer les pures séquences numériques (années, etc.)
         if sw and w not in excluded and sw not in excluded and len(w) > 2 and not re.match(r'^\d+$', sw):
             keywords.append(sw)
         if len(keywords) >= 6:
             break
+
+    # Ajouter l'année depuis le champ date (important pour loi de finances, etc.)
+    year = ""
+    if date:
+        m = re.match(r"(\d{4})", str(date))
+        if m:
+            year = m.group(1)
+    if year and year not in keywords:
+        keywords.append(year)
+
     kw_slug = "-".join(keywords)
 
     parts = [p for p in [type_slug, number_slug, kw_slug] if p]
     slug  = re.sub(r"-+", "-", "-".join(parts)).strip("-")[:100]
-    return slug or f"texte-{law.get('id', 'unknown')[:8]}"
+    return slug or f"sans-titre-{law.get('id', 'unknown')[:8]}"
 
 def is_bad(slug: str) -> bool:
-    return bool(slug) and any(c not in ALLOWED for c in slug)
+    """Slug non conforme : majuscules, ou préfixe générique sans valeur SEO."""
+    if not slug:
+        return False
+    if any(c not in ALLOWED for c in slug):
+        return True  # Caractères invalides (majuscules, accents)
+    if slug.startswith("texte-juridique-") or slug.startswith("texte-reglementaire-"):
+        return True  # Type générique sans valeur SEO
+    return False
 
 # ─── Supabase ─────────────────────────────────────────────────────────────────
 
@@ -109,7 +153,7 @@ def fetch_all() -> list:
     while True:
         r = requests.get(f"{URL}/rest/v1/laws",
             headers={**H, "Range": f"{offset}-{offset+999}"},
-            params={"select": "id,number,title_fr,type,canonical_slug"},
+            params={"select": "id,number,title_fr,type,canonical_slug,date"},
             timeout=20)
         if r.status_code not in (200, 206):
             print(f"Erreur fetch {r.status_code}: {r.text[:200]}")
@@ -154,8 +198,17 @@ def main():
     rows = fetch_all()
     print(f"  {len(rows)} textes chargés")
 
-    bad = [x for x in rows if is_bad(x.get("canonical_slug", ""))]
-    print(f"  {len(bad)} slugs non conformes détectés\n")
+    def _has_real_title(x):
+        t = (x.get("title_fr") or "").strip()
+        if not t: return False
+        # Placeholder adala → pas encore de vrai titre, skip
+        if re.match(r'^Texte\s+N[°o]?\s+adala-[0-9a-f]+\s*$', t, re.IGNORECASE): return False
+        # Titre = juste chiffres → skip
+        if re.match(r'^[\d\s\-_\.]+$', t): return False
+        return True
+
+    bad = [x for x in rows if is_bad(x.get("canonical_slug", "")) and _has_real_title(x)]
+    print(f"  {len(bad)} slugs non conformes détectés (titres valides uniquement)\n")
 
     if args.limit:
         bad = bad[:args.limit]
@@ -169,7 +222,34 @@ def main():
 
     for x in bad:
         old_slug = x.get("canonical_slug", "")
-        new_slug = make_slug(x)
+        # Inférer le vrai type depuis le numéro si le type DB est générique
+        inferred_type = _infer_type_from_number(
+            _clean_number(x.get("number") or ""),
+            x.get("type") or ""
+        )
+        new_slug = _make_slug_full(
+            inferred_type or x.get("type") or "",
+            x.get("number") or "",
+            x.get("title_fr") or "",
+            x.get("date") or "",
+        )
+
+        # Rejeter si le slug généré est trop court ou ressemble à un hash seul
+        if len(new_slug) < 4 or re.match(r'^[0-9a-f]{6,}$', new_slug):
+            skipped += 1
+            print(f"  {'[SKIP hash/court]':<50} {new_slug:<60} → SKIP")
+            continue
+
+        # Rejeter si le nouveau slug n'a pas de type identifiable — ambiguë sans contexte
+        # (ex: "declaration-patrimoine" seul ne dit pas si c'est loi/dahir/circulaire)
+        has_type = any(new_slug.startswith(t + "-")
+                       for t in ["dahir","decret","loi","arrete","circulaire","rapport",
+                                 "lettre-royale","discours-royal","message-royal","avis","code"])
+        has_number = bool(re.search(r'-\d+-\d', new_slug))  # contient un numéro
+        if not has_type and not has_number:
+            skipped += 1
+            print(f"  {'[SKIP sans type]':<50} {new_slug:<60} → SKIP (besoin IA)")
+            continue
 
         # Unicité : suffixe -2, -3... si collision
         candidate = new_slug

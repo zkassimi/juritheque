@@ -196,13 +196,14 @@ export default function Admin() {
       // Filtered list
       let q = supabase
         .from('laws')
-        .select('id,number,title_fr,date,extraction_status,pdf_url,source_url,simple_summary_fr,canonical_slug,source_name')
+        .select('id,number,title_fr,date,extraction_status,pdf_url,source_url,simple_summary_fr,canonical_slug,source_name,is_published')
         .order('created_at', { ascending: false })
         .limit(50)
 
-      if (filter === 'no_summary') q = q.is('simple_summary_fr', null)
+      if (filter === 'no_summary')  q = q.is('simple_summary_fr', null)
       else if (filter === 'no_date') q = q.is('date', null)
-      else if (filter === 'no_pdf') q = q.is('pdf_url', null).is('source_url', null)
+      else if (filter === 'no_pdf')  q = q.is('pdf_url', null).is('source_url', null)
+      else if (filter === 'hidden')  q = q.eq('is_published', false)
       else q = q.or('simple_summary_fr.is.null,date.is.null,canonical_slug.is.null')
 
       const { data } = await q
@@ -1532,7 +1533,8 @@ export default function Admin() {
             {/* Filtres */}
             <div className="flex flex-wrap gap-2 mb-4">
               {[
-                { key: 'all',        label: 'Tous' },
+                { key: 'all',        label: 'Tous incomplets' },
+                { key: 'hidden',     label: '🚫 Masqués (qualité)' },
                 { key: 'no_summary', label: 'Sans résumé' },
                 { key: 'no_date',    label: 'Sans date' },
                 { key: 'no_pdf',     label: 'Sans PDF' },
@@ -1575,12 +1577,13 @@ export default function Admin() {
                     <tbody className="divide-y divide-gray-50">
                       {qualityLaws.map(law => {
                         const missing = []
+                        if (law.is_published === false) missing.push('masqué')
                         if (!law.simple_summary_fr) missing.push('résumé FR')
                         if (!law.date)              missing.push('date')
                         if (!law.pdf_url && !law.source_url) missing.push('PDF/source')
                         if (!law.canonical_slug)    missing.push('slug')
                         return (
-                          <tr key={law.id} className="hover:bg-gray-50 transition-colors">
+                          <tr key={law.id} className={`hover:bg-gray-50 transition-colors ${law.is_published === false ? 'bg-red-50/30' : ''}`}>
                             <td className="px-4 py-3">
                               <span className="font-mono text-xs text-navy-600 whitespace-nowrap">
                                 {law.number || '—'}
@@ -1595,7 +1598,7 @@ export default function Admin() {
                             <td className="px-4 py-3">
                               <div className="flex flex-wrap gap-1">
                                 {missing.map(m => (
-                                  <span key={m} className="text-[10px] font-medium bg-red-50 text-red-600 border border-red-100 px-1.5 py-0.5 rounded-full">
+                                  <span key={m} className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full border ${m === 'masqué' ? 'bg-red-100 text-red-700 border-red-200' : 'bg-red-50 text-red-600 border-red-100'}`}>
                                     {m}
                                   </span>
                                 ))}
@@ -1606,6 +1609,18 @@ export default function Admin() {
                             </td>
                             <td className="px-4 py-3">
                               <div className="flex items-center justify-end gap-1">
+                                {law.is_published === false && (
+                                  <button
+                                    onClick={async () => {
+                                      await supabase.from('laws').update({ is_published: true }).eq('id', law.id)
+                                      setQualityLaws(prev => prev.filter(l => l.id !== law.id))
+                                    }}
+                                    className="text-[10px] font-semibold px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors border border-emerald-200"
+                                    title="Publier ce texte"
+                                  >
+                                    Publier
+                                  </button>
+                                )}
                                 {law.canonical_slug && (
                                   <Link
                                     to={`/loi/${law.canonical_slug}`}

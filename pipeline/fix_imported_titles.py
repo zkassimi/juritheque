@@ -104,6 +104,33 @@ def is_generic_title(t: str) -> bool:
     """Titre trop générique / inutile."""
     return (t or '').strip().lower() in GENERIC_TITLES
 
+def is_adala_placeholder(t: str) -> bool:
+    """Placeholder auto-généré : 'Texte N° adala-XXXXXXXX' — pas de vraie info."""
+    return bool(re.match(r'^Texte\s+N[°o]?\s+adala-[0-9a-f]+\s*$', (t or '').strip(), re.IGNORECASE))
+
+def _normalize_number(n: str) -> str:
+    """Normalise les numéros avec underscores/points : 1_09_236 → 1-09-236."""
+    return re.sub(r'[_\.\s]+', '-', (n or '').strip()).strip('-')
+
+def is_number_as_title(title_fr: str, number: str) -> bool:
+    """Détecte quand le titre est vide ou n'est que le numéro reformaté (inutile)."""
+    t = (title_fr or '').strip()
+    if not t:
+        return True  # Pas de titre du tout
+    num_clean = _normalize_number(number or '').replace('-', ' ')
+    t_norm = t.replace('_', ' ').replace('-', ' ').strip().lower()
+    num_norm = num_clean.lower()
+    # Titre = numéro reformaté (ex: "1 09 236" pour number "1_09_236")
+    if t_norm == num_norm:
+        return True
+    # Titre = juste des chiffres et séparateurs
+    if re.match(r'^[\d\s\-_\.]+$', t):
+        return True
+    # Titre = "Texte juridique n°X-XX-XXX" ou "Texte N° X-XX-XXX" — fallback générique sans sens
+    if re.match(r'^(?:texte\s+(?:juridique|réglementaire|reglementaire)?\s*n[°o]?\s*[\d]|texte\s+n[°o°]\s*[\d])', t, re.IGNORECASE):
+        return True
+    return False
+
 def is_gibberish(t: str) -> bool:
     """Détecte un titre composé majoritairement de bruit (OCR raté, chars spéciaux aléatoires)."""
     t = (t or '').strip()
@@ -122,7 +149,7 @@ def is_gibberish(t: str) -> bool:
             return True
     return False
 
-def needs_fix(row: dict) -> list[str]:
+def needs_fix(row: dict, fix_adala: bool = False) -> list[str]:
     """Retourne la liste des problèmes détectés pour une ligne."""
     problems = []
     num   = row.get("number", "") or ""
@@ -146,6 +173,12 @@ def needs_fix(row: dict) -> list[str]:
         problems.append("title_generic")
     if is_gibberish(title) and "title_fr_garbled" not in problems and "title_encoded" not in problems:
         problems.append("title_gibberish")
+    # Placeholder adala : traduire title_ar → title_fr
+    if fix_adala and is_adala_placeholder(title) and ar:
+        problems.append("adala_placeholder")
+    # Numéro en guise de titre (1_09_236, "1 09 236", etc.)
+    if fix_adala and is_number_as_title(title, num) and "adala_placeholder" not in problems:
+        problems.append("number_as_title")
     return problems
 
 # ── Corrections simples ────────────────────────────────────────────────────────
@@ -160,6 +193,37 @@ def humanize(t: str) -> str:
     t = t.replace('_', ' ').replace('-', ' ')
     t = re.sub(r'\s+', ' ', t).strip()
     return t.capitalize()
+
+# ── Détection du type depuis le titre arabe ───────────────────────────────────
+
+def detect_type_from_ar(title_ar: str) -> str:
+    """Détecte le vrai type du texte depuis le titre arabe (règles lexicales, gratuit)."""
+    t = title_ar or ""
+    # Textes royaux
+    if "خطاب صاحب الجلالة" in t or "خطاب الملك" in t or "خطاب ملكي" in t:
+        return "Discours Royal"
+    if "الرسالة الملكية" in t or "الرسالبة الملكية" in t or "رسالة ملكية سامية" in t:
+        return "Lettre Royale"
+    if "رسالة ملكية" in t or "رسالة سامية" in t:
+        return "Message Royal"
+    # Institutions
+    if "رأي المجلس الاقتصادي" in t or "رأي مجلس" in t:
+        return "Avis"
+    if "تقرير المجلس الأعلى" in t or "تقرير المجلس الاقتصادي" in t or t.startswith("تقرير"):
+        return "Rapport"
+    if "قرار" in t[:30]:
+        return "Décision"
+    if "منشور" in t[:30] or "دورية" in t[:30]:
+        return "Circulaire"
+    # Textes législatifs
+    if "ظهير" in t[:20]:
+        return "Dahir"
+    if "مرسوم" in t[:20]:
+        return "Décret"
+    if "قانون" in t[:20]:
+        return "Loi"
+    return ""  # inconnu → garder le type existant
+
 
 # ── Correction IA (pour les titres complexes) ─────────────────────────────────
 
@@ -203,6 +267,163 @@ def ai_fix_title(number: str, source: str, bad_title: str, content_snippet: str)
         console.print(f"    [dim]IA error: {e}[/]")
     return None
 
+def ai_translate_from_ar(title_ar: str, law_type: str = "", number: str = "") -> tuple[str | None, str | None]:
+    """Traduit un titre arabe → (titre_fr, type_détecté). type peut être None si déjà connu."""
+    if not OPENROUTER_KEY or not title_ar:
+        return None, None
+
+    need_type = not law_type or law_type.lower() in ('texte juridique', 'texte réglementaire', 'texte', '')
+    if need_type:
+        prompt = (
+            "Tu es un expert en droit marocain. "
+            "Réponds en JSON strict sur une seule ligne, sans explication :\n"
+            '{"type": "...", "titre": "..."}\n\n'
+            "Pour 'type', choisis parmi : Discours Royal, Lettre Royale, Message Royal, "
+            "Rapport, Avis, Décision, Circulaire, Dahir, Décret, Loi, Arrêté, Note, Autre.\n"
+            "Pour 'titre', donne un titre français concis (max 120 caractères).\n\n"
+            f"Numéro : {number or 'N/A'}\n"
+            f"Titre arabe : {title_ar[:300]}"
+        )
+    else:
+        prompt = (
+            "Tu es un expert en droit marocain. "
+            "Traduis ce titre juridique arabe en français clair et concis (max 120 caractères). "
+            "Réponds UNIQUEMENT avec le titre traduit, sans guillemets, sans explication.\n\n"
+            f"Type : {law_type}\n"
+            f"Numéro : {number or 'N/A'}\n"
+            f"Titre arabe : {title_ar[:300]}"
+        )
+    try:
+        r = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {OPENROUTER_KEY}",
+                "Content-Type":  "application/json",
+                "HTTP-Referer":  "https://juritheque.com",
+            },
+            json={
+                "model": AI_MODEL, "max_tokens": 120, "temperature": 0.1,
+                "messages": [{"role": "user", "content": prompt}],
+            },
+            timeout=20,
+        )
+        if r.status_code == 200:
+            raw = r.json()["choices"][0]["message"]["content"].strip()
+            if need_type:
+                import json as _json
+                try:
+                    raw = re.sub(r'^```(?:json)?\s*|\s*```$', '', raw).strip()
+                    data = _json.loads(raw)
+                    titre = re.sub(r'^[«"\']+|[»"\']+$', '', (data.get("titre") or "")).strip()
+                    detected = (data.get("type") or "").strip()
+                    return (titre if 5 < len(titre) < 200 else None), (detected or None)
+                except Exception:
+                    pass
+            else:
+                titre = re.sub(r'^[«"\'`]+|[»"\'`]+$', '', raw).strip()
+                if 5 < len(titre) < 200:
+                    return titre, None
+    except Exception as e:
+        console.print(f"    [dim]IA translate error: {e}[/]")
+    return None, None
+
+
+def is_quality_ok(title_fr: str, law_type: str, slug: str) -> bool:
+    """Vérifie qu'un titre/slug généré est suffisamment bon pour être publié."""
+    t = (title_fr or "").strip()
+    s = (slug or "").strip()
+
+    if len(t) < 10:
+        return False  # Titre trop court
+
+    # Titre = juste le type seul
+    _GENERIC_TITLES = {'convention', 'loi', 'décision', 'decision', 'texte', 'document',
+                       'arrêté', 'arrete', 'décret', 'decret', 'dahir', 'circulaire',
+                       'rapport', 'avis', 'note', 'autre'}
+    if t.lower() in _GENERIC_TITLES:
+        return False
+
+    # Titre encore un nom de fichier (pas d'espaces, underscores/tirets seulement)
+    if ' ' not in t and ('_' in t or (t.endswith('.pdf'))):
+        return False
+
+    # Titre contient des placeholders IA ("[sujet probable]", "[...]", etc.)
+    if re.search(r'\[.*?\]|sujet probable|sujet inconnu|titre inconnu|non identifi|à préciser', t, re.IGNORECASE):
+        return False
+
+    # Slug trop court — moins de 3 segments utiles
+    if len(s.split('-')) < 3:
+        return False
+
+    # Titre = juste un numéro de revue/publication (ex: "Revue Justice et Droit - Numéro 123")
+    if re.match(r'^(revue|bulletin|recueil|rapport annuel).{0,40}num[eé]ro\s*\d+', t, re.IGNORECASE):
+        return False
+
+    return True
+
+
+def ai_lookup_by_number(law_type: str, number: str, date: str = "") -> tuple[str | None, str | None]:
+    """Identifie un texte juridique marocain par son numéro officiel → (titre_fr, type)."""
+    if not OPENROUTER_KEY or not number:
+        return None, None
+    prompt = (
+        "Tu es un expert en droit marocain avec une connaissance encyclopédique des textes officiels. "
+        "Identifie ce texte juridique marocain par son numéro et donne son titre officiel français.\n"
+        "Réponds en JSON strict sur une seule ligne :\n"
+        '{"type": "...", "titre": "...", "known": true/false}\n\n'
+        "Règles STRICTES :\n"
+        "- 'titre' : titre officiel exact tel que publié au Bulletin Officiel (max 150 caractères).\n"
+        "- Si tu connais ce texte avec certitude : 'known': true et donne le titre réel.\n"
+        "- Si tu NE connais PAS ce texte : 'known': false et 'titre': null. "
+        "N'invente JAMAIS un titre. N'utilise JAMAIS de crochets [] ni de formules comme 'sujet probable'.\n"
+        "- 'type' : Dahir, Décret, Loi, Arrêté, Circulaire, Convention, Rapport, Avis, Autre.\n\n"
+        f"Type supposé : {law_type or 'inconnu'}\n"
+        f"Numéro : {number}\n"
+        f"Date : {date or 'inconnue'}"
+    )
+    try:
+        r = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {OPENROUTER_KEY}",
+                "Content-Type":  "application/json",
+                "HTTP-Referer":  "https://juritheque.com",
+            },
+            json={"model": AI_MODEL, "max_tokens": 150, "temperature": 0.1,
+                  "messages": [{"role": "user", "content": prompt}]},
+            timeout=20,
+        )
+        if r.status_code == 200:
+            import json as _json
+            raw = r.json()["choices"][0]["message"]["content"].strip()
+            raw = re.sub(r'^```(?:json)?\s*|\s*```$', '', raw).strip()
+            try:
+                data = _json.loads(raw)
+            except Exception:
+                m = re.search(r'\{[^{}]*\}', raw, re.DOTALL)
+                data = _json.loads(m.group()) if m else {}
+            titre    = re.sub(r'^[«"\'`]+|[»"\'`]+$', '', (data.get("titre") or "")).strip()
+            detected = (data.get("type") or "").strip()
+            known    = data.get("known", True)  # Si absent → suppose connu (rétrocompat)
+
+            # Rejeter si l'IA avoue ne pas connaître ou si le titre contient des placeholders
+            _PLACEHOLDER = re.compile(
+                r'\[.*?\]|sujet probable|sujet inconnu|titre inconnu|non identifi|'
+                r'non trouvé|introuvable|à préciser|à compléter|indisponible',
+                re.IGNORECASE
+            )
+            if not known or titre is None or _PLACEHOLDER.search(titre or ''):
+                return None, (detected or None)
+
+            return (titre if 5 < len(titre) < 200 else None), (detected or None)
+    except Exception as e:
+        console.print(f"    [dim]IA lookup error: {e}[/]")
+    return None, None
+
+
+from slug_utils import make_slug_from_law  # noqa
+
+
 # ── Pagination Supabase ────────────────────────────────────────────────────────
 
 def fetch_all(params: dict, page_size: int = 1000) -> list[dict]:
@@ -237,18 +458,31 @@ def patch(law_id: str, data: dict) -> bool:
 def main():
     import argparse
     p = argparse.ArgumentParser(description="Correcteur intelligent de titres juridiques")
-    p.add_argument("--dry-run", action="store_true", help="Aperçu sans écriture")
-    p.add_argument("--all",     action="store_true", help="Scanner toutes les lois (pas seulement pending)")
-    p.add_argument("--limit",   type=int, default=0, help="Limiter à N lois (0 = illimité)")
+    p.add_argument("--dry-run",       action="store_true", help="Aperçu sans écriture")
+    p.add_argument("--all",           action="store_true", help="Scanner toutes les lois (pas seulement pending)")
+    p.add_argument("--fix-adala",     action="store_true", help="Traduit les titres 'Texte N° adala-...' depuis title_ar via IA")
+    p.add_argument("--fix-bad-slugs", action="store_true", help="Corrige les titres des textes avec slug texte-juridique-* (avant fix_bad_slugs.py)")
+    p.add_argument("--limit",         type=int, default=0, help="Limiter à N lois (0 = illimité)")
     args = p.parse_args()
 
     if args.dry_run:
         console.print("[yellow bold]Mode DRY-RUN — aucune modification en base[/]\n")
 
+    fix_adala     = getattr(args, 'fix_adala', False)
+    fix_bad_slugs = getattr(args, 'fix_bad_slugs', False)
+
     # ── 1. Charger les métadonnées légères (sans content_fr) ───────────────────
     console.print("[bold]Chargement des textes…[/]")
-    params = {"select": "id,number,title_fr,title_ar,source_name"}
-    if not args.all:
+    params = {"select": "id,number,title_fr,title_ar,source_name,type,canonical_slug,date,simple_summary_ar"}
+
+    if fix_bad_slugs:
+        console.print("  [cyan]Mode --fix-bad-slugs : enrichissement titres des textes à slug générique[/]")
+        params["canonical_slug"] = "like.texte-juridique-%"
+        fix_adala = True  # Active la détection number_as_title
+    elif fix_adala:
+        console.print("  [cyan]Mode --fix-adala : placeholders adala + titres manquants/numériques[/]")
+        # Pas de filtre strict : on charge tout et on filtre par détection
+    elif not args.all:
         console.print("  [dim](ciblage extraction_status=pending — utilisez --all pour tout scanner)[/]")
         params["extraction_status"] = "eq.pending"
 
@@ -260,7 +494,7 @@ def main():
     # ── 2. Détection ────────────────────────────────────────────────────────────
     problems_map: dict[str, list] = {}  # id → [(problem, row)]
     for row in rows:
-        probs = needs_fix(row)
+        probs = needs_fix(row, fix_adala=fix_adala)
         if probs:
             problems_map[row["id"]] = (probs, row)
 
@@ -327,6 +561,93 @@ def main():
                 # title_fr corrompu ou illisible → effacer, LawCard affichera le numéro
                 patch_data["title_fr"] = None
 
+            elif prob == "adala_placeholder":
+                title_ar = row.get("title_ar", "") or ""
+                law_type = row.get("type", "") or ""
+                number   = row.get("number", "") or ""
+                date     = row.get("date", "") or ""
+                if title_ar and OPENROUTER_KEY:
+                    # Détection type par règles (gratuit, prioritaire)
+                    detected_type = detect_type_from_ar(title_ar)
+                    if detected_type and detected_type != law_type:
+                        law_type = detected_type
+
+                    # Traduction + détection type par IA si type encore générique
+                    new_title, ai_type = ai_translate_from_ar(title_ar, law_type, number)
+                    if ai_type and (not law_type or law_type.lower() in ('texte juridique', 'texte réglementaire', '')):
+                        law_type = ai_type
+                    if law_type != (row.get("type") or ""):
+                        patch_data["type"] = law_type
+
+                    if new_title:
+                        patch_data["title_fr"] = new_title
+                        new_slug = make_slug_from_law(law_type, number, new_title, date)
+                        patch_data["canonical_slug"] = new_slug
+                        ai_used += 1
+
+            elif prob == "number_as_title":
+                number   = row.get("number", "") or ""
+                law_type = row.get("type", "") or ""
+                date     = row.get("date", "") or ""
+                title_ar = row.get("title_ar", "") or ""
+                source   = row.get("source_name", "") or ""
+
+                # 1. Normaliser le numéro (underscores → tirets)
+                clean_num = _normalize_number(number)
+                if clean_num != number:
+                    patch_data["number"] = clean_num
+
+                # 2. Générer un vrai titre via IA
+                new_title = None
+                if OPENROUTER_KEY:
+                    # Récupérer un extrait du contenu si disponible
+                    content = ""
+                    try:
+                        cr = requests.get(
+                            f"{SUPABASE_URL}/rest/v1/laws",
+                            headers=HEADERS,
+                            params={"id": f"eq.{law_id}", "select": "content_fr,content_ar"},
+                            timeout=15,
+                        )
+                        if cr.status_code == 200 and cr.json():
+                            d = cr.json()[0]
+                            content = (d.get("content_fr") or d.get("content_ar") or "")[:600]
+                    except Exception:
+                        pass
+                        # Priorité 1 : chercher par numéro (le plus fiable pour dahir/décret/loi)
+                    if clean_num and re.match(r'^\d+-\d+-\d+$', clean_num):
+                        new_title, ai_type = ai_lookup_by_number(law_type, clean_num, date)
+                        if ai_type and (not law_type or law_type.lower() in ('texte juridique','texte réglementaire','')):
+                            law_type = ai_type
+                            patch_data["type"] = law_type
+                    # Priorité 2 : traduire depuis le titre arabe si disponible
+                    if not new_title and title_ar:
+                        new_title, ai_type = ai_translate_from_ar(title_ar, law_type, clean_num)
+                        if ai_type and (not law_type or law_type.lower() in ('texte juridique','texte réglementaire','')):
+                            law_type = ai_type
+                            patch_data["type"] = law_type
+                    # Priorité 2b : utiliser le résumé arabe si le titre AR est vide
+                    summary_ar = (row.get("simple_summary_ar") or "")[:400]
+                    if not new_title and summary_ar:
+                        new_title, ai_type = ai_translate_from_ar(summary_ar, law_type, clean_num)
+                        if ai_type and (not law_type or law_type.lower() in ('texte juridique','texte réglementaire','')):
+                            law_type = ai_type
+                            patch_data["type"] = law_type
+                    # Priorité 3 : fix depuis le contenu FR/AR
+                    if not new_title:
+                        new_title = ai_fix_title(clean_num, source, "", content)
+                    if new_title:
+                        ai_used += 1
+
+                if not new_title and clean_num:
+                    # Fallback minimal : "{Type} n°{number}"
+                    new_title = f"{law_type or 'Texte'} n°{clean_num}"
+
+                if new_title:
+                    patch_data["title_fr"] = new_title
+                    new_slug = make_slug_from_law(law_type, clean_num, new_title, date)
+                    patch_data["canonical_slug"] = new_slug
+
             elif prob in ("title_filename", "title_numeric", "title_generic"):
                 bad    = row.get("title_fr", "") or ""
                 number = row.get("number", "") or ""
@@ -366,6 +687,16 @@ def main():
                     patch_data["title_fr"] = new_title
 
         if patch_data:
+            # ── Quality gate : masquer si le résultat est encore trop pauvre ──
+            final_title = patch_data.get("title_fr") or row.get("title_fr") or ""
+            final_slug  = patch_data.get("canonical_slug") or row.get("canonical_slug") or ""
+            final_type  = patch_data.get("type") or row.get("type") or ""
+            if not is_quality_ok(final_title, final_type, final_slug):
+                patch_data["is_published"] = False
+                console.print(f"    [yellow]⚠ Qualité insuffisante → is_published=false[/]")
+            else:
+                patch_data.setdefault("is_published", True)
+
             ok = patch(law_id, patch_data)
             if ok:
                 fixed += 1

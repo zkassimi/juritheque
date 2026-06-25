@@ -167,6 +167,15 @@ export async function fetchLawBySlug(slug) {
     .maybeSingle()
   if (byNumber) return byNumber
 
+  // 5. Fallback : ancien slug dans slug_history (après correction des slugs)
+  //    LawDetail.jsx fait navigate(canonical_slug, {replace:true}) → redirect silencieuse
+  const { data: byHistory } = await supabase
+    .from('laws')
+    .select('*')
+    .contains('slug_history', [slug])
+    .maybeSingle()
+  if (byHistory) return byHistory
+
   throw error || new Error('Texte introuvable')
 }
 

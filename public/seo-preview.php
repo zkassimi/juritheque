@@ -102,6 +102,34 @@ function fetchLaw($slug) {
 
 $law = fetchLaw($slug);
 
+// ── Fallback : ancien slug dans slug_history → 301 permanent ─────────────────
+if (!$law) {
+    $url = SUPABASE_URL . '/rest/v1/laws'
+         . '?slug_history=cs.%7B%22' . urlencode($slug) . '%22%7D'
+         . '&select=canonical_slug'
+         . '&limit=1';
+    $ctx = stream_context_create([
+        'http' => [
+            'method'  => 'GET',
+            'header'  => implode("\r\n", [
+                'apikey: ' . SUPABASE_KEY,
+                'Authorization: Bearer ' . SUPABASE_KEY,
+                'Accept: application/json',
+            ]),
+            'timeout' => 5,
+        ],
+    ]);
+    $body = @file_get_contents($url, false, $ctx);
+    if ($body) {
+        $data = json_decode($body, true);
+        if (!empty($data[0]['canonical_slug'])) {
+            header('HTTP/1.1 301 Moved Permanently');
+            header('Location: ' . SITE_URL . '/loi/' . $data[0]['canonical_slug']);
+            exit;
+        }
+    }
+}
+
 // ── Métadonnées ───────────────────────────────────────────────────────────────
 $esc = fn($s) => htmlspecialchars($s ?? '', ENT_QUOTES, 'UTF-8');
 $json = fn($s) => json_encode($s ?? '', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

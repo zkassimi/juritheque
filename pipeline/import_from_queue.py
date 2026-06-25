@@ -36,6 +36,15 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 load_dotenv()
 load_dotenv(Path(__file__).parent / ".env", override=True)
 
+try:
+    from title_lookup import get_best_title as _get_best_title
+    from slug_utils import make_slug_from_law as _make_slug_from_law
+    _LOOKUP_AVAILABLE = True
+except ImportError:
+    _LOOKUP_AVAILABLE = False
+    def _get_best_title(*a, **kw): return None  # type: ignore
+    def _make_slug_from_law(t, n, tf, d=""): return f"{t}-{n}".lower()[:80]  # type: ignore
+
 SUPABASE_URL = (os.getenv("SUPABASE_URL") or os.getenv("VITE_SUPABASE_URL", "")).rstrip("/")
 SUPABASE_KEY = (os.getenv("SUPABASE_SERVICE_KEY") or os.getenv("SUPABASE_ANON_KEY") or os.getenv("VITE_SUPABASE_ANON_KEY", ""))
 
@@ -337,7 +346,9 @@ def import_item(item: dict, dry_run: bool, skip_pdf: bool) -> dict:
                 if extracted:
                     title_fr = extracted
             if text_ar and (not title_fr or len(title_fr) < 5):
-                extract_title_from_text(text_ar)
+                extracted_ar = extract_title_from_text(text_ar)
+                if extracted_ar:
+                    title_fr = extracted_ar
             # Uploader dans Supabase Storage pour avoir un vrai pdf_url hébergé
             raw_filename = Path(unquote(urlparse(pdf_url).path)).name
             storage_url = upload_to_storage(pdf_bytes, source, raw_filename)
@@ -346,8 +357,23 @@ def import_item(item: dict, dry_run: bool, skip_pdf: bool) -> dict:
                 console.print(f"    [green]✓ Uploadé vers Storage[/]")
         time.sleep(0.5)  # politesse
 
-    # Générer le slug
-    slug = make_slug(law_type, law_num, title_fr or Path(urlparse(pdf_url).path).stem)
+    # ── Lookup AI si le titre est encore trop court ou absent ───────────────
+    if _LOOKUP_AVAILABLE and law_num and (not title_fr or len(title_fr) < 20):
+        better = _get_best_title(
+            law_type=law_type,
+            number=law_num,
+            date=item.get("bo_date", ""),
+            title_ar=item.get("title_ar", ""),
+        )
+        if better:
+            title_fr = better
+            console.print(f"    [green]→ Titre lookup AI: {better[:70]}[/]")
+
+    # Générer le slug (convention unifiée depuis slug_utils)
+    if _LOOKUP_AVAILABLE:
+        slug = _make_slug_from_law(law_type, law_num, title_fr or Path(urlparse(pdf_url).path).stem, item.get("bo_date", ""))
+    else:
+        slug = make_slug(law_type, law_num, title_fr or Path(urlparse(pdf_url).path).stem)
 
     # ── Générer un numéro fallback si absent ────────────────────────────────
     # La colonne `number` est NOT NULL dans laws — toujours fournir une valeur

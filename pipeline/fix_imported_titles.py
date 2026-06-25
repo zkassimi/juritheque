@@ -494,6 +494,12 @@ def ai_lookup_by_number(law_type: str, number: str, date: str = "") -> tuple[str
 
 
 from slug_utils import make_slug_from_law  # noqa
+from title_lookup import (  # noqa — réexportés pour rétrocompat
+    ai_lookup_by_number,
+    ai_translate_from_ar,
+    adala_lookup_by_number as adala_scrape_by_number,
+    get_best_title,
+)
 
 
 # ── Pagination Supabase ────────────────────────────────────────────────────────

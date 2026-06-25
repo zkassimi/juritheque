@@ -50,6 +50,15 @@ try:
 except ImportError:
     def log(msg, **kw): print(msg)
 
+try:
+    from title_lookup import get_best_title as _get_best_title
+    from slug_utils import make_slug_from_law as _make_slug
+    _LOOKUP_AVAILABLE = True
+except ImportError:
+    _LOOKUP_AVAILABLE = False
+    def _get_best_title(*a, **kw): return None  # type: ignore
+    def _make_slug(law_type, number, title_fr, date=""): return f"{law_type}-{number}".lower()  # type: ignore
+
 # ── Config ──────────────────────────────────────────────────────────────────────
 load_dotenv()
 
@@ -396,7 +405,7 @@ def get_total_pages(session: requests.Session) -> int:
 
 # ── Traitement d'un texte ───────────────────────────────────────────────────────
 
-def process_item(item: dict, dry_run: bool) -> str:
+def process_item(item: dict, dry_run: bool, fast: bool = False) -> str:
     """
     Traite un texte Adala et l'insère dans Supabase.
     Retourne : 'inserted' | 'duplicate' | 'skipped' | 'error'
@@ -416,22 +425,35 @@ def process_item(item: dict, dry_run: bool) -> str:
     if number != "N/A" and sb_number_exists(number):
         return "duplicate"
 
-    # Générer canonical_slug — convention {type}-{number} (titre_fr pas encore connu ici)
+    # ── Title FR : lookup AI par numéro (plus de placeholder "— portail Adala") ─
+    num_label = f" n°{number}" if number != "N/A" else ""
+    title_fr  = None
+
+    if not fast and _LOOKUP_AVAILABLE and number != "N/A":
+        title_fr = _get_best_title(
+            law_type=type_fr,
+            number=number,
+            date=law_date or "",
+            title_ar=title_ar,
+        )
+        if title_fr:
+            log(f"  [green]→ Titre lookup: {title_fr[:70]}[/]")
+
+    if not title_fr:
+        # Fallback : titre arabe traduit ou placeholder minimal
+        title_fr = f"{type_fr}{num_label}" if num_label else f"{type_fr} (Adala)"
+
+    # ── Canonical slug avec titre réel (meilleure qualité SEO) ──────────────
     import hashlib as _hl
-    type_slug = slugify(type_fr)
     if number != "N/A":
-        number_slug = re.sub(r'[^a-z0-9]+', '-', number.lower()).strip('-')
-        canonical_slug = f"{type_slug}-{number_slug}"
+        canonical_slug = _make_slug(type_fr, number, title_fr, law_date or "")
     else:
         h = _hl.md5(source_url.encode()).hexdigest()[:8]
-        canonical_slug = f"{type_slug}-adala-{h}"
+        type_slug_fb = slugify(type_fr)
+        canonical_slug = f"{type_slug_fb}-adala-{h}"
 
     if sb_slug_exists(canonical_slug):
         return "duplicate"
-
-    # Title FR généré (obligatoire NOT NULL)
-    num_label = f" n°{number}" if number != "N/A" else ""
-    title_fr  = f"{type_fr}{num_label} — portail Adala"
 
     if dry_run:
         return "inserted"
@@ -473,6 +495,8 @@ def main():
                         help="Arrêter après N insertions réussies")
     parser.add_argument("--discover",  action="store_true",
                         help="Compter les textes sans insérer")
+    parser.add_argument("--fast",      action="store_true",
+                        help="Mode rapide : pas de lookup AI pour les titres (titre placeholder conservé)")
     args = parser.parse_args()
 
     log("\n[bold gold1]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/]")
@@ -529,7 +553,7 @@ def main():
 
         new_on_page = 0
         for item in items:
-            status = process_item(item, dry_run=args.dry_run)
+            status = process_item(item, dry_run=args.dry_run, fast=args.fast)
             stats[status if status in stats else "error"] += 1
             total_processed += 1
 

@@ -353,12 +353,31 @@ def extract_structure(text: str, filename: str) -> dict:
     defaults = {
         "number": Path(filename).stem, "type": "Loi", "domain": "civil",
         "status": "En vigueur", "date": None,
-        "title_fr": Path(filename).stem, "title_ar": "",
+        "title_fr": None, "title_ar": "",
         "excerpt_fr": "", "excerpt_ar": "",
         "tags": [],
     }
     for k, v in defaults.items():
         data.setdefault(k, v)
+
+    # ── Titre : lookup AI par numéro si l'extraction PDF a échoué ────────────
+    # (évite le fallback filename-stem qui pollue la base)
+    if not data.get("title_fr") or len(data.get("title_fr", "")) < 10:
+        try:
+            from title_lookup import get_best_title as _get_best_title
+            better = _get_best_title(
+                law_type=data.get("type", ""),
+                number=data.get("number", ""),
+                date=str(data.get("date", "")) if data.get("date") else "",
+            )
+            if better:
+                data["title_fr"] = better
+                console.print(f"  [green]→ Titre lookup AI: {better[:70]}[/]")
+            else:
+                # Dernier recours : filename stem (mieux que rien pour la recherche)
+                data["title_fr"] = data["title_fr"] or Path(filename).stem
+        except Exception:
+            data["title_fr"] = data["title_fr"] or Path(filename).stem
 
     # ── Store FULL extracted text (not AI-truncated) ──────────────────────
     # Split bilingual documents into FR + AR parts

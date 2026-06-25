@@ -45,21 +45,7 @@ export async function getRelatedLawsForIntent(intent) {
     } catch (_) { /* silencieux */ }
   }
 
-  // ── Stratégie 1 : par domain_id ────────────────────────────────────
-  if (legalDomain && results.length < 15) {
-    try {
-      const { data } = await supabase
-        .from('laws')
-        .select(SELECT_FIELDS)
-        .eq('domain_id', legalDomain)
-        .eq('is_publicly_indexable', true)
-        .order('extraction_confidence_score', { ascending: false, nullsFirst: false })
-        .limit(12)
-      addAll(data)
-    } catch (_) { /* silencieux */ }
-  }
-
-  // ── Stratégie 2 : Full-Text Search sur tous les searchTerms ────────
+  // ── Stratégie 1 : Full-Text Search sur tous les searchTerms ─────────
   for (const term of searchTerms.slice(0, 3)) {
     if (results.length >= 15) break
     try {
@@ -70,6 +56,20 @@ export async function getRelatedLawsForIntent(intent) {
         .textSearch('search_vector', term, { type: 'websearch', config: 'french' })
         .order('extraction_confidence_score', { ascending: false, nullsFirst: false })
         .limit(6)
+      addAll(data)
+    } catch (_) { /* silencieux */ }
+  }
+
+  // ── Stratégie 2 : par domain_id (fallback si pas assez de résultats) ─
+  if (legalDomain && results.length < 6) {
+    try {
+      const { data } = await supabase
+        .from('laws')
+        .select(SELECT_FIELDS)
+        .eq('domain_id', legalDomain)
+        .eq('is_publicly_indexable', true)
+        .order('extraction_confidence_score', { ascending: false, nullsFirst: false })
+        .limit(12)
       addAll(data)
     } catch (_) { /* silencieux */ }
   }

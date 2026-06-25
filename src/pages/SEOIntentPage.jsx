@@ -44,32 +44,26 @@ function FAQItem({ question, answer }) {
 
 // ── Carte loi pour les guides ─────────────────────────────────────────────────
 function IntentLawCard({ law }) {
-  const desc = law.simple_summary_fr || law.excerpt_fr || law.excerpt_ar || null
   return (
     <Link
       to={lawPath(law)}
-      className="group block bg-white rounded-xl border border-gray-100 p-4 hover:border-gold hover:shadow-sm transition-all"
+      className="group flex items-start gap-3 bg-white rounded-xl border border-gray-100 p-3 hover:border-gold hover:shadow-sm transition-all"
     >
-      <div className="flex flex-wrap items-start gap-2 mb-2">
-        <TypeBadge   type={law.type} />
-        <StatusBadge status={law.status} />
+      <div className="flex-1 min-w-0">
+        <div className="flex flex-wrap items-center gap-1.5 mb-1">
+          <TypeBadge   type={law.type} />
+          <StatusBadge status={law.status} />
+        </div>
+        <h3 className="text-xs font-semibold text-navy group-hover:text-gold transition-colors leading-snug line-clamp-2">
+          {law.title_fr || law.title_ar || `Texte n°${law.id}`}
+        </h3>
+        {law.number && (
+          <p className="text-[11px] text-navy-400 mt-0.5">
+            {law.number}{law.date ? ` · ${law.date}` : ''}{law.public_article_count > 0 ? ` · ${law.public_article_count} articles` : ''}
+          </p>
+        )}
       </div>
-      <h3 className="text-sm font-semibold text-navy group-hover:text-gold transition-colors leading-snug mb-1 line-clamp-2">
-        {law.title_fr || law.title_ar || `Texte n°${law.id}`}
-      </h3>
-      {law.number && (
-        <p className="text-xs text-navy-400 mb-2">
-          {law.number}{law.date ? ` · ${law.date}` : ''}
-        </p>
-      )}
-      {desc && (
-        <p className="text-xs text-navy-600 leading-relaxed line-clamp-3">
-          {String(desc).slice(0, 220)}
-        </p>
-      )}
-      {law.public_article_count > 0 && (
-        <p className="text-xs text-gold mt-2 font-medium">{law.public_article_count} articles</p>
-      )}
+      <ArrowRight size={13} className={`text-gold flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity`} />
     </Link>
   )
 }

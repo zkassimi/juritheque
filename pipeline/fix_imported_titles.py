@@ -39,7 +39,8 @@ load_dotenv(Path(__file__).parent / ".env", override=True)
 SUPABASE_URL = (os.getenv("SUPABASE_URL") or os.getenv("VITE_SUPABASE_URL", "")).rstrip("/")
 SUPABASE_KEY = (os.getenv("SUPABASE_SERVICE_KEY") or os.getenv("SUPABASE_ANON_KEY") or os.getenv("VITE_SUPABASE_ANON_KEY", ""))
 OPENROUTER_KEY = os.getenv("OPENROUTER_API_KEY", "")
-AI_MODEL = "google/gemini-2.5-flash"
+AI_MODEL        = "google/gemini-2.5-flash"
+AI_MODEL_LOOKUP = "google/gemini-2.5-pro"   # Plus précis pour identifier les lois marocaines
 
 HEADERS = {
     "apikey":        SUPABASE_KEY,
@@ -399,7 +400,7 @@ def ai_lookup_by_number(law_type: str, number: str, date: str = "") -> tuple[str
                 "Content-Type":  "application/json",
                 "HTTP-Referer":  "https://juritheque.com",
             },
-            json={"model": AI_MODEL, "max_tokens": 150, "temperature": 0.1,
+            json={"model": AI_MODEL_LOOKUP, "max_tokens": 150, "temperature": 0.1,
                   "messages": [{"role": "user", "content": prompt}]},
             timeout=20,
         )

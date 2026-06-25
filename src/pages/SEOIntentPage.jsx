@@ -235,7 +235,7 @@ function SectionsWithTOC({ sections, isAr }) {
               <ul className="mt-3 space-y-1.5">
                 {sec.bullets.map((b, k) => (
                   <li key={k} className={`flex items-start gap-2 text-sm text-navy-700 ${isAr ? 'flex-row-reverse text-right' : ''}`}>
-                    <span className="text-gold mt-0.5 flex-shrink-0">▸</span>
+                    <span className="text-gold mt-0.5 flex-shrink-0">{isAr ? '◂' : '▸'}</span>
                     <span>{b}</span>
                   </li>
                 ))}

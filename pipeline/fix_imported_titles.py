@@ -48,7 +48,8 @@ HEADERS = {
     "Prefer":        "return=representation",
 }
 
-console = Console()
+import sys as _sys
+console = Console(force_terminal=False, no_color=True) if not _sys.stdout.isatty() else Console()
 
 # ── Détection ──────────────────────────────────────────────────────────────────
 
@@ -126,8 +127,17 @@ def is_number_as_title(title_fr: str, number: str) -> bool:
     # Titre = juste des chiffres et séparateurs
     if re.match(r'^[\d\s\-_\.]+$', t):
         return True
-    # Titre = "Texte juridique n°X-XX-XXX" ou "Texte N° X-XX-XXX" — fallback générique sans sens
+    # Titre = "Texte juridique n°X" ou "Texte N° X" — fallback générique sans sens
     if re.match(r'^(?:texte\s+(?:juridique|réglementaire|reglementaire)?\s*n[°o]?\s*[\d]|texte\s+n[°o°]\s*[\d])', t, re.IGNORECASE):
+        return True
+    # Titre = "Arrêté n°X", "Décret n°X", "Loi n°X", "Dahir n°X" sans description
+    # (le titre ne contient QUE le type + numéro, pas de mots descriptifs)
+    m = re.match(
+        r'^(?:arrêté|arrete|décret|decret|dahir|loi|circulaire|décision|decision|ordonnance)'
+        r'\s+(?:n[°o°]?\s*)?[\d\.]+[\d\.\-/]*\s*$',
+        t, re.IGNORECASE
+    )
+    if m:
         return True
     return False
 
@@ -264,7 +274,7 @@ def ai_fix_title(number: str, source: str, bad_title: str, content_snippet: str)
             if 5 < len(title) < 200:
                 return title
     except Exception as e:
-        console.print(f"    [dim]IA error: {e}[/]")
+        print(f"    IA error: {e}", flush=True)
     return None
 
 def ai_translate_from_ar(title_ar: str, law_type: str = "", number: str = "") -> tuple[str | None, str | None]:
@@ -324,7 +334,7 @@ def ai_translate_from_ar(title_ar: str, law_type: str = "", number: str = "") ->
                 if 5 < len(titre) < 200:
                     return titre, None
     except Exception as e:
-        console.print(f"    [dim]IA translate error: {e}[/]")
+        print(f"    IA translate error: {e}", flush=True)
     return None, None
 
 
@@ -417,7 +427,7 @@ def ai_lookup_by_number(law_type: str, number: str, date: str = "") -> tuple[str
 
             return (titre if 5 < len(titre) < 200 else None), (detected or None)
     except Exception as e:
-        console.print(f"    [dim]IA lookup error: {e}[/]")
+        print(f"    IA lookup error: {e}", flush=True)
     return None, None
 
 
@@ -432,7 +442,7 @@ def fetch_all(params: dict, page_size: int = 1000) -> list[dict]:
         h = {**HEADERS, "Range": f"{offset}-{offset + page_size - 1}"}
         r = requests.get(f"{SUPABASE_URL}/rest/v1/laws", headers=h, params=params, timeout=30)
         if r.status_code not in (200, 206):
-            console.print(f"[red]Erreur fetch: {r.status_code}[/]")
+            print(f"Erreur fetch: {r.status_code}", flush=True)
             break
         chunk = r.json()
         if not chunk:
@@ -443,15 +453,26 @@ def fetch_all(params: dict, page_size: int = 1000) -> list[dict]:
         offset += page_size
     return rows
 
-def patch(law_id: str, data: dict) -> bool:
-    r = requests.patch(
-        f"{SUPABASE_URL}/rest/v1/laws",
-        headers=HEADERS,
-        params={"id": f"eq.{law_id}"},
-        json=data,
-        timeout=10,
-    )
-    return r.status_code in (200, 204)
+def patch(law_id: str, data: dict, retries: int = 3) -> bool:
+    for attempt in range(retries):
+        try:
+            r = requests.patch(
+                f"{SUPABASE_URL}/rest/v1/laws",
+                headers=HEADERS,
+                params={"id": f"eq.{law_id}"},
+                json=data,
+                timeout=15,
+            )
+            return r.status_code in (200, 204)
+        except requests.exceptions.ConnectionError:
+            if attempt < retries - 1:
+                import time as _t
+                wait = 10 * (attempt + 1)
+                print(f"  !! Reseau indisponible, retry {attempt+1}/{retries-1} dans {wait}s...", flush=True)
+                _t.sleep(wait)
+            else:
+                print(f"  XX Echec reseau apres {retries} tentatives -- texte ignore", flush=True)
+                return False
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 
@@ -466,30 +487,30 @@ def main():
     args = p.parse_args()
 
     if args.dry_run:
-        console.print("[yellow bold]Mode DRY-RUN — aucune modification en base[/]\n")
+        print("Mode DRY-RUN -- aucune modification en base\n", flush=True)
 
     fix_adala     = getattr(args, 'fix_adala', False)
     fix_bad_slugs = getattr(args, 'fix_bad_slugs', False)
 
     # ── 1. Charger les métadonnées légères (sans content_fr) ───────────────────
-    console.print("[bold]Chargement des textes…[/]")
+    print("Chargement des textes...", flush=True)
     params = {"select": "id,number,title_fr,title_ar,source_name,type,canonical_slug,date,simple_summary_ar"}
 
     if fix_bad_slugs:
-        console.print("  [cyan]Mode --fix-bad-slugs : enrichissement titres des textes à slug générique[/]")
+        print("  Mode --fix-bad-slugs : enrichissement titres des textes a slug generique", flush=True)
         params["canonical_slug"] = "like.texte-juridique-%"
         fix_adala = True  # Active la détection number_as_title
     elif fix_adala:
-        console.print("  [cyan]Mode --fix-adala : placeholders adala + titres manquants/numériques[/]")
+        print("  Mode --fix-adala : placeholders adala + titres manquants/numeriques", flush=True)
         # Pas de filtre strict : on charge tout et on filtre par détection
     elif not args.all:
-        console.print("  [dim](ciblage extraction_status=pending — utilisez --all pour tout scanner)[/]")
+        print("  (ciblage extraction_status=pending -- utilisez --all pour tout scanner)", flush=True)
         params["extraction_status"] = "eq.pending"
 
     rows = fetch_all(params)
     if args.limit:
         rows = rows[:args.limit]
-    console.print(f"  {len(rows)} textes chargés\n")
+    print(f"  {len(rows)} textes charges\n", flush=True)
 
     # ── 2. Détection ────────────────────────────────────────────────────────────
     problems_map: dict[str, list] = {}  # id → [(problem, row)]
@@ -500,51 +521,57 @@ def main():
 
     total = len(problems_map)
     if total == 0:
-        console.print("[green]✅ Aucun problème détecté.[/]")
+        print("OK -- Aucun probleme detecte.", flush=True)
         return
 
-    console.print(f"[bold]{total}[/] textes avec problèmes détectés\n")
+    print(f"{total} textes avec problemes detectes\n", flush=True)
 
     # ── 3. Afficher aperçu ──────────────────────────────────────────────────────
-    preview = Table(show_header=True, header_style="bold", title="Problèmes détectés")
-    preview.add_column("Problème",   width=20)
-    preview.add_column("Avant",      width=50)
-    preview.add_column("Fix prévu",  width=20)
-
     counts = {}
+    print(f"\n{'='*70}", flush=True)
+    print(f"  PROBLEMES DETECTES (30 premiers sur {total})", flush=True)
+    print(f"{'='*70}", flush=True)
+    print(f"  {'Probleme':<22} {'Avant':<45} Fix", flush=True)
+    print(f"  {'-'*22} {'-'*45} {'-'*15}", flush=True)
+
     for law_id, (probs, row) in list(problems_map.items())[:30]:
         for prob in probs:
             counts[prob] = counts.get(prob, 0) + 1
             val = row.get("title_fr") or row.get("title_ar") or row.get("number") or ""
             fix_label = {
-                "number_encoded":   "Décodage URL",
-                "title_encoded":    "Décodage URL",
+                "number_encoded":   "Decodage URL",
+                "title_encoded":    "Decodage URL",
                 "title_filename":   "IA" if OPENROUTER_KEY else "Humaniser",
                 "title_numeric":    "Formatage",
                 "title_generic":    "IA",
                 "title_gibberish":  "Effacer",
                 "title_fr_garbled": "Effacer",
                 "arabic_garbled":   "Effacer title_ar",
+                "number_as_title":  "IA lookup",
+                "adala_placeholder":"IA traduction",
             }.get(prob, "?")
-            preview.add_row(prob, val[:48], fix_label)
+            print(f"  {prob:<22} {val[:44]:<45} {fix_label}", flush=True)
 
-    console.print(preview)
     if total > 30:
-        console.print(f"  [dim]… et {total - 30} autres[/]\n")
+        print(f"  ... et {total - 30} autres\n", flush=True)
 
-    console.print("\n[bold]Répartition :[/]")
+    print(f"\nRepartition :", flush=True)
     for k, v in counts.items():
-        console.print(f"  • {k} : {v}")
-    console.print()
+        print(f"  - {k} : {v}", flush=True)
+    print(flush=True)
 
     if args.dry_run:
-        console.print("[yellow]DRY-RUN terminé — aucune modification appliquée.[/]")
+        print("DRY-RUN termine -- aucune modification appliquee.", flush=True)
         return
 
     # ── 4. Corriger ─────────────────────────────────────────────────────────────
     fixed = failed = ai_used = 0
+    total_to_fix = len(problems_map)
 
-    for law_id, (probs, row) in track(problems_map.items(), description="Correction…"):
+    for idx, (law_id, (probs, row)) in enumerate(problems_map.items(), 1):
+        num_display = row.get("number") or law_id
+        pct = int(idx * 100 / total_to_fix)
+        print(f"[{idx}/{total_to_fix} {pct}%] {probs[0]} — {num_display}", flush=True)
         patch_data = {}
 
         for prob in probs:
@@ -639,9 +666,10 @@ def main():
                     if new_title:
                         ai_used += 1
 
-                if not new_title and clean_num:
-                    # Fallback minimal : "{Type} n°{number}"
-                    new_title = f"{law_type or 'Texte'} n°{clean_num}"
+                if not new_title:
+                    # IA n'a pas trouvé → masquer plutôt que faux titre
+                    patch_data["is_published"] = False
+                    print(f"  ?? IA inconnue -> masque", flush=True)
 
                 if new_title:
                     patch_data["title_fr"] = new_title
@@ -693,26 +721,31 @@ def main():
             final_type  = patch_data.get("type") or row.get("type") or ""
             if not is_quality_ok(final_title, final_type, final_slug):
                 patch_data["is_published"] = False
-                console.print(f"    [yellow]⚠ Qualité insuffisante → is_published=false[/]")
+                print(f"    !! Qualite insuffisante -> is_published=false", flush=True)
             else:
                 patch_data.setdefault("is_published", True)
 
             ok = patch(law_id, patch_data)
             if ok:
                 fixed += 1
+                new_t = patch_data.get("title_fr", "")
+                if new_t:
+                    print(f"  -> {new_t}", flush=True)
             else:
                 failed += 1
+                print(f"  ❌ Échec PATCH", flush=True)
         else:
             fixed += 1  # détecté mais rien à changer (déjà propre)
 
         time.sleep(0.05)
 
     # ── 5. Résumé ───────────────────────────────────────────────────────────────
-    console.print(f"\n[green bold]✅ {fixed}/{total} textes corrigés[/]")
+    print(f"\n=== TERMINE ===", flush=True)
+    print(f"OK {fixed}/{total} textes corriges", flush=True)
     if ai_used:
-        console.print(f"   🤖 {ai_used} titres générés par IA ({AI_MODEL})")
+        print(f"   IA {ai_used} titres generes par IA ({AI_MODEL})", flush=True)
     if failed:
-        console.print(f"   [red]❌ {failed} échecs (erreur Supabase)[/]")
+        print(f"   ECHECS {failed} echecs (erreur Supabase)", flush=True)
 
 
 if __name__ == "__main__":

@@ -54,39 +54,25 @@ HEADERS = {
     "Authorization": f"Bearer {SUPABASE_KEY}",
 }
 
-# ── Pages statiques ──────────────────────────────────────────────────────────
-_GUIDE_SLUGS = [
-    "code-du-travail-maroc",
-    "licenciement-maroc",
-    "code-de-commerce-maroc",
-    "sarl-maroc",
-    "bail-commercial-maroc",
-    "recouvrement-maroc",
-    "cheque-sans-provision-maroc",
-    "creation-societe-maroc",
-    "code-de-la-famille-maroc",
-    "divorce-maroc",
-    "delai-de-prescription-maroc",
-    "procedure-civile-maroc",
-    "collectivites-territoriales-maroc",
-    "revocation-elu-maroc",
-    "mre-droits-juridiques-maroc",
-    "heritage-succession-mre-maroc",
-    "investir-maroc-mre",
-    "achat-immobilier-maroc-mre",
-    "double-nationalite-droit-maroc",
-    "investissement-etranger-maroc",
-    "marches-publics-maroc",
-    "urbanisme-maroc",
-    "etat-civil-maroc",
-    "depenses-personnel-maroc",
-    "recouvrement-creances-publiques-maroc",
-    "droit-sport-football-maroc",
-    "droit-numerique-ia-maroc",
-    "droit-influenceurs-maroc",
-    "code-route-maroc",
-    "protection-consommateur-maroc",
-]
+# ── Slugs des guides — lus dynamiquement depuis seoIntentPages.js ────────────
+def _read_guide_slugs() -> list[str]:
+    """Extrait les slugs depuis src/data/seoIntentPages.js via regex."""
+    js_path = PROJECT_ROOT / "src" / "data" / "seoIntentPages.js"
+    if not js_path.exists():
+        log("[yellow]⚠  seoIntentPages.js introuvable — liste de guides vide[/]")
+        return []
+    src = js_path.read_text(encoding="utf-8")
+    slugs = re.findall(r"slug:\s*'([a-z0-9][a-z0-9-]+)'", src)
+    # Déduplication en préservant l'ordre
+    seen, result = set(), []
+    for s in slugs:
+        if s not in seen:
+            seen.add(s)
+            result.append(s)
+    log(f"[dim]→ {len(result)} slugs de guides lus depuis seoIntentPages.js[/]")
+    return result
+
+_GUIDE_SLUGS = _read_guide_slugs()
 
 STATIC_PAGES = [
     # ── Pages principales ────────────────────────────────────────────────

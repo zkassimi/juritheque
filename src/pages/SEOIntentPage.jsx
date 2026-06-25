@@ -234,7 +234,7 @@ function SectionsWithTOC({ sections, isAr }) {
             {sec.bullets?.length > 0 && (
               <ul className="mt-3 space-y-1.5">
                 {sec.bullets.map((b, k) => (
-                  <li key={k} className={`flex items-start gap-2 text-sm text-navy-700 ${isAr ? 'flex-row-reverse text-right' : ''}`}>
+                  <li key={k} dir={isAr ? 'rtl' : undefined} className={`flex items-start gap-2 text-sm text-navy-700`}>
                     <span className="text-gold mt-0.5 flex-shrink-0">{isAr ? '◂' : '▸'}</span>
                     <span>{b}</span>
                   </li>
@@ -430,6 +430,11 @@ export default function SEOIntentPage() {
           </nav>
 
           <h1 className={`font-bold text-2xl sm:text-3xl mb-2 ${isAr ? 'font-arabic' : 'font-playfair'}`} dir={isAr ? 'rtl' : 'ltr'}>{pageH1}</h1>
+          {(isAr ? intent.badge_ar : intent.badge) && (
+            <span className={`inline-block mb-3 px-3 py-1 text-xs font-medium rounded-full bg-amber-400/20 text-amber-200 border border-amber-400/30 ${isAr ? 'font-arabic' : ''}`}>
+              {isAr ? intent.badge_ar : intent.badge}
+            </span>
+          )}
           {intent.lastUpdated && (
             <p className="flex items-center gap-1.5 text-xs text-white/45 mb-3">
               <Calendar size={11} />
@@ -482,6 +487,27 @@ export default function SEOIntentPage() {
             </div>
           </section>
         )}
+
+        {/* ── Cartes statistiques clés ──────────────────────────────────── */}
+        {(() => {
+          const stats = isAr ? intent?.stats_ar : intent?.stats
+          if (!stats?.length) return null
+          return (
+            <div className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3`} dir={isAr ? 'rtl' : 'ltr'}>
+              {stats.map((s, i) => (
+                <div key={i} className="bg-white border border-gray-100 rounded-xl p-3 text-center shadow-sm">
+                  <div className={`text-base font-bold text-navy leading-tight ${isAr ? 'font-arabic' : ''}`}>{s.value}</div>
+                  <div className={`text-[11px] text-gray-500 mt-1 leading-tight ${isAr ? 'font-arabic' : ''}`}>{s.label}</div>
+                  {s.badge && (
+                    <span className={`mt-1.5 inline-block px-2 py-0.5 text-[10px] bg-amber-50 text-amber-700 border border-amber-200 rounded-full ${isAr ? 'font-arabic' : ''}`}>
+                      {s.badge}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )
+        })()}
 
         {/* ── Sections éditoriales + TOC sticky ─────────────────────────── */}
         <SectionsWithTOC
@@ -539,7 +565,24 @@ export default function SEOIntentPage() {
           </section>
         )}
 
-        {/* ── Avertissement juridique ─────────────────────────────────── */}
+        {/* ── Disclaimer projet de texte (si défini) ──────────────────── */}
+        {(isAr ? intent?.disclaimer_ar : intent?.disclaimer) && (
+          <div className={`bg-amber-50 border-2 border-amber-300 rounded-xl p-5 flex items-start gap-3 ${isAr ? 'flex-row-reverse' : ''}`} dir={isAr ? 'rtl' : 'ltr'}>
+            <AlertTriangle size={18} className="text-amber-600 flex-shrink-0 mt-0.5" />
+            <p className={`text-sm text-amber-900 leading-relaxed ${isAr ? 'font-arabic text-right' : ''}`}>
+              {isAr ? intent.disclaimer_ar : intent.disclaimer}
+            </p>
+          </div>
+        )}
+
+        {/* ── Note méthodologique ─────────────────────────────────────── */}
+        {(isAr ? intent?.methodology_note_ar : intent?.methodology_note) && (
+          <p className={`text-xs text-gray-400 italic leading-relaxed ${isAr ? 'font-arabic text-right' : ''}`} dir={isAr ? 'rtl' : 'ltr'}>
+            {isAr ? intent.methodology_note_ar : intent.methodology_note}
+          </p>
+        )}
+
+        {/* ── Avertissement juridique générique ───────────────────────── */}
         <div className={`bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3 ${isAr ? 'flex-row-reverse' : ''}`} dir={isAr ? 'rtl' : 'ltr'}>
           <AlertTriangle size={15} className="text-amber-600 flex-shrink-0 mt-0.5" />
           <p className={`text-xs text-amber-800 leading-relaxed ${isAr ? 'font-arabic text-right' : ''}`}>

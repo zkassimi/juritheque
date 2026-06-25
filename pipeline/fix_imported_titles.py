@@ -373,6 +373,67 @@ def is_quality_ok(title_fr: str, law_type: str, slug: str) -> bool:
     return True
 
 
+_ADALA_INDEX: dict | None = None  # cache en mémoire
+
+def _load_adala_index() -> dict:
+    """Charge l'index Adala local (number → title_ar). Construit via _build_adala_index.py."""
+    global _ADALA_INDEX
+    if _ADALA_INDEX is not None:
+        return _ADALA_INDEX
+    idx_path = os.path.join(os.path.dirname(__file__), "adala_index.json")
+    if os.path.exists(idx_path):
+        import json as _j
+        with open(idx_path, encoding="utf-8") as f:
+            _ADALA_INDEX = _j.load(f)
+        print(f"  [Adala index] {len(_ADALA_INDEX)} entrées chargées", flush=True)
+    else:
+        _ADALA_INDEX = {}
+    return _ADALA_INDEX
+
+def _normalize_num(n: str) -> str:
+    """2.72.274 / 2-72-274 → 2-72-274 (clé index)"""
+    return re.sub(r'[\.\s]+', '-', (n or "").strip()).strip('-').lower()
+
+def adala_scrape_by_number(number: str, law_type: str = "") -> tuple[str | None, str | None]:
+    """Cherche dans l'index Adala local par numéro → titre_fr via titre_ar.
+    Prérequis : lancer pipeline/_build_adala_index.py une fois pour créer adala_index.json."""
+    if not number:
+        return None, None
+    index = _load_adala_index()
+    if not index:
+        return None, None
+    key = _normalize_num(number)
+    title_ar = index.get(key)
+    # Essai avec des variantes si pas trouvé directement
+    if not title_ar:
+        # Essayer sans le premier chiffre (ex: "2-72-274" → "72-274")
+        parts = key.split('-')
+        if len(parts) >= 2:
+            title_ar = index.get('-'.join(parts[1:]))
+    if not title_ar or len(title_ar) < 5:
+        return None, None
+    # Traduire l'arabe vers le français
+    title_fr, detected_type = ai_translate_from_ar(title_ar, law_type, number)
+    if not title_fr:
+        return None, None
+    # Insérer le numéro dans le titre s'il est absent
+    num_dot  = number.replace('-', '.')
+    num_dash = number.replace('.', '-')
+    if num_dot not in title_fr and num_dash not in title_fr and number not in title_fr:
+        import unicodedata as _ud
+        def _plain(s):
+            n = _ud.normalize("NFD", s.lower())
+            return "".join(c for c in n if _ud.category(c) != "Mn")
+        words = title_fr.split()
+        type_word = _plain((law_type or '').split()[0]) if law_type else ''
+        if words and type_word and _plain(words[0]) == type_word:
+            # "Décret d'application…" → "Décret n° 2.93.751 d'application…"
+            title_fr = f"{words[0]} n° {num_dot} {' '.join(words[1:])}"
+        else:
+            title_fr = f"{title_fr} (n° {num_dot})"
+    return title_fr, detected_type
+
+
 def ai_lookup_by_number(law_type: str, number: str, date: str = "") -> tuple[str | None, str | None]:
     """Identifie un texte juridique marocain par son numéro officiel → (titre_fr, type)."""
     if not OPENROUTER_KEY or not number:
@@ -566,7 +627,7 @@ def main():
         return
 
     # ── 4. Corriger ─────────────────────────────────────────────────────────────
-    fixed = failed = ai_used = 0
+    fixed = failed = ai_used = skipped_no_fix = 0
     total_to_fix = len(problems_map)
 
     for idx, (law_id, (probs, row)) in enumerate(problems_map.items(), 1):
@@ -642,9 +703,17 @@ def main():
                             content = (d.get("content_fr") or d.get("content_ar") or "")[:600]
                     except Exception:
                         pass
-                        # Priorité 1 : chercher par numéro (le plus fiable pour dahir/décret/loi)
+                        # Priorité 1 : chercher par numéro via LLM (Gemini Pro)
                     if clean_num and re.match(r'^\d+-\d+-\d+$', clean_num):
                         new_title, ai_type = ai_lookup_by_number(law_type, clean_num, date)
+                        if ai_type and (not law_type or law_type.lower() in ('texte juridique','texte réglementaire','')):
+                            law_type = ai_type
+                            patch_data["type"] = law_type
+                    # Priorité 1b : scraper Adala directement si LLM ne connaît pas
+                    if not new_title and clean_num:
+                        new_title, ai_type = adala_scrape_by_number(clean_num, law_type)
+                        if new_title:
+                            print(f"  [Adala] trouvé", flush=True)
                         if ai_type and (not law_type or law_type.lower() in ('texte juridique','texte réglementaire','')):
                             law_type = ai_type
                             patch_data["type"] = law_type
@@ -668,9 +737,10 @@ def main():
                         ai_used += 1
 
                 if not new_title:
-                    # IA n'a pas trouvé → masquer plutôt que faux titre
-                    patch_data["is_published"] = False
-                    print(f"  ?? IA inconnue -> masque", flush=True)
+                    # IA ne connaît pas ce texte → garder tel quel, ne pas masquer
+                    # Le titre "Dahir n°1-17-26" reste cherchable par numéro
+                    print(f"  ?? IA inconnue -> skip (titre conserve)", flush=True)
+                    patch_data.clear()  # rien à patcher
 
                 if new_title:
                     patch_data["title_fr"] = new_title
@@ -717,6 +787,10 @@ def main():
 
         if patch_data:
             # ── Quality gate : masquer si le résultat est encore trop pauvre ──
+            if not patch_data:
+                skipped_no_fix += 1
+                continue
+
             final_title = patch_data.get("title_fr") or row.get("title_fr") or ""
             final_slug  = patch_data.get("canonical_slug") or row.get("canonical_slug") or ""
             final_type  = patch_data.get("type") or row.get("type") or ""
@@ -734,7 +808,7 @@ def main():
                     print(f"  -> {new_t}", flush=True)
             else:
                 failed += 1
-                print(f"  ❌ Échec PATCH", flush=True)
+                print(f"  XX Echec PATCH", flush=True)
         else:
             fixed += 1  # détecté mais rien à changer (déjà propre)
 

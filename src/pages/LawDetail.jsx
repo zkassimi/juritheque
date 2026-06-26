@@ -23,12 +23,13 @@ import { getGuidesForDomain } from '../data/seoIntentPages'
 // ── Quality badge helper ──────────────────────────────────────────────────────
 function QualityBadge({ score, status }) {
   if (score == null) return null
+  const { lang } = useLang()
   const s = Number(score)
   const cfg = s >= 75
-    ? { bg: 'bg-emerald-50 border-emerald-200 text-emerald-700', dot: 'bg-emerald-400', label: 'Qualité bonne' }
+    ? { bg: 'bg-emerald-50 border-emerald-200 text-emerald-700', dot: 'bg-emerald-400', label: lang === 'ar' ? 'جودة جيدة' : 'Qualité bonne' }
     : s >= 45
-      ? { bg: 'bg-amber-50 border-amber-200 text-amber-700', dot: 'bg-amber-400', label: 'Qualité partielle' }
-      : { bg: 'bg-red-50 border-red-200 text-red-700', dot: 'bg-red-400', label: 'À vérifier' }
+      ? { bg: 'bg-amber-50 border-amber-200 text-amber-700', dot: 'bg-amber-400', label: lang === 'ar' ? 'جودة جزئية' : 'Qualité partielle' }
+      : { bg: 'bg-red-50 border-red-200 text-red-700', dot: 'bg-red-400', label: lang === 'ar' ? 'للتحقق' : 'À vérifier' }
   return (
     <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border ${cfg.bg}`}>
       <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${cfg.dot}`} />

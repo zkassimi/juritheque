@@ -59,12 +59,16 @@ function isSocialBot() {
     return false;
 }
 
-// ── Slug ──────────────────────────────────────────────────────────────────────
+// ── Slug + langue ─────────────────────────────────────────────────────────────
 $requestUri = $_SERVER['REQUEST_URI'] ?? '';
 $slug       = trim($_GET['slug'] ?? '');
+$lang       = in_array($_GET['lang'] ?? '', ['ar', 'fr']) ? $_GET['lang'] : 'fr';
 
 if (empty($slug)) {
-    if (preg_match('#/loi/([^/?#]+)#', $requestUri, $m)) {
+    if (preg_match('#/(fr|ar)/loi/([^/?#]+)#', $requestUri, $m)) {
+        $lang = $m[1];
+        $slug = urldecode($m[2]);
+    } elseif (preg_match('#/loi/([^/?#]+)#', $requestUri, $m)) {
         $slug = urldecode($m[1]);
     }
 }
@@ -164,7 +168,7 @@ if ($law) {
         $ogDesc = 'Texte juridique marocain disponible sur ' . SITE_NAME . '.';
     }
 
-    $ogUrl    = SITE_URL . '/loi/' . rawurlencode($slug);
+    $ogUrl    = SITE_URL . '/' . $lang . '/loi/' . rawurlencode($slug);
     $dateFmt  = $date ? date('d/m/Y', strtotime($date)) : '';
     $dateISO  = $date ?: '';
 
@@ -176,7 +180,7 @@ if ($law) {
 } else {
     $ogTitle    = SITE_NAME . ' | مكتبة القانون';
     $ogDesc     = 'Base de données juridique marocaine bilingue. 7 400+ lois, dahirs, décrets et codes.';
-    $ogUrl      = SITE_URL;
+    $ogUrl      = SITE_URL . '/' . $lang . '/loi/' . rawurlencode($slug ?: '');
     $mainTitle  = $ogTitle;
     $titleFr    = ''; $titleAr = ''; $type = ''; $number = '';
     $date       = ''; $dateFmt = ''; $dateISO = ''; $summary = ''; $summaryAr = '';
@@ -226,7 +230,7 @@ if ($law) {
 header('Content-Type: text/html; charset=UTF-8');
 ?>
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
+<html lang="<?= $lang ?>" dir="<?= $lang === 'ar' ? 'rtl' : 'ltr' ?>">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -244,7 +248,12 @@ header('Content-Type: text/html; charset=UTF-8');
   <meta property="og:image"        content="<?= $esc(OG_IMAGE) ?>">
   <meta property="og:image:width"  content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:locale"       content="fr_MA">
+  <meta property="og:locale"       content="<?= $lang === 'ar' ? 'ar_MA' : 'fr_MA' ?>">
+  <?php if ($slug): ?>
+  <link rel="alternate" hreflang="fr"        href="<?= $esc(SITE_URL . '/fr/loi/' . rawurlencode($slug)) ?>">
+  <link rel="alternate" hreflang="ar"        href="<?= $esc(SITE_URL . '/ar/loi/' . rawurlencode($slug)) ?>">
+  <link rel="alternate" hreflang="x-default" href="<?= $esc(SITE_URL . '/fr/loi/' . rawurlencode($slug)) ?>">
+  <?php endif; ?>
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary_large_image">
@@ -253,7 +262,7 @@ header('Content-Type: text/html; charset=UTF-8');
   <meta name="twitter:image"       content="<?= $esc(OG_IMAGE) ?>">
 
   <!-- Redirect humains vers SPA -->
-  <meta http-equiv="refresh" content="0; url=<?= $esc($ogUrl) ?>">
+  <meta http-equiv="refresh" content="0; url=<?= $esc(SITE_URL . '/' . $lang . '/loi/' . rawurlencode($slug ?: '')) ?>">
 
   <!-- JSON-LD -->
   <?php if ($jsonLd): ?>

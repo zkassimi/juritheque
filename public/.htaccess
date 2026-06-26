@@ -8,6 +8,10 @@ RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit|facebot|WhatsApp|Twitterbot|
 RewriteCond %{REQUEST_URI} ^/loi/(.+)$ [NC]
 RewriteRule ^loi/(.+)$ /seo-preview.php?slug=$1 [L,QSA]
 
+RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit|facebot|WhatsApp|Twitterbot|LinkedInBot|TelegramBot|Slackbot|Discordbot|Googlebot|bingbot|applebot) [NC]
+RewriteCond %{REQUEST_URI} ^/(fr|ar)/loi/(.+)$ [NC]
+RewriteRule ^(fr|ar)/loi/(.+)$ /seo-preview.php?slug=$2&lang=$1 [L,QSA]
+
 # ── 2. React SPA — fallback vers index.html pour toutes les routes ─────────────
 #    (ne pas toucher aux fichiers statiques réels)
 RewriteCond %{REQUEST_FILENAME} !-f

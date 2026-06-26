@@ -8,6 +8,7 @@ import FilterSidebar from '../components/FilterSidebar'
 import { SkeletonGrid } from '../components/ui/SkeletonLoader'
 import { useSEO } from '../hooks/useSEO'
 import JsonLD, { datasetSchema } from '../components/JsonLD'
+import { SEO_INTENT_PAGES } from '../data/seoIntentPages'
 
 const PAGE_SIZE = 9
 
@@ -155,17 +156,17 @@ export default function Database() {
                 <div className="w-14 h-14 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
                   <CheckCircle2 size={28} className="text-emerald-500" />
                 </div>
-                <h3 className="font-playfair font-bold text-navy text-lg mb-2">Abonnement confirmé !</h3>
+                <h3 className="font-playfair font-bold text-navy text-lg mb-2">{t('db.sub_confirmed')}</h3>
                 <p className="text-sm text-navy-600">
                   {subDomain
-                    ? `Vous serez informé des nouveaux textes en ${domains.find(d => d.id === subDomain)?.name_fr || subDomain}.`
-                    : 'Vous recevrez les prochaines mises à jour de JuriThèque.'}
+                    ? t('db.sub_domain_msg').replace('{domain}', domains.find(d => d.id === subDomain)?.[lang === 'ar' ? 'name_ar' : 'name_fr'] || subDomain)
+                    : t('db.sub_general_msg')}
                 </p>
                 <button
                   onClick={() => { setSubPopup(false); setSubStatus('idle'); setSubEmail(''); setSubDomain('') }}
                   className="mt-5 px-5 py-2.5 bg-navy text-white rounded-xl text-sm font-medium hover:bg-gold hover:text-navy transition-colors"
                 >
-                  Fermer
+                  {t('db.close')}
                 </button>
               </div>
             ) : (
@@ -175,23 +176,23 @@ export default function Database() {
                     <Bell size={18} className="text-gold" />
                   </div>
                   <div>
-                    <h3 className="font-playfair font-bold text-navy text-lg">S'abonner aux mises à jour</h3>
-                    <p className="text-xs text-navy-500 mt-0.5">Recevez les nouveaux textes par email</p>
+                    <h3 className="font-playfair font-bold text-navy text-lg">{t('db.subscribe_title')}</h3>
+                    <p className="text-xs text-navy-500 mt-0.5">{t('db.subscribe_sub')}</p>
                   </div>
                 </div>
 
                 <form onSubmit={handleSubscribe} className="space-y-4">
                   <div>
-                    <label className="block text-xs font-medium text-navy-700 mb-1.5">Domaine juridique</label>
+                    <label className="block text-xs font-medium text-navy-700 mb-1.5">{t('db.domain_label')}</label>
                     <div className="relative">
                       <select
                         value={subDomain}
                         onChange={e => setSubDomain(e.target.value)}
                         className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-gold appearance-none bg-white pr-8"
                       >
-                        <option value="">Tous les domaines</option>
+                        <option value="">{t('db.all_domains')}</option>
                         {domains.map(d => (
-                          <option key={d.id} value={d.id}>{d.name_fr}</option>
+                          <option key={d.id} value={d.id}>{lang === 'ar' ? (d.name_ar || d.name_fr) : d.name_fr}</option>
                         ))}
                       </select>
                       <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
@@ -199,7 +200,7 @@ export default function Database() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium text-navy-700 mb-1.5">Adresse email *</label>
+                    <label className="block text-xs font-medium text-navy-700 mb-1.5">{t('db.email_label')}</label>
                     <div className="relative">
                       <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                       <input
@@ -207,7 +208,7 @@ export default function Database() {
                         required
                         value={subEmail}
                         onChange={e => setSubEmail(e.target.value)}
-                        placeholder="votre@email.com"
+                        placeholder={t('db.email_ph')}
                         className="w-full pl-9 pr-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20"
                       />
                     </div>
@@ -215,12 +216,12 @@ export default function Database() {
 
                   {subStatus === 'duplicate' && (
                     <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-                      Vous êtes déjà abonné{subDomain ? ' à ce domaine' : ''} avec cette adresse.
+                      {t('db.already_sub').replace('{ctx}', subDomain ? (lang === 'ar' ? ' في هذا المجال' : ' à ce domaine') : '')}
                     </p>
                   )}
                   {subStatus === 'error' && (
                     <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
-                      Une erreur est survenue. Réessayez ou contactez-nous.
+                      {t('db.sub_error')}
                     </p>
                   )}
 
@@ -235,11 +236,11 @@ export default function Database() {
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                       </svg>
                     ) : <Mail size={15} />}
-                    {subStatus === 'loading' ? 'Inscription...' : 'S\'abonner'}
+                    {subStatus === 'loading' ? t('db.subscribing') : t('db.subscribe')}
                   </button>
 
                   <p className="text-[10px] text-center text-navy-400">
-                    Gratuit · Désabonnement à tout moment · Aucun spam
+                    {t('db.sub_note')}
                   </p>
                 </form>
               </>
@@ -257,18 +258,18 @@ export default function Database() {
           {/* Liens rapides */}
           <div className="flex flex-wrap gap-2">
             {[
-              { to: '/fr/guides',               icon: BookOpen,   label: 'Guides thématiques' },
-              { to: '/fr/veille-juridique',     icon: Bell,       label: 'Veille juridique' },
-              { to: '/fr/bulletins-officiels',  icon: Newspaper,  label: 'Bulletins Officiels' },
-              { to: '/domaines',                icon: Building2,  label: 'Par domaine' },
-              { to: '/assistant',               icon: Bot,        label: 'Poser une question IA' },
-            ].map(({ to, icon: Icon, label }) => (
+              { to: `/${lang}/guides`,              icon: BookOpen,   key: 'db.link_guides' },
+              { to: `/${lang}/veille-juridique`,    icon: Bell,       key: 'db.link_veille' },
+              { to: `/${lang}/bulletins-officiels`, icon: Newspaper,  key: 'db.link_bo' },
+              { to: '/domaines',                    icon: Building2,  key: 'db.link_domaines' },
+              { to: '/assistant',                   icon: Bot,        key: 'db.link_ai' },
+            ].map(({ to, icon: Icon, key }) => (
               <Link
-                key={to}
+                key={key}
                 to={to}
                 className="inline-flex items-center gap-1.5 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-xs text-white/80 hover:bg-gold hover:border-gold hover:text-navy transition-colors font-medium"
               >
-                <Icon size={12} /> {label}
+                <Icon size={12} /> {t(key)}
               </Link>
             ))}
             {/* Bouton abonnement domaine */}
@@ -276,7 +277,7 @@ export default function Database() {
               onClick={() => setSubPopup(true)}
               className="inline-flex items-center gap-1.5 px-3 py-2 bg-gold/20 border border-gold/40 rounded-lg text-xs text-gold font-semibold hover:bg-gold hover:border-gold hover:text-navy transition-colors"
             >
-              <Mail size={12} /> S'abonner aux mises à jour
+              <Mail size={12} /> {t('db.subscribe_btn')}
             </button>
           </div>
         </div>
@@ -461,34 +462,29 @@ export default function Database() {
         </div>
 
         {/* ── Explorer par besoin juridique ──────────────────────────────── */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-4 flex items-center gap-1.5">
-            <BookOpen size={11} /> Explorer par besoin juridique
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {[
-              { to: '/fr/guides/code-du-travail-maroc',    label: 'Code du travail marocain' },
-              { to: '/fr/guides/sarl-maroc',               label: 'SARL au Maroc' },
-              { to: '/fr/guides/divorce-maroc',            label: 'Divorce au Maroc' },
-              { to: '/fr/guides/bail-commercial-maroc',    label: 'Bail commercial marocain' },
-              { to: '/fr/guides/licenciement-maroc',       label: 'Licenciement au Maroc' },
-              { to: '/fr/guides/recouvrement-maroc',       label: 'Recouvrement de créances' },
-              { to: '/fr/guides/cheque-sans-provision-maroc', label: 'Chèque sans provision' },
-              { to: '/fr/guides/code-de-la-famille-maroc', label: 'Code de la famille (Moudawwana)' },
-              { to: '/fr/guides/creation-societe-maroc',   label: 'Création de société' },
-              { to: '/fr/guides/procedure-civile-maroc',   label: 'Procédure civile marocaine' },
-            ].map(({ to, label }) => (
-              <Link
-                key={to}
-                to={to}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-gray-200 rounded-xl text-xs text-navy-700 hover:border-gold hover:text-gold transition-colors"
-              >
-                <BookOpen size={11} className="text-gold flex-shrink-0" />
-                {label}
-              </Link>
-            ))}
-          </div>
-        </div>
+        {(() => {
+          const FEATURED = ['code-du-travail-maroc','sarl-maroc','divorce-maroc','bail-commercial-maroc','licenciement-maroc','recouvrement-maroc','cheque-sans-provision-maroc','code-de-la-famille-maroc','creation-societe-maroc','procedure-civile-maroc']
+          const featured = SEO_INTENT_PAGES.filter(g => FEATURED.includes(g.slug))
+          return (
+            <div className="mt-12 pt-8 border-t border-gray-200">
+              <p className="text-xs font-semibold uppercase tracking-widest text-gold mb-4 flex items-center gap-1.5">
+                <BookOpen size={11} /> {t('db.explore_title')}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {featured.map(guide => (
+                  <Link
+                    key={guide.slug}
+                    to={`/${lang}/guides/${guide.slug}`}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-gray-200 rounded-xl text-xs text-navy-700 hover:border-gold hover:text-gold transition-colors"
+                  >
+                    <BookOpen size={11} className="text-gold flex-shrink-0" />
+                    {lang === 'ar' && guide.h1_ar ? guide.h1_ar : guide.h1}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )
+        })()}
       </div>
     </div>
   )

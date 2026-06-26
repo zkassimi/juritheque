@@ -58,6 +58,7 @@ export default function App() {
             <Route path="/"                              element={<Home />} />
             <Route path="/base"                          element={<Database />} />
             <Route path="/loi/:slug"                     element={<LawDetail />} />
+            <Route path="/fr/loi/:slug"                  element={<LawDetail />} />
             <Route path="/ar/loi/:slug"                  element={<LawDetail />} />
             <Route path="/domaines"                      element={<Domains />} />
             <Route path="/domaine/:slug"                 element={<DomainView />} />

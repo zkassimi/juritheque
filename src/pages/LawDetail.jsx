@@ -6,6 +6,7 @@ import {
   Award, Sparkles, Hash, Bell, Flag, ArrowRight, RotateCcw
 } from 'lucide-react'
 import ReportModal from '../components/ReportModal'
+import { LAW_TYPES } from '../data/mockData'
 import { useLang } from '../contexts/LangContext'
 import { useAuth } from '../contexts/AuthContext'
 import { fetchLawBySlug, fetchRelatedLaws, fetchDomainById, fetchLawRelations } from '../lib/api'
@@ -261,7 +262,9 @@ export default function LawDetail() {
   // Utilise { question, answer } pour compatibilité avec faqSchema() de JsonLD.jsx
   // Ne contient que des réponses factuelles tirées de la base — aucune invention
   const domainNameLoc = lang === 'ar' ? (domain?.name_ar || domain?.name_fr) : domain?.name_fr
-  const lawTypeLoc    = lang === 'ar' ? (law.type_ar || law.type || 'نص قانوني') : (law.type || 'texte juridique')
+  const lawTypeLoc    = lang === 'ar'
+    ? (LAW_TYPES[law.type]?.label_ar || law.type || 'نص قانوني')
+    : (law.type || 'texte juridique')
   const statusInVigueur = law.status === 'En vigueur' || law.status === 'ساري المفعول'
 
   const faqItems = [
@@ -934,10 +937,10 @@ export default function LawDetail() {
                     {guides.map(guide => (
                       <Link
                         key={guide.slug}
-                        to={`/fr/guides/${guide.slug}`}
+                        to={`/${lang}/guides/${guide.slug}`}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-xs text-navy-700 hover:border-gold hover:text-gold transition-colors"
                       >
-                        {guide.h1}
+                        {(lang === 'ar' && guide.h1_ar) ? guide.h1_ar : guide.h1}
                         <ChevronRight size={10} className="text-gray-400" />
                       </Link>
                     ))}

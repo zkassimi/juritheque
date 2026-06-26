@@ -91,7 +91,9 @@ export default function LawCard({ law, view = 'grid' }) {
           <div className="flex flex-wrap items-center gap-2 mb-1.5">
             <TypeBadge type={law.type} />
             <StatusBadge status={law.status} />
-            <span className="text-xs text-navy-500">{law.number}</span>
+            {law.number && !law.number.startsWith('adala-') && (
+              <span className="text-xs text-navy-500">{law.number}</span>
+            )}
           </div>
           <h3 className={`font-semibold text-navy text-sm leading-snug group-hover:text-gold transition-colors line-clamp-1 ${lang === 'ar' ? 'font-arabic' : 'font-playfair'}`}>
             {title}
@@ -131,7 +133,9 @@ export default function LawCard({ law, view = 'grid' }) {
       </div>
 
       {/* Number */}
-      <p className="text-xs text-navy-500 mb-1.5 truncate">{law.number}</p>
+      {law.number && !law.number.startsWith('adala-') && (
+        <p className="text-xs text-navy-500 mb-1.5 truncate">{law.number}</p>
+      )}
 
       {/* Title */}
       <h3 className={`font-semibold text-navy text-sm leading-snug group-hover:text-gold transition-colors mb-2 line-clamp-2 break-words ${lang === 'ar' ? 'font-arabic text-base' : 'font-playfair'}`}>

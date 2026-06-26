@@ -223,13 +223,9 @@ export default function LawDetail() {
   const docUrl = law.pdf_url || law.source_url || null
 
   const PROXY_BASE = '/api/pdf-proxy'
-  const isSupabase   = docUrl && docUrl.includes('supabase')
-  const isExternal   = docUrl && !isSupabase
-  const viewerUrl = isSupabase
-    ? `${docUrl}#toolbar=1&navpanes=0`
-    : isExternal
-      ? `${PROXY_BASE}?url=${encodeURIComponent(docUrl)}`
-      : null
+  const isExternal   = docUrl && !docUrl.includes('supabase')
+  // Tous les PDFs passent par le proxy : Supabase → servi inline, externes → fallback Google Docs
+  const viewerUrl = docUrl ? `${PROXY_BASE}?url=${encodeURIComponent(docUrl)}` : null
 
   const toc = parseTOC(lang === 'ar' && law.table_of_contents_ar
     ? law.table_of_contents_ar

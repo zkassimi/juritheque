@@ -4,6 +4,7 @@
 // bypassing X-Frame-Options restrictions so the iframe works within the site.
 
 const ALLOWED_ORIGINS = [
+  'supabase.co',
   'adala.justice.gov.ma',
   'sgg.gov.ma',
   'bkam.ma',
@@ -59,14 +60,19 @@ export default async function handler(req, res) {
         'Referer':         'https://juritheque.com/',
       },
       redirect: 'follow',
+      signal: AbortSignal.timeout(10000),
     })
   } catch (e) {
-    res.status(502).send('Impossible de contacter la source: ' + e.message)
+    // Serveur inaccessible depuis Vercel → fallback Google Docs Viewer
+    const gdocs = `https://docs.google.com/viewer?url=${encodeURIComponent(rawUrl)}&embedded=true`
+    res.redirect(302, gdocs)
     return
   }
 
   if (!response.ok) {
-    res.status(502).send(`HTTP ${response.status} depuis la source.`)
+    // Erreur HTTP → fallback Google Docs Viewer
+    const gdocs = `https://docs.google.com/viewer?url=${encodeURIComponent(rawUrl)}&embedded=true`
+    res.redirect(302, gdocs)
     return
   }
 

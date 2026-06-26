@@ -222,14 +222,16 @@ export default function LawDetail() {
   // URL du document : notre Supabase Storage en priorité, sinon source_url (Adala / R2)
   const docUrl = law.pdf_url || law.source_url || null
 
-  // Pour les PDFs externes (non hébergés chez nous), on utilise Google Docs Viewer
-  // pour contourner les restrictions X-Frame-Options des sites gouvernementaux
-  const isExternalPdf = docUrl && !docUrl.includes('supabase')
-  const viewerUrl = isExternalPdf
-    ? `https://docs.google.com/viewer?url=${encodeURIComponent(docUrl)}&embedded=true`
-    : docUrl
-      ? `${docUrl}#toolbar=1&navpanes=0`
-      : null
+  // Adala héberge des pages HTML (pas des PDFs directs) — l'iframe ne fonctionne pas
+  const isAdalaSource = docUrl && docUrl.includes('adala.justice.gov.ma')
+  const isExternalPdf = docUrl && !docUrl.includes('supabase') && !isAdalaSource
+  const viewerUrl = isAdalaSource
+    ? null
+    : isExternalPdf
+      ? `https://docs.google.com/viewer?url=${encodeURIComponent(docUrl)}&embedded=true`
+      : docUrl
+        ? `${docUrl}#toolbar=1&navpanes=0`
+        : null
 
   const toc = parseTOC(lang === 'ar' && law.table_of_contents_ar
     ? law.table_of_contents_ar
@@ -516,6 +518,34 @@ export default function LawDetail() {
                   <span className="hidden sm:inline">{t('law.report')}</span>
                 </button>
               </div>
+
+              {/* Source Adala — iframe impossible, afficher un bouton direct */}
+              {showPdf && isAdalaSource && (
+                <div className="mt-5 rounded-xl border border-blue-100 bg-blue-50 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl">⚖️</span>
+                    <div>
+                      <p className="text-sm font-semibold text-navy-700">
+                        {lang === 'ar' ? 'الوثيقة متاحة على بوابة عدالة' : 'Document disponible sur le portail Adala'}
+                      </p>
+                      <p className="text-xs text-navy-400 mt-0.5">
+                        {lang === 'ar'
+                          ? 'تستضيف وزارة العدل هذا النص على بوابة عدالة — انقر للاطلاع عليه'
+                          : 'Ce texte est hébergé par le Ministère de la Justice sur le portail Adala — cliquez pour le consulter'}
+                      </p>
+                    </div>
+                  </div>
+                  <a
+                    href={docUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0 inline-flex items-center gap-2 px-4 py-2.5 bg-navy-700 text-white rounded-xl text-sm font-semibold hover:bg-navy-800 transition-colors"
+                  >
+                    <ExternalLink size={14} />
+                    {lang === 'ar' ? 'فتح على بوابة عدالة' : 'Consulter sur Adala'}
+                  </a>
+                </div>
+              )}
 
               {/* Inline document viewer */}
               {showPdf && viewerUrl && !viewerError && (

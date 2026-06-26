@@ -523,7 +523,7 @@ export default function LawDetail() {
                   <div className="bg-gray-50 px-4 py-2 flex items-center justify-between border-b border-gray-200">
                     <span className="text-xs font-medium text-navy-600 flex items-center gap-2">
                       📄 {lang === 'ar' ? (law.title_ar || law.title_fr) : (law.title_fr || law.title_ar)}
-                      {isExternalPdf && (
+                      {isExternal && (
                         <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-orange-200">
                           <ExternalLink size={8} /> {t('law.official_src')}
                         </span>
@@ -542,7 +542,7 @@ export default function LawDetail() {
                   />
                   {/* Fallback toujours visible pour les PDFs externes — Google Docs Viewer
                       peut afficher "No preview available" sans déclencher onError */}
-                  {isExternalPdf && (
+                  {isExternal && (
                     <div className="bg-gray-50 border-t border-gray-200 px-4 py-3 flex items-center justify-between gap-3">
                       <p className="text-xs text-navy-400">
                         Si la prévisualisation ne s'affiche pas, ouvrez le document directement depuis la source officielle.

@@ -172,8 +172,9 @@ def main():
     updated = 0
     skipped = 0
     total_slugs_added = 0
+    total = len(laws)
 
-    for law in laws:
+    for i, law in enumerate(laws, 1):
         law_id    = law["id"]
         existing  = set(law.get("slug_history") or [])
         new_olds  = old_slugs_for(law)
@@ -181,6 +182,8 @@ def main():
 
         if not to_add:
             skipped += 1
+            if i % 500 == 0:
+                log(f"[dim]  {i}/{total} ({i*100//total}%) — {updated} mis à jour, {skipped} ignorés[/]")
             continue
 
         merged = sorted(existing | set(to_add))
@@ -194,6 +197,9 @@ def main():
                 total_slugs_added += len(to_add)
             else:
                 log(f"  [red]✗ PATCH échoué pour id={law_id}[/]")
+
+        if i % 500 == 0:
+            log(f"[dim]  {i}/{total} ({i*100//total}%) — {updated} mis à jour[/]")
 
     if DRY_RUN:
         log(f"\n[yellow]⚠  DRY-RUN — aucune modification appliquée[/]")

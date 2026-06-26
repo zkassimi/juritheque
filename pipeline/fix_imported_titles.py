@@ -493,6 +493,49 @@ def ai_lookup_by_number(law_type: str, number: str, date: str = "") -> tuple[str
     return None, None
 
 
+def validate_ai_title_against_ar(title_fr: str, title_ar: str) -> tuple[bool, str]:
+    """
+    Valide qu'un titre FR généré par IA correspond au titre AR existant.
+    Vérifie la cohérence des dates (année/mois). Prévient les hallucinations sur numéros adjacents.
+    Retourne (ok, raison).
+    """
+    if not title_fr or not title_ar:
+        return True, "pas de comparaison possible"
+
+    AR_MONTHS = {
+        "يناير": 1, "فبراير": 2, "مارس": 3, "أبريل": 4, "ماي": 5, "يونيو": 6,
+        "يوليو": 7, "يوليوز": 7, "غشت": 8, "أغسطس": 8, "شتنبر": 9, "سبتمبر": 9,
+        "أكتوبر": 10, "نونبر": 11, "نوفمبر": 11, "دجنبر": 12, "ديسمبر": 12,
+    }
+    FR_MONTHS = {
+        "janvier": 1, "février": 2, "fevrier": 2, "mars": 3, "avril": 4,
+        "mai": 5, "juin": 6, "juillet": 7, "août": 8, "aout": 8,
+        "septembre": 9, "octobre": 10, "novembre": 11, "décembre": 12, "decembre": 12,
+    }
+
+    def extract_ym(text, months):
+        text = text.lower()
+        years = re.findall(r'\b(1[89]\d\d|20\d\d)\b', text)
+        year = int(years[0]) if years else None
+        month = None
+        for m_name, m_num in months.items():
+            if m_name in text:
+                month = m_num
+                break
+        return year, month
+
+    yr_fr, mo_fr = extract_ym(title_fr, FR_MONTHS)
+    yr_ar, mo_ar = extract_ym(title_ar, AR_MONTHS)
+
+    if yr_fr and yr_ar:
+        if abs(yr_fr - yr_ar) > 1:
+            return False, f"années incompatibles FR={yr_fr} AR={yr_ar}"
+        if mo_fr and mo_ar and yr_fr == yr_ar and mo_fr != mo_ar:
+            return False, f"mois incompatibles FR={mo_fr} AR={mo_ar} (même année {yr_fr})"
+
+    return True, "ok"
+
+
 from slug_utils import make_slug_from_law  # noqa
 from title_lookup import (  # noqa — réexportés pour rétrocompat
     ai_lookup_by_number,
@@ -712,6 +755,12 @@ def main():
                         # Priorité 1 : chercher par numéro via LLM (Gemini Pro)
                     if clean_num and re.match(r'^\d+-\d+-\d+$', clean_num):
                         new_title, ai_type = ai_lookup_by_number(law_type, clean_num, date)
+                        # ── Validation anti-hallucination : rejeter si dates incompatibles avec title_ar
+                        if new_title and title_ar:
+                            ok, reason = validate_ai_title_against_ar(new_title, title_ar)
+                            if not ok:
+                                print(f"  ⚠ AI title rejeté ({reason}) → fallback traduction title_ar", flush=True)
+                                new_title = None
                         if ai_type and (not law_type or law_type.lower() in ('texte juridique','texte réglementaire','')):
                             law_type = ai_type
                             patch_data["type"] = law_type

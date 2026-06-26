@@ -222,7 +222,7 @@ export default function LawDetail() {
   // URL du document : notre Supabase Storage en priorité, sinon source_url (Adala / R2)
   const docUrl = law.pdf_url || law.source_url || null
 
-  const PROXY_BASE = 'https://juritheque.com/pdf-proxy.php'
+  const PROXY_BASE = '/api/pdf-proxy'
   const isSupabase   = docUrl && docUrl.includes('supabase')
   const isExternal   = docUrl && !isSupabase
   const viewerUrl = isSupabase

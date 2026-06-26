@@ -20,7 +20,8 @@ export const LAW_TYPES = {
   Traité:           { color: '#0369a1', bg: '#e0f2fe',  label_ar: 'معاهدة' },
   // Autres
   Jurisprudence:    { color: '#d97706', bg: '#fffbeb',  label_ar: 'اجتهاد قضائي' },
-  'Texte réglementaire': { color: '#64748b', bg: '#f8fafc', label_ar: 'نص تنظيمي' },
+  'Texte réglementaire':  { color: '#64748b', bg: '#f8fafc', label_ar: 'نص تنظيمي' },
+  'Bulletin officiel':    { color: '#0f172a', bg: '#f1f5f9', label_ar: 'الجريدة الرسمية' },
 }
 
 export const DOMAINS = [

@@ -6,10 +6,12 @@ import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { MessageSquarePlus } from 'lucide-react'
 import ReportModal from './ReportModal'
+import { useLang } from '../contexts/LangContext'
 
 export default function FeedbackButton() {
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
+  const { t } = useLang()
 
   // Masquer sur /admin et /connexion
   if (pathname.startsWith('/admin') || pathname.startsWith('/connexion')) return null
@@ -43,7 +45,7 @@ export default function FeedbackButton() {
 
           <MessageSquarePlus size={15} className="flex-shrink-0" />
           <span className="text-xs font-semibold hidden sm:inline whitespace-nowrap">
-            Suggestion
+            {t('feedback.label')}
           </span>
         </button>
       </div>

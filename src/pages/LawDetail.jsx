@@ -260,25 +260,31 @@ export default function LawDetail() {
   // FAQ générée depuis les données disponibles (FAQPage JSON-LD + affichage visible)
   // Utilise { question, answer } pour compatibilité avec faqSchema() de JsonLD.jsx
   // Ne contient que des réponses factuelles tirées de la base — aucune invention
+  const domainNameLoc = lang === 'ar' ? (domain?.name_ar || domain?.name_fr) : domain?.name_fr
+  const lawTypeLoc    = lang === 'ar' ? (law.type_ar || law.type || 'نص قانوني') : (law.type || 'texte juridique')
+  const statusInVigueur = law.status === 'En vigueur' || law.status === 'ساري المفعول'
+
   const faqItems = [
     {
-      question: `Quel est l'objet de ce ${law.type || 'texte juridique'}${displayNumber ? ` n°${displayNumber}` : ''} ?`,
-      answer: realSummaryFr
-        || `Ce texte est un ${law.type || 'texte juridique'} publié le ${law.date || 'date non précisée'}${domain?.name_fr ? ` relevant du ${domain.name_fr}` : ''} au Maroc. Consultez la source officielle pour le détail complet.`,
+      question: `${t('law.faq_q1_prefix')} ${lawTypeLoc}${displayNumber ? ` n°${displayNumber}` : ''} ?`,
+      answer: (lang === 'ar' ? realSummaryAr : realSummaryFr)
+        || (lang === 'ar'
+          ? `هذا ${lawTypeLoc}${law.date ? ` صادر بتاريخ ${law.date}` : ''}${domainNameLoc ? ` يندرج ضمن ${domainNameLoc}` : ''} بالمغرب. راجع المصدر الرسمي للاطلاع على التفاصيل الكاملة.`
+          : `Ce texte est un ${lawTypeLoc} publié le ${law.date || 'date non précisée'}${domainNameLoc ? ` relevant du ${domainNameLoc}` : ''} au Maroc. Consultez la source officielle pour le détail complet.`),
     },
-    ...(domain?.name_fr ? [{
-      question: 'Quel est le domaine juridique concerné ?',
-      answer: `Ce texte relève du ${domain.name_fr}.`,
+    ...(domainNameLoc ? [{
+      question: t('law.faq_q2'),
+      answer: `${t('law.faq_a2_prefix')} ${domainNameLoc}.`,
     }] : []),
     {
-      question: 'Ce texte est-il en vigueur ?',
-      answer: law.status === 'En vigueur'
-        ? 'Oui, ce texte est actuellement en vigueur.'
-        : `Statut : ${law.status || 'non précisé'}.`,
+      question: t('law.faq_q3'),
+      answer: statusInVigueur
+        ? t('law.faq_a3_yes')
+        : `${t('law.faq_a3_status')} ${law.status || (lang === 'ar' ? 'غير محدد' : 'non précisé')}.`,
     },
     {
-      question: 'Où consulter la source officielle ?',
-      answer: `Ce texte est disponible via ${getSourceLabel(law) || 'le portail officiel marocain'}.`,
+      question: t('law.faq_q4'),
+      answer: `${t('law.faq_a4_prefix')} ${getSourceLabel(law) || t('law.faq_a4_default')}.`,
     },
   ]
 
@@ -632,7 +638,10 @@ export default function LawDetail() {
 
             {/* ── Introduction SEO — phrase contextuelle visible (aide Google + utilisateur) */}
             <p className="text-xs text-navy-400 mb-3 px-1 leading-relaxed">
-              {`Cette page présente ${law.type || 'le texte'}${displayNumber ? ` n°${displayNumber}` : ''}${domain?.name_fr ? ` relevant du ${domain.name_fr}` : ' marocain'}${law.date ? `, daté du ${law.date}` : ''}. Source officielle et informations juridiques disponibles sur JuriThèque.`}
+              {lang === 'ar'
+                ? `${t('law.seo_intro_prefix')} ${lawTypeLoc}${displayNumber ? ` رقم ${displayNumber}` : ''}${domainNameLoc ? ` ${t('law.seo_intro_rel')} ${domainNameLoc}` : ` ${t('law.seo_intro_moroccan')}`}${law.date ? `، بتاريخ ${law.date}` : ''}. ${t('law.seo_intro_suffix')}`
+                : `${t('law.seo_intro_prefix')} ${law.type || 'le texte'}${displayNumber ? ` n°${displayNumber}` : ''}${domain?.name_fr ? ` ${t('law.seo_intro_rel')} ${domain.name_fr}` : ` ${t('law.seo_intro_moroccan')}`}${law.date ? `, daté du ${law.date}` : ''}. ${t('law.seo_intro_suffix')}`
+              }
             </p>
 
             {/* ── Warning banner — uniquement pour contenu très dégradé ────── */}
@@ -692,7 +701,7 @@ export default function LawDetail() {
             <div className="bg-white rounded-2xl border border-gray-100 mb-4 shadow-sm overflow-hidden">
               <div className="flex items-center gap-2 px-6 py-4 border-b border-gray-50 bg-gradient-to-r from-navy/5 to-transparent">
                 <Bot size={15} className="text-gold flex-shrink-0" />
-                <h2 className="font-semibold text-navy text-sm">Questions fréquentes</h2>
+                <h2 className="font-semibold text-navy text-sm">{t('law.faq')}</h2>
               </div>
               <div className="divide-y divide-gray-50">
                 {faqItems.map((item, i) => (

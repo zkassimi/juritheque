@@ -128,7 +128,36 @@ export default async function handler(req, res) {
       try { pdfParsed = new URL(pdfUrl) } catch { pdfParsed = null }
 
       if (pdfParsed && isAllowed(pdfParsed.hostname)) {
-        // Rediriger vers Google Docs Viewer avec le vrai PDF
+        // Essayer de récupérer le PDF directement et le servir inline
+        try {
+          const pdfResp = await fetch(pdfUrl, {
+            headers: {
+              'User-Agent':      'Mozilla/5.0 (compatible; JuriTheque-Proxy/1.0)',
+              'Accept':          'application/pdf,*/*',
+              'Accept-Language': 'fr-FR,fr;q=0.9,ar;q=0.8',
+              'Referer':         'https://juritheque.com/',
+            },
+            redirect: 'follow',
+            signal: AbortSignal.timeout(12000),
+          })
+          if (pdfResp.ok) {
+            const pdfBuf = await pdfResp.arrayBuffer()
+            const pdfBytes = new Uint8Array(pdfBuf)
+            const isPdfFile = pdfBytes[0] === 0x25 && pdfBytes[1] === 0x50 &&
+                              pdfBytes[2] === 0x44 && pdfBytes[3] === 0x46
+            if (isPdfFile) {
+              res.setHeader('Content-Type', 'application/pdf')
+              res.setHeader('Content-Disposition', 'inline; filename="document.pdf"')
+              res.setHeader('X-Frame-Options', 'SAMEORIGIN')
+              res.setHeader('Cache-Control', 'public, max-age=3600')
+              res.status(200).send(Buffer.from(pdfBuf))
+              return
+            }
+          }
+        } catch {
+          // fetch du PDF échoue → fallback Google Docs
+        }
+        // Fallback Google Docs avec l'URL du vrai PDF (meilleure chance que l'URL HTML)
         const gdocs = `https://docs.google.com/viewer?url=${encodeURIComponent(pdfUrl)}&embedded=true`
         res.redirect(302, gdocs)
         return

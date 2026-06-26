@@ -93,7 +93,7 @@ export default function LawCard({ law, view = 'grid' }) {
   if (view === 'list') {
     return (
       <Link
-        to={lawPath(law)}
+        to={lawPath(law, lang)}
         className="group flex items-start gap-4 bg-white rounded-xl border border-gray-100 px-5 py-4 hover:shadow-md hover:border-gold/30 transition-all duration-200"
         style={{ borderLeft: `4px solid ${borderColor}` }}
       >
@@ -125,7 +125,7 @@ export default function LawCard({ law, view = 'grid' }) {
 
   return (
     <Link
-      to={lawPath(law)}
+      to={lawPath(law, lang)}
       className="group bg-white rounded-xl border border-gray-100 p-5 hover:shadow-lg hover:border-gold/30 transition-all duration-200 flex flex-col overflow-hidden"
       style={{ borderLeft: `4px solid ${borderColor}` }}
     >

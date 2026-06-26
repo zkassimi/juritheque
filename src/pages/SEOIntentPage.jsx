@@ -44,9 +44,10 @@ function FAQItem({ question, answer }) {
 
 // ── Carte loi pour les guides ─────────────────────────────────────────────────
 function IntentLawCard({ law }) {
+  const { lang } = useLang()
   return (
     <Link
-      to={lawPath(law)}
+      to={lawPath(law, lang)}
       className="group flex items-start gap-3 bg-white rounded-xl border border-gray-100 p-3 hover:border-gold hover:shadow-sm transition-all"
     >
       <div className="flex-1 min-w-0">

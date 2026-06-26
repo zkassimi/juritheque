@@ -529,31 +529,43 @@ export default function LawDetail() {
                       <ExternalLink size={11} /> {t('law.fullscreen')}
                     </a>
                   </div>
-                  <iframe
-                    src={viewerUrl}
-                    className="w-full"
-                    style={{ height: '700px' }}
-                    title={law.title_fr || law.title_ar}
-                    onError={() => setViewerError(true)}
-                  />
-                  {/* Fallback toujours visible pour les PDFs externes — Google Docs Viewer
-                      peut afficher "No preview available" sans déclencher onError */}
-                  {isExternal && (
-                    <div className="bg-gray-50 border-t border-gray-200 px-4 py-3 flex items-center justify-between gap-3">
-                      <p className="text-xs text-navy-400">
-                        Si la prévisualisation ne s'affiche pas, ouvrez le document directement depuis la source officielle.
-                      </p>
-                      <a
-                        href={docUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-gold text-navy rounded-lg text-xs font-semibold hover:bg-amber-400 transition-colors"
-                      >
-                        <ExternalLink size={12} />
-                        Ouvrir le PDF
-                      </a>
+                  <div className="relative">
+                    {/* Spinner visible pendant le chargement */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-50 pointer-events-none z-10"
+                         id="viewer-loading-overlay"
+                         style={{ transition: 'opacity 0.3s' }}>
+                      <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin mb-3" />
+                      <p className="text-xs text-navy-400">{lang === 'ar' ? 'جارٍ تحميل الوثيقة...' : 'Chargement du document...'}</p>
                     </div>
-                  )}
+                    <iframe
+                      src={viewerUrl}
+                      className="w-full"
+                      style={{ height: '700px' }}
+                      title={law.title_fr || law.title_ar}
+                      onLoad={(e) => {
+                        const overlay = e.target.parentElement?.querySelector('#viewer-loading-overlay')
+                        if (overlay) overlay.style.opacity = '0'
+                      }}
+                      onError={() => setViewerError(true)}
+                    />
+                  </div>
+                  {/* Bouton toujours visible — Google Docs peut afficher "No preview available" sans déclencher onError */}
+                  <div className="bg-gray-50 border-t border-gray-200 px-4 py-3 flex items-center justify-between gap-3">
+                    <p className="text-xs text-navy-400">
+                      {lang === 'ar'
+                        ? 'إذا لم تظهر المعاينة، افتح الوثيقة مباشرة'
+                        : 'Si la prévisualisation ne s\'affiche pas, ouvrez le document directement.'}
+                    </p>
+                    <a
+                      href={docUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-gold text-navy rounded-lg text-xs font-semibold hover:bg-amber-400 transition-colors"
+                    >
+                      <ExternalLink size={12} />
+                      {lang === 'ar' ? 'فتح الوثيقة' : 'Ouvrir le document'}
+                    </a>
+                  </div>
                 </div>
               )}
 

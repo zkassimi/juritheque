@@ -7,6 +7,16 @@ import StatusBadge from './ui/StatusBadge'
 import TypeBadge from './ui/TypeBadge'
 import { lawPath } from '../lib/lawUtils'
 
+// Filtre les numéros de loi propres — rejette les slugs/filenames
+const isCleanNumber = (n) => {
+  if (!n || typeof n !== 'string') return false
+  if (n.startsWith('adala-')) return false
+  if (n.includes('_') || n.includes('.consolide') || n.includes('.pdf')) return false
+  if (n.length > 20) return false
+  if (/^[a-z]{3,}(-[a-z]{2,}){2,}/.test(n)) return false // slug style
+  return true
+}
+
 // Domain accent colors — matches DomainCard palette
 const DOMAIN_COLORS = {
   civil:            '#3b82f6',
@@ -91,7 +101,7 @@ export default function LawCard({ law, view = 'grid' }) {
           <div className="flex flex-wrap items-center gap-2 mb-1.5">
             <TypeBadge type={law.type} />
             <StatusBadge status={law.status} />
-            {law.number && !law.number.startsWith('adala-') && (
+            {isCleanNumber(law.number) && (
               <span className="text-xs text-navy-500">{law.number}</span>
             )}
           </div>
@@ -133,7 +143,7 @@ export default function LawCard({ law, view = 'grid' }) {
       </div>
 
       {/* Number */}
-      {law.number && !law.number.startsWith('adala-') && (
+      {isCleanNumber(law.number) && (
         <p className="text-xs text-navy-500 mb-1.5 truncate">{law.number}</p>
       )}
 

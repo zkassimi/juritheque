@@ -1,14 +1,26 @@
 export const LAW_TYPES = {
-  Loi:           { color: '#2563eb', bg: '#eff6ff',  label_ar: 'قانون' },
-  Dahir:         { color: '#7c3aed', bg: '#f5f3ff',  label_ar: 'ظهير' },
-  Décret:        { color: '#0f766e', bg: '#f0fdfa',  label_ar: 'مرسوم' },
-  Arrêté:        { color: '#b45309', bg: '#fffbeb',  label_ar: 'قرار' },
-  Circulaire:    { color: '#64748b', bg: '#f8fafc',  label_ar: 'منشور' },
-  Code:          { color: '#dc2626', bg: '#fef2f2',  label_ar: 'مدونة' },
-  Jurisprudence: { color: '#d97706', bg: '#fffbeb',  label_ar: 'اجتهاد قضائي' },
-  Convention:    { color: '#0891b2', bg: '#f0f9ff',  label_ar: 'اتفاقية' },
-  Règlement:     { color: '#4f46e5', bg: '#eef2ff',  label_ar: 'نظام' },
-  Ordonnance:    { color: '#be185d', bg: '#fdf2f8',  label_ar: 'أمر' },
+  // Textes législatifs
+  Loi:              { color: '#2563eb', bg: '#eff6ff',  label_ar: 'قانون' },
+  'Loi organique':  { color: '#1d4ed8', bg: '#dbeafe',  label_ar: 'قانون تنظيمي' },
+  Code:             { color: '#dc2626', bg: '#fef2f2',  label_ar: 'مدونة' },
+  // Textes royaux
+  Dahir:            { color: '#7c3aed', bg: '#f5f3ff',  label_ar: 'ظهير' },
+  'Décret royal':   { color: '#6d28d9', bg: '#ede9fe',  label_ar: 'مرسوم ملكي' },
+  'Lettre Royale':  { color: '#5b21b6', bg: '#f5f3ff',  label_ar: 'رسالة ملكية' },
+  'Discours Royal': { color: '#4c1d95', bg: '#f5f3ff',  label_ar: 'خطاب ملكي' },
+  // Textes réglementaires
+  Décret:           { color: '#0f766e', bg: '#f0fdfa',  label_ar: 'مرسوم' },
+  Arrêté:           { color: '#b45309', bg: '#fffbeb',  label_ar: 'قرار' },
+  'Arrêté conjoint':{ color: '#92400e', bg: '#fef3c7',  label_ar: 'قرار مشترك' },
+  Circulaire:       { color: '#64748b', bg: '#f8fafc',  label_ar: 'منشور' },
+  Ordonnance:       { color: '#be185d', bg: '#fdf2f8',  label_ar: 'أمر' },
+  Règlement:        { color: '#4f46e5', bg: '#eef2ff',  label_ar: 'نظام' },
+  // Droit international
+  Convention:       { color: '#0891b2', bg: '#f0f9ff',  label_ar: 'اتفاقية' },
+  Traité:           { color: '#0369a1', bg: '#e0f2fe',  label_ar: 'معاهدة' },
+  // Autres
+  Jurisprudence:    { color: '#d97706', bg: '#fffbeb',  label_ar: 'اجتهاد قضائي' },
+  'Texte réglementaire': { color: '#64748b', bg: '#f8fafc', label_ar: 'نص تنظيمي' },
 }
 
 export const DOMAINS = [

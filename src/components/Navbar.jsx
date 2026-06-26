@@ -184,7 +184,7 @@ export default function Navbar() {
                   </Link>
                   {isEditor && (
                     <Link to="/admin" onClick={() => setDropOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-navy-700 hover:bg-gray-50 hover:text-navy">
-                      <Settings size={14} /> {isAdmin ? t('nav.admin') : 'Espace éditeur'}
+                      <Settings size={14} /> {isAdmin ? t('nav.admin') : t('nav.editor')}
                     </Link>
                   )}
                   <hr className="my-1 border-gray-100" />

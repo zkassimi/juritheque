@@ -19,6 +19,7 @@ export const translations = {
     'nav.logout': 'Déconnexion',
     'nav.profile': 'Mon profil',
     'nav.admin': 'Administration',
+    'nav.editor': 'Espace éditeur',
     // Hero
     'hero.eyebrow': 'Droit marocain · مرجع قانوني',
     'hero.title': 'La référence juridique marocaine',
@@ -367,6 +368,7 @@ export const translations = {
     'nav.logout': 'تسجيل الخروج',
     'nav.profile': 'ملفي الشخصي',
     'nav.admin': 'الإدارة',
+    'nav.editor': 'فضاء المحرر',
     // Hero
     'hero.eyebrow': 'القانون المغربي · Droit marocain',
     'hero.title': 'المرجع القانوني المغربي',

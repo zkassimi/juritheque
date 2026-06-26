@@ -225,8 +225,12 @@ export default function LawDetail() {
 
   const PROXY_BASE = '/api/pdf-proxy'
   const isExternal   = docUrl && !docUrl.includes('supabase')
-  // Tous les PDFs passent par le proxy : Supabase → servi inline, externes → fallback Google Docs
-  const viewerUrl = docUrl ? `${PROXY_BASE}?url=${encodeURIComponent(docUrl)}` : null
+  // Adala direct PDF URLs: Access-Control-Allow-Origin:* + no X-Frame-Options → browser can embed directly
+  // No need to route through Vercel proxy (AWS IPs can be blocked by Adala)
+  const isDirectPdf  = docUrl && /\.pdf(\?|$)/i.test(docUrl)
+  const viewerUrl = docUrl
+    ? (isDirectPdf && isExternal ? docUrl : `${PROXY_BASE}?url=${encodeURIComponent(docUrl)}`)
+    : null
 
   const toc = parseTOC(lang === 'ar' && law.table_of_contents_ar
     ? law.table_of_contents_ar

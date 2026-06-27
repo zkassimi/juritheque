@@ -10,7 +10,23 @@ import './index.css'
 // ── Error Boundary — affiche un message utile au lieu d'une page blanche ──────
 class ErrorBoundary extends React.Component {
   constructor(props) { super(props); this.state = { hasError: false, error: null } }
-  static getDerivedStateFromError(error) { return { hasError: true, error } }
+  static getDerivedStateFromError(error) {
+    // Chunk hash mismatch après déploiement : recharger une fois pour récupérer les nouveaux assets
+    const msg = error?.message || ''
+    if (msg.includes('Failed to fetch dynamically imported module') ||
+        msg.includes('Loading chunk') ||
+        msg.includes('Loading CSS chunk') ||
+        msg.includes('Importing a module script failed')) {
+      const RELOAD_KEY = 'chunk_reload_at'
+      const last = Number(sessionStorage.getItem(RELOAD_KEY) || 0)
+      if (Date.now() - last > 10000) {
+        sessionStorage.setItem(RELOAD_KEY, String(Date.now()))
+        window.location.reload()
+        return { hasError: false, error: null }
+      }
+    }
+    return { hasError: true, error }
+  }
   componentDidCatch(error, info) { console.error('[ErrorBoundary]', error, info) }
   render() {
     if (!this.state.hasError) return this.props.children

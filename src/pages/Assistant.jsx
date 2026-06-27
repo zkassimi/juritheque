@@ -22,23 +22,6 @@ const AI_MODEL = import.meta.env.VITE_AI_MODEL || 'deepseek/deepseek-chat'
 
 const BASE_URL = 'https://juritheque.com'
 
-// ── Messages d'erreur professionnels (sans mention d'OpenRouter) ──────────────
-function friendlyError(rawMessage = '') {
-  const msg = rawMessage.toLowerCase()
-  if (msg.includes('credit') || msg.includes('quota') || msg.includes('billing'))
-    return 'Notre assistant connaît une forte demande en ce moment. Veuillez réessayer dans quelques instants.'
-  if (msg.includes('rate limit') || msg.includes('too many'))
-    return 'Trop de requêtes simultanées. Veuillez patienter quelques secondes avant de réessayer.'
-  if (msg.includes('timeout') || msg.includes('network') || msg.includes('fetch'))
-    return 'La connexion a été interrompue. Vérifiez votre connexion internet et réessayez.'
-  if (msg.includes('model') || msg.includes('unavailable'))
-    return 'Le service est temporairement indisponible. Réessayez dans quelques instants.'
-  if (msg.includes('401') || msg.includes('unauthorized') || msg.includes('auth') || msg.includes('key'))
-    return 'Clé API invalide ou manquante. Veuillez contacter l\'administrateur du site.'
-  if (msg.includes('403') || msg.includes('forbidden'))
-    return 'Accès refusé. Veuillez contacter l\'administrateur du site.'
-  return 'Une erreur est survenue. Veuillez réessayer dans quelques instants.'
-}
 
 // ── System prompt ─────────────────────────────────────────────────────────────
 const buildSystemPrompt = (contextBlock) => `Tu es JuriThèque Assistant, expert en droit marocain bilingue (français/arabe).
@@ -225,8 +208,33 @@ function SourcePagesSection({ pages }) {
   )
 }
 
-function ChatMessage({ msg, lang, onFollowUp }) {
+function ChatMessage({ msg, lang, onFollowUp, onRetry }) {
   const isUser = msg.role === 'user'
+
+  // Message d'erreur : UI discrète sans jargon technique
+  if (msg.isError) {
+    return (
+      <div className="flex gap-3">
+        <div className="w-8 h-8 rounded-full bg-navy-800 flex items-center justify-center flex-shrink-0">
+          <Bot size={14} className="text-gold" />
+        </div>
+        <div className="flex items-center gap-3 bg-white border border-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+          <p className="text-sm text-navy-500">
+            {lang === 'ar' ? 'لم أتمكن من الرد، يرجى المحاولة مجدداً.' : 'Je n\'ai pas pu répondre. Veuillez réessayer.'}
+          </p>
+          {onRetry && (
+            <button
+              onClick={onRetry}
+              className="flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-lg bg-gold/10 text-gold hover:bg-gold hover:text-navy transition-colors border border-gold/30"
+            >
+              {lang === 'ar' ? 'إعادة المحاولة' : 'Réessayer'}
+            </button>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={`flex gap-3 ${isUser ? 'flex-row-reverse' : ''}`}>
       <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${isUser ? 'bg-gold' : 'bg-navy-800'}`}>
@@ -499,16 +507,15 @@ export default function Assistant() {
       }))
 
     } catch (err) {
-      const errorText = `⚠️ **Service momentanément indisponible**\n\n${friendlyError(err.message)}`
+      const errorMsg = { role: 'assistant', content: '', isError: true, retryText: userText, sourcePages: [], streaming: false }
 
       setConversations(prev => prev.map(c => {
         if (c.id !== activeId) return c
         const msgs = [...c.messages]
-        // Remplacer le message en streaming s'il existe, sinon en ajouter un nouveau
         if (msgs[msgs.length - 1]?.streaming) {
-          msgs[msgs.length - 1] = { role: 'assistant', content: errorText, sourcePages: [], streaming: false }
+          msgs[msgs.length - 1] = errorMsg
         } else {
-          msgs.push({ role: 'assistant', content: errorText, sourcePages: [], streaming: false })
+          msgs.push(errorMsg)
         }
         return { ...c, messages: msgs }
       }))
@@ -699,7 +706,7 @@ export default function Assistant() {
           ) : (
             <>
               {activeConv.messages.map((msg, i) => (
-                <ChatMessage key={i} msg={msg} lang={msgLang} onFollowUp={handleFollowUp} />
+                <ChatMessage key={i} msg={msg} lang={msgLang} onFollowUp={handleFollowUp} onRetry={msg.retryText ? () => sendMessage(msg.retryText) : undefined} />
               ))}
               {(typing || searching) && <TypingIndicator searching={searching} />}
             </>

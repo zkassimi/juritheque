@@ -1,214 +1,108 @@
 """
-populate_slug_history.py — Backfill rétroactif de slug_history
-═══════════════════════════════════════════════════════════════
-Reconstitue les anciens slugs connus pour chaque loi et les écrit
-dans la colonne slug_history (TEXT[]).
+populate_slug_history.py
+Backfille slug_history pour les lois dont le slug a changé.
 
-Anciens patterns reconstitués :
-  1. texte-juridique-{number}     (avant fix_imported_titles.py)
-  2. {type}-{number}              (avant ajout des keywords)
-  3. {number} seul                (très anciens liens)
+L'ancien format était : {type_slug}-{number_slug}  (sans mots-clés)
+Le nouveau format est  : {type_slug}-{number_slug}-{keywords}
 
 Usage :
   python pipeline/populate_slug_history.py --dry-run   # aperçu
   python pipeline/populate_slug_history.py             # applique
-  python pipeline/populate_slug_history.py --limit 100 # test partiel
-
-Prérequis : .env avec SUPABASE_URL + SUPABASE_SERVICE_KEY
 """
 
-import os, re, sys, unicodedata
-from pathlib import Path
+import os, re, unicodedata, time, argparse
+import httpx
 from dotenv import load_dotenv
 
-try:
-    import requests
-    from rich.console import Console
-    from rich.table import Table
-    console = Console()
-    def log(m): console.print(m)
-except ImportError:
-    def log(m): print(m)
-
 load_dotenv()
-load_dotenv(Path(__file__).parent / ".env", override=True)
 
-SUPABASE_URL = (os.getenv("SUPABASE_URL") or "").rstrip("/")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "")
+SUPABASE_URL = os.environ['VITE_SUPABASE_URL']
+SUPABASE_KEY = os.environ['VITE_SUPABASE_ANON_KEY']
+PAGE_SIZE    = 500
+
 HEADERS = {
-    "apikey":        SUPABASE_KEY,
-    "Authorization": f"Bearer {SUPABASE_KEY}",
-    "Content-Type":  "application/json",
-    "Prefer":        "return=minimal",
+    'apikey':        SUPABASE_KEY,
+    'Authorization': f'Bearer {SUPABASE_KEY}',
+    'Content-Type':  'application/json',
+    'Prefer':        'return=minimal',
 }
-
-DRY_RUN = "--dry-run" in sys.argv
-LIMIT   = next((int(a.split("=")[1]) for a in sys.argv if a.startswith("--limit=")), None)
-
-
-# ── Slugification (même logique que le frontend) ─────────────────────────────
-
-def slugify(text: str) -> str:
-    """Convertit en slug : minuscule, sans accents, tirets."""
-    if not text:
-        return ""
-    norm = unicodedata.normalize("NFD", text.lower())
-    norm = "".join(c for c in norm if unicodedata.category(c) != "Mn")
-    norm = re.sub(r"[^a-z0-9]+", "-", norm)
-    return norm.strip("-")
-
 
 TYPE_SLUG = {
-    "Dahir":       "dahir",
-    "Décret":      "decret",
-    "Loi":         "loi",
-    "Arrêté":      "arrete",
-    "Circulaire":  "circulaire",
-    "Code":        "code",
-    "Ordonnance":  "ordonnance",
-    "Convention":  "convention",
+    'Loi': 'loi', 'Dahir': 'dahir', 'Décret': 'decret',
+    'Arrêté': 'arrete', 'Circulaire': 'circulaire', 'Code': 'code',
+    'Ordonnance': 'ordonnance', 'Règlement': 'reglement',
 }
 
+def slugify(text):
+    if not text: return ''
+    norm = unicodedata.normalize('NFD', text.lower())
+    norm = ''.join(c for c in norm if unicodedata.category(c) != 'Mn')
+    return re.sub(r'[^a-z0-9]+', '-', norm).strip('-')
 
-def old_slugs_for(law: dict) -> list[str]:
-    """Génère la liste des anciens slugs probables pour une loi."""
-    canonical = (law.get("canonical_slug") or "").lower()
-    number    = (law.get("number") or "").strip()
-    law_type  = (law.get("type") or "").strip()
+def old_slug(law):
+    t = law.get('type') or ''
+    n = law.get('number') or ''
+    if not n: return None
+    type_part   = TYPE_SLUG.get(t, slugify(t)) or 'texte-juridique'
+    number_part = slugify(n)
+    if not number_part: return None
+    return f'{type_part}-{number_part}'
 
-    candidates = set()
-
-    # Pattern 1 : texte-juridique-{number}
-    if number:
-        num_slug = slugify(number)
-        candidates.add(f"texte-juridique-{num_slug}")
-
-    # Pattern 2 : {type}-{number} sans keywords
-    if number and law_type:
-        type_s = slugify(TYPE_SLUG.get(law_type, law_type))
-        num_s  = slugify(number)
-        short  = f"{type_s}-{num_s}"
-        if short != canonical and short not in canonical:
-            candidates.add(short)
-
-    # Pattern 3 : numéro brut seul (très anciens)
-    if number:
-        candidates.add(slugify(number))
-
-    # Exclure le slug canonique actuel et les slugs trop courts
-    return [s for s in candidates if s and s != canonical and len(s) > 5]
-
-
-# ── Fetch toutes les lois (paginé) ────────────────────────────────────────────
-
-def _column_exists(col: str) -> bool:
-    """Vérifie si une colonne existe dans la table laws."""
-    r = requests.get(f"{SUPABASE_URL}/rest/v1/laws",
-                     headers=HEADERS,
-                     params={"select": col, "limit": "1"},
-                     timeout=10)
-    return r.status_code == 200
-
-
-def fetch_all_laws() -> list[dict]:
-    log("[dim]→ Récupération des lois depuis Supabase...[/]")
-
-    # Détecter si slug_history existe déjà
-    has_col = _column_exists("slug_history")
-    if not has_col:
-        log("[yellow]⚠  La colonne slug_history n'existe pas encore.[/]")
-        log("[yellow]   Appliquer d'abord la migration SQL dans le Dashboard Supabase :[/]")
-        log("[yellow]   ALTER TABLE laws ADD COLUMN IF NOT EXISTS slug_history TEXT[] DEFAULT '{}';[/]")
-        log("[yellow]   CREATE INDEX IF NOT EXISTS idx_laws_slug_history ON laws USING GIN(slug_history);[/]")
-        sys.exit(1)
-
-    all_rows, offset, batch = [], 0, 1000
+def fetch_all():
+    laws, offset = [], 0
     while True:
-        params = {
-            "select":         "id,canonical_slug,number,type,slug_history",
-            "canonical_slug": "not.is.null",
-            "order":          "id.asc",
-            "limit":          str(batch),
-            "offset":         str(offset),
-        }
-        r = requests.get(f"{SUPABASE_URL}/rest/v1/laws", headers=HEADERS,
-                         params=params, timeout=30)
+        url = (f"{SUPABASE_URL}/rest/v1/laws"
+               f"?select=id,type,number,canonical_slug,slug_history"
+               f"&order=id&offset={offset}&limit={PAGE_SIZE}")
+        r = httpx.get(url, headers=HEADERS, timeout=30)
         r.raise_for_status()
-        rows = r.json()
-        if not rows:
-            break
-        all_rows.extend(rows)
-        if len(rows) < batch:
-            break
-        offset += batch
-    log(f"[dim]→ {len(all_rows)} lois récupérées[/]")
-    return all_rows
-
-
-# ── PATCH slug_history ────────────────────────────────────────────────────────
-
-def patch_slug_history(law_id, new_history: list[str]) -> bool:
-    r = requests.patch(
-        f"{SUPABASE_URL}/rest/v1/laws",
-        headers=HEADERS,
-        params={"id": f"eq.{law_id}"},
-        json={"slug_history": new_history},
-        timeout=10,
-    )
-    return r.status_code in (200, 204)
-
-
-# ── Main ──────────────────────────────────────────────────────────────────────
+        page = r.json()
+        if not page: break
+        laws.extend(page)
+        print(f'  Chargé {len(laws)} lois...', end='\r', flush=True)
+        if len(page) < PAGE_SIZE: break
+        offset += PAGE_SIZE
+    print()
+    return laws
 
 def main():
-    log("\n[bold gold1]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/]")
-    log(f"[bold gold1]  populate_slug_history{'  [DRY-RUN]' if DRY_RUN else ''}   [/]")
-    log("[bold gold1]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/]\n")
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dry-run', action='store_true')
+    args = parser.parse_args()
 
-    laws = fetch_all_laws()
-    if LIMIT:
-        laws = laws[:LIMIT]
+    print('Chargement des lois depuis Supabase...')
+    laws = fetch_all()
+    print(f'{len(laws)} lois chargées\n')
 
-    updated = 0
-    skipped = 0
-    total_slugs_added = 0
-    total = len(laws)
-
-    for i, law in enumerate(laws, 1):
-        law_id    = law["id"]
-        existing  = set(law.get("slug_history") or [])
-        new_olds  = old_slugs_for(law)
-        to_add    = [s for s in new_olds if s not in existing]
-
-        if not to_add:
-            skipped += 1
-            if i % 500 == 0:
-                log(f"[dim]  {i}/{total} ({i*100//total}%) — {updated} mis à jour, {skipped} ignorés[/]")
+    to_patch = []
+    for law in laws:
+        canonical = law.get('canonical_slug') or ''
+        history   = law.get('slug_history') or []
+        computed  = old_slug(law)
+        if not computed or computed == canonical or computed in history:
             continue
+        to_patch.append({'id': law['id'], 'old': computed,
+                         'new_history': list(set(history + [computed]))})
 
-        merged = sorted(existing | set(to_add))
+    print(f'{len(to_patch)} lois avec un ancien slug a backfiller')
+    if args.dry_run:
+        for p in to_patch[:20]:
+            print(f"  {p['old']}")
+        if len(to_patch) > 20:
+            print(f'  ... et {len(to_patch) - 20} autres')
+        print('\n[dry-run] Aucune modification appliquee.')
+        return
 
-        if DRY_RUN:
-            log(f"  [cyan]{law.get('canonical_slug', law_id)[:50]}[/] → ajout : {to_add}")
-        else:
-            ok = patch_slug_history(law_id, merged)
-            if ok:
-                updated += 1
-                total_slugs_added += len(to_add)
-            else:
-                log(f"  [red]✗ PATCH échoué pour id={law_id}[/]")
+    ok = fail = 0
+    for i, p in enumerate(to_patch, 1):
+        url = f"{SUPABASE_URL}/rest/v1/laws?id=eq.{p['id']}"
+        r = httpx.patch(url, headers=HEADERS, json={'slug_history': p['new_history']}, timeout=10)
+        if r.status_code in (200, 204): ok += 1
+        else: fail += 1
+        if i % 100 == 0: print(f'  {i}/{len(to_patch)} traites...')
+        time.sleep(0.05)
 
-        if i % 500 == 0:
-            log(f"[dim]  {i}/{total} ({i*100//total}%) — {updated} mis à jour[/]")
+    print(f'OK: {ok} | Echecs: {fail}')
 
-    if DRY_RUN:
-        log(f"\n[yellow]⚠  DRY-RUN — aucune modification appliquée[/]")
-        log(f"[dim]{len(laws) - skipped} lois auraient été mises à jour[/]")
-    else:
-        log(f"\n[bold green]✅ {updated} lois mises à jour[/]  "
-            f"({total_slugs_added} anciens slugs ajoutés)")
-        log(f"[dim]{skipped} lois ignorées (slug_history déjà complet)[/]")
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

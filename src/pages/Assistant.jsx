@@ -9,6 +9,32 @@ import { useLang } from '../contexts/LangContext'
 import { useAuth } from '../contexts/AuthContext'
 import { useSEO } from '../hooks/useSEO'
 import { retrieveRelevantSitePages } from '../lib/api'
+import { SEO_INTENT_PAGES } from '../data/seoIntentPages'
+
+// Cherche les guides pertinents localement (sans appel réseau)
+function findRelevantGuides(query, limit = 2) {
+  const q = query.toLowerCase()
+  const words = q.split(/\s+/).filter(w => w.length >= 4)
+  if (!words.length) return []
+  return SEO_INTENT_PAGES
+    .map(g => {
+      const searchText = [g.title, g.h1, ...(g.keywords || []), g.intro || ''].join(' ').toLowerCase()
+      const score = words.reduce((acc, w) => acc + (searchText.includes(w) ? 1 : 0), 0)
+      return { g, score }
+    })
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(({ g }) => ({
+      title: g.h1 || g.title,
+      url: `/fr/guides/${g.slug}`,
+      source_type: 'guide',
+      description: (g.intro || '').slice(0, 150),
+      legal_domain: g.legalDomain || g.category,
+      document_type: 'guide',
+      priority: 10,
+    }))
+}
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const OPENROUTER_KEY = import.meta.env.VITE_OPENROUTER_KEY || ''
@@ -417,7 +443,11 @@ export default function Assistant() {
     setSearching(true)
     let sourcePages = []
     try {
-      sourcePages = await retrieveRelevantSitePages(userText, { limit: 6 })
+      const guides = findRelevantGuides(userText, 2)
+      const laws   = await retrieveRelevantSitePages(userText, { limit: 5 })
+      // Guides en tête, puis lois (sans doublons)
+      const lawUrls = new Set(guides.map(g => g.url))
+      sourcePages = [...guides, ...laws.filter(l => !lawUrls.has(l.url))]
     } catch (_) {}
     setSearching(false)
     setTyping(true)

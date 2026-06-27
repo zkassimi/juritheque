@@ -423,9 +423,23 @@ export async function retrieveRelevantSitePages(query, { limit = 6, domain = '' 
   // ── Stratégie 1 : FTS websearch (FR ou simple pour l'arabe) ──────────────
   let ftsResults = []
   const ftsConfig = isArabic(q) ? 'simple' : 'french'
+
+  // Mots trop génériques qui faussent le FTS (matchent tout)
+  const FTS_GENERIC = new Set([
+    'loi','lois','droit','droits','texte','textes','juridique','juridiques',
+    'maroc','marocain','marocaine','cherche','trouve','montre','donner',
+    'article','articles','code','codes','disposition','dispositions',
+    'القانون','المغرب','النص','المادة','الحقوق',
+  ])
+
   try {
-    // Nettoyer la query pour FTS (enlever caractères spéciaux)
-    const ftsQuery_str = q.replace(/[?!،؟]/g, ' ').trim()
+    // Enlever termes génériques + caractères spéciaux
+    const ftsQuery_str = q
+      .replace(/[?!،؟]/g, ' ')
+      .split(/\s+/)
+      .filter(w => w.length >= 2 && !FTS_GENERIC.has(w.toLowerCase()))
+      .join(' ')
+      .trim() || q.replace(/[?!،؟]/g, ' ').trim()
     let ftsQuery = supabase
       .from('site_search_index')
       .select(FIELDS)

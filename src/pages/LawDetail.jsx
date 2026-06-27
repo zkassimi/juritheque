@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate, useLocation } from 'react-router-dom'
 import {
   ChevronRight, Download, Share2, Heart, Bot, FileText, Calendar, Tag, Eye,
   ExternalLink, AlertTriangle, CheckCircle, ChevronDown, ChevronUp, BookOpen,
-  Award, Sparkles, Hash, Bell, Flag, ArrowRight, RotateCcw
+  Award, Sparkles, Hash, Bell, Flag, ArrowRight, RotateCcw, Copy, ClipboardCheck
 } from 'lucide-react'
 import ReportModal from '../components/ReportModal'
 import { LAW_TYPES } from '../data/mockData'
@@ -65,6 +65,7 @@ export default function LawDetail() {
   const [related, setRelated]         = useState([])
   const [notFound, setNotFound]       = useState(false)
   const [copied, setCopied]           = useState(false)
+  const [copiedRef, setCopiedRef]     = useState(false)
   const [showPdf, setShowPdf]         = useState(false)
   const [viewerError, setViewerError] = useState(false)
   const [showFullText, setShowFullText] = useState(false)
@@ -169,6 +170,18 @@ export default function LawDetail() {
     navigator.clipboard.writeText(window.location.href)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleCopyRef = () => {
+    if (!law) return
+    const type   = law.type || 'Texte'
+    const num    = law.number ? ` n° ${law.number}` : ''
+    const date   = law.date   ? ` du ${new Date(law.date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}` : ''
+    const title  = (law.title_fr || law.title_ar || '').slice(0, 80)
+    const ref    = `${type}${num}${date}${title ? ' — ' + title : ''}`
+    navigator.clipboard.writeText(ref)
+    setCopiedRef(true)
+    setTimeout(() => setCopiedRef(false), 2000)
   }
 
   if (loading) return (
@@ -355,6 +368,13 @@ export default function LawDetail() {
               <div className="flex flex-wrap items-start gap-3 mb-4">
                 <TypeBadge type={law.type} size="lg" />
                 <StatusBadge status={law.status} size="lg" />
+                {/* Badge projet de texte */}
+                {(law.is_project || /projet|مشروع/i.test(law.status || '') || /projet|مشروع/i.test(law.title_fr || '') || /مشروع/.test(law.title_ar || '')) && (
+                  <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border bg-amber-50 border-amber-300 text-amber-700">
+                    <AlertTriangle size={11} />
+                    {lang === 'ar' ? 'مشروع نص — غير ساري بعد' : 'Projet de texte — non en vigueur'}
+                  </span>
+                )}
                 {law.verification_status === 'verified' && (
                   <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border bg-emerald-50 border-emerald-200 text-emerald-700">
                     <CheckCircle size={11} />
@@ -397,16 +417,34 @@ export default function LawDetail() {
                 )}
               </div>
 
-              {/* Legal keywords */}
-              {keywords.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mb-5">
-                  {keywords.map(kw => (
-                    <span key={kw} className="text-xs bg-navy/5 text-navy-700 border border-navy/10 px-2.5 py-1 rounded-full">
-                      {kw}
-                    </span>
-                  ))}
-                </div>
-              )}
+              {/* Legal keywords — séparés FR / AR */}
+              {keywords.length > 0 && (() => {
+                const isArabic = w => /[؀-ۿ]/.test(w)
+                const kwFr = keywords.filter(w => !isArabic(w))
+                const kwAr = keywords.filter(w => isArabic(w))
+                return (
+                  <div className="mb-5 space-y-2">
+                    {kwFr.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {kwFr.map(kw => (
+                          <span key={kw} className="text-xs bg-navy/5 text-navy-700 border border-navy/10 px-2.5 py-1 rounded-full">
+                            {kw}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    {kwAr.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5" dir="rtl">
+                        {kwAr.map(kw => (
+                          <span key={kw} className="text-xs bg-gold/5 text-navy-700 border border-gold/20 px-2.5 py-1 rounded-full font-arabic">
+                            {kw}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )
+              })()}
 
               {/* Legacy tags */}
               {!keywords.length && law.tags?.length > 0 && (
@@ -496,6 +534,17 @@ export default function LawDetail() {
                     <ExternalLink size={14} />{t('law.open_newtab')}
                   </a>
                 )}
+
+                <button
+                  onClick={handleCopyRef}
+                  className="flex items-center gap-1.5 px-4 py-2 border border-gray-200 text-navy-700 rounded-xl text-sm font-medium hover:border-gold hover:text-gold transition-colors"
+                  title={lang === 'ar' ? 'نسخ المرجع القانوني' : 'Copier la référence juridique'}
+                >
+                  {copiedRef ? <ClipboardCheck size={14} className="text-emerald-500" /> : <Copy size={14} />}
+                  {copiedRef
+                    ? (lang === 'ar' ? 'تم النسخ ✓' : 'Copié ✓')
+                    : (lang === 'ar' ? 'نسخ المرجع' : 'Copier la référence')}
+                </button>
 
                 <button
                   onClick={handleShare}

@@ -856,7 +856,7 @@ export default function LawDetail() {
                   {articles_fr.length === 0 && articles_ar.length === 0 && (
                     <div className="col-span-2 flex flex-col items-center justify-center py-12 text-center">
                       <FileText size={36} className="text-gray-200 mb-3" />
-                      <p className="text-sm text-navy-500">Texte intégral non disponible — téléchargez le PDF ci-dessus.</p>
+                      <p className="text-sm text-navy-500">{lang === 'ar' ? 'النص الكامل غير متاح — يرجى تحميل ملف PDF أعلاه.' : 'Texte intégral non disponible — téléchargez le PDF ci-dessus.'}</p>
                     </div>
                   )}
                 </div>

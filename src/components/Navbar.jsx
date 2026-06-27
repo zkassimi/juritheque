@@ -155,7 +155,7 @@ export default function Navbar() {
               if (guideMatch) { navigate(`/${newLang}/guides/${guideMatch[2]}`); return }
               toggleLang()
             }}
-            className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-all duration-150 ${
+            className={`px-3 py-2.5 rounded-lg text-xs font-semibold border transition-all duration-150 min-w-[44px] ${
               !isTransparent
                 ? 'border-navy/20 text-navy hover:border-gold hover:text-gold'
                 : 'border-white/30 text-white hover:border-gold hover:text-gold'

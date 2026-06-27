@@ -81,7 +81,7 @@ export default function FilterSidebar({ filters, onChange, resultCount, domains:
               <button
                 key={type}
                 onClick={() => toggle('types', type)}
-                className="px-2.5 py-1 rounded text-xs font-medium border transition-all duration-150"
+                className="px-2.5 py-1.5 rounded text-xs font-medium border transition-all duration-150"
                 style={active
                   ? { backgroundColor: cfg.color, color: '#fff', borderColor: cfg.color }
                   : { backgroundColor: cfg.bg, color: cfg.color, borderColor: `${cfg.color}40` }

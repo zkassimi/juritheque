@@ -81,6 +81,8 @@ export default function App() {
             <Route path="/glossaire"                     element={<Glossaire />} />
             {/* Redirige l'ancienne page séparée vers la base unifiée */}
             <Route path="/fr/lois-complementaires"       element={<Navigate to="/base?source=Adala" replace />} />
+            {/* 404 — toute URL non reconnue */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
       </main>

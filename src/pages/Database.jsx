@@ -403,7 +403,7 @@ export default function Database() {
                 <button
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="p-2.5 rounded-lg border border-gray-200 bg-white text-navy-600 hover:border-gold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-3 rounded-lg border border-gray-200 bg-white text-navy-600 hover:border-gold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
                   {isRTL ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
                 </button>
@@ -419,7 +419,7 @@ export default function Database() {
                     <>
                       {start > 1 && (
                         <>
-                          <button onClick={() => setPage(1)} className="w-10 h-10 rounded-lg text-sm bg-white border border-gray-200 text-navy-600 hover:border-gold transition-colors">1</button>
+                          <button onClick={() => setPage(1)} className="w-11 h-11 rounded-lg text-sm bg-white border border-gray-200 text-navy-600 hover:border-gold transition-colors">1</button>
                           {start > 2 && <span className="text-navy-400 text-sm px-1">…</span>}
                         </>
                       )}
@@ -427,7 +427,7 @@ export default function Database() {
                         <button
                           key={p}
                           onClick={() => setPage(p)}
-                          className={`w-10 h-10 rounded-lg text-sm font-medium transition-colors ${
+                          className={`w-11 h-11 rounded-lg text-sm font-medium transition-colors ${
                             p === page ? 'bg-navy text-white' : 'bg-white border border-gray-200 text-navy-600 hover:border-gold'
                           }`}
                         >
@@ -437,7 +437,7 @@ export default function Database() {
                       {end < totalPages && (
                         <>
                           {end < totalPages - 1 && <span className="text-navy-400 text-sm px-1">…</span>}
-                          <button onClick={() => setPage(totalPages)} className="w-10 h-10 rounded-lg text-sm bg-white border border-gray-200 text-navy-600 hover:border-gold transition-colors">{totalPages}</button>
+                          <button onClick={() => setPage(totalPages)} className="w-11 h-11 rounded-lg text-sm bg-white border border-gray-200 text-navy-600 hover:border-gold transition-colors">{totalPages}</button>
                         </>
                       )}
                     </>
@@ -448,7 +448,7 @@ export default function Database() {
                 <button
                   onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                   disabled={page === totalPages}
-                  className="p-2.5 rounded-lg border border-gray-200 bg-white text-navy-600 hover:border-gold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  className="p-3 rounded-lg border border-gray-200 bg-white text-navy-600 hover:border-gold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
                   {isRTL ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
                 </button>

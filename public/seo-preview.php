@@ -128,7 +128,7 @@ if (!$law) {
         $data = json_decode($body, true);
         if (!empty($data[0]['canonical_slug'])) {
             header('HTTP/1.1 301 Moved Permanently');
-            header('Location: ' . SITE_URL . '/loi/' . $data[0]['canonical_slug']);
+            header('Location: ' . SITE_URL . '/' . $lang . '/loi/' . $data[0]['canonical_slug']);
             exit;
         }
     }

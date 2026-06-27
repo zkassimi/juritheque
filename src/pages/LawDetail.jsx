@@ -328,14 +328,14 @@ export default function LawDetail() {
               <ChevronRight size={12} />
             </>
           )}
-          <span className="text-navy-700 truncate max-w-[200px]">
+          <span className="text-navy-700 truncate max-w-[130px] sm:max-w-[200px]">
             {displayNumber || (law.title_fr || law.title_ar || `Texte n°${slug}`)?.slice(0, 45)}
           </span>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        <div className="flex gap-8">
+        <div className="flex xl:gap-8">
 
           {/* TOC Sidebar — affiché uniquement si un sommaire structuré existe */}
           {toc?.sections?.length > 0 && (
@@ -603,7 +603,7 @@ export default function LawDetail() {
                     <iframe
                       src={viewerUrl}
                       className="w-full"
-                      style={{ height: '700px' }}
+                      style={{ height: 'clamp(400px, 80vh, 700px)' }}
                       title={law.title_fr || law.title_ar}
                       onLoad={(e) => {
                         const overlay = e.target.parentElement?.querySelector('#viewer-loading-overlay')

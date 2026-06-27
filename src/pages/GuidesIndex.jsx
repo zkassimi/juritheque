@@ -15,7 +15,7 @@ function GuideGrid({ guides }) {
       {guides.map(guide => (
         <Link
           key={guide.slug}
-          to={`/fr/guides/${guide.slug}`}
+          to={`/${lang}/guides/${guide.slug}`}
           className="group flex flex-col bg-white rounded-xl border border-gray-100 p-3 hover:border-gold hover:shadow-md transition-all"
         >
           <div className="flex items-start gap-2.5 mb-2">
@@ -208,7 +208,7 @@ export default function GuidesIndex() {
         {/* ── Liens secondaires ─────────────────────────────────────── */}
         <div className="flex flex-wrap items-center justify-center gap-6 pb-4 text-sm text-navy-500">
           <Link
-            to="/fr/veille-juridique"
+            to={`/${lang}/veille-juridique`}
             className="inline-flex items-center gap-2 hover:text-gold transition-colors"
           >
             <Bell size={14} />

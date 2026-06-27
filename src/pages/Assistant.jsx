@@ -426,7 +426,7 @@ export default function Assistant() {
     const contextBlock = buildContextBlock(sourcePages)
     const systemPrompt = buildSystemPrompt(contextBlock)
 
-    // ── Étape 3 : Appel OpenRouter avec streaming SSE ────────────────────────
+    // ── Étape 3 : Appel OpenRouter (sans streaming pour compatibilité CORS) ─────
     try {
       const history = [...currentMessages, userMsg].map(m => ({
         role:    m.role === 'assistant' ? 'assistant' : 'user',
@@ -444,80 +444,33 @@ export default function Assistant() {
         body: JSON.stringify({
           model:       AI_MODEL,
           messages:    [{ role: 'system', content: systemPrompt }, ...history],
-          max_tokens:  1500,
+          max_tokens:  1200,
           temperature: 0.25,
-          stream:      true,   // ← Streaming activé
         }),
       })
 
       if (!response.ok) {
         const err = await response.json().catch(() => ({}))
-        throw new Error(err?.error?.message || `Erreur API (${response.status})`)
+        throw new Error(err?.error?.message || `HTTP ${response.status}`)
       }
 
-      // Insérer un message vide "en cours de streaming"
-      const streamingMsg = { role: 'assistant', content: '', sourcePages, streaming: true }
-      setConversations(prev => prev.map(c =>
-        c.id === activeId ? { ...c, messages: [...c.messages, streamingMsg] } : c
-      ))
+      const data    = await response.json()
+      const fullText = data.choices?.[0]?.message?.content || ''
 
-      // Lire le stream SSE
-      const reader  = response.body.getReader()
-      const decoder = new TextDecoder()
-      let fullText  = ''
+      if (!fullText) throw new Error('empty response')
 
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-
-        const chunk = decoder.decode(value, { stream: true })
-        const lines = chunk.split('\n').filter(l => l.startsWith('data: '))
-
-        for (const line of lines) {
-          const data = line.slice(6).trim()
-          if (data === '[DONE]') break
-          try {
-            const parsed = JSON.parse(data)
-            const delta  = parsed.choices?.[0]?.delta?.content || ''
-            if (!delta) continue
-            fullText += delta
-            // Mise à jour en temps réel du dernier message
-            setConversations(prev => prev.map(c => {
-              if (c.id !== activeId) return c
-              const msgs = [...c.messages]
-              msgs[msgs.length - 1] = { ...msgs[msgs.length - 1], content: fullText }
-              return { ...c, messages: msgs }
-            }))
-          } catch { /* ligne SSE non-JSON (commentaire, vide) */ }
-        }
-      }
-
-      // Finaliser : retirer le flag streaming, ajouter les follow-ups
+      // Insérer la réponse finale
       const followUps = extractFollowUps(fullText, userText)
       setConversations(prev => prev.map(c => {
         if (c.id !== activeId) return c
-        const msgs = [...c.messages]
-        msgs[msgs.length - 1] = {
-          ...msgs[msgs.length - 1],
-          content:  fullText || 'Désolé, je n\'ai pas pu générer une réponse.',
-          streaming: false,
-          followUps,
-        }
-        return { ...c, messages: msgs }
+        return { ...c, messages: [...c.messages, { role: 'assistant', content: fullText, sourcePages, followUps, streaming: false }] }
       }))
 
     } catch (err) {
       const errorMsg = { role: 'assistant', content: '', isError: true, retryText: userText, sourcePages: [], streaming: false }
-
       setConversations(prev => prev.map(c => {
         if (c.id !== activeId) return c
-        const msgs = [...c.messages]
-        if (msgs[msgs.length - 1]?.streaming) {
-          msgs[msgs.length - 1] = errorMsg
-        } else {
-          msgs.push(errorMsg)
-        }
-        return { ...c, messages: msgs }
+        return { ...c, messages: [...c.messages, errorMsg] }
       }))
     } finally {
       setTyping(false)

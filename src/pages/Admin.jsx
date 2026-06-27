@@ -98,6 +98,9 @@ export default function Admin() {
   const [qualityLaws, setQualityLaws]       = useState([])
   const [qualityLoading, setQualityLoading] = useState(false)
   const [qualityFilter, setQualityFilter]   = useState('all') // 'all' | 'no_summary' | 'no_date' | 'no_pdf'
+  const [qualityPage, setQualityPage]       = useState(0)
+  const [qualityTotal, setQualityTotal]     = useState(0)
+  const QUALITY_PAGE_SIZE = 50
 
   // Veille & Import queue
   const [queue, setQueue]               = useState([])
@@ -181,7 +184,7 @@ export default function Admin() {
     setNeedsUpdateLoading(false)
   }, [])
 
-  const loadQuality = useCallback(async (filter = 'all') => {
+  const loadQuality = useCallback(async (filter = 'all', page = 0) => {
     setQualityLoading(true)
     try {
       // Stat counts
@@ -193,12 +196,15 @@ export default function Admin() {
       ])
       setQualityStats({ noSum: noSum || 0, noDate: noDate || 0, noPdf: noPdf || 0, pending: pending || 0 })
 
-      // Filtered list
+      // Filtered list with pagination
+      const from = page * QUALITY_PAGE_SIZE
+      const to   = from + QUALITY_PAGE_SIZE - 1
+
       let q = supabase
         .from('laws')
-        .select('id,number,title_fr,date,extraction_status,pdf_url,source_url,simple_summary_fr,canonical_slug,source_name,is_published')
+        .select('id,number,title_fr,date,extraction_status,pdf_url,source_url,simple_summary_fr,canonical_slug,source_name,is_published', { count: 'exact' })
         .order('created_at', { ascending: false })
-        .limit(50)
+        .range(from, to)
 
       if (filter === 'no_summary')  q = q.is('simple_summary_fr', null)
       else if (filter === 'no_date') q = q.is('date', null)
@@ -206,12 +212,14 @@ export default function Admin() {
       else if (filter === 'hidden')  q = q.eq('is_published', false)
       else q = q.or('simple_summary_fr.is.null,date.is.null,canonical_slug.is.null')
 
-      const { data } = await q
+      const { data, count } = await q
       setQualityLaws(data || [])
+      setQualityTotal(count || 0)
+      setQualityPage(page)
     } finally {
       setQualityLoading(false)
     }
-  }, [])
+  }, [QUALITY_PAGE_SIZE])
 
   const rejectQueueItem = async (id) => {
     await supabase.from('import_queue').update({ status: 'rejected' }).eq('id', id)
@@ -1541,7 +1549,7 @@ export default function Admin() {
               ].map(f => (
                 <button
                   key={f.key}
-                  onClick={() => { setQualityFilter(f.key); loadQuality(f.key) }}
+                  onClick={() => { setQualityFilter(f.key); loadQuality(f.key, 0) }}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                     qualityFilter === f.key
                       ? 'bg-navy text-white border-navy'
@@ -1646,8 +1654,29 @@ export default function Admin() {
                     </tbody>
                   </table>
                 </div>
-                <div className="px-4 py-3 border-t border-gray-50 text-xs text-navy-400">
-                  {qualityLaws.length} textes affichés (50 max) — utilisez les filtres pour cibler
+                <div className="px-4 py-3 border-t border-gray-50 flex items-center justify-between">
+                  <span className="text-xs text-navy-400">
+                    {qualityTotal > 0
+                      ? `${qualityPage * QUALITY_PAGE_SIZE + 1}–${Math.min((qualityPage + 1) * QUALITY_PAGE_SIZE, qualityTotal)} sur ${qualityTotal.toLocaleString('fr-FR')} textes`
+                      : `${qualityLaws.length} textes`}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      disabled={qualityPage === 0 || qualityLoading}
+                      onClick={() => loadQuality(qualityFilter, qualityPage - 1)}
+                      className="px-3 py-1.5 text-xs font-medium rounded-lg border border-gray-200 text-navy-600 hover:border-gold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    >
+                      ← Précédent
+                    </button>
+                    <span className="text-xs text-navy-400">Page {qualityPage + 1} / {Math.ceil(qualityTotal / QUALITY_PAGE_SIZE) || 1}</span>
+                    <button
+                      disabled={(qualityPage + 1) * QUALITY_PAGE_SIZE >= qualityTotal || qualityLoading}
+                      onClick={() => loadQuality(qualityFilter, qualityPage + 1)}
+                      className="px-3 py-1.5 text-xs font-medium rounded-lg border border-gray-200 text-navy-600 hover:border-gold disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    >
+                      Suivant →
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

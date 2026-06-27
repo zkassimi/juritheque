@@ -13,10 +13,12 @@ import { retrieveRelevantSitePages } from '../lib/api'
 // ── Config ────────────────────────────────────────────────────────────────────
 const OPENROUTER_KEY = import.meta.env.VITE_OPENROUTER_KEY || ''
 
-// Meilleur rapport qualité/prix pour le droit FR/AR :
-//   - 'google/gemini-2.5-flash'        → très rapide, ~$0.15/1M tokens (défaut)
-//   - 'anthropic/claude-3-5-haiku'     → meilleur pour l'arabe juridique, ~$0.80/1M
-const AI_MODEL = import.meta.env.VITE_AI_MODEL || 'google/gemini-2.5-flash'
+// Modèles disponibles (via VITE_AI_MODEL dans .env) :
+//   - 'deepseek/deepseek-chat'         → DeepSeek V3, ~$0.14/1M tokens — défaut
+//   - 'qwen/qwen-2.5-72b-instruct'     → Qwen 2.5, ~$0.13/1M tokens
+//   - 'google/gemini-2.5-flash'        → Gemini Flash, ~$0.15/1M tokens
+//   - 'anthropic/claude-3-5-haiku'     → meilleur arabe, ~$0.80/1M tokens
+const AI_MODEL = import.meta.env.VITE_AI_MODEL || 'deepseek/deepseek-chat'
 
 const BASE_URL = 'https://juritheque.com'
 
@@ -31,6 +33,10 @@ function friendlyError(rawMessage = '') {
     return 'La connexion a été interrompue. Vérifiez votre connexion internet et réessayez.'
   if (msg.includes('model') || msg.includes('unavailable'))
     return 'Le service est temporairement indisponible. Réessayez dans quelques instants.'
+  if (msg.includes('401') || msg.includes('unauthorized') || msg.includes('auth') || msg.includes('key'))
+    return 'Clé API invalide ou manquante. Veuillez contacter l\'administrateur du site.'
+  if (msg.includes('403') || msg.includes('forbidden'))
+    return 'Accès refusé. Veuillez contacter l\'administrateur du site.'
   return 'Une erreur est survenue. Veuillez réessayer dans quelques instants.'
 }
 

@@ -149,8 +149,10 @@ export default function Navbar() {
               const newLang = lang === 'fr' ? 'ar' : 'fr'
               const arFrMatch = location.pathname.match(/^\/(fr|ar)\/loi\/(.+)$/)
               const legacyMatch = location.pathname.match(/^\/loi\/(.+)$/)
+              const guideMatch = location.pathname.match(/^\/(fr|ar)\/guides\/(.+)$/)
               if (arFrMatch) { navigate(`/${newLang}/loi/${arFrMatch[2]}`); return }
               if (legacyMatch) { navigate(`/${newLang}/loi/${legacyMatch[1]}`); return }
+              if (guideMatch) { navigate(`/${newLang}/guides/${guideMatch[2]}`); return }
               toggleLang()
             }}
             className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-all duration-150 ${
@@ -256,8 +258,10 @@ export default function Navbar() {
                   const newLang = lang === 'fr' ? 'ar' : 'fr'
                   const arFrMatch = location.pathname.match(/^\/(fr|ar)\/loi\/(.+)$/)
                   const legacyMatch = location.pathname.match(/^\/loi\/(.+)$/)
+                  const guideMatch = location.pathname.match(/^\/(fr|ar)\/guides\/(.+)$/)
                   if (arFrMatch) { navigate(`/${newLang}/loi/${arFrMatch[2]}`); setOpen(false); return }
                   if (legacyMatch) { navigate(`/${newLang}/loi/${legacyMatch[1]}`); setOpen(false); return }
+                  if (guideMatch) { navigate(`/${newLang}/guides/${guideMatch[2]}`); setOpen(false); return }
                   toggleLang(); setOpen(false)
                 }}
                 className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium text-navy-700 hover:bg-gray-50 transition-colors"

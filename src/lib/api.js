@@ -403,45 +403,57 @@ const AI_GENERIC_WORDS = new Set([
 
 /**
  * findRelevantLaws — cherche les textes juridiques dans la table laws
+ * Détecte automatiquement FR / AR et cherche dans la bonne colonne.
  */
 export async function findRelevantLaws(query, { limit = 3 } = {}) {
+  const isAr = (s) => (s.match(/[؀-ۿ]/g) || []).length > s.length * 0.2
+  const arabic = isAr(query)
+
+  // Colonnes selon la langue de la question
+  const titleCol   = arabic ? 'title_ar'          : 'title_fr'
+  const summaryCol = arabic ? 'simple_summary_ar'  : 'simple_summary_fr'
+  const ftsConfig  = arabic ? 'simple'             : 'french'
+  const SELECT     = `id, title_fr, title_ar, canonical_slug, type, domain_id, ${summaryCol}`
+
+  // Mots-clés : strip mots génériques + stop words arabes supplémentaires
+  const AR_STOP = new Set(['ما','هل','كيف','متى','من','في','على','عن','مع','أو','إلى','النصوص','المتعلقة','المتعلق','التي','الذي'])
   const keywords = query
     .replace(/[?!،؟]/g, ' ')
     .split(/\s+/)
-    .filter(w => w.length >= 3 && !AI_GENERIC_WORDS.has(w.toLowerCase()))
+    .filter(w => w.length >= 3 && !AI_GENERIC_WORDS.has(w.toLowerCase()) && !AR_STOP.has(w))
     .join(' ')
     .trim()
 
   if (!keywords) return []
 
   try {
-    // FTS sur title_fr
+    // FTS sur la bonne colonne titre
     const { data: fts } = await supabase
       .from('laws')
-      .select('id, title_fr, canonical_slug, type, domain_id, simple_summary_fr')
-      .textSearch('title_fr', keywords, { type: 'websearch', config: 'french' })
+      .select(SELECT)
+      .textSearch(titleCol, keywords, { type: 'websearch', config: ftsConfig })
       .limit(limit)
 
-    if (fts?.length) return fts.map(lawToPage)
+    if (fts?.length) return fts.map(l => lawToPage(l, arabic, summaryCol))
 
-    // Fallback ilike sur les mots-clés
+    // Fallback ilike — mot le plus long de la query
     const topWord = keywords.split(' ').sort((a, b) => b.length - a.length)[0]
-    if (!topWord) return []
+    if (!topWord || topWord.length < 3) return []
     const { data: ilike } = await supabase
       .from('laws')
-      .select('id, title_fr, canonical_slug, type, domain_id, simple_summary_fr')
-      .ilike('title_fr', `%${topWord}%`)
+      .select(SELECT)
+      .ilike(titleCol, `%${topWord}%`)
       .limit(limit)
-    return (ilike || []).map(lawToPage)
+    return (ilike || []).map(l => lawToPage(l, arabic, summaryCol))
   } catch { return [] }
 }
 
-function lawToPage(law) {
+function lawToPage(law, arabic = false, summaryCol = 'simple_summary_fr') {
   return {
-    title: law.title_fr,
+    title: arabic ? (law.title_ar || law.title_fr) : law.title_fr,
     url: `/fr/loi/${law.canonical_slug || law.id}`,
     source_type: 'law',
-    description: (law.simple_summary_fr || '').slice(0, 150),
+    description: (law[summaryCol] || '').slice(0, 150),
     legal_domain: law.domain_id,
     document_type: law.type || 'Texte juridique',
     priority: 5,

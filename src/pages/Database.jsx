@@ -46,7 +46,7 @@ function buildURLParams(filters, page, sort, view) {
 // ── Composant principal ────────────────────────────────────────────────────────
 
 export default function Database() {
-  const { t, isRTL } = useLang()
+  const { t, lang, isRTL } = useLang()
 
   useSEO({
     title: 'Base de données juridiques — Lois et décrets du Maroc',

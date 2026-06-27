@@ -8,7 +8,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useLang } from '../contexts/LangContext'
 import { useAuth } from '../contexts/AuthContext'
 import { useSEO } from '../hooks/useSEO'
-import { retrieveRelevantSitePages } from '../lib/api'
+import { retrieveRelevantSitePages, findRelevantLaws } from '../lib/api'
 import { SEO_INTENT_PAGES } from '../data/seoIntentPages'
 
 // Cherche les guides pertinents localement (sans appel réseau)
@@ -444,10 +444,14 @@ export default function Assistant() {
     let sourcePages = []
     try {
       const guides = findRelevantGuides(userText, 2)
-      const laws   = await retrieveRelevantSitePages(userText, { limit: 5 })
-      // Guides en tête, puis lois (sans doublons)
-      const lawUrls = new Set(guides.map(g => g.url))
-      sourcePages = [...guides, ...laws.filter(l => !lawUrls.has(l.url))]
+      const [sitePages, dbLaws] = await Promise.all([
+        retrieveRelevantSitePages(userText, { limit: 3 }),
+        findRelevantLaws(userText, { limit: 3 }),
+      ])
+      // Guides en tête → textes juridiques DB → pages site (sans doublons)
+      const seen = new Set(guides.map(g => g.url))
+      const dedup = (arr) => arr.filter(p => { if (seen.has(p.url)) return false; seen.add(p.url); return true })
+      sourcePages = [...guides, ...dedup(dbLaws), ...dedup(sitePages)]
     } catch (_) {}
     setSearching(false)
     setTyping(true)

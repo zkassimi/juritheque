@@ -393,6 +393,61 @@ export async function removeFavorite(userId, lawId) {
 
 // ── Assistant IA — Recherche interne ─────────────────────────────────────────
 
+// Mots trop génériques (partagé par les deux fonctions de recherche)
+const AI_GENERIC_WORDS = new Set([
+  'loi','lois','droit','droits','texte','textes','juridique','juridiques',
+  'maroc','marocain','marocaine','marocains','cherche','trouve','montre',
+  'donner','article','articles','code','codes','disposition','dispositions',
+  'القانون','المغرب','النص','المادة','الحقوق',
+])
+
+/**
+ * findRelevantLaws — cherche les textes juridiques dans la table laws
+ */
+export async function findRelevantLaws(query, { limit = 3 } = {}) {
+  const keywords = query
+    .replace(/[?!،؟]/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length >= 3 && !AI_GENERIC_WORDS.has(w.toLowerCase()))
+    .join(' ')
+    .trim()
+
+  if (!keywords) return []
+
+  try {
+    // FTS sur title_fr
+    const { data: fts } = await supabase
+      .from('laws')
+      .select('id, title_fr, canonical_slug, type, domain_id, simple_summary_fr')
+      .textSearch('title_fr', keywords, { type: 'websearch', config: 'french' })
+      .limit(limit)
+
+    if (fts?.length) return fts.map(lawToPage)
+
+    // Fallback ilike sur les mots-clés
+    const topWord = keywords.split(' ').sort((a, b) => b.length - a.length)[0]
+    if (!topWord) return []
+    const { data: ilike } = await supabase
+      .from('laws')
+      .select('id, title_fr, canonical_slug, type, domain_id, simple_summary_fr')
+      .ilike('title_fr', `%${topWord}%`)
+      .limit(limit)
+    return (ilike || []).map(lawToPage)
+  } catch { return [] }
+}
+
+function lawToPage(law) {
+  return {
+    title: law.title_fr,
+    url: `/fr/loi/${law.canonical_slug || law.id}`,
+    source_type: 'law',
+    description: (law.simple_summary_fr || '').slice(0, 150),
+    legal_domain: law.domain_id,
+    document_type: law.type || 'Texte juridique',
+    priority: 5,
+  }
+}
+
 /**
  * retrieveRelevantSitePages
  * Cherche dans site_search_index les pages internes pertinentes

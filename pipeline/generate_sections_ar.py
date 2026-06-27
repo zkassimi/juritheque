@@ -112,7 +112,7 @@ def call_gemini(prompt: str) -> str | None:
     payload = {
         'model': MODEL,
         'messages': [{'role': 'user', 'content': prompt}],
-        'max_tokens': 8192,
+        'max_tokens': 4096,
         'temperature': 0.3,
     }
     with httpx.Client(timeout=120) as client:
@@ -216,7 +216,11 @@ def sections_ar_to_js(sections: list) -> str:
 def faq_ar_to_js(faq: list) -> str:
     lines = ['  faq_ar: [']
     for item in faq:
-        lines.append(f"    {{ q: '{esc(item['q'])}', a: '{esc(item['a'])}' }},")
+        # Accepter plusieurs conventions de clés (q/a, question/answer, etc.)
+        q = item.get('q') or item.get('question') or item.get('سؤال') or ''
+        a = item.get('a') or item.get('answer') or item.get('reponse') or item.get('جواب') or item.get('إجابة') or ''
+        if q and a:
+            lines.append(f"    {{ q: '{esc(q)}', a: '{esc(a)}' }},")
     lines.append('  ],')
     return '\n'.join(lines)
 

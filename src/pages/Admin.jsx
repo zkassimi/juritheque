@@ -6,7 +6,7 @@ import {
   Search, TrendingUp, BarChart2, Eye, Shield, RefreshCw,
   CheckCircle2, XCircle, Save, X, Database, UserPlus, Mail, Lock, User, Briefcase,
   Video, Play, ExternalLink, Menu, AlertTriangle, Flag, CheckCheck, Clock, Inbox, Download,
-  Bell, FileInput, Link2, RotateCcw, Terminal, Copy
+  Bell, FileInput, Link2, RotateCcw, Terminal, Copy, Zap, Activity, ListChecks
 } from 'lucide-react'
 import { useLang } from '../contexts/LangContext'
 import { useAuth } from '../contexts/AuthContext'
@@ -100,6 +100,10 @@ export default function Admin() {
   const [qualityFilter, setQualityFilter]   = useState('all') // 'all' | 'no_summary' | 'no_date' | 'no_pdf'
   const [qualityPage, setQualityPage]       = useState(0)
   const [qualityTotal, setQualityTotal]     = useState(0)
+  // Pipeline
+  const [pipelineRuns, setPipelineRuns]     = useState([])
+  const [pipelineLoading, setPipelineLoading] = useState(false)
+  const [pipelineScoreStats, setPipelineScoreStats] = useState(null)
   const QUALITY_PAGE_SIZE = 50
 
   // Veille & Import queue
@@ -232,6 +236,29 @@ export default function Admin() {
       setQualityLoading(false)
     }
   }, [QUALITY_PAGE_SIZE])
+
+  const loadPipelineRuns = useCallback(async () => {
+    setPipelineLoading(true)
+    try {
+      const { data: runs } = await supabase
+        .from('pipeline_runs')
+        .select('*')
+        .order('started_at', { ascending: false })
+        .limit(20)
+      setPipelineRuns(runs || [])
+
+      // Score distribution from laws table
+      const [{ count: auto_ }, { count: review_ }, { count: draft_ }, { count: noScore_ }] = await Promise.all([
+        supabase.from('laws').select('*', { count: 'exact', head: true }).gte('global_confidence_score', 85),
+        supabase.from('laws').select('*', { count: 'exact', head: true }).eq('needs_human_review', true),
+        supabase.from('laws').select('*', { count: 'exact', head: true }).lt('global_confidence_score', 70).not('global_confidence_score', 'is', null),
+        supabase.from('laws').select('*', { count: 'exact', head: true }).is('global_confidence_score', null),
+      ])
+      setPipelineScoreStats({ auto: auto_ || 0, review: review_ || 0, draft: draft_ || 0, noScore: noScore_ || 0 })
+    } finally {
+      setPipelineLoading(false)
+    }
+  }, [])
 
   const rejectQueueItem = async (id) => {
     await supabase.from('import_queue').update({ status: 'rejected' }).eq('id', id)
@@ -393,6 +420,7 @@ export default function Admin() {
   useEffect(() => { if (section === 'subscribers') loadSubscribers(subscribersSearch) }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (section === 'veille') { setQueuePage(1); loadQueue(1); loadNeedsUpdate() } }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (section === 'quality') loadQuality(qualityFilter) }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (section === 'pipeline') loadPipelineRuns() }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Subscribers ──
   const loadSubscribers = useCallback(async (q = '') => {
@@ -525,7 +553,8 @@ export default function Admin() {
     { key: 'videos',  icon: Video,    label: 'Vidéos' },
     { key: 'reports',     icon: Flag,     label: 'Signalements' },
     { key: 'subscribers', icon: Inbox,    label: 'Abonnés' },
-    ...(isAdmin ? [{ key: 'users', icon: Users, label: 'Utilisateurs' }] : []),
+    ...(isAdmin ? [{ key: 'pipeline', icon: Zap,   label: 'Pipeline' }] : []),
+    ...(isAdmin ? [{ key: 'users',    icon: Users, label: 'Utilisateurs' }] : []),
   ]
 
   const STATUSES = ['En vigueur','Abrogé','Modifié']
@@ -1787,6 +1816,129 @@ export default function Admin() {
         )}
 
         {/* ══ USERS ══ */}
+        {/* ══ PIPELINE ══ */}
+        {section === 'pipeline' && (
+          <div>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div>
+                <h1 className="font-playfair font-bold text-navy text-2xl flex items-center gap-2">
+                  <Zap size={22} className="text-gold" /> Pipeline intelligent
+                </h1>
+                <p className="text-sm text-navy-500 mt-1">Orchestration veille → import → enrichissement • Scores de confiance • Historique des runs</p>
+              </div>
+              <button
+                onClick={loadPipelineRuns}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-gray-200 text-xs text-navy-600 hover:border-gold"
+              >
+                <RefreshCw size={13} className={pipelineLoading ? 'animate-spin' : ''} /> Actualiser
+              </button>
+            </div>
+
+            {/* Score stats */}
+            {pipelineScoreStats && (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                <div className="bg-white rounded-2xl border border-green-100 p-4">
+                  <p className="font-playfair font-bold text-2xl text-green-600">{pipelineScoreStats.auto.toLocaleString('fr-FR')}</p>
+                  <p className="text-xs text-navy-600 mt-0.5 font-medium">Score ≥ 85</p>
+                  <p className="text-[10px] text-navy-400 mt-0.5">Éligibles publication auto</p>
+                </div>
+                <div className="bg-white rounded-2xl border border-amber-100 p-4">
+                  <p className="font-playfair font-bold text-2xl text-amber-600">{pipelineScoreStats.review.toLocaleString('fr-FR')}</p>
+                  <p className="text-xs text-navy-600 mt-0.5 font-medium">Review requise</p>
+                  <p className="text-[10px] text-navy-400 mt-0.5">needs_human_review = true</p>
+                </div>
+                <div className="bg-white rounded-2xl border border-red-100 p-4">
+                  <p className="font-playfair font-bold text-2xl text-red-500">{pipelineScoreStats.draft.toLocaleString('fr-FR')}</p>
+                  <p className="text-xs text-navy-600 mt-0.5 font-medium">Score &lt; 70</p>
+                  <p className="text-[10px] text-navy-400 mt-0.5">Qualité insuffisante</p>
+                </div>
+                <div className="bg-white rounded-2xl border border-gray-100 p-4">
+                  <p className="font-playfair font-bold text-2xl text-gray-400">{pipelineScoreStats.noScore.toLocaleString('fr-FR')}</p>
+                  <p className="text-xs text-navy-600 mt-0.5 font-medium">Sans score</p>
+                  <p className="text-[10px] text-navy-400 mt-0.5">Avant migration 021</p>
+                </div>
+              </div>
+            )}
+
+            {/* Info migration */}
+            {pipelineScoreStats && pipelineScoreStats.noScore > 100 && (
+              <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-2xl mb-6 text-sm">
+                <AlertTriangle size={16} className="text-amber-500 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-medium text-amber-800">Migration 021 à appliquer</p>
+                  <p className="text-amber-700 text-xs mt-0.5">
+                    Les colonnes de scores n'existent pas encore en base. Applique <code className="bg-amber-100 px-1 rounded">supabase/migrations/021_confidence_scores.sql</code> dans le Dashboard Supabase.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Historique des runs */}
+            <div className="bg-white rounded-2xl border border-gray-100">
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100">
+                <Activity size={14} className="text-navy-400" />
+                <span className="text-sm font-semibold text-navy">Historique des runs</span>
+                <span className="text-xs text-navy-400 ml-auto">20 derniers</span>
+              </div>
+
+              {pipelineLoading && (
+                <div className="flex items-center justify-center py-10 text-navy-400 text-sm gap-2">
+                  <RefreshCw size={14} className="animate-spin" /> Chargement…
+                </div>
+              )}
+
+              {!pipelineLoading && pipelineRuns.length === 0 && (
+                <div className="py-10 text-center text-navy-400">
+                  <ListChecks size={28} className="mx-auto mb-2 opacity-30" />
+                  <p className="text-sm">Aucun run enregistré</p>
+                  <p className="text-xs mt-1 opacity-70">Lance le pipeline depuis le dashboard Python ou via <code>run_pipeline.py</code></p>
+                </div>
+              )}
+
+              {!pipelineLoading && pipelineRuns.length > 0 && (
+                <div className="divide-y divide-gray-50">
+                  {pipelineRuns.map(run => {
+                    const modeColor = run.mode === 'auto' ? 'text-green-600 bg-green-50' : run.mode === 'semi' ? 'text-amber-600 bg-amber-50' : 'text-blue-600 bg-blue-50'
+                    const statusColor = run.status === 'done' ? 'text-green-600' : run.status === 'failed' ? 'text-red-500' : run.status === 'running' ? 'text-amber-500' : 'text-gray-400'
+                    const dur = run.duration_seconds ? `${Math.floor(run.duration_seconds / 60)}m${run.duration_seconds % 60}s` : '—'
+                    const startedAt = run.started_at ? new Date(run.started_at).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—'
+                    return (
+                      <div key={run.id} className="flex flex-wrap items-center gap-2 px-4 py-3 hover:bg-gray-50/50 text-sm">
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${modeColor}`}>{(run.mode || '?').toUpperCase()}</span>
+                        <span className={`text-xs font-semibold ${statusColor}`}>
+                          {run.status === 'done' ? '✓' : run.status === 'failed' ? '✗' : run.status === 'running' ? '◌' : '—'}
+                          {' '}{run.status}
+                        </span>
+                        <span className="text-navy-400 text-xs">{startedAt}</span>
+                        {run.dry_run && <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">dry-run</span>}
+                        <span className="ml-auto flex items-center gap-3 text-xs text-navy-500">
+                          {run.items_imported > 0 && <span className="text-green-600 font-medium">+{run.items_imported} importés</span>}
+                          {run.items_published > 0 && <span className="text-blue-600 font-medium">+{run.items_published} publiés</span>}
+                          {run.items_review > 0 && <span className="text-amber-500">{run.items_review} review</span>}
+                          {run.errors > 0 && <span className="text-red-500">{run.errors} err.</span>}
+                          {run.ai_cost_usd > 0 && <span className="text-gray-400">${Number(run.ai_cost_usd).toFixed(3)}</span>}
+                          <span className="text-gray-400">{dur}</span>
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Info commandes */}
+            <div className="mt-4 p-4 bg-navy/5 rounded-2xl">
+              <p className="text-xs font-semibold text-navy-600 mb-2">Commandes disponibles</p>
+              <div className="space-y-1 text-xs text-navy-500 font-mono">
+                <p><span className="text-gold">python</span> pipeline/run_pipeline.py <span className="text-green-600">--dry-run</span></p>
+                <p><span className="text-gold">python</span> pipeline/run_pipeline.py <span className="text-amber-600">--mode semi</span> --limit 20</p>
+                <p><span className="text-gold">python</span> pipeline/run_pipeline.py <span className="text-green-700">--mode auto</span> --limit 20</p>
+                <p><span className="text-gold">python</span> pipeline/run_pipeline.py <span className="text-blue-600">--step import</span> --mode semi</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {section === 'users' && (
           <div>
             <div className="flex items-center justify-between mb-5">

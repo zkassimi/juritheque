@@ -127,23 +127,111 @@ SOURCES = [
         "base_url": "https://www.mcinet.gov.ma",
         "active": True,
     },
+
+    # ── Tier 4 — Sources ajoutées après audit 2026-06-28 ─────────────────────
+
+    {
+        "id":    "sgg_consolid",
+        "label": "SGG — Textes consolidés",
+        "url":   "https://www.sgg.gov.ma/textesconsolides.aspx",
+        "type":  "pdf_list",
+        "freq":  "monthly",
+        "selectors": {"list": "a[href$='.pdf']"},
+        "base_url": "https://www.sgg.gov.ma",
+        "active": True,
+    },
+    {
+        "id":    "loi_finances",
+        "label": "Ministère des Finances — Lois de finances",
+        "url":   "https://www.finances.gov.ma/fr/vous-orientez/Pages/lois-finances.aspx",
+        "type":  "pdf_list",
+        "freq":  "monthly",
+        "selectors": {"list": "a[href$='.pdf']"},
+        "base_url": "https://www.finances.gov.ma",
+        "active": True,
+    },
 ]
 
 # Lookup rapide par id
 SOURCES_BY_ID = {s["id"]: s for s in SOURCES}
 
-# Sources désactivées temporairement (URL incorrecte ou accès bloqué)
+# Sources désactivées — audit 2026-06-28
+# Légende : JS = requiert navigateur headless (Playwright), 403 = accès bloqué
 SOURCES_OFFLINE = [
-    {"id": "cdr",           "reason": "URL introuvable — structure du site changée"},
-    {"id": "emploi",        "reason": "403 Forbidden"},
-    {"id": "sante",         "reason": "404 — URL changée"},
-    {"id": "mem",           "reason": "404 — URL changée"},
-    {"id": "environnement", "reason": "404 — URL changée"},
-    {"id": "interieur",     "reason": "DNS introuvable"},
-    {"id": "agriculture",   "reason": "404 — URL changée"},
-    {"id": "ammc",          "reason": "404 — URL changée"},
-    {"id": "ism",           "reason": "404 — URL changée"},
-    {"id": "wipo",          "reason": "404/403 — structure changée"},
+    {
+        "id": "cdr",
+        "label": "Chambre des représentants",
+        "reason": "Rendu JS — 0 PDF accessible statiquement. Nécessite Playwright.",
+        "urls_tested": [
+            "https://www.chambredesrepresentants.ma/fr/legislation/projets-de-loi",
+            "https://www.chambredesrepresentants.ma/fr/legislation/propositions-de-loi",
+            "https://www.chambredesrepresentants.ma/fr/legislation/textes-votes-chambre-representants",
+        ],
+        "fix": "Implémenter un adapter Playwright pour rendre le JS avant extraction PDF.",
+    },
+    {
+        "id": "emploi",
+        "label": "Ministère de l'Emploi",
+        "reason": "403 Forbidden — accès bloqué par le serveur.",
+        "urls_tested": ["https://www.emploi.gov.ma/fr/"],
+        "fix": "Rotation User-Agent ou scraping via cache Google/archive.org.",
+    },
+    {
+        "id": "sante",
+        "label": "Ministère de la Santé",
+        "reason": "Page textes juridiques introuvable. Page d'accueil accessible (200) mais 1 seul PDF non juridique.",
+        "urls_tested": ["https://www.sante.gov.ma/Pages/Textes-juridiques.aspx", "https://www.sante.gov.ma/"],
+        "fix": "Trouver la nouvelle URL de la rubrique textes juridiques.",
+    },
+    {
+        "id": "mem",
+        "label": "Ministère de l'Énergie et des Mines",
+        "reason": "Page textes juridiques introuvable (404). Accueil accessible mais 0 PDF.",
+        "urls_tested": ["https://www.mem.gov.ma/fr/Pages/Textes-juridiques.aspx", "https://www.mem.gov.ma/"],
+        "fix": "Trouver la nouvelle URL de la rubrique textes juridiques sur mem.gov.ma.",
+    },
+    {
+        "id": "environnement",
+        "label": "Ministère de l'Environnement",
+        "reason": "403 Forbidden sur toutes les URLs testées.",
+        "urls_tested": ["https://www.environnement.gov.ma/", "https://www.environnement.gov.ma/fr/"],
+        "fix": "Scraping indirect via SGG (BO) ou cache.",
+    },
+    {
+        "id": "interieur",
+        "label": "Ministère de l'Intérieur",
+        "reason": "DNS introuvable (mininterieur.gov.ma). URL officielle à confirmer.",
+        "urls_tested": [],
+        "fix": "Vérifier l'URL officielle sur le portail du gouvernement marocain.",
+    },
+    {
+        "id": "agriculture",
+        "label": "Ministère de l'Agriculture",
+        "reason": "Rendu JS — page textes juridiques accessible (200) mais 0 PDF extrait statiquement.",
+        "urls_tested": ["https://www.agriculture.gov.ma/fr/Pages/textes-juridiques.aspx"],
+        "fix": "Implémenter un adapter Playwright.",
+    },
+    {
+        "id": "ammc",
+        "label": "AMMC — Autorité des Marchés des Capitaux",
+        "reason": "Rendu JS — page réglementation accessible mais 0 PDF extrait.",
+        "urls_tested": ["https://www.ammc.ma/fr/reglementation"],
+        "fix": "Implémenter un adapter Playwright.",
+    },
+    {
+        "id": "ism",
+        "label": "Institut Supérieur de la Magistrature",
+        "reason": "Rendu JS — page textes juridiques accessible (200) mais 0 PDF extrait.",
+        "urls_tested": ["https://www.ism.ma/fr/textes-juridiques"],
+        "fix": "Implémenter un adapter Playwright.",
+    },
+    {
+        "id": "wipo",
+        "label": "WIPO — Wipolex Maroc",
+        "reason": "Structure changée — anciennes URLs inexistantes (404).",
+        "urls_tested": ["https://www.wipo.int/wipolex/en/members/MA"],
+        "fix": "Trouver la nouvelle URL Wipolex pour le Maroc.",
+    },
 ]
 
 # Détection domaine par mots-clés dans le titre

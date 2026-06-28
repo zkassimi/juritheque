@@ -383,26 +383,26 @@ SCRIPTS: Dict[str, Any] = {
     "risk":     "safe",
   },
   "import_queue_run": {
-    "label":    "📥 Importer depuis la queue (5 textes)",
-    "desc":     "Télécharge les PDFs + extrait le texte + insère 5 entrées 'pending' dans laws",
+    "label":    "📥 Importer depuis la queue (5 textes, mode semi)",
+    "desc":     "Télécharge les PDFs + extrait le texte + insère 5 entrées dans laws (mode semi : calcule les scores, sans publication auto)",
     "category": "📬 Veille juridique",
-    "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--limit", "5"],
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--mode", "semi", "--limit", "5"],
     "danger":   True,
     "risk":     "sensitive",
   },
   "import_queue_all": {
-    "label":    "📥 Importer tout (queue complète)",
-    "desc":     "Importe toutes les entrées 'pending' de import_queue dans laws (long)",
+    "label":    "📥 Importer tout (queue complète, mode semi)",
+    "desc":     "Importe toutes les entrées 'pending' en mode semi — calcule les scores, jamais de publication automatique",
     "category": "📬 Veille juridique",
-    "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--limit", "100"],
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--mode", "semi", "--limit", "100"],
     "danger":   True,
     "risk":     "sensitive",
   },
   "import_queue_skip_pdf": {
-    "label":    "📋 Import metadata seule (sans PDF)",
-    "desc":     "Insère les métadonnées dans laws sans télécharger les PDFs — rapide",
+    "label":    "📋 Import metadata seule (sans PDF, mode semi)",
+    "desc":     "Insère les métadonnées dans laws sans télécharger les PDFs — calcule les scores sur métadonnées uniquement",
     "category": "📬 Veille juridique",
-    "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--skip-pdf", "--limit", "50"],
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--mode", "semi", "--skip-pdf", "--limit", "50"],
     "danger":   True,
     "risk":     "sensitive",
   },
@@ -627,6 +627,42 @@ def get_stats():
         pending_extract= _count(h, base, {"select": "id", "extraction_status": "eq.pending"})
         no_pdf_no_src  = _count(h, base, {"select": "id", "pdf_url": "is.null", "source_url": "is.null"})
 
+        # ── Pipeline & Scores (migration 021) ───────────────────────────
+        try:
+            import httpx as _httpx
+            _H = {"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}", "Prefer": "count=exact"}
+            _test = _httpx.get(f"{SUPABASE_URL}/rest/v1/laws",
+                params={"select": "global_confidence_score", "limit": "1"},
+                headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"},
+                timeout=4)
+            _scores_ok = _test.status_code == 200
+        except Exception:
+            _scores_ok = False
+
+        if _scores_ok:
+            score_auto   = _count(h, base, {"select": "id", "global_confidence_score": "gte.85"})
+            score_review = _count(h, base, {"select": "id", "needs_human_review": "eq.true"})
+            score_low    = _count(h, base, {"select": "id", "global_confidence_score": "lt.70",
+                                             "global_confidence_score": "not.is.null"})
+        else:
+            score_auto = score_review = score_low = -1
+
+        # Dernier pipeline_run
+        try:
+            import httpx as _httpx
+            _r = _httpx.get(f"{SUPABASE_URL}/rest/v1/pipeline_runs",
+                params={"select": "started_at,status,mode,items_imported,duration_seconds",
+                        "order": "started_at.desc", "limit": "1"},
+                headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"},
+                timeout=4)
+            _run = _r.json()[0] if _r.status_code == 200 and _r.json() else None
+        except Exception:
+            _run = None
+
+        last_run_at       = _run["started_at"][:16].replace("T", " ") if _run else "—"
+        last_run_mode     = _run["mode"] if _run else "—"
+        last_run_imported = _run.get("items_imported") or 0 if _run else 0
+
         # ── Google Indexing ─────────────────────────────────────────────
         today = date.today().isoformat().replace("-", "")
         log_today = _p.parent / f"pipeline/indexing_log_{date.today()}.json"
@@ -662,6 +698,9 @@ def get_stats():
             "guide_count": guide_count, "indexed_today": indexed_today,
             # Qualité
             "no_date": no_date, "pending_extract": pending_extract, "no_pdf_no_src": no_pdf_no_src,
+            # Pipeline & Scores
+            "score_auto": score_auto, "score_review": score_review, "score_low": score_low,
+            "last_run_at": last_run_at, "last_run_mode": last_run_mode, "last_run_imported": last_run_imported,
         }
     except Exception as e:
         return {"ok": False, "error": str(e), "total": "?", "ar": "?", "to_translate": "?", "review": "?"}
@@ -994,10 +1033,19 @@ def build_html():
 
         <div class="stat-group amber">
           <div class="sg-title">🔎 Qualité des données</div>
-          <div class="stat-row"><span class="stat-label">Sans résumé FR ⚠</span><span class="stat-value amber" id="stat-q-no-sum">…</span></div>
+          <div class="stat-row"><span class="stat-label">Sans résumé FR ⚠</span><span class="stat-value amber" id="stat-q-no-date-sum">…</span></div>
           <div class="stat-row"><span class="stat-label">Sans date ⚠</span><span class="stat-value amber" id="stat-q-no-date">…</span></div>
           <div class="stat-row"><span class="stat-label">Extraction pending ⚠</span><span class="stat-value amber" id="stat-q-pending">…</span></div>
           <div class="stat-row"><span class="stat-label">Sans PDF ni source ⚠</span><span class="stat-value red" id="stat-q-no-pdf">…</span></div>
+        </div>
+
+        <div class="stat-group green">
+          <div class="sg-title">🚀 Pipeline &amp; Scores</div>
+          <div class="stat-row"><span class="stat-label">Score ≥ 85 (publiables)</span><span class="stat-value green" id="stat-score-auto">…</span></div>
+          <div class="stat-row"><span class="stat-label">Review requise</span><span class="stat-value amber" id="stat-score-review">…</span></div>
+          <div class="stat-row"><span class="stat-label">Score &lt; 70</span><span class="stat-value red" id="stat-score-low">…</span></div>
+          <div class="stat-row"><span class="stat-label">Dernier run</span><span class="stat-value dim" id="stat-last-run">…</span></div>
+          <div class="stat-row"><span class="stat-label">Mode</span><span class="stat-value" id="stat-last-mode">…</span></div>
         </div>
 
       </div>
@@ -1284,10 +1332,25 @@ function loadStats() {{
       set('stat-totrans',   s.to_translate, true);
       set('stat-guides',  s.guide_count);
       set('stat-indexed', s.indexed_today);
-      set('stat-q-no-sum',  s.no_sum_fr,        true);
-      set('stat-q-no-date', s.no_date,           true);
-      set('stat-q-pending', s.pending_extract,   true);
-      set('stat-q-no-pdf',  s.no_pdf_no_src,     true);
+      set('stat-q-no-date-sum', s.no_sum_fr,        true);
+      set('stat-q-no-date',    s.no_date,           true);
+      set('stat-q-pending',    s.pending_extract,   true);
+      set('stat-q-no-pdf',     s.no_pdf_no_src,     true);
+      // Pipeline & Scores
+      if (s.score_auto === -1) {{
+        var noMig = 'migr. 021 requise';
+        set('stat-score-auto',   noMig);
+        set('stat-score-review', noMig);
+        set('stat-score-low',    noMig);
+        var el = document.getElementById('stat-score-auto');
+        if (el) el.style.color = 'var(--amber)';
+      }} else {{
+        set('stat-score-auto',   s.score_auto);
+        set('stat-score-review', s.score_review, true);
+        set('stat-score-low',    s.score_low,    true);
+      }}
+      set('stat-last-run',  s.last_run_at);
+      set('stat-last-mode', s.last_run_mode);
     }} catch(ex) {{ console.error('stats error', ex); }}
   }};
   xhr.send();

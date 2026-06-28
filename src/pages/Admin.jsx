@@ -104,6 +104,7 @@ export default function Admin() {
   const [pipelineRuns, setPipelineRuns]     = useState([])
   const [pipelineLoading, setPipelineLoading] = useState(false)
   const [pipelineScoreStats, setPipelineScoreStats] = useState(null)
+  const [migrationApplied, setMigrationApplied] = useState(null) // null=inconnu, true=ok, false=manquant
   const QUALITY_PAGE_SIZE = 50
 
   // Veille & Import queue
@@ -168,6 +169,14 @@ export default function Admin() {
     setReviewCount(revCount || 0)
     setQueueCount(qCount || 0)
     setNeedsUpdateCount(nuCount || 0)
+    // Score stats (post-migration 021 — silently ignored if columns don't exist yet)
+    try {
+      const [{ count: autoC }, { count: lowC }] = await Promise.all([
+        supabase.from('laws').select('*', { count: 'exact', head: true }).gte('global_confidence_score', 85),
+        supabase.from('laws').select('*', { count: 'exact', head: true }).lt('global_confidence_score', 70).not('global_confidence_score', 'is', null),
+      ])
+      setStats(prev => ({ ...prev, scoreAuto: autoC || 0, scoreLow: lowC || 0 }))
+    } catch (_) { /* migration 021 pas encore appliquée */ }
   }, [])
 
   // ── Fetch import_queue ──
@@ -210,7 +219,13 @@ export default function Admin() {
         supabase.from('laws').select('*', { count: 'exact', head: true }).is('pdf_url', null).is('source_url', null),
         supabase.from('laws').select('*', { count: 'exact', head: true }).eq('extraction_status', 'pending'),
       ])
-      setQualityStats({ noSum: noSum || 0, noDate: noDate || 0, noPdf: noPdf || 0, pending: pending || 0 })
+      let lowScore = null
+      try {
+        const { count: ls } = await supabase.from('laws').select('*', { count: 'exact', head: true })
+          .lt('global_confidence_score', 50).not('global_confidence_score', 'is', null)
+        lowScore = ls || 0
+      } catch (_) {}
+      setQualityStats({ noSum: noSum || 0, noDate: noDate || 0, noPdf: noPdf || 0, pending: pending || 0, lowScore })
 
       // Filtered list with pagination
       const from = page * QUALITY_PAGE_SIZE
@@ -226,6 +241,7 @@ export default function Admin() {
       else if (filter === 'no_date') q = q.is('date', null)
       else if (filter === 'no_pdf')  q = q.is('pdf_url', null).is('source_url', null)
       else if (filter === 'hidden')  q = q.eq('is_published', false)
+      else if (filter === 'low_score') q = q.lt('global_confidence_score', 50).not('global_confidence_score', 'is', null)
       else q = q.or('simple_summary_fr.is.null,date.is.null,canonical_slug.is.null')
 
       const { data, count } = await q
@@ -247,14 +263,20 @@ export default function Admin() {
         .limit(20)
       setPipelineRuns(runs || [])
 
-      // Score distribution from laws table
-      const [{ count: auto_ }, { count: review_ }, { count: draft_ }, { count: noScore_ }] = await Promise.all([
-        supabase.from('laws').select('*', { count: 'exact', head: true }).gte('global_confidence_score', 85),
-        supabase.from('laws').select('*', { count: 'exact', head: true }).eq('needs_human_review', true),
-        supabase.from('laws').select('*', { count: 'exact', head: true }).lt('global_confidence_score', 70).not('global_confidence_score', 'is', null),
-        supabase.from('laws').select('*', { count: 'exact', head: true }).is('global_confidence_score', null),
-      ])
-      setPipelineScoreStats({ auto: auto_ || 0, review: review_ || 0, draft: draft_ || 0, noScore: noScore_ || 0 })
+      // Détecter si la migration 021 est appliquée (colonne global_confidence_score)
+      const { error: colErr } = await supabase.from('laws').select('global_confidence_score').limit(1)
+      const migOk = !colErr
+      setMigrationApplied(migOk)
+
+      if (migOk) {
+        const [{ count: auto_ }, { count: review_ }, { count: draft_ }, { count: noScore_ }] = await Promise.all([
+          supabase.from('laws').select('*', { count: 'exact', head: true }).gte('global_confidence_score', 85),
+          supabase.from('laws').select('*', { count: 'exact', head: true }).eq('needs_human_review', true),
+          supabase.from('laws').select('*', { count: 'exact', head: true }).lt('global_confidence_score', 70).not('global_confidence_score', 'is', null),
+          supabase.from('laws').select('*', { count: 'exact', head: true }).is('global_confidence_score', null),
+        ])
+        setPipelineScoreStats({ auto: auto_ || 0, review: review_ || 0, draft: draft_ || 0, noScore: noScore_ || 0 })
+      }
     } finally {
       setPipelineLoading(false)
     }
@@ -297,7 +319,7 @@ export default function Admin() {
     const from = (page - 1) * 25
     let query = supabase
       .from('laws')
-      .select('id,number,title_fr,title_ar,type,status,date,domain_id,language,tags,pdf_url,simple_summary_fr,simple_summary_ar,public_article_count,detected_article_count,extraction_confidence_score,extraction_status,needs_human_review,is_publicly_indexable,summary_updated_manually', { count: 'exact' })
+      .select('id,number,title_fr,title_ar,type,status,date,domain_id,language,tags,pdf_url,simple_summary_fr,simple_summary_ar,public_article_count,detected_article_count,extraction_confidence_score,extraction_status,needs_human_review,is_publicly_indexable,summary_updated_manually,global_confidence_score,pipeline_mode', { count: 'exact' })
       .order(reviewOnly ? 'extraction_confidence_score' : 'created_at', { ascending: reviewOnly })
       .range(from, from + 24)
     if (q) query = query.or(`title_fr.ilike.%${q}%,number.ilike.%${q}%`)
@@ -652,6 +674,30 @@ export default function Admin() {
               <StatCard icon={FileText}   label="Textes juridiques" value={stats.laws}      sub="dans la base"    color="bg-blue-50 text-blue-600" />
               <StatCard icon={TrendingUp} label="Ajoutés ce mois"   value={stats.thisMonth} sub="nouveaux textes" color="bg-emerald-50 text-emerald-600" />
               <StatCard icon={Users}      label="Utilisateurs"      value={stats.users}     sub="inscrits"        color="bg-gold/20 text-yellow-700" />
+              {stats.scoreAuto > 0 && (
+                <div className="bg-white rounded-2xl border border-green-100 p-4 flex flex-col justify-between">
+                  <div className="w-8 h-8 rounded-xl bg-green-50 flex items-center justify-center mb-2">
+                    <Zap size={15} className="text-green-600" />
+                  </div>
+                  <div>
+                    <p className="font-playfair font-bold text-2xl text-green-600">{stats.scoreAuto?.toLocaleString('fr-FR')}</p>
+                    <p className="text-xs text-navy-600 font-medium mt-0.5">Score ≥ 85</p>
+                    <p className="text-[10px] text-navy-400">Publiables automatiquement</p>
+                  </div>
+                </div>
+              )}
+              {reviewCount > 0 && (
+                <div className="bg-white rounded-2xl border border-amber-100 p-4 flex flex-col justify-between">
+                  <div className="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center mb-2">
+                    <AlertTriangle size={15} className="text-amber-600" />
+                  </div>
+                  <div>
+                    <p className="font-playfair font-bold text-2xl text-amber-600">{reviewCount?.toLocaleString('fr-FR')}</p>
+                    <p className="text-xs text-navy-600 font-medium mt-0.5">À vérifier</p>
+                    <p className="text-[10px] text-navy-400">needs_human_review</p>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Quick actions */}
@@ -892,6 +938,11 @@ export default function Admin() {
                                 ? <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${scoreColor}`}>{Math.round(score)}</span>
                                 : <span className="text-xs text-gray-300">—</span>
                               }
+                              {law.global_confidence_score != null && (
+                                <span className="text-[9px] text-gray-400 block mt-0.5 pl-0.5">
+                                  g:{law.global_confidence_score}
+                                </span>
+                              )}
                             </td>
 
                             {/* Date */}
@@ -1667,6 +1718,13 @@ export default function Admin() {
                   <p className="text-xs text-navy-600 mt-0.5 font-medium">Sans PDF ni source</p>
                   <p className="text-[10px] text-navy-400 mt-0.5">aucun lien disponible</p>
                 </div>
+                {qualityStats.lowScore != null && (
+                  <div className="bg-white rounded-2xl border border-red-100 p-4">
+                    <p className="font-playfair font-bold text-2xl text-red-500">{qualityStats.lowScore.toLocaleString('fr-FR')}</p>
+                    <p className="text-xs text-navy-600 mt-0.5 font-medium">Score global &lt; 50</p>
+                    <p className="text-[10px] text-navy-400 mt-0.5">global_confidence_score faible</p>
+                  </div>
+                )}
               </div>
             )}
 
@@ -1678,6 +1736,7 @@ export default function Admin() {
                 { key: 'no_summary', label: 'Sans résumé' },
                 { key: 'no_date',    label: 'Sans date' },
                 { key: 'no_pdf',     label: 'Sans PDF' },
+                { key: 'low_score',  label: '📉 Score < 50' },
               ].map(f => (
                 <button
                   key={f.key}
@@ -1861,7 +1920,7 @@ export default function Admin() {
             )}
 
             {/* Info migration */}
-            {pipelineScoreStats && pipelineScoreStats.noScore > 100 && (
+            {migrationApplied === false && (
               <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-2xl mb-6 text-sm">
                 <AlertTriangle size={16} className="text-amber-500 flex-shrink-0 mt-0.5" />
                 <div>

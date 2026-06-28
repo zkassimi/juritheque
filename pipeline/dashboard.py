@@ -44,6 +44,56 @@ TOKEN = os.environ.get('DASHBOARD_TOKEN', '') or secrets.token_urlsafe(12)
 # ── Whitelist des scripts ──────────────────────────────────────────────────────
 SCRIPTS: Dict[str, Any] = {
 
+  # ── Pipeline intelligent ────────────────────────────────────────────────────
+  "pipeline_dry": {
+    "label":    "🔍 Pipeline complet — aperçu (dry-run)",
+    "desc":     "Simule le pipeline entier (veille → import → enrich → sitemap) sans rien écrire",
+    "category": "🚀 Pipeline intelligent",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/run_pipeline.py", "--dry-run", "--mode", "semi"],
+    "danger":   False,
+    "risk":     "safe",
+  },
+  "pipeline_semi": {
+    "label":    "⚡ Pipeline — mode SEMI-AUTO",
+    "desc":     "Veille + import + enrich. Calcule les scores. Ne publie pas sans validation humaine.",
+    "category": "🚀 Pipeline intelligent",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/run_pipeline.py", "--mode", "semi", "--limit", "20"],
+    "danger":   True,
+    "risk":     "sensitive",
+  },
+  "pipeline_auto": {
+    "label":    "🤖 Pipeline — mode AUTO",
+    "desc":     "Publie automatiquement si global_confidence_score ≥ 85. Semi sinon.",
+    "category": "🚀 Pipeline intelligent",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/run_pipeline.py", "--mode", "auto", "--limit", "20"],
+    "danger":   True,
+    "risk":     "sensitive",
+  },
+  "pipeline_manual": {
+    "label":    "🧑 Pipeline — mode MANUEL",
+    "desc":     "Import + enrichissement uniquement. Review humaine systématique sur chaque texte.",
+    "category": "🚀 Pipeline intelligent",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/run_pipeline.py", "--mode", "manual", "--limit", "10"],
+    "danger":   False,
+    "risk":     "safe",
+  },
+  "pipeline_step_import": {
+    "label":    "📥 Étape : Import seul (semi)",
+    "desc":     "Lance uniquement l'import depuis la queue, avec calcul des scores.",
+    "category": "🚀 Pipeline intelligent",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/run_pipeline.py", "--step", "import", "--mode", "semi", "--limit", "20"],
+    "danger":   True,
+    "risk":     "sensitive",
+  },
+  "pipeline_step_enrich": {
+    "label":    "🧠 Étape : Enrichissement seul",
+    "desc":     "Lance uniquement l'enrichissement IA sur les textes sans résumé.",
+    "category": "🚀 Pipeline intelligent",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/run_pipeline.py", "--step", "enrich"],
+    "danger":   False,
+    "risk":     "safe",
+  },
+
   # ── Import & Crawl ──────────────────────────────────────────────────────────
   "crawl_adala": {
     "label":    "Crawler Adala (justice.gov.ma)",
@@ -509,6 +559,7 @@ SCRIPTS: Dict[str, Any] = {
 
 # ── Catégories ordonnées ───────────────────────────────────────────────────────
 CATEGORIES = [
+  "🚀 Pipeline intelligent",
   "📥 Import & Crawl",
   "🧠 Enrichissement IA",
   "🔍 SEO & Index",

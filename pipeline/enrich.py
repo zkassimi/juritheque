@@ -746,6 +746,17 @@ def process_law(law: dict, use_ai: bool = True, dry_run: bool = False, force: bo
     result["completeness_after"]  = score_after
     result["ai_added"]            = ai_added
 
+    # ── Recalcul global_confidence_score post-enrich (score_utils) ────────
+    # Après enrichissement, le résumé + slug + SEO sont présents → le score
+    # monte significativement par rapport au score calculé à l'import.
+    try:
+        from score_utils import compute_scores, scores_to_db_fields
+        conf_scores = compute_scores(merged)
+        updates.update(scores_to_db_fields(conf_scores))
+        result["global_confidence_score"] = conf_scores.get("global_confidence_score")
+    except (ImportError, Exception):
+        pass  # migration 021 pas encore appliquée ou score_utils absent
+
     return updates, result
 
 

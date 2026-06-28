@@ -1,10 +1,12 @@
 """
 run_pipeline.py — Orchestrateur du pipeline juridique complet
 =============================================================
-Enchaîne les 10 étapes du pipeline en une seule commande :
+Enchaîne les 7 étapes du pipeline en une seule commande :
   1. Veille (détection nouveaux textes)
   2. Import depuis la queue
-  3. Enrichissement (résumés, mots-clés, SEO)
+  3. Enrichissement (résumés, mots-clés, SEO + scores)
+  3b. Assignation des domaines juridiques
+  3c. Traduction résumés FR → AR
   4. Régénération du sitemap
   5. Reconstruction de l'index de recherche
 
@@ -26,7 +28,7 @@ Flags :
   --mode         auto | semi | manual  (défaut: semi)
   --source       id de la source (ex: sgg_home, adala) — filtre la veille
   --limit        max items à importer (défaut: 50)
-  --step         étape unique à exécuter (veille|import|enrich|sitemap|index)
+  --step         étape unique à exécuter (veille|import|enrich|domains|translate_ar|sitemap|index)
   --skip-veille  sauter l'étape de veille (import depuis queue existante)
   --skip-enrich  sauter l'enrichissement après import
   --no-sitemap   ne pas régénérer le sitemap
@@ -200,6 +202,32 @@ def step_enrich(args, report: dict) -> None:
     report["ai_cost_usd"] += min(args.limit, 20) * AI_COST_PER_ENRICH * 0.5
 
 
+def step_domains(args, report: dict) -> None:
+    """Étape 3b : Auto-assigner domaines juridiques aux nouvelles lois."""
+    console.print("\n[bold]Étape 3b — Assign domaines juridiques[/]")
+    cmd = [
+        "pipeline/assign_domains.py",
+        "--limit", str(args.limit),
+    ]
+    r = run_step("Assign domaines", cmd, dry_run=args.dry_run)
+    if not r["ok"]:
+        report["warnings"] += 1
+    report["steps"]["domains"] = r
+
+
+def step_translate_ar(args, report: dict) -> None:
+    """Étape 3c : Traduire résumés FR → AR pour les nouvelles lois."""
+    console.print("\n[bold]Étape 3c — Traduction résumés AR[/]")
+    cmd = [
+        "pipeline/translate_summaries_ar.py",
+        "--limit", str(min(args.limit, 30)),  # max 30 traductions par run
+    ]
+    r = run_step("Traduction AR", cmd, dry_run=args.dry_run)
+    if not r["ok"]:
+        report["warnings"] += 1
+    report["steps"]["translate_ar"] = r
+
+
 def step_sitemap(args, report: dict) -> None:
     """Étape 4 : Régénération du sitemap."""
     console.print("\n[bold]Étape 4/5 — Sitemap[/]")
@@ -234,7 +262,7 @@ def main():
                         help="Filtrer la veille sur une source (ex: sgg_home, adala)")
     parser.add_argument("--limit",       type=int, default=50,
                         help="Max items à importer (défaut: 50)")
-    parser.add_argument("--step",        choices=["veille","import","enrich","sitemap","index"],
+    parser.add_argument("--step",        choices=["veille","import","enrich","domains","translate_ar","sitemap","index"],
                         help="Exécuter une seule étape")
     parser.add_argument("--skip-veille", action="store_true",
                         help="Sauter l'étape de veille")
@@ -287,11 +315,13 @@ def main():
     if args.step:
         # Mode étape unique
         steps = {
-            "veille":  step_veille,
-            "import":  step_import,
-            "enrich":  step_enrich,
-            "sitemap": step_sitemap,
-            "index":   step_index,
+            "veille":       step_veille,
+            "import":       step_import,
+            "enrich":       step_enrich,
+            "domains":      step_domains,
+            "translate_ar": step_translate_ar,
+            "sitemap":      step_sitemap,
+            "index":        step_index,
         }
         steps[args.step](args, report)
 
@@ -304,6 +334,8 @@ def main():
 
         if not args.skip_enrich:
             step_enrich(args, report)
+            step_domains(args, report)
+            step_translate_ar(args, report)
 
         if not args.no_sitemap:
             step_sitemap(args, report)

@@ -46,49 +46,49 @@ SCRIPTS: Dict[str, Any] = {
 
   # ── Pipeline intelligent ────────────────────────────────────────────────────
   "pipeline_dry": {
-    "label":    "🔍 Pipeline complet — aperçu (dry-run)",
-    "desc":     "Simule le pipeline entier (veille → import → enrich → sitemap) sans rien écrire",
-    "category": "🚀 Pipeline intelligent",
+    "label":    "🔍 Pipeline complet — aperçu",
+    "desc":     "Simule le pipeline entier (veille → import → enrich → domaines → AR → sitemap) sans rien écrire",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/run_pipeline.py", "--dry-run", "--mode", "semi"],
     "danger":   False,
     "risk":     "safe",
   },
   "pipeline_semi": {
-    "label":    "⚡ Pipeline — mode SEMI-AUTO",
-    "desc":     "Veille + import + enrich. Calcule les scores. Ne publie pas sans validation humaine.",
-    "category": "🚀 Pipeline intelligent",
+    "label":    "⚡ Pipeline complet (semi-auto) — ACTION PRINCIPALE",
+    "desc":     "Veille + import + enrich + domaines + traduction AR + sitemap + index. Scores calculés. Jamais de publication auto.",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/run_pipeline.py", "--mode", "semi", "--limit", "20"],
     "danger":   True,
     "risk":     "sensitive",
   },
   "pipeline_auto": {
-    "label":    "🤖 Pipeline — mode AUTO",
-    "desc":     "Publie automatiquement si global_confidence_score ≥ 85. Semi sinon.",
-    "category": "🚀 Pipeline intelligent",
+    "label":    "🤖 Pipeline — mode AUTO (publie si score ≥ 85)",
+    "desc":     "Publie automatiquement si global_confidence_score ≥ 85. Review humaine si score 70-84. Brouillon si < 70.",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/run_pipeline.py", "--mode", "auto", "--limit", "20"],
     "danger":   True,
     "risk":     "sensitive",
   },
   "pipeline_manual": {
-    "label":    "🧑 Pipeline — mode MANUEL",
-    "desc":     "Import + enrichissement uniquement. Review humaine systématique sur chaque texte.",
-    "category": "🚀 Pipeline intelligent",
+    "label":    "🧑 Pipeline — mode MANUEL (review systématique)",
+    "desc":     "Import + enrichissement uniquement. Tous les textes passent en brouillon + review humaine.",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/run_pipeline.py", "--mode", "manual", "--limit", "10"],
     "danger":   False,
     "risk":     "safe",
   },
   "pipeline_step_import": {
-    "label":    "📥 Étape : Import seul (semi)",
-    "desc":     "Lance uniquement l'import depuis la queue, avec calcul des scores.",
-    "category": "🚀 Pipeline intelligent",
+    "label":    "📥 Étape seule : Import queue (semi)",
+    "desc":     "Lance uniquement l'import depuis la queue, avec calcul des scores de confiance.",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/run_pipeline.py", "--step", "import", "--mode", "semi", "--limit", "20"],
     "danger":   True,
     "risk":     "sensitive",
   },
   "pipeline_step_enrich": {
-    "label":    "🧠 Étape : Enrichissement seul",
-    "desc":     "Lance uniquement l'enrichissement IA sur les textes sans résumé.",
-    "category": "🚀 Pipeline intelligent",
+    "label":    "🧠 Étape seule : Enrichissement IA",
+    "desc":     "Lance uniquement l'enrichissement IA (résumés + scores) sur les textes sans résumé.",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/run_pipeline.py", "--step", "enrich"],
     "danger":   False,
     "risk":     "safe",
@@ -98,7 +98,7 @@ SCRIPTS: Dict[str, Any] = {
   "crawl_adala": {
     "label":    "Crawler Adala (justice.gov.ma)",
     "desc":     "Crawle les ~7 867 textes du portail adala.justice.gov.ma",
-    "category": "📥 Import & Crawl",
+    "category": "📥 Import & Sources",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/crawl_adala.py"],
     "danger":   False,
     "risk":     "long",
@@ -106,7 +106,7 @@ SCRIPTS: Dict[str, Any] = {
   "crawl_sgg": {
     "label":    "Crawler SGG",
     "desc":     "Crawle les ~140 PDFs de sgg.gov.ma (textes consolidés + importants)",
-    "category": "📥 Import & Crawl",
+    "category": "📥 Import & Sources",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/crawl_sgg.py"],
     "danger":   False,
     "risk":     "long",
@@ -114,7 +114,7 @@ SCRIPTS: Dict[str, Any] = {
   "scraper_all": {
     "label":    "Scraper toutes sources",
     "desc":     "Lance le scraper sur les 11 sources officielles (ANRT, BKAM, MEM...)",
-    "category": "📥 Import & Crawl",
+    "category": "📥 Import & Sources",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/scraper.py", "--source", "all"],
     "danger":   True,
     "risk":     "sensitive",
@@ -122,7 +122,7 @@ SCRIPTS: Dict[str, Any] = {
   "import_adala": {
     "label":    "Importer lois JSON",
     "desc":     "Importe public/data/lois-adala.json dans la base (500 lois par batch)",
-    "category": "📥 Import & Crawl",
+    "category": "📥 Import & Sources",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_lois_adala.py", "--limit", "500"],
     "danger":   True,
     "risk":     "sensitive",
@@ -130,7 +130,7 @@ SCRIPTS: Dict[str, Any] = {
   "build_adala_meta": {
     "label":    "Fetch métadonnées lois",
     "desc":     "Récupère les métadonnées de ~6 808 lois depuis huquqai.ma → lois-adala.json",
-    "category": "📥 Import & Crawl",
+    "category": "📥 Import & Sources",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/build_lois_adala.py", "--limit", "500"],
     "danger":   False,
     "risk":     "long",
@@ -138,7 +138,7 @@ SCRIPTS: Dict[str, Any] = {
   "extract_pdf": {
     "label":    "Extraire PDFs → DB",
     "desc":     "Extrait le texte de tous les PDFs dans pipeline/pdfs/ et insère dans Supabase (Gemini 2.5 Flash, ~$0.0005/PDF)",
-    "category": "📥 Import & Crawl",
+    "category": "📥 Import & Sources",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/extract.py"],
     "danger":   False,
     "risk":     "ai",
@@ -147,7 +147,7 @@ SCRIPTS: Dict[str, Any] = {
   "extract_pdf_dry": {
     "label":    "Extraire PDFs (dry-run)",
     "desc":     "Teste l'extraction sans écrire en base — vérifie le nombre de PDFs et l'appel IA",
-    "category": "📥 Import & Crawl",
+    "category": "📥 Import & Sources",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/extract.py", "--dry-run"],
     "danger":   False,
     "risk":     "safe",
@@ -155,7 +155,7 @@ SCRIPTS: Dict[str, Any] = {
   "extract_source_url": {
     "label":    "Extraire URLs sources",
     "desc":     "Détecte et complète les source_url manquantes dans la base",
-    "category": "📥 Import & Crawl",
+    "category": "📥 Import & Sources",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/extract_source_url.py"],
     "danger":   False,
     "risk":     "safe",
@@ -198,15 +198,6 @@ SCRIPTS: Dict[str, Any] = {
     "risk":     "ai",
     "ai_cost_note": "~500 résumés × $0.00006 ≈ $0.03 (Gemini 2.5 Flash Lite)",
   },
-  "translate_titles": {
-    "label":    "Traduction titres FR",
-    "desc":     "Traduit les titres arabes → français pour les lois sans titre FR (200 titres)",
-    "category": "🧠 Enrichissement IA",
-    "cmd":      [sys.executable, "-X", "utf8", "pipeline/translate_titles_batch.py", "--limit", "200"],
-    "danger":   False,
-    "risk":     "ai",
-    "ai_cost_note": "~200 titres × $0.00006 ≈ $0.01 (Gemini 2.5 Flash Lite)",
-  },
   "translate_titles_adala": {
     "label":    "Traduction titres AR→FR",
     "desc":     "Traduit les titres arabes des lois vers le français (200 titres)",
@@ -225,12 +216,28 @@ SCRIPTS: Dict[str, Any] = {
     "risk":     "sensitive",
   },
   "assign_domains": {
-    "label":    "Auto-assigner domaines",
-    "desc":     "Détecte et assigne automatiquement le domaine juridique (500 lois)",
+    "label":    "Auto-assigner domaines juridiques",
+    "desc":     "Détecte et assigne automatiquement le domaine juridique — 500 lois sans domaine. $0 IA.",
     "category": "🧠 Enrichissement IA",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/assign_domains.py", "--limit", "500"],
     "danger":   False,
     "risk":     "safe",
+  },
+  "recalc_scores": {
+    "label":    "🎯 Recalculer scores (lois sans score)",
+    "desc":     "Calcule global_confidence_score sur les lois sans score — post-migration 021. ~500 lois. 0 coût IA.",
+    "category": "🧠 Enrichissement IA",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/recalc_scores.py", "--limit", "500"],
+    "danger":   False,
+    "risk":     "safe",
+  },
+  "recalc_scores_all": {
+    "label":    "🔄 Recalculer scores — toutes les lois",
+    "desc":     "Recalcule global_confidence_score sur TOUTES les lois (3000+ lois, ~6 min). 0 coût IA.",
+    "category": "🧠 Enrichissement IA",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/recalc_scores.py", "--all"],
+    "danger":   True,
+    "risk":     "sensitive",
   },
   "enrich_sources": {
     "label":    "Enrichir sources",
@@ -261,7 +268,7 @@ SCRIPTS: Dict[str, Any] = {
   "sitemap": {
     "label":    "Générer sitemap.xml",
     "desc":     "Régénère public/sitemap.xml avec toutes les URLs indexables",
-    "category": "🔍 SEO & Index",
+    "category": "🔍 SEO & Qualité",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/generate_sitemap.py"],
     "danger":   False,
     "risk":     "safe",
@@ -269,7 +276,7 @@ SCRIPTS: Dict[str, Any] = {
   "search_index": {
     "label":    "Rebuilder index recherche",
     "desc":     "Reconstruit la table site_search_index (lois + guides + domaines)",
-    "category": "🔍 SEO & Index",
+    "category": "🔍 SEO & Qualité",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/build_site_search_index.py"],
     "danger":   False,
     "risk":     "safe",
@@ -277,7 +284,7 @@ SCRIPTS: Dict[str, Any] = {
   "submit_indexing": {
     "label":    "Soumettre URLs Google",
     "desc":     "Soumet toutes les URLs à Google Indexing API : lois + guides FR/AR + domaines + pages statiques (200/jour, reprend automatiquement)",
-    "category": "🔍 SEO & Index",
+    "category": "🔍 SEO & Qualité",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/submit_indexing.py"],
     "danger":   False,
     "risk":     "safe",
@@ -285,7 +292,7 @@ SCRIPTS: Dict[str, Any] = {
   "submit_indexing_dry": {
     "label":    "Preview indexation Google",
     "desc":     "Affiche les URLs à soumettre à Google sans rien envoyer (dry-run)",
-    "category": "🔍 SEO & Index",
+    "category": "🔍 SEO & Qualité",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/submit_indexing.py", "--dry-run"],
     "danger":   False,
     "risk":     "safe",
@@ -293,39 +300,23 @@ SCRIPTS: Dict[str, Any] = {
   "check_laws_list": {
     "label":    "Vérifier lois prioritaires",
     "desc":     "Compare la liste des ~70 lois essentielles du droit marocain avec la base Supabase — indique lesquelles sont présentes ou manquantes",
-    "category": "🔍 SEO & Index",
+    "category": "🔍 SEO & Qualité",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/check_laws_list.py", "--missing-only"],
-    "danger":   False,
-    "risk":     "safe",
-  },
-  "check_laws_list_full": {
-    "label":    "Vérifier lois prioritaires (complet)",
-    "desc":     "Même vérification mais affiche TOUTES les lois (trouvées + manquantes) avec export CSV",
-    "category": "🔍 SEO & Index",
-    "cmd":      [sys.executable, "-X", "utf8", "pipeline/check_laws_list.py", "--export", "pipeline/laws_report.csv"],
     "danger":   False,
     "risk":     "safe",
   },
   "check_laws_v2": {
     "label":    "✅ Vérifier liste élargie v2 (~250 lois)",
     "desc":     "Vérifie les ~250 textes prioritaires (Constitution, Codes, Finances, Justice, Urbanisme, Travail, Santé, Environnement...) — affiche seulement les manquants groupés par domaine",
-    "category": "🔍 SEO & Index",
+    "category": "🔍 SEO & Qualité",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/check_laws_list.py", "--csv", "pipeline/laws_priority_list_v2.csv", "--missing-only"],
-    "danger":   False,
-    "risk":     "safe",
-  },
-  "check_laws_v2_export": {
-    "label":    "📊 Vérifier liste v2 + export CSV",
-    "desc":     "Même vérification v2 mais exporte le rapport complet dans laws_report_v2.csv (Excel-compatible)",
-    "category": "🔍 SEO & Index",
-    "cmd":      [sys.executable, "-X", "utf8", "pipeline/check_laws_list.py", "--csv", "pipeline/laws_priority_list_v2.csv", "--export", "pipeline/laws_report_v2.csv"],
     "danger":   False,
     "risk":     "safe",
   },
   "import_loi_36_15": {
     "label":    "💧 Importer Loi 36-15 (Eau)",
     "desc":     "Insère la Loi n° 36-15 relative à l'eau dans Supabase (BO 6490 — 22 sept. 2016) — texte manquant identifié par la vérification v2",
-    "category": "📥 Import & Crawl",
+    "category": "📥 Import & Sources",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_loi_36_15.py"],
     "danger":   False,
     "risk":     "safe",
@@ -335,7 +326,7 @@ SCRIPTS: Dict[str, Any] = {
   "veille_migrate": {
     "label":    "🛠️ Migrer BD — Veille (1× seulement)",
     "desc":     "Affiche le SQL à coller dans Supabase pour créer la table import_queue et les colonnes needs_update/pending_bo sur laws",
-    "category": "📬 Veille juridique",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/migrate_veille.py"],
     "danger":   False,
     "risk":     "safe",
@@ -343,7 +334,7 @@ SCRIPTS: Dict[str, Any] = {
   "veille_dry": {
     "label":    "🔍 Veille — aperçu (dry-run)",
     "desc":     "Scrape ~20 sources officielles, affiche les nouveaux textes détectés SANS écrire en base",
-    "category": "📬 Veille juridique",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/veille_juridique.py", "--dry-run"],
     "danger":   False,
     "risk":     "safe",
@@ -351,7 +342,7 @@ SCRIPTS: Dict[str, Any] = {
   "veille_run": {
     "label":    "🚀 Lancer la veille juridique",
     "desc":     "Scrape ~20 sources, insère les nouveaux textes dans import_queue, marque les textes existants modifiés",
-    "category": "📬 Veille juridique",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/veille_juridique.py"],
     "danger":   False,
     "risk":     "safe",
@@ -359,7 +350,7 @@ SCRIPTS: Dict[str, Any] = {
   "veille_source_sgg": {
     "label":    "📰 Veille SGG — Bulletin Officiel",
     "desc":     "Scrape uniquement sgg.gov.ma/BO (Bulletins Officiels) — source la plus fiable",
-    "category": "📬 Veille juridique",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/veille_juridique.py", "--source", "sgg_bo"],
     "danger":   False,
     "risk":     "safe",
@@ -367,7 +358,7 @@ SCRIPTS: Dict[str, Any] = {
   "veille_reset": {
     "label":    "♻️ Réinitialiser état veille",
     "desc":     "Remet veille_state.json à zéro — le prochain run repart de 0 pour toutes les sources",
-    "category": "📬 Veille juridique",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/veille_juridique.py", "--reset"],
     "danger":   True,
     "risk":     "sensitive",
@@ -377,7 +368,7 @@ SCRIPTS: Dict[str, Any] = {
   "import_queue_dry": {
     "label":    "🔍 Import queue — aperçu (dry-run)",
     "desc":     "Aperçu des textes à importer depuis import_queue SANS écriture en base",
-    "category": "📬 Veille juridique",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--dry-run"],
     "danger":   False,
     "risk":     "safe",
@@ -385,7 +376,7 @@ SCRIPTS: Dict[str, Any] = {
   "import_queue_run": {
     "label":    "📥 Importer depuis la queue (5 textes, mode semi)",
     "desc":     "Télécharge les PDFs + extrait le texte + insère 5 entrées dans laws (mode semi : calcule les scores, sans publication auto)",
-    "category": "📬 Veille juridique",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--mode", "semi", "--limit", "5"],
     "danger":   True,
     "risk":     "sensitive",
@@ -393,7 +384,7 @@ SCRIPTS: Dict[str, Any] = {
   "import_queue_all": {
     "label":    "📥 Importer tout (queue complète, mode semi)",
     "desc":     "Importe toutes les entrées 'pending' en mode semi — calcule les scores, jamais de publication automatique",
-    "category": "📬 Veille juridique",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--mode", "semi", "--limit", "100"],
     "danger":   True,
     "risk":     "sensitive",
@@ -401,7 +392,7 @@ SCRIPTS: Dict[str, Any] = {
   "import_queue_skip_pdf": {
     "label":    "📋 Import metadata seule (sans PDF, mode semi)",
     "desc":     "Insère les métadonnées dans laws sans télécharger les PDFs — calcule les scores sur métadonnées uniquement",
-    "category": "📬 Veille juridique",
+    "category": "⭐ Quotidien",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/import_from_queue.py", "--mode", "semi", "--skip-pdf", "--limit", "50"],
     "danger":   True,
     "risk":     "sensitive",
@@ -409,25 +400,16 @@ SCRIPTS: Dict[str, Any] = {
   "check_laws_v3": {
     "label":    "✅ Vérifier liste v3 (textes d'application)",
     "desc":     "Vérifie ~100 textes d'application : CCAG, décrets CT, finances, urbanisme, travail, santé, énergie — affiche seulement les manquants",
-    "category": "🔍 SEO & Index",
+    "category": "🔍 SEO & Qualité",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/check_laws_list.py",
                  "--csv", "pipeline/laws_priority_list_v3.csv", "--missing-only"],
-    "danger":   False,
-    "risk":     "safe",
-  },
-  "check_laws_v3_export": {
-    "label":    "📊 Vérifier liste v3 + export CSV",
-    "desc":     "Même vérification v3 mais exporte le rapport complet dans laws_report_v3.csv",
-    "category": "🔍 SEO & Index",
-    "cmd":      [sys.executable, "-X", "utf8", "pipeline/check_laws_list.py",
-                 "--csv", "pipeline/laws_priority_list_v3.csv", "--export", "pipeline/laws_report_v3.csv"],
     "danger":   False,
     "risk":     "safe",
   },
   "hide_sensitive": {
     "label":    "Masquer textes sensibles (dry-run)",
     "desc":     "Détecte les textes à masquer (données perso, < 30 mots) — dry-run par défaut",
-    "category": "🔍 SEO & Index",
+    "category": "🔍 SEO & Qualité",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/hide_sensitive_texts.py", "--dry-run"],
     "danger":   True,
     "risk":     "sensitive",
@@ -437,7 +419,7 @@ SCRIPTS: Dict[str, Any] = {
   "bo_monitor": {
     "label":    "Surveiller nouveaux BO",
     "desc":     "Vérifie les nouvelles parutions du Bulletin Officiel (dry-run)",
-    "category": "📰 Bulletins Officiels",
+    "category": "📥 Import & Sources",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/bo_monitor.py", "--dry-run"],
     "danger":   False,
     "risk":     "safe",
@@ -445,7 +427,7 @@ SCRIPTS: Dict[str, Any] = {
   "scrape_bo": {
     "label":    "Scraper Bulletins Officiels",
     "desc":     "Met à jour la table bulletins_officiels depuis les lois détectées",
-    "category": "📰 Bulletins Officiels",
+    "category": "📥 Import & Sources",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/scrape_bulletins.py"],
     "danger":   False,
     "risk":     "long",
@@ -453,7 +435,7 @@ SCRIPTS: Dict[str, Any] = {
   "build_bo_links": {
     "label":    "Rebuilder index BO",
     "desc":     "Récupère les métadonnées des 12 642 BO depuis huquqai.ma (100 par batch)",
-    "category": "📰 Bulletins Officiels",
+    "category": "📥 Import & Sources",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/build_bo_links.py", "--limit", "100"],
     "danger":   False,
     "risk":     "long",
@@ -463,23 +445,15 @@ SCRIPTS: Dict[str, Any] = {
   "build": {
     "label":    "npm run build:full",
     "desc":     "Build Vite + prerendering 82 pages (37 guides FR + 37 AR + 8 statiques) → dist/ prêt à uploader",
-    "category": "🔨 Build & Deploy",
+    "category": "🔨 Build & Déploiement",
     "cmd":      ["npm.cmd", "run", "build:full"],
-    "danger":   False,
-    "risk":     "safe",
-  },
-  "assign_domains_full": {
-    "label":    "1. Assigner domaines (post-PDF)",
-    "desc":     "Étape 1 après extract.py — remplit domain_ids[] sur les nouvelles lois insérées",
-    "category": "🔨 Build & Deploy",
-    "cmd":      [sys.executable, "-X", "utf8", "pipeline/assign_domains.py"],
     "danger":   False,
     "risk":     "safe",
   },
   "enrich_missing": {
     "label":    "2. Enrichir lois manquantes",
     "desc":     "Étape 2 après extract.py — génère canonical_slug, simple_summary_fr pour les nouvelles lois",
-    "category": "🔨 Build & Deploy",
+    "category": "🔨 Build & Déploiement",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/enrich.py", "--only-missing"],
     "danger":   False,
     "risk":     "ai",
@@ -488,7 +462,7 @@ SCRIPTS: Dict[str, Any] = {
   "rebuild_search": {
     "label":    "3. Rebuilder index recherche",
     "desc":     "Étape 3 après extract.py — reconstruit site_search_index avec les nouvelles lois",
-    "category": "🔨 Build & Deploy",
+    "category": "🔨 Build & Déploiement",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/build_site_search_index.py", "--source", "laws"],
     "danger":   False,
     "risk":     "safe",
@@ -496,7 +470,7 @@ SCRIPTS: Dict[str, Any] = {
   "favicon": {
     "label":    "Générer favicon",
     "desc":     "Génère favicon.ico et apple-touch-icon.png depuis public/favicon.svg",
-    "category": "🔨 Build & Deploy",
+    "category": "🔨 Build & Déploiement",
     "cmd":      [sys.executable, "pipeline/generate_favicon.py"],
     "danger":   False,
     "risk":     "safe",
@@ -504,7 +478,7 @@ SCRIPTS: Dict[str, Any] = {
   "git_push": {
     "label":    "🚀 Git Push → Vercel",
     "desc":     "git add . + commit + push → Vercel rebuilde et déploie www.juritheque.com automatiquement",
-    "category": "🔨 Build & Deploy",
+    "category": "🔨 Build & Déploiement",
     "cmd":      ["powershell", "-Command",
                  f"Set-Location '{ROOT_DIR}'; git add .; "
                  "$msg = 'deploy: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm'); "
@@ -517,7 +491,7 @@ SCRIPTS: Dict[str, Any] = {
   "fix_titles_dry": {
     "label":    "🔍 Aperçu — titres à corriger",
     "desc":     "Détecte tous les problèmes de titres dans toute la base (URL-encodés, noms-de-fichier, arabes corrompus…) sans modifier",
-    "category": "🔧 Corrections",
+    "category": "🔍 SEO & Qualité",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/fix_imported_titles.py", "--all", "--dry-run"],
     "danger":   False,
     "risk":     "safe",
@@ -525,7 +499,7 @@ SCRIPTS: Dict[str, Any] = {
   "fix_titles": {
     "label":    "🔧 Corriger tous les titres (IA)",
     "desc":     "Correction intelligente sur toute la base : URL-encodés, noms-de-fichier, arabes corrompus, codes numériques — Gemini génère les vrais titres",
-    "category": "🔧 Corrections",
+    "category": "🔍 SEO & Qualité",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/fix_imported_titles.py", "--all"],
     "danger":   False,
     "risk":     "sensitive",
@@ -533,7 +507,7 @@ SCRIPTS: Dict[str, Any] = {
   "reupload_pdfs": {
     "label":    "☁️ Re-upload PDFs → Storage",
     "desc":     "Re-télécharge les PDFs externes (ANRT, Adala…) et les uploade vers Supabase Storage pour l'aperçu intégré",
-    "category": "🔧 Corrections",
+    "category": "🔍 SEO & Qualité",
     "cmd":      [sys.executable, "-X", "utf8", "pipeline/fix_imported_titles.py", "--reupload-pdfs"],
     "danger":   False,
     "risk":     "long",
@@ -542,7 +516,7 @@ SCRIPTS: Dict[str, Any] = {
   "build_and_push": {
     "label":    "🏗️ Build + Push → Vercel",
     "desc":     "npm run build:full → git push → Vercel déploie (tout en une commande)",
-    "category": "🔨 Build & Deploy",
+    "category": "🔨 Build & Déploiement",
     "cmd":      ["powershell", "-Command",
                  f"Set-Location '{ROOT_DIR}'; npm.cmd run build:full; "
                  "if ($LASTEXITCODE -eq 0) { "
@@ -559,14 +533,11 @@ SCRIPTS: Dict[str, Any] = {
 
 # ── Catégories ordonnées ───────────────────────────────────────────────────────
 CATEGORIES = [
-  "🚀 Pipeline intelligent",
-  "📥 Import & Crawl",
-  "🧠 Enrichissement IA",
-  "🔍 SEO & Index",
-  "📰 Bulletins Officiels",
-  "📬 Veille juridique",
-  "🔧 Corrections",
-  "🔨 Build & Deploy",
+  "⭐ Quotidien",          # Veille + import queue + pipeline — actions du quotidien
+  "📥 Import & Sources",   # Crawlers, extracteurs, BOs
+  "🧠 Enrichissement IA",  # Résumés, traductions, domaines, scores
+  "🔍 SEO & Qualité",      # Sitemap, index, vérifications, corrections
+  "🔨 Build & Déploiement",# Build Vite + git push Vercel
 ]
 
 # ── État des jobs en mémoire ───────────────────────────────────────────────────
@@ -856,8 +827,10 @@ def build_html():
             rl    = {"safe": "SAFE", "long": "⏱ LONG", "sensitive": "⚠ SENSIBLE", "ai": "🤖 IA"}
             badge = f'<span class="risk-badge badge-{risk}">{rl.get(risk, risk)}</span>'
             desc  = f'<span class="btn-desc">{s["desc"]}</span>' if s.get("desc") else ""
+            is_dry = "dry" in sid or "dry-run" in s.get("label","").lower() or "aperçu" in s.get("label","").lower()
+            dry_cls = " btn-dry" if is_dry else ""
             btns += f'''
-              <button class="script-btn btn-{risk}" onclick="handleBtnClick(this)"
+              <button class="script-btn btn-{risk}{dry_cls}" onclick="handleBtnClick(this)"
                       data-id="{sid}" data-risk="{risk}"
                       data-label="{s['label']}" {da} {aca}>
                 <span class="btn-main"><span class="btn-label">{s['label']}</span>{badge}</span>{desc}
@@ -942,6 +915,7 @@ def build_html():
   .btn-ai{{background:#eff6ff;color:#1d4ed8;border-color:#93c5fd}}
   .btn-ai:hover{{background:#dbeafe}}
   .script-btn:disabled{{opacity:.5;cursor:not-allowed!important}}
+  .btn-dry{{border-style:dashed!important;opacity:.85}}
   .btn-running{{background:#fef3c7!important;color:#92400e!important;border-color:#fde68a!important;animation:pulse 1.5s infinite}}
   @keyframes pulse{{0%,100%{{opacity:1}}50%{{opacity:.7}}}}
   .risk-badge{{font-size:10px;font-weight:700;padding:1px 5px;border-radius:4px;text-transform:uppercase;letter-spacing:.03em}}

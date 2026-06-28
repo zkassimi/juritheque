@@ -15,6 +15,7 @@ SOURCES = [
         "url":   "https://www.sgg.gov.ma/arabe/Accueil.aspx",
         "type":  "bo_home",
         "freq":  "daily",
+        "mode":  "auto",   # SGG = source officielle de référence → auto
         "selectors": {"pdf": "a[href*='/BO/']"},
         "base_url": "https://www.sgg.gov.ma",
         "active": True,
@@ -25,6 +26,7 @@ SOURCES = [
         "url":   "https://www.sgg.gov.ma/BO/FR/",
         "type":  "bo_increment",
         "freq":  "daily",
+        "mode":  "auto",   # SGG incrémental → fiabilité maximale → auto
         # URL template : https://www.sgg.gov.ma/BO/FR/{year}/BO_{number}_Fr.pdf
         "bo_url_fr": "https://www.sgg.gov.ma/BO/FR/{year}/BO_{number}_Fr.pdf",
         "bo_url_ar": "https://www.sgg.gov.ma/BO/AR/{year}/BO_{number}_Ar.pdf",
@@ -37,6 +39,7 @@ SOURCES = [
         "url":   "https://adala.justice.gov.ma/",
         "type":  "pdf_list",
         "freq":  "weekly",
+        "mode":  "semi",   # Adala : fiable mais titres parfois en format arabe → validation
         "selectors": {"list": "a[href*='/api/uploads/']"},
         "base_url": "https://adala.justice.gov.ma",
         "active": True,
@@ -50,6 +53,7 @@ SOURCES = [
         "url":   "https://www.finances.gov.ma/fr/Pages/Textes-juridiques.aspx",
         "type":  "pdf_list",
         "freq":  "weekly",
+        "mode":  "semi",   # Finances : bonne source mais périmètre variable
         "selectors": {"list": "a[href$='.pdf']"},
         "base_url": "https://www.finances.gov.ma",
         "active": True,
@@ -60,6 +64,7 @@ SOURCES = [
         "url":   "https://lof.finances.gov.ma/",
         "type":  "pdf_list",
         "freq":  "monthly",
+        "mode":  "auto",   # LOF : périmètre très bien défini → auto
         "selectors": {"list": "a[href$='.pdf']"},
         "base_url": "https://lof.finances.gov.ma",
         "active": True,
@@ -73,6 +78,7 @@ SOURCES = [
         "url":   "https://www.bkam.ma/Supervision-bancaire/Recueil-des-textes-legislatifs-et-reglementaires",
         "type":  "pdf_list",
         "freq":  "monthly",
+        "mode":  "semi",   # BKAM : fiable, mais textes souvent bilingues complexes
         "selectors": {"list": "a[href$='.pdf']"},
         "base_url": "https://www.bkam.ma",
         "active": True,
@@ -83,6 +89,7 @@ SOURCES = [
         "url":   "https://www.anrt.ma/reglementation/lois/telecommunications",
         "type":  "pdf_list",
         "freq":  "monthly",
+        "mode":  "semi",
         "selectors": {"list": "a[href$='.pdf']"},
         "base_url": "https://www.anrt.ma",
         "active": True,
@@ -93,6 +100,7 @@ SOURCES = [
         "url":   "https://www.anrt.ma/reglementation/lois/autres-lois",
         "type":  "pdf_list",
         "freq":  "monthly",
+        "mode":  "semi",
         "selectors": {"list": "a[href$='.pdf']"},
         "base_url": "https://www.anrt.ma",
         "active": True,
@@ -103,6 +111,7 @@ SOURCES = [
         "url":   "https://www.anrt.ma/reglementation/decrets-reglementaires/telecommunications",
         "type":  "pdf_list",
         "freq":  "monthly",
+        "mode":  "semi",
         "selectors": {"list": "a[href$='.pdf']"},
         "base_url": "https://www.anrt.ma",
         "active": True,
@@ -113,6 +122,7 @@ SOURCES = [
         "url":   "https://www.cndp.ma/commission/textes-fondateurs.html",
         "type":  "pdf_list",
         "freq":  "monthly",
+        "mode":  "semi",
         "selectors": {"list": "a[href$='.pdf']"},
         "base_url": "https://www.cndp.ma",
         "active": True,
@@ -123,6 +133,7 @@ SOURCES = [
         "url":   "https://www.mcinet.gov.ma/fr/content/textes-juridiques",
         "type":  "pdf_list",
         "freq":  "monthly",
+        "mode":  "semi",   # Commerce : périmètre commercial bien défini
         "selectors": {"list": "a[href$='.pdf'], a[href$='.PDF']"},
         "base_url": "https://www.mcinet.gov.ma",
         "active": True,
@@ -136,6 +147,7 @@ SOURCES = [
         "url":   "https://www.sgg.gov.ma/textesconsolides.aspx",
         "type":  "pdf_list",
         "freq":  "monthly",
+        "mode":  "auto",   # Textes consolidés SGG = très haute fiabilité
         "selectors": {"list": "a[href$='.pdf']"},
         "base_url": "https://www.sgg.gov.ma",
         "active": True,
@@ -146,6 +158,7 @@ SOURCES = [
         "url":   "https://www.finances.gov.ma/fr/vous-orientez/Pages/lois-finances.aspx",
         "type":  "pdf_list",
         "freq":  "monthly",
+        "mode":  "manual",  # Filtres complexes → validation manuelle recommandée
         "selectors": {"list": "a[href$='.pdf']"},
         "base_url": "https://www.finances.gov.ma",
         # Exclure rapports de performance (pdp_*), notes budgétaires, circulaires.

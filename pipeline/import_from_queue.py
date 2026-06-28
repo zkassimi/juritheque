@@ -18,6 +18,12 @@ from pathlib import Path
 from datetime import date, datetime
 from urllib.parse import urlparse, unquote
 
+try:
+    from score_utils import compute_scores, apply_automation_rules, scores_to_db_fields
+    _SCORING_AVAILABLE = True
+except ImportError:
+    _SCORING_AVAILABLE = False
+
 from dotenv import load_dotenv
 from rich.console import Console
 from rich.table import Table
@@ -299,7 +305,7 @@ def insert_law(data: dict) -> tuple[bool, str]:
 
 # ── Import d'un item ─────────────────────────────────────────────────────────
 
-def import_item(item: dict, dry_run: bool, skip_pdf: bool) -> dict:
+def import_item(item: dict, dry_run: bool, skip_pdf: bool, pipeline_mode: str = "semi") -> dict:
     """Traite un item de la queue. Retourne un dict résultat."""
     iid       = item["id"]
     pdf_url   = item.get("pdf_url") or item.get("bo_url") or ""
@@ -425,9 +431,36 @@ def import_item(item: dict, dry_run: bool, skip_pdf: bool) -> dict:
 
     ok, info = insert_law(law_data)
     if ok:
+        # ── Scores de confiance + règles d'automatisation ─────────────────────
+        automation = {}
+        if _SCORING_AVAILABLE:
+            try:
+                scores    = compute_scores(law_data)
+                decision  = apply_automation_rules(scores, mode=pipeline_mode)
+                db_scores = scores_to_db_fields(scores)
+
+                patch = {**db_scores, **decision, "last_pipeline_run": datetime.now().isoformat()}
+                requests.patch(
+                    f"{SUPABASE_URL}/rest/v1/laws",
+                    headers={**HEADERS, "Prefer": "return=minimal"},
+                    params={"id": f"eq.{info}"},
+                    json=patch,
+                    timeout=10,
+                )
+                automation = {
+                    "score": scores.get("global_confidence_score", "?"),
+                    "publish": decision.get("is_publicly_indexable", False),
+                    "review": decision.get("needs_human_review", False),
+                }
+            except Exception as e:
+                console.print(f"    [yellow]⚠ Scoring échoué: {e}[/]")
+
         set_queue_status(iid, "done", f"Importé — id={info}")
         result["status"] = "✅ IMPORTÉ"
-        result["notes"]  = f"laws.id={info}"
+        score_str = f" | score={automation.get('score','?')}" if automation else ""
+        pub_str   = " | publié=OUI" if automation.get("publish") else ""
+        rev_str   = " | review=OUI" if automation.get("review") else ""
+        result["notes"] = f"laws.id={info}{score_str}{pub_str}{rev_str}"
     else:
         set_queue_status(iid, "rejected", f"Erreur insert: {info}")
         result["status"] = "❌ ERREUR"
@@ -444,6 +477,8 @@ def main():
     parser.add_argument("--limit",    type=int, default=50, help="Max items à traiter (défaut: 50)")
     parser.add_argument("--id",       help="Importer un seul item (UUID)")
     parser.add_argument("--skip-pdf", action="store_true", help="Ne pas télécharger/extraire les PDFs")
+    parser.add_argument("--mode",     choices=["auto","semi","manual"], default="semi",
+                        help="Mode pipeline : auto=publie si score≥85, semi=prépare+flag, manual=review systématique")
     args = parser.parse_args()
 
     console.print("\n[bold]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/]")
@@ -452,6 +487,7 @@ def main():
 
     if args.dry_run:
         console.print("[yellow]Mode DRY-RUN — aucune écriture en base[/]\n")
+    console.print(f"  Mode pipeline : [bold cyan]{args.mode.upper()}[/]")
 
     if not SUPABASE_URL or not SUPABASE_KEY:
         console.print("[red]❌ Variables SUPABASE_URL / SUPABASE_KEY manquantes[/]")
@@ -472,7 +508,7 @@ def main():
     imported = rejected = skipped = 0
 
     for item in track(items, description="  Import…"):
-        r = import_item(item, dry_run=args.dry_run, skip_pdf=args.skip_pdf)
+        r = import_item(item, dry_run=args.dry_run, skip_pdf=args.skip_pdf, pipeline_mode=args.mode)
         results.append(r)
         if "IMPORTÉ" in r["status"] or "DRY-RUN" in r["status"]:
             imported += 1

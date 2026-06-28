@@ -240,6 +240,16 @@ export default function Admin() {
     notify('Entrée rejetée')
   }
 
+  const rejectQueueBySource = async (source) => {
+    if (!window.confirm(`Rejeter TOUS les items de la source "${source}" ? Cette action est irréversible.`)) return
+    const { count } = await supabase.from('import_queue')
+      .update({ status: 'rejected', notes: 'Rejeté en masse — source inadaptée' })
+      .eq('source', source).eq('status', 'pending').select('*', { count: 'exact', head: true })
+    await loadQueue(1)
+    setQueuePage(1)
+    notify(`${count ?? 'Tous les'} items de "${source}" rejetés`)
+  }
+
   const doneQueueItem = async (id) => {
     await supabase.from('import_queue').update({ status: 'done' }).eq('id', id)
     setQueue(prev => prev.filter(q => q.id !== id))
@@ -1317,8 +1327,17 @@ export default function Admin() {
                                 <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${actionColor}`}>
                                   {actionLabel}
                                 </span>
-                                <span className="text-[10px] text-navy-400 bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-full">
-                                  {item.source}
+                                <span className="group/src relative">
+                                  <span className="text-[10px] text-navy-400 bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-full">
+                                    {item.source}
+                                  </span>
+                                  <button
+                                    onClick={() => rejectQueueBySource(item.source)}
+                                    className="hidden group-hover/src:inline-flex items-center gap-0.5 ml-1 text-[9px] text-red-500 hover:text-red-700 underline"
+                                    title={`Rejeter tous les items de la source "${item.source}"`}
+                                  >
+                                    <XCircle size={9} /> tout rejeter
+                                  </button>
                                 </span>
                                 {item.law_type && (
                                   <span className="text-[10px] text-navy-500 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">

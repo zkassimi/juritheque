@@ -6,7 +6,7 @@ import {
   Search, TrendingUp, BarChart2, Eye, Shield, RefreshCw,
   CheckCircle2, XCircle, Save, X, Database, UserPlus, Mail, Lock, User, Briefcase,
   Video, Play, ExternalLink, Menu, AlertTriangle, Flag, CheckCheck, Clock, Inbox, Download,
-  Bell, FileInput, Link2, RotateCcw
+  Bell, FileInput, Link2, RotateCcw, Terminal, Copy
 } from 'lucide-react'
 import { useLang } from '../contexts/LangContext'
 import { useAuth } from '../contexts/AuthContext'
@@ -110,6 +110,14 @@ export default function Admin() {
   const [needsUpdateLoading, setNeedsUpdateLoading] = useState(false)
   const [needsUpdateCount, setNeedsUpdateCount]     = useState(0)
   const [veilleTab, setVeilleTab]       = useState('queue') // 'queue' | 'updates'
+  const [copiedCmd, setCopiedCmd]       = useState(null)
+
+  const copyCmd = (key, text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedCmd(key)
+      setTimeout(() => setCopiedCmd(null), 2000)
+    })
+  }
 
   // Stats
   const [stats, setStats]       = useState({ laws: 0, users: 0, thisMonth: 0 })
@@ -1192,6 +1200,50 @@ export default function Admin() {
               >
                 <RefreshCw size={13} /> Actualiser
               </button>
+            </div>
+
+            {/* Panneau commandes pipeline */}
+            <div className="bg-gray-950 rounded-2xl p-4 mb-5">
+              <div className="flex items-center gap-2 mb-3">
+                <Terminal size={14} className="text-emerald-400" />
+                <span className="text-xs font-semibold text-gray-300">Commandes pipeline</span>
+                <span className="text-[10px] text-gray-500 ml-auto">exécuter dans le terminal du projet</span>
+              </div>
+              <div className="space-y-2">
+                {[
+                  { key: 'veille', label: '1. Détecter nouveaux textes', cmd: 'python pipeline/veille_juridique.py', color: 'text-blue-400' },
+                  { key: 'dry',    label: '2. Aperçu import (dry-run)',  cmd: 'python pipeline/import_from_queue.py --dry-run', color: 'text-amber-400' },
+                  { key: 'run',    label: '3. Importer (5 textes)',      cmd: 'python pipeline/import_from_queue.py --limit 5', color: 'text-emerald-400' },
+                ].map(({ key, label, cmd, color }) => (
+                  <div key={key} className="flex items-center gap-2 group">
+                    <span className={`text-[10px] w-44 flex-shrink-0 ${color}`}>{label}</span>
+                    <code className="flex-1 text-[11px] font-mono text-gray-200 bg-gray-900 px-3 py-1.5 rounded-lg truncate">
+                      {cmd}
+                    </code>
+                    <button
+                      onClick={() => copyCmd(key, cmd)}
+                      className="flex items-center gap-1 text-[10px] px-2 py-1.5 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white transition-colors flex-shrink-0"
+                      title="Copier"
+                    >
+                      {copiedCmd === key
+                        ? <><CheckCheck size={11} className="text-emerald-400" /> Copié</>
+                        : <><Copy size={11} /> Copier</>
+                      }
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 pt-3 border-t border-gray-800 flex items-center justify-between">
+                <span className="text-[10px] text-gray-500">Dashboard complet :</span>
+                <a
+                  href="http://localhost:8000"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-[10px] text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  <ExternalLink size={10} /> localhost:8000
+                </a>
+              </div>
             </div>
 
             {/* Onglets */}

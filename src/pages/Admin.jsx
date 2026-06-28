@@ -110,6 +110,8 @@ export default function Admin() {
   const [needsUpdateLoading, setNeedsUpdateLoading] = useState(false)
   const [needsUpdateCount, setNeedsUpdateCount]     = useState(0)
   const [veilleTab, setVeilleTab]       = useState('queue') // 'queue' | 'updates'
+  const [queuePage, setQueuePage]       = useState(1)
+  const QUEUE_PAGE_SIZE = 25
   const [copiedCmd, setCopiedCmd]       = useState(null)
 
   const copyCmd = (key, text) => {
@@ -165,14 +167,16 @@ export default function Admin() {
   }, [])
 
   // ── Fetch import_queue ──
-  const loadQueue = useCallback(async () => {
+  const loadQueue = useCallback(async (page = 1) => {
     setQueueLoading(true)
+    const from = (page - 1) * QUEUE_PAGE_SIZE
+    const to   = from + QUEUE_PAGE_SIZE - 1
     const { data, count } = await supabase
       .from('import_queue')
       .select('*', { count: 'exact' })
       .eq('status', 'pending')
       .order('detected_at', { ascending: false })
-      .limit(100)
+      .range(from, to)
     setQueue(data || [])
     setQueueCount(count || 0)
     setQueueLoading(false)
@@ -377,7 +381,7 @@ export default function Admin() {
   useEffect(() => { if (section === 'users')   loadUsers(userSearch) },  [section])
   useEffect(() => { if (section === 'reports')     loadReports(reportsFilter) }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (section === 'subscribers') loadSubscribers(subscribersSearch) }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { if (section === 'veille') { loadQueue(); loadNeedsUpdate() } }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (section === 'veille') { setQueuePage(1); loadQueue(1); loadNeedsUpdate() } }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (section === 'quality') loadQuality(qualityFilter) }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Subscribers ──
@@ -1295,6 +1299,11 @@ export default function Admin() {
                   </div>
                 ) : (
                   <div className="space-y-2">
+                    {/* Info pagination */}
+                    <div className="flex items-center justify-between mb-3 text-xs text-navy-400">
+                      <span>{queueCount} item{queueCount > 1 ? 's' : ''} en attente</span>
+                      <span>Page {queuePage} / {Math.ceil(queueCount / QUEUE_PAGE_SIZE)}</span>
+                    </div>
                     {queue.map(item => {
                       const actionColor = item.action === 'new' ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                         : item.action === 'update' ? 'bg-amber-50 text-amber-700 border-amber-200'
@@ -1365,6 +1374,29 @@ export default function Admin() {
                         </div>
                       )
                     })}
+
+                    {/* Contrôles pagination */}
+                    {Math.ceil(queueCount / QUEUE_PAGE_SIZE) > 1 && (
+                      <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-2">
+                        <button
+                          onClick={() => { setQueuePage(p => Math.max(1, p - 1)); loadQueue(queuePage - 1) }}
+                          disabled={queuePage <= 1}
+                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-gray-200 text-navy-600 hover:border-gold disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                        >
+                          ← Précédent
+                        </button>
+                        <span className="text-xs text-gray-400">
+                          {(queuePage - 1) * QUEUE_PAGE_SIZE + 1}–{Math.min(queuePage * QUEUE_PAGE_SIZE, queueCount)} sur {queueCount}
+                        </span>
+                        <button
+                          onClick={() => { setQueuePage(p => p + 1); loadQueue(queuePage + 1) }}
+                          disabled={queuePage >= Math.ceil(queueCount / QUEUE_PAGE_SIZE)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-gray-200 text-navy-600 hover:border-gold disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                        >
+                          Suivant →
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

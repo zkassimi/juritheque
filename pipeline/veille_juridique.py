@@ -206,7 +206,20 @@ def scrape_pdf_list(source: dict, state: dict) -> list[dict]:
         return []
     sel   = source.get("selectors", {}).get("list", "a[href$='.pdf']")
     links = extract_pdfs(soup, base, sel)
-    console.print(f"    {len(links)} lien(s) PDF trouvé(s)")
+
+    # Filtres d'inclusion/exclusion par pattern URL (définis dans veille_sources.py)
+    url_filter  = source.get("url_filter")
+    url_exclude = source.get("url_exclude")
+    if url_filter or url_exclude:
+        before = len(links)
+        if url_filter:
+            links = [l for l in links if re.search(url_filter, l["url"])]
+        if url_exclude:
+            links = [l for l in links if not re.search(url_exclude, l["url"])]
+        console.print(f"    Filtre URL : {before} → {len(links)} lien(s) retenus")
+    else:
+        console.print(f"    {len(links)} lien(s) PDF trouvé(s)")
+
     return _filter_new(links, state)
 
 

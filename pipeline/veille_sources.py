@@ -148,6 +148,10 @@ SOURCES = [
         "freq":  "monthly",
         "selectors": {"list": "a[href$='.pdf']"},
         "base_url": "https://www.finances.gov.ma",
+        # Exclure rapports de performance (pdp_*), notes budgétaires, circulaires.
+        # Accepter uniquement les vraies lois de finances : PLF*, LF*, loi*finances*, loi-de-finances*
+        "url_filter": r"(?i)(PLF|LF_|loi.?finances|loi.?de.?finances|loi-finances|\bLF\d)",
+        "url_exclude": r"(?i)(pdp_|Tome\d|dep_fisc|nrri|segma|foncier|lettre_cadrage|Circ_CG|note_|Synth|Rapport_PB|Genre|reprtition|np_fr|ncc_fr)",
         "active": True,
     },
 ]

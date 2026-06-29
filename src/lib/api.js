@@ -5,6 +5,19 @@
 import { supabase } from './supabase'
 import { expandQuery } from '../data/searchSynonyms'
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+// Détecte un numéro de loi et retourne les variantes (point ↔ tiret ↔ slash)
+function numberVariants(q) {
+  if (!/^\d/.test(q.trim())) return null          // doit commencer par un chiffre
+  if (!/[\.\-\/]/.test(q)) return null             // doit contenir un séparateur
+  const clean = q.trim()
+  const withDash = clean.replace(/[\.\-\/]/g, '-').replace(/-+/g, '-')
+  const withDot  = clean.replace(/[\.\-\/]/g, '.').replace(/\.+/g, '.')
+  const variants = [...new Set([clean, withDash, withDot])].filter(v => v !== clean)
+  return variants.length ? variants : null
+}
+
 // ── Laws ──────────────────────────────────────────────────────────────────────
 
 export async function fetchLaws({ q = '', types = [], domains = [], statuses = [],
@@ -49,12 +62,29 @@ export async function fetchLaws({ q = '', types = [], domains = [], statuses = [
       }
     } else {
       if (terms.length === 1 && q.length >= 4) {
-        // Mot unique suffisamment long : FTS pour un meilleur ranking
-        query = query.textSearch('search_vector', q, { type: 'websearch', config: 'french' })
+        const numVars = numberVariants(q)
+        if (numVars) {
+          // Numéro de loi : ILIKE avec point ET tiret (ex: "48.15" matche aussi "48-15")
+          const numParts = [q, ...numVars].map(v =>
+            `title_fr.ilike.%${v}%,title_ar.ilike.%${v}%,number.ilike.%${v}%`
+          ).join(',')
+          query = query.or(numParts)
+        } else {
+          // Mot unique suffisamment long : FTS pour un meilleur ranking
+          query = query.textSearch('search_vector', q, { type: 'websearch', config: 'french' })
+        }
       } else {
         // Plusieurs mots : ILIKE par terme ANDé (gère "marché pu" → "marchés publics")
         for (const term of terms) {
-          query = query.or(`title_fr.ilike.%${term}%,number.ilike.%${term}%,title_ar.ilike.%${term}%`)
+          const numVars = numberVariants(term)
+          if (numVars) {
+            const numParts = [term, ...numVars].map(v =>
+              `title_fr.ilike.%${v}%,title_ar.ilike.%${v}%,number.ilike.%${v}%`
+            ).join(',')
+            query = query.or(numParts)
+          } else {
+            query = query.or(`title_fr.ilike.%${term}%,number.ilike.%${term}%,title_ar.ilike.%${term}%`)
+          }
         }
       }
     }

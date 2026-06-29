@@ -114,9 +114,21 @@ export default function SearchBar({ size = 'md', onSearch, compact = false, clas
     } else {
       // Pas de synonymes : cherche terme par terme (AND) — comportement normal
       for (const term of terms) {
-        lawQ = isArabic
-          ? lawQ.or(`title_ar.ilike.%${term}%,number.ilike.%${term}%`)
-          : lawQ.or(`title_fr.ilike.%${term}%,number.ilike.%${term}%,title_ar.ilike.%${term}%`)
+        // Numéro de loi : ajouter variante tiret/point (48.15 ↔ 48-15)
+        const numVars = !isArabic && /^\d[\d\.\-\/]+$/.test(term.trim())
+          ? [term.replace(/[\.\-\/]/g, '-'), term.replace(/[\.\-\/]/g, '.')]
+              .filter(v => v !== term)
+          : []
+        if (numVars.length) {
+          const numParts = [term, ...numVars].map(v =>
+            `title_fr.ilike.%${v}%,title_ar.ilike.%${v}%,number.ilike.%${v}%`
+          ).join(',')
+          lawQ = lawQ.or(numParts)
+        } else {
+          lawQ = isArabic
+            ? lawQ.or(`title_ar.ilike.%${term}%,number.ilike.%${term}%`)
+            : lawQ.or(`title_fr.ilike.%${term}%,number.ilike.%${term}%,title_ar.ilike.%${term}%`)
+        }
       }
     }
 

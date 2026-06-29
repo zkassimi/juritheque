@@ -85,6 +85,7 @@ export default function SearchBar({ size = 'md', onSearch, compact = false, clas
     const terms = dq.trim().split(/\s+/).filter(t => t.length >= 1)
     let lawQ = supabase.from('laws')
       .select('id,title_fr,title_ar,number,type,canonical_slug,status,domain_id')
+      .eq('is_publicly_indexable', true)
       .limit(5)
 
     if (expanded.length > 1) {

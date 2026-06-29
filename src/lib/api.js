@@ -13,6 +13,7 @@ export async function fetchLaws({ q = '', types = [], domains = [], statuses = [
 
   let query = supabase.from('laws').select('*', { count: 'exact' })
     .eq('is_published', true)
+    .eq('is_publicly_indexable', true)
 
   if (q) {
     const isArabic = /[؀-ۿ]/.test(q)
@@ -185,6 +186,7 @@ export async function fetchLawsByDomain(domainId, { page = 1, pageSize = 18 } = 
     .from('laws')
     .select('*', { count: 'exact' })
     .eq('is_published', true)
+    .eq('is_publicly_indexable', true)
     .or(`domain_ids.cs.{${domainId}},domain_id.eq.${domainId}`)
     .order('date', { ascending: false, nullsFirst: false })
     .range(from, from + pageSize - 1)
@@ -197,6 +199,7 @@ export async function fetchRecentLaws(limit = 6) {
     .from('laws')
     .select('*')
     .eq('is_published', true)
+    .eq('is_publicly_indexable', true)
     .order('created_at', { ascending: false })
     .limit(limit)
   if (error) throw error
@@ -269,6 +272,7 @@ export async function fetchRelatedLaws(domainId, excludeId, limit = 3) {
     .from('laws')
     .select('*')
     .eq('is_published', true)
+    .eq('is_publicly_indexable', true)
     .or(`domain_ids.cs.{${domainId}},domain_id.eq.${domainId}`)
     .neq('id', excludeId)
     .order('date', { ascending: false, nullsFirst: false })
@@ -314,7 +318,7 @@ export async function fetchDomainById(id) {
 
 export async function fetchStats() {
   const [lawsRes, domainsRes] = await Promise.all([
-    supabase.from('laws').select('*', { count: 'exact', head: true }).eq('is_published', true),
+    supabase.from('laws').select('*', { count: 'exact', head: true }).eq('is_published', true).eq('is_publicly_indexable', true),
     supabase.from('domains').select('*', { count: 'exact', head: true }),
   ])
   return {

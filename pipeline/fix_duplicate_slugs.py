@@ -33,8 +33,20 @@ def slugify(text: str) -> str:
 
 def make_slug_from_law(law: dict, suffix: str = '') -> str:
     """Génère un slug unique depuis type + number + mots-clés titre."""
-    type_s   = slugify(law.get('type') or 'texte')
-    number_s = slugify(law.get('number') or '')
+    type_s = slugify(law.get('type') or 'texte')
+
+    # Nettoyer le number : enlever le nom du type s'il est déjà dedans
+    # ex: "Dahir n°1-03-194" → garder juste "1-03-194"
+    raw_num = (law.get('number') or '').strip()
+    type_lc = (law.get('type') or '').lower()
+    # Supprimer le préfixe type + "n°" / "n " du numéro
+    clean_num = re.sub(
+        r'^(' + re.escape(type_lc) + r')\s*n[o°]?\s*',
+        '', raw_num, flags=re.IGNORECASE
+    ).strip()
+    if not clean_num:
+        clean_num = raw_num
+    number_s = slugify(clean_num)
 
     title = law.get('title_fr') or ''
     words = re.sub(r'[^a-zA-Z0-9\s]', ' ', title).lower().split()

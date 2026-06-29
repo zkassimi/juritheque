@@ -58,6 +58,41 @@ def normalize_number(n: str) -> str:
     n = re.sub(r'[\s\.\-/]+', '-', n).strip('-')
     return n
 
+# Mots-clés qui signalent que le texte est LIÉ à un autre (pas un doublon)
+MODIFIER_KEYWORDS = [
+    'modifiant', 'complétant', 'modifiant et complétant',
+    'abrogeant', 'portant abrogation',
+    'portant application', "pris pour l'application",
+    'portant promulgation',
+    'portant exécution',
+    'relatif à l\'application',
+]
+
+def type_category(law: dict) -> str:
+    """Catégorie de type pour le groupage — seuls les textes de même catégorie sont dédoublonnés."""
+    t = (law.get('type') or '').lower()
+    if 'loi organique' in t:                           return 'loi-organique'
+    if 'loi' in t:                                     return 'loi'
+    if 'dahir' in t:                                   return 'dahir'
+    if 'décret royal' in t or 'decret royal' in t:     return 'decret-royal'
+    if 'décret' in t or 'decret' in t:                 return 'decret'
+    if 'arrêté conjoint' in t or 'arrete conjoint' in t: return 'arrete-conjoint'
+    if 'arrêté' in t or 'arrete' in t:                 return 'arrete'
+    if 'circulaire' in t:                              return 'circulaire'
+    return 'autre'
+
+def is_modifier_text(law: dict) -> bool:
+    """True si le texte modifie/complète/abroge/applique un autre texte → ne pas dédoublonner."""
+    title = (law.get('title_fr') or '').lower()
+    return any(kw in title for kw in MODIFIER_KEYWORDS)
+
+def dedup_key(law: dict) -> str:
+    """Clé de dédoublonnage = catégorie_type::numéro_normalisé.
+    Les textes liés (modifiant, décret d'application, etc.) sont exclus."""
+    num = normalize_number(law.get('number') or '')
+    cat = type_category(law)
+    return f'{cat}::{num}'
+
 def is_placeholder(title: str) -> bool:
     if not title or len(title.strip()) < 10: return True
     t = title.strip().lower()
@@ -111,23 +146,57 @@ def main():
     laws = fetch_all()
     print(f'{len(laws):,} lois chargées\n', flush=True)
 
-    # Grouper par numéro normalisé
-    by_num = defaultdict(list)
+    # Grouper par clé = type_catégorie::numéro_normalisé
+    # Exclure les textes "liés" (modificatifs, décrets d'application, promulgation)
+    by_key = defaultdict(list)
+    excluded_modifiers = 0
     for law in laws:
+        if is_modifier_text(law):
+            excluded_modifiers += 1
+            continue                          # texte lié → jamais dédoublonné
+        key = dedup_key(law)
         num = normalize_number(law.get('number') or '')
         if num and len(num) > 2:
-            by_num[num].append(law)
+            by_key[key].append(law)
 
-    groups = {k: v for k, v in by_num.items() if len(v) > 1}
+    groups = {k: v for k, v in by_key.items() if len(v) > 1}
     total_records = sum(len(v) for v in groups.values())
-    print(f'{len(groups)} groupes de doublons — {total_records} enregistrements concernés\n', flush=True)
+    print(f'{excluded_modifiers} textes liés (modificatifs/application) exclus du dédoublonnage', flush=True)
+    print(f'{len(groups)} groupes de vrais doublons — {total_records} enregistrements concernés\n', flush=True)
 
-    hidden  = 0
-    kept    = 0
-    errors  = 0
+    # Calculer les IDs qui doivent être masqués (les "others" de chaque groupe)
+    ids_to_hide = set()
+    ids_to_keep = set()   # best de chaque groupe
+    for group in groups.values():
+        scored = sorted(group, key=lambda l: score_law(l), reverse=True)
+        ids_to_keep.add(scored[0]['id'])
+        for law in scored[1:]:
+            ids_to_hide.add(law['id'])
 
+    # Records actuellement False mais PAS dans ids_to_hide → faux positifs à restaurer
+    false_records = [l for l in laws if l.get('is_publicly_indexable') == False]
+    to_restore = [l for l in false_records if l['id'] not in ids_to_hide]
+    print(f'{len(false_records)} records actuellement masqués', flush=True)
+    print(f'{len(to_restore)} faux positifs à restaurer (masqués à tort par ancienne logique)', flush=True)
+    print(f'{len(ids_to_hide)} vrais doublons à masquer\n', flush=True)
+
+    hidden = restored = kept = errors = 0
+
+    # 1. Restaurer les faux positifs
+    for law in to_restore:
+        if not args.dry_run:
+            try:
+                patch_indexable(law['id'], True)
+                restored += 1
+                time.sleep(0.02)
+            except Exception as e:
+                print(f'  ✗ Restauration id={law["id"]}: {e}', flush=True)
+                errors += 1
+        else:
+            restored += 1
+
+    # 2. Appliquer la nouvelle déduplication
     for num, group in sorted(groups.items(), key=lambda x: -len(x[1])):
-        # Scorer chaque record
         scored = sorted(group, key=lambda l: score_law(l), reverse=True)
         best   = scored[0]
         others = scored[1:]
@@ -136,10 +205,16 @@ def main():
         print(f'  ✓ KEEP  id={best["id"]:>6} score={score_law(best)} '
               f'src={(best.get("source_name") or "?")[:20]:20} title={str(best.get("title_fr") or "")[:50]}', flush=True)
 
+        if not args.dry_run and best.get('is_publicly_indexable') != True:
+            try:
+                patch_indexable(best['id'], True)
+                print(f'    ↑ Restauré à True', flush=True)
+            except Exception as e:
+                print(f'    ✗ Erreur restauration id={best["id"]}: {e}', flush=True)
+
         for law in others:
             print(f'  → HIDE  id={law["id"]:>6} score={score_law(law)} '
                   f'src={(law.get("source_name") or "?")[:20]:20} title={str(law.get("title_fr") or "")[:50]}', flush=True)
-
             if not args.dry_run:
                 try:
                     patch_indexable(law['id'], False)
@@ -150,14 +225,13 @@ def main():
                     errors += 1
             else:
                 hidden += 1
-
         kept += 1
 
     print(f'\n{"═"*55}', flush=True)
     if args.dry_run:
-        print(f'DRY-RUN — {hidden} doublons seraient masqués ({kept} gardés)', flush=True)
+        print(f'DRY-RUN — {restored} faux positifs seraient restaurés, {hidden} vrais doublons masqués', flush=True)
     else:
-        print(f'✅ Masqués : {hidden}  |  ✓ Gardés : {kept}  |  ✗ Erreurs : {errors}', flush=True)
+        print(f'↑ Restaurés : {restored}  |  ❌ Masqués : {hidden}  |  ✗ Erreurs : {errors}', flush=True)
     print(f'{"═"*55}', flush=True)
 
 if __name__ == '__main__':

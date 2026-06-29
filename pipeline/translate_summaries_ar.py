@@ -70,16 +70,29 @@ OR_HEADERS = {
 }
 
 # ── Prompt de traduction juridique ─────────────────────────────────────────────
-SYSTEM_PROMPT = """Tu es un traducteur juridique expert en droit marocain.
-Tu traduis des résumés juridiques du français vers l'arabe standard moderne (الفصحى).
+SYSTEM_PROMPT = """أنت مترجم قانوني خبير في القانون المغربي ومتخصص في الكتابة القانونية لتحسين محركات البحث (SEO).
+تترجم الملخصات القانونية من الفرنسية إلى العربية الفصحى القانونية.
 
-Règles impératives :
-- Utilise le vocabulaire juridique officiel marocain (ex: ظهير، مرسوم، قانون، قرار، مقرر...)
-- Conserve les numéros, dates et références tels quels
-- Même longueur et structure que l'original (3 phrases environ)
-- Ne traduis PAS le nom propre "JuriThèque"
-- Style professionnel et formel, pas de langage courant
-- Retourne UNIQUEMENT la traduction arabe, sans explication ni commentaire"""
+قواعد صارمة :
+- استخدم العربية الفصحى القانونية الرسمية حصراً — يُحظر تماماً استخدام الدارجة المغربية
+- الكلمات الدارجة المحظورة : هاد، ديال، ديالو، باش، كيدخل، هادشي، واش، ماشي، كيكون
+- استخدم المصطلحات القانونية الرسمية المغربية : ظهير، مرسوم، قانون، قرار، مقرر، منشور، دورية، بلاغ، نظام، لائحة
+- حافظ على نفس طول النص الأصلي وبنيته (4 إلى 5 جمل، 600 إلى 900 حرف)
+- أدرج الكلمات المفتاحية القانونية بشكل طبيعي : نوع النص + رقمه + المجال + الموضوع الرئيسي
+- استخدم الأفعال القانونية المناسبة لكل نوع نص — جدول ترجمة إلزامي :
+  * "promulgue / met en vigueur / met en œuvre une loi" → صدر بتنفيذ / يُنفّذ (وليس "يُقرّر تطبيق")
+  * "institue / crée / établit" → يُحدث / يُنشئ
+  * "fixe / détermine" → يُحدّد / يَنص على
+  * "réglemente / régit" → يُنظّم
+  * "modifie" → يُعدّل وَيُتمّم
+  * "abroge" → يُلغي
+  * "soumet à autorisation" → يُخضع لنظام الترخيص المسبق
+  * "impose des sanctions" → يُرتّب عقوبات جنائية/إدارية
+  * "s'applique à" → يسري على / يُطبَّق على
+- لا تترجم حرفياً : "impose des obligations strictes" لا تصبح "يُلزم بالتزامات صارمة" — بل اذكر الالتزامات الفعلية الواردة في النص
+- احتفظ بالأرقام والتواريخ والمراجع كما هي
+- لا تترجم الاسم الخاص "JuriThèque"
+- أعد الترجمة فقط، بدون أي مقدمة أو تعليق أو بادئة (ممنوع البدء بـ "ملخص:" أو "الترجمة:" أو ما شابه)"""
 
 def translate_fr_to_ar(text_fr, model=DEFAULT_MODEL, law_number=''):
     """Traduit un résumé juridique FR → AR via OpenRouter."""
@@ -92,7 +105,7 @@ def translate_fr_to_ar(text_fr, model=DEFAULT_MODEL, law_number=''):
             {'role': 'system', 'content': SYSTEM_PROMPT},
             {'role': 'user',   'content': f'Traduis ce résumé juridique en arabe :\n\n{text_fr.strip()}'},
         ],
-        'max_tokens': 900,
+        'max_tokens': 1500,
         'temperature': 0.1,   # très déterministe pour la traduction
     }
 
@@ -107,9 +120,12 @@ def translate_fr_to_ar(text_fr, model=DEFAULT_MODEL, law_number=''):
             r.raise_for_status()
             data = r.json()
             ar = data['choices'][0]['message']['content'].strip()
-            # Nettoyage : retirer les guillemets englobants si présents
+            # Nettoyage : guillemets englobants
             if ar.startswith('"') and ar.endswith('"'):
                 ar = ar[1:-1].strip()
+            # Nettoyage : préfixes parasites (ملخص: / الترجمة: / **ملخص** etc.)
+            import re as _re
+            ar = _re.sub(r'^[\*\*]*(ملخص|الترجمة|ترجمة|النص|الخلاصة)\s*[:：\*\*]*\s*', '', ar).strip()
             return ar
         except requests.exceptions.HTTPError as e:
             if r.status_code == 429:
@@ -229,7 +245,13 @@ def main():
                 skipped += 1
                 continue
 
-            # Traduction
+            # Mode dry-run : afficher l'intention sans appeler l'IA
+            if args.dry_run:
+                print(f'  DRY ✓ {typ[:8]:<8} {str(number)[:25]:<25} | {len(fr_text)} chars FR → serait traduit', flush=True)
+                done += 1
+                continue
+
+            # Traduction réelle
             ar_text = translate_fr_to_ar(fr_text, model=args.model, law_number=number)
 
             if not ar_text:
@@ -237,14 +259,12 @@ def main():
                 print(f'  ✗ Échec: {typ} {number}', flush=True)
                 continue
 
-            # Écriture
-            if not args.dry_run:
-                try:
-                    update_ar_summary(law_id, ar_text)
-                except Exception as e:
-                    errors += 1
-                    print(f'  ✗ Erreur update {number}: {e}', flush=True)
-                    continue
+            try:
+                update_ar_summary(law_id, ar_text)
+            except Exception as e:
+                errors += 1
+                print(f'  ✗ Erreur update {number}: {e}', flush=True)
+                continue
 
             done += 1
             elapsed = time.time() - start_time

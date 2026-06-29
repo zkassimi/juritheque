@@ -109,13 +109,13 @@ export async function fetchLawById(id) {
  *     anciens slugs générés avec le numéro dupliqué)
  */
 export async function fetchLawBySlug(slug) {
-  // 1. Essai par canonical_slug exact
-  const { data, error } = await supabase
+  // 1. Essai par canonical_slug exact (limit(1) au lieu de maybeSingle pour tolérer les doublons)
+  const { data: exactData } = await supabase
     .from('laws')
     .select('*')
     .eq('canonical_slug', slug)
-    .maybeSingle()
-  if (data) return data
+    .limit(1)
+  if (exactData?.[0]) return exactData[0]
 
   // 2. Fallback : ID numérique (anciens liens)
   if (/^\d+$/.test(slug)) {

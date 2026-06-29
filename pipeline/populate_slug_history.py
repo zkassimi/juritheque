@@ -11,13 +11,17 @@ Usage :
 """
 
 import os, re, unicodedata, time, argparse
+from pathlib import Path
 import httpx
 from dotenv import load_dotenv
 
-load_dotenv()
+# Cherche .env dans le répertoire parent du script (racine du projet)
+load_dotenv(Path(__file__).parent.parent / '.env')
 
-SUPABASE_URL = os.environ['VITE_SUPABASE_URL']
-SUPABASE_KEY = os.environ['VITE_SUPABASE_ANON_KEY']
+SUPABASE_URL = os.environ.get('VITE_SUPABASE_URL') or os.environ.get('SUPABASE_URL', '')
+SUPABASE_KEY = os.environ.get('VITE_SUPABASE_ANON_KEY') or os.environ.get('SUPABASE_KEY', '')
+if not SUPABASE_URL or not SUPABASE_KEY:
+    raise SystemExit('Erreur : VITE_SUPABASE_URL ou VITE_SUPABASE_ANON_KEY manquant dans .env')
 PAGE_SIZE    = 500
 
 HEADERS = {

@@ -121,19 +121,18 @@ Titre français (1 ligne, sans guillemets) :"""
 
 
 def fetch_adala_laws(client: httpx.Client, limit: int | None) -> list[dict]:
-    """Récupère les lois Adala avec title_ar non null."""
+    """Récupère les lois avec title_ar non null (toutes sources)."""
     all_rows = []
     offset, batch = 0, 500
 
-    print("-> Récupération des lois Adala depuis Supabase...", flush=True)
+    print("-> Récupération des lois avec title_ar depuis Supabase...", flush=True)
     while True:
         params = {
-            "select":      "id,number,title_fr,title_ar,type",
-            "source_name": "eq.Adala",
-            "title_ar":    "not.is.null",
-            "order":       "id.asc",
-            "limit":       str(batch),
-            "offset":      str(offset),
+            "select":   "id,number,title_fr,title_ar,type",
+            "title_ar": "not.is.null",
+            "order":    "id.asc",
+            "limit":    str(batch),
+            "offset":   str(offset),
         }
         resp = client.get(
             f"{SUPABASE_URL}/rest/v1/laws",
@@ -187,7 +186,7 @@ def main():
         print("[!] ANTHROPIC_API_KEY ou OPENROUTER_API_KEY manquant dans .env")
         sys.exit(1)
 
-    print(f"\n>> Traduction title_ar -> title_fr (Lois Adala)"
+    print(f"\n>> Traduction title_ar -> title_fr (toutes sources)"
           f"{'  [DRY-RUN]' if args.dry_run else ''}", flush=True)
 
     translated = 0

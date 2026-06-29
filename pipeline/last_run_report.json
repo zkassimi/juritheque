@@ -1,0 +1,23 @@
+{
+  "started_at": "2026-06-29 11:46",
+  "mode": "semi",
+  "dry_run": false,
+  "source_filter": "toutes",
+  "sources_checked": 0,
+  "items_detected": 0,
+  "items_imported": 0,
+  "items_published": 0,
+  "items_draft": 0,
+  "items_review": 0,
+  "errors": 0,
+  "warnings": 0,
+  "ai_cost_usd": 0.15,
+  "duration_seconds": 2,
+  "steps": {
+    "enrich": {
+      "ok": true,
+      "duration": 1.0,
+      "returncode": 0
+    }
+  }
+}

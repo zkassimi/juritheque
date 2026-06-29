@@ -162,6 +162,23 @@ SCRIPTS: Dict[str, Any] = {
   },
 
   # ── Enrichissement IA ────────────────────────────────────────────────────────
+  "enrich_all": {
+    "label":    "🚀 Enrichir tout (7 étapes)",
+    "desc":     "Pipeline complet : Titres → Domaines → Résumés FR (toutes sources) → Résumés AR → Scores. Couvre SGG, ANRT, BKAM, CDR, Adala et toutes les autres sources.",
+    "category": "🧠 Enrichissement IA",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/enrich_pipeline.py", "--limit", "300"],
+    "danger":   False,
+    "risk":     "ai",
+    "ai_cost_note": "~$0.05-0.10 pour 300 textes (Gemini Flash Lite)",
+  },
+  "enrich_all_dry": {
+    "label":    "🔍 Aperçu enrichissement tout",
+    "desc":     "Dry-run 7 étapes — voir combien de textes seraient traités sans rien écrire.",
+    "category": "🧠 Enrichissement IA",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/enrich_pipeline.py", "--dry-run"],
+    "danger":   False,
+    "risk":     "safe",
+  },
   "enrich": {
     "label":    "Enrichir lois (résumés + TOC)",
     "desc":     "Génère résumés FR, TOC, mots-clés via OpenRouter (200 lois)",
@@ -172,13 +189,30 @@ SCRIPTS: Dict[str, Any] = {
     "ai_cost_note": "~200 lois × $0.002 ≈ $0.40 (OpenRouter)",
   },
   "summaries_adala_new": {
-    "label":    "Générer résumés manquants",
-    "desc":     "Génère des résumés IA via Gemini pour les lois sans résumé (title_ar → résumé FR)",
+    "label":    "📝 Résumés manquants (null)",
+    "desc":     "Résumé FR + keywords pour les lois sans résumé. Prompt SEO : 600-900 chars + 15 mots-clés.",
     "category": "🧠 Enrichissement IA",
-    "cmd":      [sys.executable, "-X", "utf8", "pipeline/generate_adala_summaries.py", "--mode", "null", "--limit", "500"],
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/generate_adala_summaries.py", "--mode", "null", "--limit", "300"],
     "danger":   False,
     "risk":     "ai",
-    "ai_cost_note": "~500 lois × $0.00008 ≈ $0.04 (Gemini 2.5 Flash Lite)",
+    "ai_cost_note": "~300 lois × $0.00012 ≈ $0.04 (Gemini 2.5 Flash Lite)",
+  },
+  "summaries_force": {
+    "label":    "🔄 Régénérer tout (force) — 300/batch",
+    "desc":     "Écrase TOUS les résumés existants avec le nouveau prompt SEO (600-900 chars + keywords). Remet AR à NULL. Relancer autant de fois que nécessaire (~26 fois pour 7 567 textes).",
+    "category": "🧠 Enrichissement IA",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/generate_adala_summaries.py", "--mode", "force", "--limit", "300"],
+    "danger":   False,
+    "risk":     "ai",
+    "ai_cost_note": "~300 lois × $0.00012 ≈ $0.04/batch — total ~$1.00 pour les 7 567",
+  },
+  "summaries_force_dry": {
+    "label":    "🔍 Aperçu régénération (force)",
+    "desc":     "Dry-run — voir les 300 prochains textes à régénérer sans écrire.",
+    "category": "🧠 Enrichissement IA",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/generate_adala_summaries.py", "--mode", "force", "--limit", "300", "--dry-run"],
+    "danger":   False,
+    "risk":     "safe",
   },
   "summaries_adala_fix": {
     "label":    "Améliorer résumés génériques",

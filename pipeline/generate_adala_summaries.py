@@ -1,9 +1,9 @@
 """
-JuriThèque — Génération de résumés IA pour les lois Adala
-══════════════════════════════════════════════════════════
+JuriThèque — Génération de résumés IA pour toutes les sources
+══════════════════════════════════════════════════════════════
 Génère simple_summary_fr via Gemini 2.5 Flash Lite à partir du titre arabe
-(title_ar) et des métadonnées. Produit de vrais résumés juridiques, pas du
-texte générique.
+(title_ar) et des métadonnées. Couvre toutes les sources (SGG, ANRT, BKAM,
+CDR, Adala, etc.) — pas seulement Adala.
 
 Modes :
   --mode null          : lois sans résumé (défaut)
@@ -97,18 +97,40 @@ OR_HEADERS = {
 }
 
 # ── Prompt LLM ─────────────────────────────────────────────────────────────────
-SYSTEM_PROMPT = """Tu es un expert en droit marocain. Tu rédiges des résumés juridiques courts et précis en français.
+SYSTEM_PROMPT = """Tu es un expert en droit marocain spécialisé en rédaction juridique SEO. Tu génères un résumé juridique ET une liste de mots-clés pour les moteurs de recherche.
 
-Règles impératives :
-- 3 phrases maximum, 350-450 caractères au total
-- Explique l'OBJET du texte : ce qu'il régit, qui il concerne, ce qu'il impose ou autorise
-- Style juridique professionnel et formel
-- Ne mentionne JAMAIS : "Adala", "PDF", "JuriThèque", "base de données", "portail", "téléchargeable"
-- Ne commence pas par "Ce texte", "Ce document" — commence par une phrase informative
-- Retourne UNIQUEMENT le résumé, sans explication ni commentaire"""
+Tu retournes UNIQUEMENT un JSON valide avec exactement deux champs :
+{
+  "summary": "...",
+  "keywords": ["...", "...", ...]
+}
 
-def generate_summary_llm(law: dict, model: str = DEFAULT_MODEL) -> str | None:
-    """Génère un résumé via LLM à partir du titre arabe + métadonnées."""
+RÈGLES POUR LE RÉSUMÉ (champ "summary") :
+- 4 à 5 phrases, 600 à 900 caractères (environ 100-150 mots), texte brut sans Markdown
+- Structure en 3 points :
+  1. OBJET : verbes précis (institue, fixe, crée, abroge, modifie, réglemente, soumet à autorisation...)
+  2. CHAMP D'APPLICATION : qui est concerné + secteur concerné
+  3. PORTÉE : obligations CONCRÈTES (permis requis, délais, seuils chiffrés, organes créés, sanctions pénales/administratives)
+- Mentionne explicitement : domaine juridique + acteurs institutionnels (Bank Al-Maghrib, ANRT, Ministère de...)
+- INTERDIT : "impose des obligations strictes", "prévoit des dispositions", "établit un cadre" sans préciser lesquels
+- INTERDIT : "Adala", "PDF", "JuriThèque", "base de données", "portail", "téléchargeable"
+- Ne commence pas par "Ce texte" ou "Ce document"
+
+RÈGLES POUR LES MOTS-CLÉS (champ "keywords") :
+- 12 à 18 mots-clés en français
+- Couvrir tous les types de recherche :
+  * Exact : "{type} n° {numéro}", "{type} {numéro} maroc"
+  * Long-tail descriptif : "{objet} maroc", "{domaine} marocain {année}"
+  * Long-tail pratique : "comment {faire X} maroc", "procédure {X} maroc", "conditions {X} maroc"
+  * Variantes populaires : nom court du texte, acronyme, titre court connu
+  * Questions utilisateurs : "qui peut {faire X}", "quel délai pour {X}", "sanction {infraction}"
+- Mélanger : termes officiels + termes de recherche citoyens/praticiens
+- Pas de doublons, pas de stop words seuls ("le", "de")"""
+
+def generate_summary_llm(law: dict, model: str = DEFAULT_MODEL) -> tuple[str | None, list[str]]:
+    """Génère résumé + keywords via LLM. Retourne (summary, keywords)."""
+    import json as _json, re as _re
+
     type_fr    = law.get('type') or 'Texte juridique'
     number     = law.get('number') or ''
     title_ar   = law.get('title_ar') or ''
@@ -117,12 +139,10 @@ def generate_summary_llm(law: dict, model: str = DEFAULT_MODEL) -> str | None:
     date_str   = law.get('date') or ''
     domain_label = DOMAIN_LABELS.get(domain_id, domain_id)
 
-    # Nettoyer le titre FR si présent
     clean_title_fr = title_fr.replace("— portail Adala", "").replace("portail Adala", "").strip(" —–-")
     if clean_title_fr.lower().startswith("texte juridique"):
         clean_title_fr = ''
 
-    # Construire le contexte
     context_parts = [f"Type : {type_fr}"]
     if number:
         context_parts.append(f"Numéro : {number}")
@@ -141,9 +161,9 @@ def generate_summary_llm(law: dict, model: str = DEFAULT_MODEL) -> str | None:
         'model': model,
         'messages': [
             {'role': 'system', 'content': SYSTEM_PROMPT},
-            {'role': 'user',   'content': f'Rédige un résumé juridique en français pour ce texte marocain :\n\n{context}'},
+            {'role': 'user',   'content': f'Génère le résumé et les mots-clés SEO pour ce texte juridique marocain :\n\n{context}'},
         ],
-        'max_tokens': 600,
+        'max_tokens': 1500,
         'temperature': 0.2,
     }
 
@@ -156,10 +176,23 @@ def generate_summary_llm(law: dict, model: str = DEFAULT_MODEL) -> str | None:
                 timeout=30,
             )
             r.raise_for_status()
-            text = r.json()['choices'][0]['message']['content'].strip()
-            if text.startswith('"') and text.endswith('"'):
-                text = text[1:-1].strip()
-            return text
+            raw = r.json()['choices'][0]['message']['content'].strip()
+            # Nettoyer fences markdown
+            raw = _re.sub(r'^```(?:json)?\s*', '', raw)
+            raw = _re.sub(r'\s*```$', '', raw).strip()
+            # Parser JSON
+            try:
+                data = _json.loads(raw)
+            except _json.JSONDecodeError:
+                m = _re.search(r'\{.*\}', raw, _re.DOTALL)
+                data = _json.loads(m.group()) if m else {}
+
+            summary  = (data.get('summary') or '').strip()
+            keywords = [k.strip() for k in (data.get('keywords') or []) if k.strip()]
+            if summary.startswith('"') and summary.endswith('"'):
+                summary = summary[1:-1].strip()
+            return summary, keywords
+
         except requests.exceptions.HTTPError as e:
             if r.status_code == 429:
                 wait = (attempt + 1) * 5
@@ -167,24 +200,24 @@ def generate_summary_llm(law: dict, model: str = DEFAULT_MODEL) -> str | None:
                 time.sleep(wait)
             else:
                 print(f'  ✗ HTTP {r.status_code}: {r.text[:200]}', flush=True)
-                return None
+                return None, []
         except Exception as e:
             print(f'  ✗ Erreur: {e}', flush=True)
             if attempt < MAX_RETRIES - 1:
                 time.sleep(3)
             else:
-                return None
-    return None
+                return None, []
+    return None, []
 
 # ── Fetch depuis Supabase ──────────────────────────────────────────────────────
 def fetch_batch_null(batch_size: int, offset: int) -> list:
-    """Lois Adala sans résumé."""
+    """Lois sans résumé (toutes sources confondues, avec title_ar)."""
     r = session.get(
         f'{SUPABASE_URL}/rest/v1/laws',
         headers=SB_HEADERS,
         params={
-            'source_name':        'eq.Adala',
             'simple_summary_fr':  'is.null',
+            'title_ar':           'not.is.null',
             'select':             'id,number,type,title_fr,title_ar,domain_id,date',
             'order':              'id.asc',
             'limit':              str(batch_size),
@@ -196,13 +229,13 @@ def fetch_batch_null(batch_size: int, offset: int) -> list:
     return r.json()
 
 def fetch_batch_placeholders(batch_size: int, offset: int) -> list:
-    """Lois Adala avec résumés génériques (contenant 'téléchargeable')."""
+    """Lois avec résumés génériques (toutes sources, contenant 'téléchargeable')."""
     r = session.get(
         f'{SUPABASE_URL}/rest/v1/laws',
         headers=SB_HEADERS,
         params={
-            'source_name':        'eq.Adala',
             'simple_summary_fr':  'ilike.*téléchargeable*',
+            'title_ar':           'not.is.null',
             'select':             'id,number,type,title_fr,title_ar,domain_id,date',
             'order':              'id.asc',
             'limit':              str(batch_size),
@@ -213,18 +246,44 @@ def fetch_batch_placeholders(batch_size: int, offset: int) -> list:
     r.raise_for_status()
     return r.json()
 
+def fetch_batch_force(batch_size: int, offset: int) -> list:
+    """TOUTES les lois avec title_ar — écrase les résumés existants."""
+    r = session.get(
+        f'{SUPABASE_URL}/rest/v1/laws',
+        headers=SB_HEADERS,
+        params={
+            'title_ar': 'not.is.null',
+            'select':   'id,number,type,title_fr,title_ar,domain_id,date',
+            'order':    'id.asc',
+            'limit':    str(batch_size),
+            'offset':   str(offset),
+        },
+        timeout=15,
+    )
+    r.raise_for_status()
+    return r.json()
+
 def count_laws(mode: str) -> int:
     params_null = {
-        'source_name': 'eq.Adala',
         'simple_summary_fr': 'is.null',
+        'title_ar': 'not.is.null',
         'select': 'id', 'limit': '1',
     }
     params_ph = {
-        'source_name': 'eq.Adala',
         'simple_summary_fr': 'ilike.*téléchargeable*',
+        'title_ar': 'not.is.null',
+        'select': 'id', 'limit': '1',
+    }
+    params_force = {
+        'title_ar': 'not.is.null',
         'select': 'id', 'limit': '1',
     }
     total = 0
+    if mode == 'force':
+        r = session.get(f'{SUPABASE_URL}/rest/v1/laws',
+                        headers={**SB_HEADERS, 'Prefer': 'count=exact'},
+                        params=params_force, timeout=10)
+        return int(r.headers.get('content-range', '0/0').split('/')[-1])
     if mode in ('null', 'all'):
         r = session.get(f'{SUPABASE_URL}/rest/v1/laws',
                         headers={**SB_HEADERS, 'Prefer': 'count=exact'},
@@ -237,16 +296,19 @@ def count_laws(mode: str) -> int:
         total += int(r.headers.get('content-range', '0/0').split('/')[-1])
     return total
 
-def update_summary(law_id: str, summary: str):
+def update_summary(law_id: str, summary: str, keywords: list[str] | None = None):
+    patch = {
+        'simple_summary_fr':  summary[:1000],
+        'simple_summary_ar':  None,   # reset AR pour retraduction
+        'needs_human_review': False,
+    }
+    if keywords:
+        patch['legal_keywords'] = keywords[:20]  # max 20 mots-clés
     r = session.patch(
         f'{SUPABASE_URL}/rest/v1/laws',
         headers=SB_HEADERS,
         params={'id': f'eq.{law_id}'},
-        json={
-            'simple_summary_fr':    summary[:600],
-            'simple_summary_ar':    None,    # Reset AR pour retraduction
-            'needs_human_review':   False,   # ✓ Résumé généré — plus besoin de révision
-        },
+        json=patch,
         timeout=10,
     )
     r.raise_for_status()
@@ -255,8 +317,8 @@ def update_summary(law_id: str, summary: str):
 def main():
     parser = argparse.ArgumentParser(description='Génération résumés IA — Lois Adala')
     parser.add_argument('--mode',    default='null',
-                        choices=['null', 'placeholders', 'all'],
-                        help='null=sans résumé | placeholders=remplacer génériques | all=les deux')
+                        choices=['null', 'placeholders', 'all', 'force'],
+                        help='null=sans résumé | placeholders=remplacer génériques | all=les deux | force=tout régénérer')
     parser.add_argument('--limit',   type=int, default=0,   help='Max lois à traiter (0=tout)')
     parser.add_argument('--dry-run', action='store_true',   help='Simuler sans écrire')
     parser.add_argument('--model',   default=DEFAULT_MODEL, help='Modèle OpenRouter')
@@ -266,7 +328,7 @@ def main():
     to_process = min(args.limit, total) if args.limit > 0 else total
 
     print(f'{"═"*55}', flush=True)
-    print(f'  JuriThèque — Résumés IA Adala (mode: {args.mode})', flush=True)
+    print(f'  JuriThèque — Résumés IA toutes sources (mode: {args.mode})', flush=True)
     print(f'  Modèle    : {args.model}', flush=True)
     print(f'  À traiter : {total:,} lois', flush=True)
     if args.limit:
@@ -280,13 +342,19 @@ def main():
 
     # Construire la liste des fetchers selon le mode
     fetchers = []
-    if args.mode in ('null', 'all'):
-        fetchers.append(('null', fetch_batch_null))
-    if args.mode in ('placeholders', 'all'):
-        fetchers.append(('placeholders', fetch_batch_placeholders))
+    if args.mode == 'force':
+        fetchers.append(('force', fetch_batch_force))
+    else:
+        if args.mode in ('null', 'all'):
+            fetchers.append(('null', fetch_batch_null))
+        if args.mode in ('placeholders', 'all'):
+            fetchers.append(('placeholders', fetch_batch_placeholders))
 
     for fetch_label, fetch_fn in fetchers:
         offset = 0
+        # En mode force : l'offset avance car on écrase sans filtre IS NULL
+        # En autres modes : l'offset reste 0 (les textes traités disparaissent du filtre)
+        use_offset = (fetch_label == 'force')
         print(f'\n  ── Batch [{fetch_label}] ──', flush=True)
 
         while done < to_process:
@@ -314,14 +382,14 @@ def main():
                     done += 1
                     continue
 
-                summary = generate_summary_llm(law, model=args.model)
+                summary, keywords = generate_summary_llm(law, model=args.model)
                 if not summary:
                     errors += 1
                     print(f'  ✗ Échec: {typ} {number}', flush=True)
                     continue
 
                 try:
-                    update_summary(law_id, summary)
+                    update_summary(law_id, summary, keywords)
                 except Exception as e:
                     errors += 1
                     print(f'  ✗ Update {number}: {e}', flush=True)
@@ -334,7 +402,7 @@ def main():
 
                 print(
                     f'  ✓ [{done:>5}/{to_process}] {typ[:8]:<8} {str(number)[:25]:<25}'
-                    f' | {len(summary)} chars'
+                    f' | {len(summary)} chars | {len(keywords)} kw'
                     f' | ETA: {int(eta_sec//60)}m{int(eta_sec%60):02d}s',
                     flush=True
                 )
@@ -342,13 +410,14 @@ def main():
                 # Aperçu toutes les 20 lois
                 if done % 20 == 0:
                     print(f'\n  ── Aperçu ──', flush=True)
-                    print(f'  AR: {str(law.get("title_ar",""))[:80]}', flush=True)
                     print(f'  FR: {summary[:150]}...', flush=True)
+                    print(f'  KW: {", ".join(keywords[:5])}...', flush=True)
                     print(flush=True)
 
                 time.sleep(DELAY_SEC)
 
-            offset += batch_size
+            if use_offset:
+                offset += batch_size
             if len(laws) < batch_size:
                 break
 

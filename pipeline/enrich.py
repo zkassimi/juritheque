@@ -816,6 +816,7 @@ def main():
         params["id"] = f"eq.{args.id}"
     elif args.only_missing and not args.force:
         params["simple_summary_fr"] = "is.null"
+        params["extraction_confidence_score"] = "gte.30"  # skip textes non-extractibles
 
     if args.limit:
         params["limit"] = str(args.limit)

@@ -77,11 +77,11 @@ def fetch_laws(mode: str, limit: int) -> list[dict]:
     try:
         r = httpx.get(
             f"{SUPABASE_URL}/rest/v1/laws",
-            headers={**HEADERS, "Prefer": "count=exact"},
+            headers=HEADERS,
             params=params,
             timeout=30,
         )
-        if r.status_code != 200:
+        if r.status_code not in (200, 206):
             log_err(f"Erreur Supabase {r.status_code}: {r.text[:200]}")
             return []
         return r.json()

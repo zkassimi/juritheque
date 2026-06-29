@@ -1,0 +1,307 @@
+{
+  "generated_at": "2026-06-29T10:25:24.554955+00:00",
+  "enrich_version": "1.0.0",
+  "dry_run": false,
+  "use_ai": true,
+  "args": {
+    "limit": 20,
+    "id": null,
+    "only_missing": true,
+    "force": false
+  },
+  "stats": {
+    "total": 20,
+    "updated": 20,
+    "skipped": 0,
+    "failed": 0,
+    "needs_review": 20,
+    "errors": []
+  },
+  "results": [
+    {
+      "id": 307,
+      "score": 26,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4006,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4021,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4025,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4027,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4028,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4029,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4030,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4031,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4032,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4033,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4034,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4035,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4036,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4037,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4040,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4042,
+      "score": 20,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 4058,
+      "score": 26,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 7723,
+      "score": 26,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count"
+      ]
+    },
+    {
+      "id": 7739,
+      "score": 30,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "simple_summary_fr",
+        "summary_generated_at",
+        "simple_summary_ar",
+        "seo_title_fr",
+        "seo_description_fr"
+      ]
+    }
+  ]
+}

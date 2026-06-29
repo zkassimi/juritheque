@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-06-29T09:19:32.655200+00:00",
+  "enrich_version": "1.0.0",
+  "dry_run": false,
+  "use_ai": true,
+  "args": {
+    "limit": null,
+    "id": 7789,
+    "only_missing": false,
+    "force": false
+  },
+  "stats": {
+    "total": 1,
+    "updated": 1,
+    "skipped": 0,
+    "failed": 0,
+    "needs_review": 1,
+    "errors": []
+  },
+  "results": [
+    {
+      "id": 7789,
+      "score": 26,
+      "status": "needs_review",
+      "review": true,
+      "fields": [
+        "extraction_confidence_score",
+        "extraction_status",
+        "needs_human_review",
+        "extraction_version",
+        "raw_text_hash",
+        "detected_article_count",
+        "seo_title_fr",
+        "seo_description_fr"
+      ]
+    }
+  ]
+}

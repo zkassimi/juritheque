@@ -526,7 +526,32 @@ def extract_first_pages(pdf_path: Path, max_pages: int = 5) -> str:
 
 
 # Compteurs OCR pour le rapport final
-_OCR_STATS = {'attempts': 0, 'success': 0, 'failures': 0}
+_OCR_STATS = {'attempts': 0, 'success': 0, 'failures': 0, 'cache_hits': 0}
+
+# Cache disque des transcriptions OCR (clé = nom du PDF dans le mirror).
+# Évite de refaire les appels API à chaque run : un run interrompu accumule
+# le cache, le run suivant relit tout instantanément et peut terminer l'export.
+OCR_CACHE_FILE = MIRROR_DIR / 'ocr_cache.json'
+
+
+def _load_ocr_cache() -> dict:
+    try:
+        if OCR_CACHE_FILE.exists():
+            return json.loads(OCR_CACHE_FILE.read_text(encoding='utf-8'))
+    except Exception:
+        pass
+    return {}
+
+
+def _save_ocr_cache(cache: dict) -> None:
+    try:
+        MIRROR_DIR.mkdir(parents=True, exist_ok=True)
+        OCR_CACHE_FILE.write_text(json.dumps(cache, ensure_ascii=False), encoding='utf-8')
+    except Exception:
+        pass
+
+
+_OCR_CACHE = _load_ocr_cache()
 
 
 def gemini_vision_ocr(pdf_path: Path, max_pages: int = 2) -> str:
@@ -536,11 +561,18 @@ def gemini_vision_ocr(pdf_path: Path, max_pages: int = 2) -> str:
 
     Rend les premières pages en images PNG (200 dpi) et demande au modèle de
     transcrire fidèlement le texte. Lit l'arabe nativement, aucun binaire local.
+    Résultats mis en cache disque (clé = nom du PDF) → relances instantanées.
 
     Retourne le texte transcrit, ou '' en cas d'échec / si désactivé.
     """
     if not (USE_VISION_OCR and FITZ_OK and OPENROUTER_KEY):
         return ''
+
+    # Cache hit : transcription déjà obtenue lors d'un run précédent
+    cache_key = pdf_path.name
+    if cache_key in _OCR_CACHE:
+        _OCR_STATS['cache_hits'] += 1
+        return _OCR_CACHE[cache_key]
 
     import base64
     _OCR_STATS['attempts'] += 1
@@ -578,6 +610,8 @@ def gemini_vision_ocr(pdf_path: Path, max_pages: int = 2) -> str:
         out = (r.json()['choices'][0]['message']['content'] or '').strip()
         if out:
             _OCR_STATS['success'] += 1
+            _OCR_CACHE[cache_key] = out
+            _save_ocr_cache(_OCR_CACHE)   # persister immédiatement (résilient aux interruptions)
         return out
     except Exception as e:
         _OCR_STATS['failures'] += 1
@@ -987,10 +1021,10 @@ def mode_record(args):
     print(f'  Fallback content_fr    : {n_db_fallback}  (non validés contre PDF)')
     print(f'  Aucun PDF ni contenu   : {n_no_pdf}')
     print(f'  Flags critiques        : {n_critical}')
-    if _OCR_STATS['attempts']:
+    if _OCR_STATS['attempts'] or _OCR_STATS['cache_hits']:
         print(f'  ── OCR Vision ──')
-        print(f'  Tentatives={_OCR_STATS["attempts"]}  '
-              f'réussites={_OCR_STATS["success"]}  échecs={_OCR_STATS["failures"]}')
+        print(f'  Appels API={_OCR_STATS["attempts"]}  réussites={_OCR_STATS["success"]}  '
+              f'échecs={_OCR_STATS["failures"]}  cache={_OCR_STATS["cache_hits"]}')
     print(f'{"═"*70}')
 
     # ── Export vers Supabase ──────────────────────────────────────────────────

@@ -59,6 +59,24 @@ try:
 except ImportError:
     PDFPLUMBER_OK = False
 
+# ── OCR Vision (Gemini multimodal via OpenRouter) ──────────────────────────────
+# Pour les PDFs scannés ou à police non embarquée : on rend la page en image
+# et on demande à un modèle vision de transcrire le texte (lit l'arabe nativement,
+# aucun install local type Tesseract requis).
+OPENROUTER_KEY  = os.getenv('OPENROUTER_API_KEY') or os.getenv('VITE_OPENROUTER_KEY', '')
+OCR_VISION_MODEL = os.getenv('OCR_VISION_MODEL', 'google/gemini-2.5-flash')
+USE_VISION_OCR  = bool(OPENROUTER_KEY)   # désactivable via --no-ocr dans main()
+
+OCR_PROMPT = (
+    "Tu reçois l'image de la première page d'un document juridique marocain "
+    "(Bulletin Officiel, dahir, loi, décret, arrêté — en arabe et/ou en français). "
+    "Transcris FIDÈLEMENT tout le texte visible de l'en-tête et du début du document. "
+    "Conserve EXACTEMENT les numéros (ex: 1-15-83, 103-12, 2-22-431), les dates "
+    "(grégoriennes et hégiriennes) et les intitulés (Dahir, Loi, Décret, Arrêté, "
+    "ظهير، قانون، مرسوم، قرار). Ne traduis pas, ne résume pas, n'ajoute aucun commentaire. "
+    "Réponds uniquement par le texte transcrit tel qu'il apparaît."
+)
+
 # ── Data structures ───────────────────────────────────────────────────────────
 
 @dataclass
@@ -255,15 +273,37 @@ def _extract_from_page1(text: str) -> dict[str, Any]:
             if month_num:
                 result['signature_date'] = f'{y}-{month_num:02d}-{int(d):02d}'
 
-    # Lignes de titre — en écartant l'en-tête institutionnel (papier à en-tête)
-    letterhead = re.compile(
-        r'^(?:royaume du maroc|المملكة المغربية|minist[èe]re|وزارة|direction|'
+    # Lignes de titre — en écartant l'en-tête institutionnel (papier à en-tête),
+    # les en-têtes de Bulletin Officiel ("N° 6440 – ...") et le corps du texte
+    # (formules de promulgation, visas, structure) qui ne sont JAMAIS un titre.
+    junk_line = re.compile(
+        r'^(?:'
+        r'royaume du maroc|المملكة المغربية|minist[èe]re|وزارة|direction|'
         r'secr[ée]tariat|bulletin officiel|الجريدة الرسمية|grand sceau|'
-        r'louange à dieu|الحمد لله|\(grand sceau)',
+        r'louange à dieu|الحمد لله|\(grand sceau|'
+        r'n[°o]\s*\d|'                                   # en-tête BO : "N° 6440 – ..."
+        r'textes? g[ée]n[ée]r|نصوص عامة|'                # rubrique "TEXTES GENERAUX"
+        r'titre\s+(?:pr[ée]liminaire|premier|[ivx]+)|'   # "TITRE PRÉLIMINAIRE/I/..."
+        r'chapitre\s|الباب|الفصل|article\s+(?:premier|\d)|'
+        r'que l[\'’]on sache|que l on sache|'            # formule de promulgation
+        r'est promulgu|sera publi|'                      # "Est promulguée et sera publiée..."
+        r'vu\s+(?:la|le|l[\'’]|les)\s|بناء على|'         # visas
+        r'\d{1,4}$'                                       # numéro de page seul
+        r')',
         re.IGNORECASE
     )
+    # Indicateurs de bruit pouvant apparaître N'IMPORTE OÙ dans la ligne
+    # (en-tête de page paginé : "260 BULLETIN OFFICIEL N° 6440 – ...")
+    junk_anywhere = re.compile(
+        r'bulletin officiel|الجريدة الرسمية|n[°o]\s*\d{3,}',
+        re.IGNORECASE
+    )
+
+    def _is_junk(l: str) -> bool:
+        return bool(junk_line.match(l) or junk_anywhere.search(l))
+
     lines = [l.strip() for l in header.split('\n')
-             if l.strip() and len(l.strip()) > 5 and not letterhead.match(l.strip())]
+             if l.strip() and len(l.strip()) > 5 and not _is_junk(l.strip())]
     result['title_lines'] = lines[:6]
 
     return result
@@ -441,7 +481,16 @@ def extract_first_pages(pdf_path: Path, max_pages: int = 5) -> str:
             return ''
         try:
             with pdfplumber.open(pdf_path) as pdf:
-                parts = [p.extract_text() or '' for p in pdf.pages[:n]]
+                parts = []
+                for p in pdf.pages[:n]:
+                    # layout=True préserve l'ordre spatial (crucial pour l'arabe RTL
+                    # et les mises en page en colonnes des BO). x_tolerance bas =
+                    # meilleure séparation des mots collés.
+                    try:
+                        t = p.extract_text(layout=True, x_tolerance=1.5, y_tolerance=3) or ''
+                    except Exception:
+                        t = p.extract_text() or ''
+                    parts.append(t)
                 return '\n\n'.join(parts).strip()
         except Exception:
             return ''
@@ -451,7 +500,10 @@ def extract_first_pages(pdf_path: Path, max_pages: int = 5) -> str:
             return ''
         try:
             doc = fitz.open(str(pdf_path))
-            parts = [doc[i].get_text('text') for i in range(min(n, len(doc)))]
+            # sort=True réordonne les blocs en ordre de lecture naturel
+            # (haut→bas, gauche→droite) au lieu de l'ordre interne du PDF,
+            # souvent aléatoire pour les documents arabes / scannés vectorisés.
+            parts = [doc[i].get_text('text', sort=True) for i in range(min(n, len(doc)))]
             doc.close()
             return '\n\n'.join(parts).strip()
         except Exception:
@@ -473,6 +525,66 @@ def extract_first_pages(pdf_path: Path, max_pages: int = 5) -> str:
     return text
 
 
+# Compteurs OCR pour le rapport final
+_OCR_STATS = {'attempts': 0, 'success': 0, 'failures': 0}
+
+
+def gemini_vision_ocr(pdf_path: Path, max_pages: int = 2) -> str:
+    """
+    OCR via modèle vision (Gemini multimodal sur OpenRouter) — pour PDFs scannés
+    ou à police non embarquée où l'extraction texte échoue.
+
+    Rend les premières pages en images PNG (200 dpi) et demande au modèle de
+    transcrire fidèlement le texte. Lit l'arabe nativement, aucun binaire local.
+
+    Retourne le texte transcrit, ou '' en cas d'échec / si désactivé.
+    """
+    if not (USE_VISION_OCR and FITZ_OK and OPENROUTER_KEY):
+        return ''
+
+    import base64
+    _OCR_STATS['attempts'] += 1
+    try:
+        doc = fitz.open(str(pdf_path))
+        content: list[dict] = [{'type': 'text', 'text': OCR_PROMPT}]
+        n = min(max_pages, len(doc))
+        for i in range(n):
+            pix = doc[i].get_pixmap(dpi=200)
+            b64 = base64.b64encode(pix.tobytes('png')).decode()
+            content.append({
+                'type': 'image_url',
+                'image_url': {'url': f'data:image/png;base64,{b64}'},
+            })
+        doc.close()
+
+        r = requests.post(
+            'https://openrouter.ai/api/v1/chat/completions',
+            headers={
+                'Authorization': f'Bearer {OPENROUTER_KEY}',
+                'Content-Type':  'application/json',
+            },
+            json={
+                'model':       OCR_VISION_MODEL,
+                'messages':    [{'role': 'user', 'content': content}],
+                'max_tokens':  2500,
+                'temperature': 0,
+            },
+            timeout=120,
+        )
+        if not r.ok:
+            _OCR_STATS['failures'] += 1
+            print(f'         ✗ OCR Vision HTTP {r.status_code}: {r.text[:120]}', flush=True)
+            return ''
+        out = (r.json()['choices'][0]['message']['content'] or '').strip()
+        if out:
+            _OCR_STATS['success'] += 1
+        return out
+    except Exception as e:
+        _OCR_STATS['failures'] += 1
+        print(f'         ✗ OCR Vision erreur: {e}', flush=True)
+        return ''
+
+
 def resolve_text_source(law: dict, pdf_path: Path | None) -> tuple[str, str]:
     """
     Choisit la source de texte pour l'audit. Le PDF source FAIT FOI
@@ -492,8 +604,18 @@ def resolve_text_source(law: dict, pdf_path: Path | None) -> tuple[str, str]:
         text = extract_first_pages(pdf_path, max_pages=6)
         if _legal_pattern_found(text):
             return text, 'pdf_extracted'
+
+        # Extraction texte faible/illisible (scanné, police non embarquée, CID) :
+        # tenter l'OCR Vision avant de dégrader vers content_fr.
+        ocr_text = gemini_vision_ocr(pdf_path, max_pages=2)
+        if ocr_text and _legal_pattern_found(ocr_text):
+            return ocr_text, 'pdf_ocr_vision'
+        # Garder le meilleur des deux pour un éventuel fallback "weak"
+        if ocr_text and len(ocr_text) > len(text):
+            text = ocr_text
+
         if len(text) > 200:
-            # PDF lu mais patterns juridiques faibles (PDF scanné/OCR partiel)
+            # PDF lu mais patterns juridiques faibles (OCR n'a pas aidé non plus)
             return text, 'pdf_extracted_weak'
 
     # Priorité 2 (dernier recours) : content_fr — NON validé contre le PDF
@@ -511,7 +633,7 @@ def build_canonical_record(law: dict, page1_text: str, pdf_source: str) -> Canon
     cr = CanonicalRecord(law_id=law['id'])
     cr.first_page_text = page1_text[:500]
     # pdf_resolved = True UNIQUEMENT si le texte vient réellement du PDF source
-    cr.pdf_resolved = pdf_source in ('pdf_extracted', 'pdf_extracted_weak')
+    cr.pdf_resolved = pdf_source in ('pdf_extracted', 'pdf_extracted_weak', 'pdf_ocr_vision')
     cr.source_priority = pdf_source
     cr.formal_instrument_type = parsed['formal_type'] or law.get('type')
     cr.dahir_number  = parsed['dahir_number']
@@ -537,17 +659,24 @@ def build_canonical_record(law: dict, page1_text: str, pdf_source: str) -> Canon
     )
     title_lines = parsed['title_lines']
     chosen = None
-    # 1. Ligne avec mot-clé type ET longueur significative
+    # On n'accepte comme titre QU'UNE ligne portant un mot-clé d'instrument
+    # juridique (Dahir/Loi/Décret/Arrêté…). Sans ce signal fort, on ne propose
+    # PAS de correction de titre : une ligne quelconque (en-tête BO, corps de
+    # texte, visa) produirait une fausse correction qui écraserait un titre
+    # correct. Mieux vaut une correction manquée qu'une correction nuisible.
     for line in title_lines:
         if len(line) > 20 and type_kw.search(line):
             chosen = line
             break
-    # 2. Fallback : première ligne significative
-    if not chosen:
-        for line in title_lines:
-            if len(line) > 20:
-                chosen = line
-                break
+    # Cas titre composite sur 2 lignes : "Dahir n° ... portant" + "promulgation
+    # de la loi n° ... relative à ..." → concaténer la ligne suivante si la
+    # première se termine par un mot de liaison.
+    if chosen and re.search(r'\b(portant|fixant|relatif|relative|modifiant|'
+                            r'compl[ée]tant|instituant|approuvant)\s*$',
+                            chosen, re.IGNORECASE):
+        idx = title_lines.index(chosen)
+        if idx + 1 < len(title_lines):
+            chosen = (chosen + ' ' + title_lines[idx + 1]).strip()
     if chosen:
         cr.official_title_fr = chosen[:200]
 
@@ -589,6 +718,12 @@ def score_and_flag(law: dict, cr: CanonicalRecord) -> tuple[int, list[AuditFlag]
     if cr.source_priority == 'pdf_extracted_weak':
         add('pdf_extraction_weak', 'warning', 'content_fr',
             'PDF lu mais patterns juridiques faibles (scanné/OCR partiel?)', 10)
+
+    # Texte obtenu par OCR Vision (PDF scanné) — fiable mais signalé pour relecture
+    # car l'OCR peut mal lire un chiffre. Léger malus pour rester en "review".
+    if cr.source_priority == 'pdf_ocr_vision':
+        add('pdf_text_from_ocr', 'info', 'content_fr',
+            'Texte extrait par OCR Vision (PDF scanné) — vérifier les numéros/dates', 5)
 
     # Texte extrait insuffisant
     if not has_text:
@@ -669,7 +804,8 @@ def make_decision(score: int, flags: list[AuditFlag]) -> tuple[str, bool]:
     # Garde-fou : un record non validé contre le PDF source ne peut JAMAIS
     # être auto_update — on n'a pas confronté la métadonnée au document officiel.
     not_pdf_validated = any(
-        f.code in ('audited_without_source_pdf', 'source_pdf_missing', 'pdf_extraction_weak')
+        f.code in ('audited_without_source_pdf', 'source_pdf_missing',
+                   'pdf_extraction_weak', 'pdf_text_from_ocr')
         for f in flags
     )
 
@@ -784,8 +920,10 @@ def mode_record(args):
 
         if text_src == 'pdf_extracted':
             print(f'         ✓ PDF={pdf_src}  texte extrait={len(page1_text):,} chars', flush=True)
+        elif text_src == 'pdf_ocr_vision':
+            print(f'         ✓ PDF={pdf_src}  OCR Vision réussi={len(page1_text):,} chars (scanné)', flush=True)
         elif text_src == 'pdf_extracted_weak':
-            print(f'         ~ PDF={pdf_src} lu mais patterns faibles ({len(page1_text):,} chars) — scanné/OCR?', flush=True)
+            print(f'         ~ PDF={pdf_src} lu mais patterns faibles ({len(page1_text):,} chars) — OCR insuffisant', flush=True)
         elif text_src == 'db_content_fallback':
             reason = pdf_src.replace('no_pdf:', '') if pdf_src.startswith('no_pdf') else pdf_src
             print(f'         ⚠ PDF indisponible ({reason}) → content_fr en fallback (NON validé)', flush=True)
@@ -842,11 +980,17 @@ def mode_record(args):
     n_no_pdf      = sum(1 for r in results if any(f.code == 'source_pdf_missing' for f in r.flags))
     n_db_fallback = sum(1 for r in results if any(f.code == 'audited_without_source_pdf' for f in r.flags))
     n_critical    = sum(1 for r in results if any(f.severity == 'critical' for f in r.flags))
+    n_ocr = sum(1 for r in results if any(f.code == 'pdf_text_from_ocr' for f in r.flags))
     print(f'  ── Source de l\'audit ──')
     print(f'  Validés via PDF source : {n_pdf_audited}')
+    print(f'  dont OCR Vision        : {n_ocr}  (PDFs scannés récupérés)')
     print(f'  Fallback content_fr    : {n_db_fallback}  (non validés contre PDF)')
     print(f'  Aucun PDF ni contenu   : {n_no_pdf}')
     print(f'  Flags critiques        : {n_critical}')
+    if _OCR_STATS['attempts']:
+        print(f'  ── OCR Vision ──')
+        print(f'  Tentatives={_OCR_STATS["attempts"]}  '
+              f'réussites={_OCR_STATS["success"]}  échecs={_OCR_STATS["failures"]}')
     print(f'{"═"*70}')
 
     # ── Export vers Supabase ──────────────────────────────────────────────────
@@ -1243,7 +1387,14 @@ def main():
     parser.add_argument('--export',        action='store_true', help='Exporter CSV/JSON local')
     parser.add_argument('--export-to-db',  action='store_true', help='Exporter corrections vers Supabase audit_queue (Admin → Corrections)')
     parser.add_argument('--apply',         action='store_true', help='[mode duplicates] Appliquer visibilité (publier survivant + masquer doublons)')
+    parser.add_argument('--no-ocr',        action='store_true', help='Désactiver l\'OCR Vision (PDFs scannés non récupérés)')
     args = parser.parse_args()
+
+    global USE_VISION_OCR
+    if args.no_ocr:
+        USE_VISION_OCR = False
+    elif not OPENROUTER_KEY:
+        print('⚠ OPENROUTER_API_KEY absente — OCR Vision désactivé (PDFs scannés non récupérés)')
 
     if not FITZ_OK and not PDFPLUMBER_OK:
         print('⚠ Ni PyMuPDF ni pdfplumber disponibles — extraction PDF désactivée')

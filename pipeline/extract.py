@@ -130,18 +130,25 @@ def extract_text(pdf_path: Path) -> str:
     text = ""
 
     # Try pdfplumber first (text-based PDFs)
+    # layout=True preserves spatial reading order — essential for Arabic RTL
+    # and multi-column Bulletin Officiel layouts.
     try:
         with pdfplumber.open(pdf_path) as pdf:
-            pages = [p.extract_text() or "" for p in pdf.pages[:30]]
+            pages = []
+            for p in pdf.pages[:30]:
+                try:
+                    pages.append(p.extract_text(layout=True, x_tolerance=1.5, y_tolerance=3) or "")
+                except Exception:
+                    pages.append(p.extract_text() or "")
             text = "\n\n".join(pages).strip()
     except Exception:
         pass
 
-    # Fallback: PyMuPDF
+    # Fallback: PyMuPDF (sort=True → natural top-to-bottom reading order)
     if len(text) < 200:
         try:
             doc = fitz.open(str(pdf_path))
-            pages = [page.get_text("text") for page in doc[:30]]
+            pages = [page.get_text("text", sort=True) for page in doc[:30]]
             doc.close()
             text = "\n\n".join(pages).strip()
         except Exception:
@@ -159,12 +166,16 @@ def extract_text(pdf_path: Path) -> str:
                 poppler_path=POPPLER_PATH,
             )
             ocr_pages = []
+            # --oem 3 = moteur LSTM (réseau de neurones, bien meilleur que legacy)
+            # --psm 6 = bloc de texte uniforme (adapté aux pages juridiques denses,
+            #           plus fiable que --psm 3 auto sur les documents mono-colonne)
+            ocr_cfg = "--oem 3 --psm 6"
             for i, img in enumerate(images):
                 # Try French + Arabic OCR
-                page_text = pytesseract.image_to_string(img, lang="fra+ara", config="--psm 3")
+                page_text = pytesseract.image_to_string(img, lang="fra+ara", config=ocr_cfg)
                 if not page_text.strip():
                     # Fallback: French only
-                    page_text = pytesseract.image_to_string(img, lang="fra", config="--psm 3")
+                    page_text = pytesseract.image_to_string(img, lang="fra", config=ocr_cfg)
                 ocr_pages.append(page_text)
                 console.print(f"    [dim]OCR page {i+1}/{len(images)} — {len(page_text)} chars[/]")
             text = "\n\n".join(ocr_pages).strip()

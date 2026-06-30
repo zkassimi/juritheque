@@ -100,6 +100,13 @@ export default function Admin() {
   const [qualityFilter, setQualityFilter]   = useState('all') // 'all' | 'no_summary' | 'no_date' | 'no_pdf'
   const [qualityPage, setQualityPage]       = useState(0)
   const [qualityTotal, setQualityTotal]     = useState(0)
+  // Corrections (audit_queue)
+  const [corrections, setCorrections]               = useState([])
+  const [correctionsLoading, setCorrectionsLoading] = useState(false)
+  const [correctionsStats, setCorrectionsStats]     = useState({ pending: 0, approved: 0, rejected: 0, applied: 0 })
+  const [pendingCorrections, setPendingCorrections] = useState(0)
+  const [corrFilter, setCorrFilter]                 = useState({ status: 'pending', severity: 'all', field: 'all', decision: 'all' })
+
   // Pipeline
   const [pipelineRuns, setPipelineRuns]     = useState([])
   const [pipelineLoading, setPipelineLoading] = useState(false)
@@ -252,6 +259,46 @@ export default function Admin() {
       setQualityLoading(false)
     }
   }, [QUALITY_PAGE_SIZE])
+
+  const loadCorrections = useCallback(async (filters = corrFilter) => {
+    setCorrectionsLoading(true)
+    try {
+      let q = supabase.from('audit_queue').select('*')
+      if (filters.status !== 'all') q = q.eq('status', filters.status)
+      if (filters.severity !== 'all') q = q.eq('severity', filters.severity)
+      if (filters.field !== 'all') q = q.eq('field', filters.field)
+      if (filters.decision !== 'all') q = q.eq('decision', filters.decision)
+      q = q.order('severity', { ascending: false }).order('score', { ascending: true }).limit(200)
+      const { data } = await q
+      setCorrections(data || [])
+      // Stats globales
+      const { data: all } = await supabase.from('audit_queue').select('status')
+      const counts = { pending: 0, approved: 0, rejected: 0, applied: 0 }
+      ;(all || []).forEach(r => { if (counts[r.status] !== undefined) counts[r.status]++ })
+      setCorrectionsStats(counts)
+      setPendingCorrections(counts.pending)
+    } catch (e) {
+      console.warn('audit_queue non disponible (migration 025 requise?):', e.message)
+    } finally {
+      setCorrectionsLoading(false)
+    }
+  }, [corrFilter])
+
+  const approveCorrection = async (item) => {
+    const patch = { [item.field]: item.proposed }
+    if (item.field === 'title_fr') patch.needs_human_review = false
+    const { error } = await supabase.from('laws').update(patch).eq('id', item.law_id)
+    if (error) { notify('Erreur : ' + error.message, false); return }
+    await supabase.from('audit_queue').update({ status: 'applied', reviewed_at: new Date().toISOString() }).eq('id', item.id)
+    notify('✓ Correction appliquée', true)
+    loadCorrections()
+  }
+
+  const rejectCorrection = async (item) => {
+    await supabase.from('audit_queue').update({ status: 'rejected', reviewed_at: new Date().toISOString() }).eq('id', item.id)
+    notify('Correction rejetée', true)
+    loadCorrections()
+  }
 
   const loadPipelineRuns = useCallback(async () => {
     setPipelineLoading(true)
@@ -443,6 +490,9 @@ export default function Admin() {
   useEffect(() => { if (section === 'veille') { setQueuePage(1); loadQueue(1); loadNeedsUpdate() } }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (section === 'quality') loadQuality(qualityFilter) }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (section === 'pipeline') loadPipelineRuns() }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (section === 'corrections') loadCorrections(corrFilter) }, [section]) // eslint-disable-line react-hooks/exhaustive-deps
+  // Charger le compteur corrections au démarrage (pour le badge du menu)
+  useEffect(() => { loadCorrections({ status: 'pending', severity: 'all', field: 'all', decision: 'all' }) }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Subscribers ──
   const loadSubscribers = useCallback(async (q = '') => {
@@ -572,6 +622,7 @@ export default function Admin() {
     { key: 'texts',   icon: FileText, label: 'Textes juridiques' },
     { key: 'veille',  icon: Bell,     label: 'Veille & Import', badge: (queueCount + needsUpdateCount) || null },
     { key: 'quality', icon: BarChart2, label: 'Qualité' },
+    ...(isAdmin ? [{ key: 'corrections', icon: CheckCheck, label: 'Corrections', badge: pendingCorrections || null }] : []),
     { key: 'videos',  icon: Video,    label: 'Vidéos' },
     { key: 'reports',     icon: Flag,     label: 'Signalements' },
     { key: 'subscribers', icon: Inbox,    label: 'Abonnés' },
@@ -1994,6 +2045,169 @@ export default function Admin() {
                 <p><span className="text-gold">python</span> pipeline/run_pipeline.py <span className="text-green-700">--mode auto</span> --limit 20</p>
                 <p><span className="text-gold">python</span> pipeline/run_pipeline.py <span className="text-blue-600">--step import</span> --mode semi</p>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ══ CORRECTIONS (audit_queue) ══ */}
+        {section === 'corrections' && (
+          <div>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div>
+                <h1 className="font-playfair font-bold text-navy text-2xl flex items-center gap-2">
+                  <CheckCheck size={22} className="text-gold" /> Corrections proposées
+                </h1>
+                <p className="text-sm text-navy-500 mt-1">Résultats de l'audit canonique — validez ou rejetez chaque correction avant application en base</p>
+              </div>
+              <button onClick={() => loadCorrections(corrFilter)} className="p-2 rounded-lg border border-gray-200 text-navy-600 hover:border-gold">
+                <RefreshCw size={14} />
+              </button>
+            </div>
+
+            {/* Stat cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+              {[
+                { label: 'En attente', key: 'pending',  color: 'bg-amber-50 text-amber-700', dot: 'bg-amber-400' },
+                { label: 'Appliquées', key: 'applied',  color: 'bg-emerald-50 text-emerald-700', dot: 'bg-emerald-500' },
+                { label: 'Rejetées',   key: 'rejected', color: 'bg-gray-50 text-gray-500', dot: 'bg-gray-400' },
+              ].map(({ label, key, color, dot }) => (
+                <button key={key}
+                  onClick={() => { const f = { ...corrFilter, status: key }; setCorrFilter(f); loadCorrections(f) }}
+                  className={`rounded-2xl border p-4 text-left transition-all ${corrFilter.status === key ? 'border-navy ring-1 ring-navy' : 'border-gray-100 hover:border-gold'}`}>
+                  <div className={`text-2xl font-playfair font-bold ${color.split(' ')[1]}`}>{correctionsStats[key] ?? '—'}</div>
+                  <div className="flex items-center gap-1.5 mt-1">
+                    <span className={`w-2 h-2 rounded-full ${dot}`}></span>
+                    <span className="text-xs text-navy-500">{label}</span>
+                  </div>
+                </button>
+              ))}
+              <button
+                onClick={() => { const f = { ...corrFilter, status: 'all' }; setCorrFilter(f); loadCorrections(f) }}
+                className={`rounded-2xl border p-4 text-left transition-all ${corrFilter.status === 'all' ? 'border-navy ring-1 ring-navy' : 'border-gray-100 hover:border-gold'}`}>
+                <div className="text-2xl font-playfair font-bold text-navy">
+                  {Object.values(correctionsStats).reduce((a, b) => a + b, 0) || '—'}
+                </div>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <span className="w-2 h-2 rounded-full bg-navy"></span>
+                  <span className="text-xs text-navy-500">Total</span>
+                </div>
+              </button>
+            </div>
+
+            {/* Filtres */}
+            <div className="bg-white rounded-2xl border border-gray-100 p-3 mb-4 flex flex-wrap gap-2">
+              {/* Champ */}
+              <select value={corrFilter.field} onChange={e => { const f = { ...corrFilter, field: e.target.value }; setCorrFilter(f); loadCorrections(f) }}
+                className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 text-navy-700 focus:outline-none focus:border-gold">
+                <option value="all">Tous les champs</option>
+                <option value="number">Numéro</option>
+                <option value="date">Date</option>
+                <option value="type">Type</option>
+                <option value="title_fr">Titre</option>
+              </select>
+              {/* Sévérité */}
+              <select value={corrFilter.severity} onChange={e => { const f = { ...corrFilter, severity: e.target.value }; setCorrFilter(f); loadCorrections(f) }}
+                className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 text-navy-700 focus:outline-none focus:border-gold">
+                <option value="all">Toute sévérité</option>
+                <option value="critical">Critique</option>
+                <option value="warning">Avertissement</option>
+              </select>
+              {/* Décision */}
+              <select value={corrFilter.decision} onChange={e => { const f = { ...corrFilter, decision: e.target.value }; setCorrFilter(f); loadCorrections(f) }}
+                className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 text-navy-700 focus:outline-none focus:border-gold">
+                <option value="all">Toute décision</option>
+                <option value="review">Review</option>
+                <option value="review_high_priority">Prioritaire</option>
+                <option value="block">Bloqué</option>
+              </select>
+              <span className="ml-auto text-xs text-navy-400 self-center">{corrections.length} résultat(s)</span>
+            </div>
+
+            {/* Tableau */}
+            {correctionsLoading ? (
+              <div className="flex justify-center py-12 text-navy-400 text-sm">Chargement…</div>
+            ) : corrections.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-gray-100 p-10 text-center">
+                <CheckCheck size={32} className="mx-auto mb-3 text-emerald-400" />
+                <p className="text-navy-600 font-medium">Aucune correction en attente</p>
+                <p className="text-sm text-navy-400 mt-1">Lance l'audit depuis le Dashboard Pipeline → "Audit → Admin Corrections"</p>
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead className="bg-gray-50 border-b border-gray-100">
+                    <tr>
+                      <th className="text-left px-4 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wide w-12">ID</th>
+                      <th className="text-left px-4 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wide">Texte</th>
+                      <th className="text-left px-4 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wide w-20">Champ</th>
+                      <th className="text-left px-4 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wide">Valeur actuelle</th>
+                      <th className="text-left px-4 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wide">Valeur proposée</th>
+                      <th className="text-left px-4 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wide w-24">Score</th>
+                      <th className="px-4 py-3 w-28"></th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-50">
+                    {corrections.map(item => (
+                      <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-4 py-3 text-navy-500 text-xs font-mono">{item.law_id}</td>
+                        <td className="px-4 py-3">
+                          <p className="text-navy-800 text-xs font-medium line-clamp-1">{item.law_title || '—'}</p>
+                          <p className="text-navy-400 text-[10px] mt-0.5">{item.law_number}</p>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                            item.severity === 'critical' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
+                          }`}>
+                            {item.field}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-xs text-navy-500 font-mono max-w-[160px]">
+                          <span className="line-clamp-2">{item.current_val || <em className="not-italic text-gray-400">vide</em>}</span>
+                        </td>
+                        <td className="px-4 py-3 text-xs text-navy-800 font-mono max-w-[160px]">
+                          <span className="line-clamp-2 text-emerald-700 font-medium">{item.proposed}</span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-1">
+                            <div className={`h-1.5 rounded-full flex-1 ${item.score >= 80 ? 'bg-emerald-400' : item.score >= 60 ? 'bg-amber-400' : 'bg-red-400'}`}
+                              style={{ width: `${item.score}%`, maxWidth: '100%' }}></div>
+                            <span className="text-[10px] text-navy-400">{item.score}</span>
+                          </div>
+                          <p className={`text-[10px] mt-0.5 ${item.decision === 'block' ? 'text-red-500' : item.decision === 'review_high_priority' ? 'text-amber-600' : 'text-navy-400'}`}>
+                            {item.decision}
+                          </p>
+                        </td>
+                        <td className="px-4 py-3">
+                          {item.status === 'pending' ? (
+                            <div className="flex gap-1.5">
+                              <button onClick={() => approveCorrection(item)}
+                                title="Approuver et appliquer"
+                                className="p-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors">
+                                <CheckCircle2 size={15} />
+                              </button>
+                              <button onClick={() => rejectCorrection(item)}
+                                title="Rejeter"
+                                className="p-1.5 rounded-lg bg-gray-50 text-gray-500 hover:bg-red-50 hover:text-red-500 transition-colors">
+                                <XCircle size={15} />
+                              </button>
+                            </div>
+                          ) : (
+                            <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${
+                              item.status === 'applied' ? 'bg-emerald-100 text-emerald-700' :
+                              item.status === 'rejected' ? 'bg-gray-100 text-gray-500' : ''
+                            }`}>{item.status === 'applied' ? '✓ appliquée' : '✗ rejetée'}</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* Info migration */}
+            <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-700">
+              <strong>Prérequis :</strong> Appliquer la migration SQL <code>025_audit_queue.sql</code> dans Supabase → SQL Editor, puis lancer <em>Dashboard Pipeline → "Audit → Admin Corrections"</em>.
             </div>
           </div>
         )}

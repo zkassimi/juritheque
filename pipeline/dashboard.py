@@ -546,6 +546,69 @@ SCRIPTS: Dict[str, Any] = {
     "danger":   False,
     "risk":     "long",
   },
+  "check_quality_dry": {
+    "label":    "🔍 Aperçu qualité données",
+    "desc":     "Détecte numéros malformés, dates incohérentes, doublons visibles. 0 écriture.",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/check_data_quality.py", "--export"],
+    "danger":   False, "risk": "safe",
+  },
+  "check_quality_fix": {
+    "label":    "✏️ Corriger numéros malformés",
+    "desc":     "Supprime le préfixe type du champ number (ex: 'Dahir n°1-23' → '1-23'). Auto-corrigeable uniquement.",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/check_data_quality.py", "--fix"],
+    "danger":   False, "risk": "safe",
+  },
+  "audit_canonical_dry": {
+    "label":    "🔬 Audit canonique (20 textes)",
+    "desc":     "Compare métadonnées DB vs PDF source p.1 : type, numéro, date, titre. PDF prioritaire. Dry-run.",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/audit_existing_legal_records.py", "--mode", "record", "--limit", "20", "--export"],
+    "danger":   False, "risk": "safe",
+  },
+  "audit_canonical_low_score": {
+    "label":    "🔬 Audit canonique (score < 70)",
+    "desc":     "Audit des textes à confiance faible (global_confidence_score < 70). Dry-run.",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/audit_existing_legal_records.py", "--mode", "record", "--low-score", "--limit", "50", "--export"],
+    "danger":   False, "risk": "safe",
+  },
+  "audit_to_admin": {
+    "label":    "📋 Audit → Admin Corrections (100)",
+    "desc":     "Audit 100 textes + exporte les corrections dans Supabase. Visible dans Admin → Corrections pour validation.",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/audit_existing_legal_records.py", "--mode", "record", "--limit", "100", "--export-to-db"],
+    "danger":   False, "risk": "safe",
+  },
+  "audit_to_admin_all": {
+    "label":    "📋 Audit complet → Admin Corrections",
+    "desc":     "Audit tous les textes + exporte corrections dans Supabase. Lent (30-60 min selon taille).",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/audit_existing_legal_records.py", "--mode", "record", "--export-to-db"],
+    "danger":   False, "risk": "safe",
+  },
+  "audit_duplicates": {
+    "label":    "🔗 Aperçu doublons (par PDF)",
+    "desc":     "Groupe par pdf_url : choisit le survivant (contenu>numéro>date), publie/masque. Dry-run — 0 écriture.",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/audit_existing_legal_records.py", "--mode", "duplicates", "--export"],
+    "danger":   False, "risk": "safe",
+  },
+  "audit_duplicates_apply": {
+    "label":    "🔗 Appliquer dédoublonnage",
+    "desc":     "Publie le survivant + masque les doublons (même PDF). Réversible (is_publicly_indexable). Ne touche pas aux métadonnées.",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/audit_existing_legal_records.py", "--mode", "duplicates", "--apply"],
+    "danger":   True, "risk": "sensitive",
+  },
+  "mirror_pdfs_apply": {
+    "label":    "📦 Backup local PDFs (50)",
+    "desc":     "Télécharge 50 PDFs (pdf_url/source_url) dans pipeline/pdfs/mirror/ + index local. Aucun upload Supabase.",
+    "category": "🔧 Corrections",
+    "cmd":      [sys.executable, "-X", "utf8", "pipeline/audit_existing_legal_records.py", "--mode", "mirror", "--limit", "50"],
+    "danger":   False, "risk": "safe",
+  },
 
   "build_and_push": {
     "label":    "🏗️ Build + Push → Vercel",
@@ -571,6 +634,7 @@ CATEGORIES = [
   "📥 Import & Sources",   # Crawlers, extracteurs, BOs
   "🧠 Enrichissement IA",  # Résumés, traductions, domaines, scores
   "🔍 SEO & Qualité",      # Sitemap, index, vérifications, corrections
+  "🔧 Corrections",        # Qualité des données : numéros, dates, doublons
   "🔨 Build & Déploiement",# Build Vite + git push Vercel
 ]
 

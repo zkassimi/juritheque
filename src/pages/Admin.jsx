@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { lawPath } from '../lib/lawUtils'
 import {
@@ -6,7 +6,7 @@ import {
   Search, TrendingUp, BarChart2, Eye, Shield, RefreshCw,
   CheckCircle2, XCircle, Save, X, Database, UserPlus, Mail, Lock, User, Briefcase,
   Video, Play, ExternalLink, Menu, AlertTriangle, Flag, CheckCheck, Clock, Inbox, Download,
-  Bell, FileInput, Link2, RotateCcw, Terminal, Copy, Zap, Activity, ListChecks
+  Bell, FileInput, Link2, RotateCcw, Terminal, Copy, Zap, Activity, ListChecks, ChevronDown
 } from 'lucide-react'
 import { useLang } from '../contexts/LangContext'
 import { useAuth } from '../contexts/AuthContext'
@@ -106,6 +106,9 @@ export default function Admin() {
   const [correctionsStats, setCorrectionsStats]     = useState({ pending: 0, approved: 0, rejected: 0, applied: 0 })
   const [pendingCorrections, setPendingCorrections] = useState(0)
   const [corrFilter, setCorrFilter]                 = useState({ status: 'pending', severity: 'all', field: 'all', decision: 'all' })
+  const [corrPage, setCorrPage]                     = useState(1)
+  const [corrExpanded, setCorrExpanded]             = useState(new Set())
+  const CORR_PAGE_SIZE = 15
 
   // Pipeline
   const [pipelineRuns, setPipelineRuns]     = useState([])
@@ -268,9 +271,19 @@ export default function Admin() {
       if (filters.severity !== 'all') q = q.eq('severity', filters.severity)
       if (filters.field !== 'all') q = q.eq('field', filters.field)
       if (filters.decision !== 'all') q = q.eq('decision', filters.decision)
-      q = q.order('severity', { ascending: false }).order('score', { ascending: true }).limit(200)
+      q = q.order('score', { ascending: true }).order('severity', { ascending: false }).limit(500)
       const { data } = await q
-      setCorrections(data || [])
+      // Enrichir avec canonical_slug depuis laws
+      const rows = data || []
+      if (rows.length > 0) {
+        const lawIds = [...new Set(rows.map(r => r.law_id))]
+        const { data: slugData } = await supabase.from('laws').select('id,canonical_slug').in('id', lawIds)
+        const slugMap = {}
+        ;(slugData || []).forEach(r => { slugMap[r.id] = r.canonical_slug })
+        setCorrections(rows.map(r => ({ ...r, law_slug: slugMap[r.law_id] })))
+      } else {
+        setCorrections([])
+      }
       // Stats globales
       const { data: all } = await supabase.from('audit_queue').select('status')
       const counts = { pending: 0, approved: 0, rejected: 0, applied: 0 }
@@ -297,6 +310,32 @@ export default function Admin() {
   const rejectCorrection = async (item) => {
     await supabase.from('audit_queue').update({ status: 'rejected', reviewed_at: new Date().toISOString() }).eq('id', item.id)
     notify('Correction rejetée', true)
+    loadCorrections()
+  }
+
+  const approveAllForLaw = async (lawId) => {
+    const pending = corrections.filter(c => c.law_id === lawId && c.status === 'pending')
+    if (!pending.length) return
+    const patch = {}
+    pending.forEach(item => { patch[item.field] = item.proposed })
+    if (patch.title_fr) patch.needs_human_review = false
+    const { error } = await supabase.from('laws').update(patch).eq('id', lawId)
+    if (error) { notify('Erreur : ' + error.message, false); return }
+    const ids = pending.map(c => c.id)
+    for (const id of ids) {
+      await supabase.from('audit_queue').update({ status: 'applied', reviewed_at: new Date().toISOString() }).eq('id', id)
+    }
+    notify(`✓ ${pending.length} correction(s) appliquée(s)`, true)
+    loadCorrections()
+  }
+
+  const rejectAllForLaw = async (lawId) => {
+    const pending = corrections.filter(c => c.law_id === lawId && c.status === 'pending')
+    if (!pending.length) return
+    for (const item of pending) {
+      await supabase.from('audit_queue').update({ status: 'rejected', reviewed_at: new Date().toISOString() }).eq('id', item.id)
+    }
+    notify(`Rejeté ${pending.length} correction(s)`, true)
     loadCorrections()
   }
 
@@ -2050,167 +2089,257 @@ export default function Admin() {
         )}
 
         {/* ══ CORRECTIONS (audit_queue) ══ */}
-        {section === 'corrections' && (
-          <div>
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-              <div>
-                <h1 className="font-playfair font-bold text-navy text-2xl flex items-center gap-2">
-                  <CheckCheck size={22} className="text-gold" /> Corrections proposées
-                </h1>
-                <p className="text-sm text-navy-500 mt-1">Résultats de l'audit canonique — validez ou rejetez chaque correction avant application en base</p>
-              </div>
-              <button onClick={() => loadCorrections(corrFilter)} className="p-2 rounded-lg border border-gray-200 text-navy-600 hover:border-gold">
-                <RefreshCw size={14} />
-              </button>
-            </div>
+        {section === 'corrections' && (() => {
+          // Grouper par law_id, triés par score croissant
+          const corrGrouped = Object.values(
+            corrections.reduce((acc, item) => {
+              const k = item.law_id
+              if (!acc[k]) acc[k] = { law_id: k, law_title: item.law_title, law_number: item.law_number, law_slug: item.law_slug, score: item.score, decision: item.decision, flags: item.flags, diffs: [] }
+              acc[k].diffs.push(item)
+              return acc
+            }, {})
+          ).sort((a, b) => (a.score || 100) - (b.score || 100))
 
-            {/* Stat cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-              {[
-                { label: 'En attente', key: 'pending',  color: 'bg-amber-50 text-amber-700', dot: 'bg-amber-400' },
-                { label: 'Appliquées', key: 'applied',  color: 'bg-emerald-50 text-emerald-700', dot: 'bg-emerald-500' },
-                { label: 'Rejetées',   key: 'rejected', color: 'bg-gray-50 text-gray-500', dot: 'bg-gray-400' },
-              ].map(({ label, key, color, dot }) => (
-                <button key={key}
-                  onClick={() => { const f = { ...corrFilter, status: key }; setCorrFilter(f); loadCorrections(f) }}
-                  className={`rounded-2xl border p-4 text-left transition-all ${corrFilter.status === key ? 'border-navy ring-1 ring-navy' : 'border-gray-100 hover:border-gold'}`}>
-                  <div className={`text-2xl font-playfair font-bold ${color.split(' ')[1]}`}>{correctionsStats[key] ?? '—'}</div>
+          const corrPages = Math.ceil(corrGrouped.length / CORR_PAGE_SIZE)
+          const corrPaged = corrGrouped.slice((corrPage - 1) * CORR_PAGE_SIZE, corrPage * CORR_PAGE_SIZE)
+
+          return (
+            <div>
+              {/* Header */}
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+                <div>
+                  <h1 className="font-playfair font-bold text-navy text-2xl flex items-center gap-2">
+                    <CheckCheck size={22} className="text-gold" /> Corrections proposées
+                  </h1>
+                  <p className="text-sm text-navy-500 mt-1">Audit canonique PDF↔DB — validez ou rejetez chaque texte avant application</p>
+                </div>
+                <button onClick={() => loadCorrections(corrFilter)} className="p-2 rounded-lg border border-gray-200 text-navy-600 hover:border-gold">
+                  <RefreshCw size={14} />
+                </button>
+              </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+                {[
+                  { label: 'En attente', key: 'pending',  clr: 'text-amber-600',  dot: 'bg-amber-400' },
+                  { label: 'Appliquées', key: 'applied',  clr: 'text-emerald-600', dot: 'bg-emerald-500' },
+                  { label: 'Rejetées',   key: 'rejected', clr: 'text-gray-500',   dot: 'bg-gray-400' },
+                ].map(({ label, key, clr, dot }) => (
+                  <button key={key}
+                    onClick={() => { const f = { ...corrFilter, status: key }; setCorrFilter(f); setCorrPage(1); loadCorrections(f) }}
+                    className={`rounded-2xl border p-4 text-left transition-all ${corrFilter.status === key ? 'border-navy ring-1 ring-navy' : 'border-gray-100 hover:border-gold'}`}>
+                    <div className={`text-2xl font-playfair font-bold ${clr}`}>{correctionsStats[key] ?? '—'}</div>
+                    <div className="flex items-center gap-1.5 mt-1">
+                      <span className={`w-2 h-2 rounded-full ${dot}`}></span>
+                      <span className="text-xs text-navy-500">{label}</span>
+                    </div>
+                  </button>
+                ))}
+                <button
+                  onClick={() => { const f = { ...corrFilter, status: 'all' }; setCorrFilter(f); setCorrPage(1); loadCorrections(f) }}
+                  className={`rounded-2xl border p-4 text-left transition-all ${corrFilter.status === 'all' ? 'border-navy ring-1 ring-navy' : 'border-gray-100 hover:border-gold'}`}>
+                  <div className="text-2xl font-playfair font-bold text-navy">
+                    {Object.values(correctionsStats).reduce((a, b) => a + b, 0) || '—'}
+                  </div>
                   <div className="flex items-center gap-1.5 mt-1">
-                    <span className={`w-2 h-2 rounded-full ${dot}`}></span>
-                    <span className="text-xs text-navy-500">{label}</span>
+                    <span className="w-2 h-2 rounded-full bg-navy"></span>
+                    <span className="text-xs text-navy-500">Total champs</span>
                   </div>
                 </button>
-              ))}
-              <button
-                onClick={() => { const f = { ...corrFilter, status: 'all' }; setCorrFilter(f); loadCorrections(f) }}
-                className={`rounded-2xl border p-4 text-left transition-all ${corrFilter.status === 'all' ? 'border-navy ring-1 ring-navy' : 'border-gray-100 hover:border-gold'}`}>
-                <div className="text-2xl font-playfair font-bold text-navy">
-                  {Object.values(correctionsStats).reduce((a, b) => a + b, 0) || '—'}
-                </div>
-                <div className="flex items-center gap-1.5 mt-1">
-                  <span className="w-2 h-2 rounded-full bg-navy"></span>
-                  <span className="text-xs text-navy-500">Total</span>
-                </div>
-              </button>
-            </div>
-
-            {/* Filtres */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-3 mb-4 flex flex-wrap gap-2">
-              {/* Champ */}
-              <select value={corrFilter.field} onChange={e => { const f = { ...corrFilter, field: e.target.value }; setCorrFilter(f); loadCorrections(f) }}
-                className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 text-navy-700 focus:outline-none focus:border-gold">
-                <option value="all">Tous les champs</option>
-                <option value="number">Numéro</option>
-                <option value="date">Date</option>
-                <option value="type">Type</option>
-                <option value="title_fr">Titre</option>
-              </select>
-              {/* Sévérité */}
-              <select value={corrFilter.severity} onChange={e => { const f = { ...corrFilter, severity: e.target.value }; setCorrFilter(f); loadCorrections(f) }}
-                className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 text-navy-700 focus:outline-none focus:border-gold">
-                <option value="all">Toute sévérité</option>
-                <option value="critical">Critique</option>
-                <option value="warning">Avertissement</option>
-              </select>
-              {/* Décision */}
-              <select value={corrFilter.decision} onChange={e => { const f = { ...corrFilter, decision: e.target.value }; setCorrFilter(f); loadCorrections(f) }}
-                className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 text-navy-700 focus:outline-none focus:border-gold">
-                <option value="all">Toute décision</option>
-                <option value="review">Review</option>
-                <option value="review_high_priority">Prioritaire</option>
-                <option value="block">Bloqué</option>
-              </select>
-              <span className="ml-auto text-xs text-navy-400 self-center">{corrections.length} résultat(s)</span>
-            </div>
-
-            {/* Tableau */}
-            {correctionsLoading ? (
-              <div className="flex justify-center py-12 text-navy-400 text-sm">Chargement…</div>
-            ) : corrections.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-gray-100 p-10 text-center">
-                <CheckCheck size={32} className="mx-auto mb-3 text-emerald-400" />
-                <p className="text-navy-600 font-medium">Aucune correction en attente</p>
-                <p className="text-sm text-navy-400 mt-1">Lance l'audit depuis le Dashboard Pipeline → "Audit → Admin Corrections"</p>
               </div>
-            ) : (
-              <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-                <table className="w-full text-sm">
-                  <thead className="bg-gray-50 border-b border-gray-100">
-                    <tr>
-                      <th className="text-left px-4 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wide w-12">ID</th>
-                      <th className="text-left px-4 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wide">Texte</th>
-                      <th className="text-left px-4 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wide w-20">Champ</th>
-                      <th className="text-left px-4 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wide">Valeur actuelle</th>
-                      <th className="text-left px-4 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wide">Valeur proposée</th>
-                      <th className="text-left px-4 py-3 text-xs font-semibold text-navy-500 uppercase tracking-wide w-24">Score</th>
-                      <th className="px-4 py-3 w-28"></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-50">
-                    {corrections.map(item => (
-                      <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-4 py-3 text-navy-500 text-xs font-mono">{item.law_id}</td>
-                        <td className="px-4 py-3">
-                          <p className="text-navy-800 text-xs font-medium line-clamp-1">{item.law_title || '—'}</p>
-                          <p className="text-navy-400 text-[10px] mt-0.5">{item.law_number}</p>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${
-                            item.severity === 'critical' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
-                          }`}>
-                            {item.field}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-xs text-navy-500 font-mono max-w-[160px]">
-                          <span className="line-clamp-2">{item.current_val || <em className="not-italic text-gray-400">vide</em>}</span>
-                        </td>
-                        <td className="px-4 py-3 text-xs text-navy-800 font-mono max-w-[160px]">
-                          <span className="line-clamp-2 text-emerald-700 font-medium">{item.proposed}</span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-1">
-                            <div className={`h-1.5 rounded-full flex-1 ${item.score >= 80 ? 'bg-emerald-400' : item.score >= 60 ? 'bg-amber-400' : 'bg-red-400'}`}
-                              style={{ width: `${item.score}%`, maxWidth: '100%' }}></div>
-                            <span className="text-[10px] text-navy-400">{item.score}</span>
-                          </div>
-                          <p className={`text-[10px] mt-0.5 ${item.decision === 'block' ? 'text-red-500' : item.decision === 'review_high_priority' ? 'text-amber-600' : 'text-navy-400'}`}>
-                            {item.decision}
-                          </p>
-                        </td>
-                        <td className="px-4 py-3">
-                          {item.status === 'pending' ? (
-                            <div className="flex gap-1.5">
-                              <button onClick={() => approveCorrection(item)}
-                                title="Approuver et appliquer"
-                                className="p-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors">
-                                <CheckCircle2 size={15} />
-                              </button>
-                              <button onClick={() => rejectCorrection(item)}
-                                title="Rejeter"
-                                className="p-1.5 rounded-lg bg-gray-50 text-gray-500 hover:bg-red-50 hover:text-red-500 transition-colors">
-                                <XCircle size={15} />
+
+              {/* Filtres + compteur */}
+              <div className="bg-white rounded-2xl border border-gray-100 p-3 mb-4 flex flex-wrap gap-2 items-center">
+                {[
+                  { val: corrFilter.field, key: 'field', opts: [['all','Tous les champs'],['number','Numéro'],['date','Date'],['type','Type'],['title_fr','Titre']] },
+                  { val: corrFilter.severity, key: 'severity', opts: [['all','Toute sévérité'],['critical','Critique'],['warning','Avertissement']] },
+                  { val: corrFilter.decision, key: 'decision', opts: [['all','Toute décision'],['review','Review'],['review_high_priority','Prioritaire'],['block','Bloqué']] },
+                ].map(({ val, key, opts }) => (
+                  <select key={key} value={val}
+                    onChange={e => { const f = { ...corrFilter, [key]: e.target.value }; setCorrFilter(f); setCorrPage(1); loadCorrections(f) }}
+                    className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 text-navy-700 focus:outline-none focus:border-gold">
+                    {opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                  </select>
+                ))}
+                <span className="ml-auto text-xs text-navy-400">
+                  {corrGrouped.length} texte(s) · {corrections.length} champ(s)
+                  {corrPages > 1 && ` · p.${corrPage}/${corrPages}`}
+                </span>
+              </div>
+
+              {/* Contenu */}
+              {correctionsLoading ? (
+                <div className="flex justify-center py-12 text-navy-400 text-sm">Chargement…</div>
+              ) : corrections.length === 0 ? (
+                <div className="bg-white rounded-2xl border border-gray-100 p-10 text-center">
+                  <CheckCheck size={32} className="mx-auto mb-3 text-emerald-400" />
+                  <p className="text-navy-600 font-medium">Aucune correction</p>
+                  <p className="text-sm text-navy-400 mt-1">Lancer l'audit depuis Dashboard Pipeline → "Audit → Admin Corrections (100)"</p>
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-3">
+                    {corrPaged.map(group => {
+                      const isExpanded = corrExpanded.has(group.law_id)
+                      const pendingDiffs = group.diffs.filter(d => d.status === 'pending')
+                      const criticals = group.diffs.filter(d => d.severity === 'critical').length
+                      const decClr = group.decision === 'block' ? 'text-red-500 bg-red-50 border-red-200'
+                        : group.decision === 'review_high_priority' ? 'text-amber-600 bg-amber-50 border-amber-200'
+                        : 'text-navy-500 bg-gray-50 border-gray-200'
+                      const scoreClr = (group.score || 100) < 50 ? 'bg-red-100 text-red-600'
+                        : (group.score || 100) < 75 ? 'bg-amber-100 text-amber-700'
+                        : 'bg-emerald-100 text-emerald-700'
+                      return (
+                        <div key={group.law_id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+                          {/* En-tête du texte */}
+                          <div className="flex flex-wrap items-start gap-2 p-4">
+                            <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold ${scoreClr}`}>
+                              {group.score ?? '?'}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-navy-800 font-semibold text-sm line-clamp-1">{group.law_title || `Texte #${group.law_id}`}</p>
+                              <p className="text-navy-400 text-xs mt-0.5 font-mono">{group.law_number || '—'} · id={group.law_id}</p>
+                              <div className="flex flex-wrap gap-1 mt-1.5">
+                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-navy-50 text-navy-500 border border-navy-100 border-opacity-30">
+                                  {group.diffs.length} champ{group.diffs.length > 1 ? 's' : ''}
+                                </span>
+                                {criticals > 0 && (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200">
+                                    🔴 {criticals} critique{criticals > 1 ? 's' : ''}
+                                  </span>
+                                )}
+                                <span className={`text-[10px] px-2 py-0.5 rounded-full border ${decClr}`}>
+                                  {group.decision}
+                                </span>
+                              </div>
+                            </div>
+                            {/* Actions */}
+                            <div className="flex items-center gap-1.5 flex-shrink-0">
+                              {group.law_slug && (
+                                <a href={`/fr/loi/${group.law_slug}`} target="_blank" rel="noopener noreferrer"
+                                  title="Voir le texte"
+                                  className="p-1.5 rounded-lg border border-gray-200 text-navy-500 hover:border-gold hover:text-gold transition-colors">
+                                  <Eye size={14} />
+                                </a>
+                              )}
+                              {pendingDiffs.length > 0 && (
+                                <>
+                                  <button onClick={() => approveAllForLaw(group.law_id)}
+                                    title={`Approuver les ${pendingDiffs.length} correction(s)`}
+                                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 text-xs font-medium transition-colors">
+                                    <CheckCircle2 size={13} /> Tout approuver
+                                  </button>
+                                  <button onClick={() => rejectAllForLaw(group.law_id)}
+                                    title="Rejeter toutes les corrections"
+                                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-gray-50 text-gray-500 hover:bg-red-50 hover:text-red-500 text-xs font-medium transition-colors">
+                                    <XCircle size={13} /> Rejeter
+                                  </button>
+                                </>
+                              )}
+                              <button onClick={() => setCorrExpanded(prev => {
+                                const s = new Set(prev); if (s.has(group.law_id)) s.delete(group.law_id); else s.add(group.law_id); return s
+                              })} className="p-1.5 rounded-lg border border-gray-200 text-navy-500 hover:border-gold transition-colors">
+                                <ChevronDown size={14} className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
                               </button>
                             </div>
-                          ) : (
-                            <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${
-                              item.status === 'applied' ? 'bg-emerald-100 text-emerald-700' :
-                              item.status === 'rejected' ? 'bg-gray-100 text-gray-500' : ''
-                            }`}>{item.status === 'applied' ? '✓ appliquée' : '✗ rejetée'}</span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                          </div>
 
-            {/* Info migration */}
-            <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-700">
-              <strong>Prérequis :</strong> Appliquer la migration SQL <code>025_audit_queue.sql</code> dans Supabase → SQL Editor, puis lancer <em>Dashboard Pipeline → "Audit → Admin Corrections"</em>.
+                          {/* Détails diffs (expandable) */}
+                          {isExpanded && (
+                            <div className="border-t border-gray-100">
+                              <table className="w-full">
+                                <thead className="bg-gray-50">
+                                  <tr>
+                                    <th className="text-left px-4 py-2 text-[10px] font-semibold text-navy-400 uppercase tracking-wide w-20">Champ</th>
+                                    <th className="text-left px-4 py-2 text-[10px] font-semibold text-navy-400 uppercase tracking-wide">Valeur actuelle</th>
+                                    <th className="text-left px-4 py-2 text-[10px] font-semibold text-navy-400 uppercase tracking-wide">Valeur proposée</th>
+                                    <th className="px-4 py-2 w-16 text-center text-[10px] font-semibold text-navy-400 uppercase tracking-wide">Sév.</th>
+                                    <th className="px-4 py-2 w-20"></th>
+                                  </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-50">
+                                  {group.diffs.map(diff => (
+                                    <tr key={diff.id} className={`text-xs ${diff.status !== 'pending' ? 'opacity-40' : 'hover:bg-gray-50'}`}>
+                                      <td className="px-4 py-2.5">
+                                        <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                                          diff.severity === 'critical' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
+                                        }`}>{diff.field}</span>
+                                      </td>
+                                      <td className="px-4 py-2.5 text-navy-400 font-mono max-w-[220px]">
+                                        <span className="line-clamp-2 break-all">{diff.current_val || <em className="not-italic text-gray-300 text-[10px]">vide</em>}</span>
+                                      </td>
+                                      <td className="px-4 py-2.5 font-mono font-medium max-w-[220px]">
+                                        <span className="line-clamp-2 break-all text-emerald-700">{diff.proposed}</span>
+                                      </td>
+                                      <td className="px-4 py-2.5 text-center">
+                                        {diff.severity === 'critical' ? <span title="Critique">🔴</span> : <span title="Avertissement">⚠️</span>}
+                                      </td>
+                                      <td className="px-4 py-2.5">
+                                        {diff.status === 'pending' ? (
+                                          <div className="flex gap-1">
+                                            <button onClick={() => approveCorrection(diff)} title="Approuver ce champ"
+                                              className="p-1 rounded bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors">
+                                              <CheckCircle2 size={13} />
+                                            </button>
+                                            <button onClick={() => rejectCorrection(diff)} title="Rejeter ce champ"
+                                              className="p-1 rounded bg-gray-50 text-gray-500 hover:bg-red-50 hover:text-red-500 transition-colors">
+                                              <XCircle size={13} />
+                                            </button>
+                                          </div>
+                                        ) : (
+                                          <span className={`text-[10px] font-semibold ${diff.status === 'applied' ? 'text-emerald-600' : 'text-gray-400'}`}>
+                                            {diff.status === 'applied' ? '✓' : '✗'}
+                                          </span>
+                                        )}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                              {/* Flags */}
+                              {group.flags?.length > 0 && (
+                                <div className="px-4 py-2 bg-amber-50 border-t border-amber-100 text-[10px] text-amber-700 font-mono">
+                                  Flags: {(group.flags || []).join(' · ')}
+                                  {group.diffs[0]?.pdf_source && ` · PDF: ${group.diffs[0].pdf_source}`}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+
+                  {/* Pagination */}
+                  {corrPages > 1 && (
+                    <div className="flex items-center justify-center gap-1.5 mt-6">
+                      <button onClick={() => setCorrPage(p => Math.max(1, p - 1))} disabled={corrPage === 1}
+                        className="px-3 py-1.5 rounded-lg border border-gray-200 text-navy-500 text-sm hover:border-gold disabled:opacity-30 transition-colors">
+                        ‹
+                      </button>
+                      {Array.from({ length: Math.min(corrPages, 7) }, (_, i) => {
+                        const pg = corrPage <= 4 ? i + 1 : Math.min(corrPages - 6 + i + 1, corrPages - 6 + i + 1)
+                        const pg2 = corrPage <= 4 ? i + 1 : corrPage - 3 + i
+                        const p = pg2 > corrPages ? null : pg2
+                        if (!p) return null
+                        return (
+                          <button key={p} onClick={() => setCorrPage(p)}
+                            className={`w-8 h-8 rounded-lg text-sm transition-colors ${corrPage === p ? 'bg-navy text-white' : 'border border-gray-200 text-navy-500 hover:border-gold'}`}>
+                            {p}
+                          </button>
+                        )
+                      })}
+                      <button onClick={() => setCorrPage(p => Math.min(corrPages, p + 1))} disabled={corrPage === corrPages}
+                        className="px-3 py-1.5 rounded-lg border border-gray-200 text-navy-500 text-sm hover:border-gold disabled:opacity-30 transition-colors">
+                        ›
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
-          </div>
-        )}
+          )
+        })()}
 
         {section === 'users' && (
           <div>

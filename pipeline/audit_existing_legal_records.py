@@ -119,6 +119,9 @@ MONTHS_AR = {
     'شتنبر': 9, 'أكتوبر': 10, 'اكتوبر': 10, 'نونبر': 11, 'دجنبر': 12,
 }
 
+# Conversion chiffres arabes orientaux → chiffres occidentaux
+_AR_DIGITS = str.maketrans('٠١٢٣٤٥٦٧٨٩', '0123456789')
+
 # Marqueurs introduisant l'historique des modifications / consolidation :
 # tout ce qui suit cite des numéros d'AUTRES textes — l'en-tête seul fait foi.
 MODIF_HISTORY_MARKERS = [
@@ -180,6 +183,9 @@ def _extract_from_page1(text: str) -> dict[str, Any]:
         'title_lines': [],
     }
 
+    # Normaliser les chiffres arabes orientaux (٠١٢...) → occidentaux (012...)
+    text = text.translate(_AR_DIGITS)
+
     # Restreindre l'extraction à l'en-tête (avant l'historique des modifications)
     header = _header_region(text)
 
@@ -205,18 +211,24 @@ def _extract_from_page1(text: str) -> dict[str, Any]:
             result['formal_type'] = typ
             break
 
-    # Numéro dahir : 1-XX-YYY — casse INSENSIBLE (en-têtes souvent en MAJUSCULES)
-    dm = re.search(r'(?:Dahir|ظهير)\s+(?:[shn°]*\s*)?(?:[nN][°o]?\s*)?([\d]+[\.\-][\d]+[\.\-][\d]+)', header, re.IGNORECASE)
+    # Numéro dahir : 1-XX-YYY — casse INSENSIBLE, supporte رقم (arabe) et n° (français)
+    dm = re.search(
+        r'(?:Dahir|ظهير|الظهير)\s+(?:[shn°]*\s*)?(?:[nN][°o]?\s*|رقم\s*)?([\d]+[\.\-][\d]+[\.\-][\d]+)',
+        header, re.IGNORECASE)
     if dm:
         result['dahir_number'] = re.sub(r'[\.\s]+', '-', dm.group(1)).strip('-')
 
-    # Numéro loi : XX-YYY
-    lm = re.search(r'(?:Loi|قانون)\s+(?:[nr°]*\s*)?(?:[nN][°o]?\s*)?([\d]+[\.\-][\d]+)', header, re.IGNORECASE)
+    # Numéro loi : XX-YYY (supporte قانون رقم)
+    lm = re.search(
+        r'(?:Loi|قانون|القانون)\s+(?:[nr°]*\s*)?(?:[nN][°o]?\s*|رقم\s*)?([\d]+[\.\-][\d]+)',
+        header, re.IGNORECASE)
     if lm:
         result['law_number'] = re.sub(r'[\.\s]+', '-', lm.group(1)).strip('-')
 
-    # Numéro décret : 2-XX-YYY
-    decm = re.search(r'(?:Décret|مرسوم)\s+(?:[nr°]*\s*)?(?:[nN][°o]?\s*)?([\d]+[\.\-][\d]+[\.\-][\d]+)', header, re.IGNORECASE)
+    # Numéro décret : 2-XX-YYY (supporte مرسوم رقم)
+    decm = re.search(
+        r'(?:Décret|Decret|مرسوم|المرسوم)\s+(?:[nr°]*\s*)?(?:[nN][°o]?\s*|رقم\s*)?([\d]+[\.\-][\d]+[\.\-][\d]+)',
+        header, re.IGNORECASE)
     if decm:
         result['decree_number'] = re.sub(r'[\.\s]+', '-', decm.group(1)).strip('-')
 
@@ -394,10 +406,24 @@ def resolve_pdf(law: dict, mirror_index: dict) -> tuple[Path | None, str]:
 # ── Text extraction ──────────────────────────────────────────────────────────
 
 def _legal_pattern_found(text: str) -> bool:
-    """Retourne True si le texte contient au moins un pattern juridique exploitable."""
+    """Retourne True si le texte contient au moins un pattern juridique exploitable.
+    Couvre : FR (Dahir/Loi/Décret/Arrêté), AR avec et sans article défini (ظهير/الظهير...),
+    majuscules BO (DAHIR/LOI), et chiffres arabes orientaux normalisés."""
+    normalized = text.translate(_AR_DIGITS)
     return bool(re.search(
-        r'(?:Dahir|ظهير|Loi|قانون|Décret|مرسوم|Arrêté|قرار)\s',
-        text, re.IGNORECASE
+        r'(?:'
+        r'Dahir|DAHIR'
+        r'|ظهير|الظهير'
+        r'|Loi(?:\s+organique)?|LOI'
+        r'|قانون|القانون|قانون\s+تنظيمي'
+        r'|Décret|DÉCRET|Decret'
+        r'|مرسوم|المرسوم'
+        r'|Arrêté|ARRÊTÉ|Arrete'
+        r'|قرار|القرار'
+        r'|Circulaire|منشور'
+        r'|ن°\s*\d|رقم\s+\d'        # "n° X" arabe ou "رقم X"
+        r')',
+        normalized, re.IGNORECASE | re.UNICODE
     ))
 
 

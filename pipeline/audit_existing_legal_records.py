@@ -854,11 +854,11 @@ def score_and_flag(law: dict, cr: CanonicalRecord) -> tuple[int, list[AuditFlag]
             norm_db2 = re.sub(r'[^0-9]', '-', db_number).strip('-')
             # Tolérance : l'un contient l'autre (numéros partiels)
             if norm_off and norm_db2 and norm_off not in norm_db2 and norm_db2 not in norm_off:
-                if cr.number_ambiguous:
-                    # Texte modificatif citant plusieurs numéros : signaler sans
-                    # proposer (build_diffs supprime le diff). Pas de malus lourd.
+                if cr.number_ambiguous or not _number_trustworthy(db_number, cr.official_number):
+                    # Chiffres différents / en-tête ambigu → probablement un
+                    # instrument tiers. Signaler sans proposer (diff supprimé).
                     add('number_needs_manual_check', 'info', 'number',
-                        f'Plusieurs numéros dans l\'en-tête — à vérifier manuellement '
+                        f'Numéro incertain — à vérifier manuellement '
                         f'(candidat PDF={cr.official_number!r} vs DB={db_number!r})', 5)
                 else:
                     add('number_mismatch_pdf_vs_record', 'critical', 'number',
@@ -931,6 +931,31 @@ def make_decision(score: int, flags: list[AuditFlag]) -> tuple[str, bool]:
 
 # ── Diff builder ──────────────────────────────────────────────────────────────
 
+def _digit_groups(s: str | None) -> tuple[str, ...]:
+    """Groupes de chiffres d'un numéro : '2.20.528' → ('2','20','528')."""
+    return tuple(re.findall(r'\d+', s or ''))
+
+
+def _number_trustworthy(current: str | None, proposed: str | None) -> bool:
+    """
+    True si la correction numéro est FIABLE : mêmes chiffres reformatés
+    ('52.05'→'52-05') ou nettoyage d'un numéro pollué par une date/titre
+    ('2-10-313-du-20-chaoual-1431'→'2-10-313'). False si les chiffres diffèrent
+    réellement — signe qu'on a extrait le numéro d'un instrument TIERS (loi
+    référencée, décret modifié) plutôt que de l'acte lui-même.
+    """
+    cg, pg = _digit_groups(current), _digit_groups(proposed)
+    if not cg or not pg:
+        return False
+    if cg == pg:
+        return True                                   # reformatage pur
+    if len(pg) < len(cg) and cg[:len(pg)] == pg:
+        return True                                   # nettoyage : proposé = préfixe du courant
+    if len(cg) < len(pg) and pg[:len(cg)] == cg:
+        return True
+    return False                                      # chiffres différents → non fiable
+
+
 def _same_title_ignoring_case(a: str, b: str) -> bool:
     """True si deux titres sont identiques à la casse/espaces/ponctuation près."""
     def _norm(t):
@@ -959,10 +984,16 @@ def build_diffs(law: dict, cr: CanonicalRecord) -> list[DiffItem]:
         # citant plusieurs numéros/dates, ne PAS proposer de valeur concrète (elle
         # pourrait venir d'un instrument tiers). L'ambiguïté est signalée par un
         # flag info dans score_and_flag ; aucune correction erronée à approuver.
-        if field == 'number' and cr.number_ambiguous:
-            continue
-        if field == 'date' and cr.date_ambiguous:
-            continue
+        if field == 'number':
+            # Suppression si ambigu OU si les chiffres diffèrent réellement du DB
+            # (numéro d'un instrument tiers, pas un simple reformatage/nettoyage).
+            if cr.number_ambiguous or not _number_trustworthy(current, proposed):
+                continue
+        if field == 'date':
+            # Date proposée uniquement si l'IDENTITÉ est confirmée (le numéro extrait
+            # correspond au numéro DB, format ignoré) → on lit bien le bon document.
+            if cr.date_ambiguous or not _number_trustworthy(law.get('number'), cr.official_number):
+                continue
         # Titre : ne pas proposer si c'est le même titre (casse/ponctuation près).
         # Le titre en base, souvent en casse propre, vaut mieux que la version PDF MAJUSCULES.
         if field == 'title_fr' and _same_title_ignoring_case(proposed, current):
@@ -1182,22 +1213,24 @@ def mode_record(args):
 
 def export_to_db(results: list[AuditResult], laws_by_id: dict) -> None:
     """Écrit les diffs dans la table audit_queue Supabase pour validation via Admin."""
-    law_ids_with_diffs = [r.law_id for r in results if r.diffs]
-    if not law_ids_with_diffs:
-        print('  → Aucun diff à exporter.')
-        return
-
-    # Supprimer les entrées "pending" existantes pour ces law_ids (évite doublons si re-run)
-    ids_str = ','.join(str(i) for i in law_ids_with_diffs)
-    try:
-        requests.delete(
-            f'{SUPABASE_URL}/rest/v1/audit_queue',
-            headers={**SB, 'Prefer': ''},
-            params={'law_id': f'in.({ids_str})', 'status': 'eq.pending'},
-            timeout=15,
-        )
-    except Exception as e:
-        print(f'  ⚠ Nettoyage audit_queue : {e}')
+    # Purger les entrées "pending" de TOUS les textes ré-audités — y compris ceux
+    # qui n'ont PLUS de diff après correction de la logique. Sinon leurs anciennes
+    # corrections (potentiellement fausses) resteraient orphelines dans l'Admin.
+    all_audited_ids = [r.law_id for r in results]
+    if all_audited_ids:
+        # PostgREST limite la longueur d'URL : purger par lots de 200 ids
+        for k in range(0, len(all_audited_ids), 200):
+            batch = all_audited_ids[k:k + 200]
+            ids_str = ','.join(str(i) for i in batch)
+            try:
+                requests.delete(
+                    f'{SUPABASE_URL}/rest/v1/audit_queue',
+                    headers={**SB, 'Prefer': ''},
+                    params={'law_id': f'in.({ids_str})', 'status': 'eq.pending'},
+                    timeout=15,
+                )
+            except Exception as e:
+                print(f'  ⚠ Nettoyage audit_queue : {e}')
 
     rows = []
     for r in results:
@@ -1220,7 +1253,7 @@ def export_to_db(results: list[AuditResult], laws_by_id: dict) -> None:
             })
 
     if not rows:
-        print('  → Aucun diff à exporter.')
+        print('  → Aucun diff à exporter (lignes périmées purgées).')
         return
 
     resp = requests.post(

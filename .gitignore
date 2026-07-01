@@ -45,6 +45,7 @@ __pycache__/
 *.pyo
 .venv/
 venv/
+pipeline/.venv_mineru/
 
 # Vercel
 .vercel/

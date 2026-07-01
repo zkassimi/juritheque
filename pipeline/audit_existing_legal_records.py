@@ -211,6 +211,7 @@ def _extract_from_page1(text: str) -> dict[str, Any]:
         'decree_number': None,
         'arrete_number': None,
         'formal_type': None,
+        'promulgated_type': None,
         'signature_date': None,
         'title_lines': [],
         'has_connector': False,
@@ -275,6 +276,15 @@ def _extract_from_page1(text: str) -> dict[str, Any]:
                 best = (key, typ)
     if best:
         result['formal_type'] = best[1]
+
+    # Type PROMULGUÉ : un « Dahir portant promulgation de la loi (organique) n° X »
+    # est stocké en base comme la LOI promulguée (choix éditorial correct). On
+    # détecte le type effectif du texte de fond pour ne pas proposer Loi→Dahir.
+    # FR : "promulgation de la loi organique" | AR : "بتنفيذ القانون التنظيمي"
+    if re.search(r'promulgation de la loi organique|القانون التنظيمي', header, re.IGNORECASE):
+        result['promulgated_type'] = 'Loi organique'
+    elif re.search(r'promulgation de la loi|بتنفيذ القانون|بمثابة', header, re.IGNORECASE):
+        result['promulgated_type'] = 'Loi'
 
     # Numéros extraits du SEGMENT PRIMAIRE (avant tout connecteur) → ignore les
     # numéros des textes modifiés/référencés.
@@ -726,6 +736,7 @@ def build_canonical_record(law: dict, page1_text: str, pdf_source: str) -> Canon
     cr.pdf_resolved = pdf_source in ('pdf_extracted', 'pdf_extracted_weak', 'pdf_ocr_vision')
     cr.source_priority = pdf_source
     cr.formal_instrument_type = parsed['formal_type'] or law.get('type')
+    cr.subject_text_type = parsed['promulgated_type']
     cr.dahir_number  = parsed['dahir_number']
     cr.law_number    = parsed['law_number']
     cr.decree_number = parsed['decree_number']
@@ -834,9 +845,9 @@ def score_and_flag(law: dict, cr: CanonicalRecord) -> tuple[int, list[AuditFlag]
         db_date   = law.get('date') or ''
         db_title  = (law.get('title_fr') or '').strip()
 
-        # Mismatch type
+        # Mismatch type — en acceptant le type promulgué (dahir de promulgation)
         pdf_type = (cr.formal_instrument_type or '').lower()
-        if pdf_type and db_type and pdf_type not in db_type and db_type not in pdf_type:
+        if pdf_type and db_type and not _type_acceptable(law.get('type'), cr):
             add('type_mismatch_pdf_vs_record', 'critical', 'type',
                 f'PDF={cr.formal_instrument_type!r} vs DB={law.get("type")!r}', 25)
 
@@ -956,6 +967,22 @@ def _number_trustworthy(current: str | None, proposed: str | None) -> bool:
     return False                                      # chiffres différents → non fiable
 
 
+def _type_acceptable(db_type: str | None, cr: CanonicalRecord) -> bool:
+    """
+    True si le type en base est cohérent avec le PDF — en acceptant SOIT le type
+    formel (Dahir/Décret…) SOIT le type promulgué. Un « Dahir portant promulgation
+    de la loi organique n° X » est légitimement stocké comme « Loi organique ».
+    """
+    db = (db_type or '').lower()
+    if not db:
+        return True
+    for t in (cr.formal_instrument_type, cr.subject_text_type):
+        t = (t or '').lower()
+        if t and (t in db or db in t):
+            return True
+    return False
+
+
 def _same_title_ignoring_case(a: str, b: str) -> bool:
     """True si deux titres sont identiques à la casse/espaces/ponctuation près."""
     def _norm(t):
@@ -993,6 +1020,11 @@ def build_diffs(law: dict, cr: CanonicalRecord) -> list[DiffItem]:
             # Date proposée uniquement si l'IDENTITÉ est confirmée (le numéro extrait
             # correspond au numéro DB, format ignoré) → on lit bien le bon document.
             if cr.date_ambiguous or not _number_trustworthy(law.get('number'), cr.official_number):
+                continue
+        if field == 'type':
+            # Ne pas proposer Loi→Dahir quand le PDF est un dahir promulguant la loi
+            # que la base stocke déjà (type promulgué == type DB).
+            if _type_acceptable(current, cr):
                 continue
         # Titre : ne pas proposer si c'est le même titre (casse/ponctuation près).
         # Le titre en base, souvent en casse propre, vaut mieux que la version PDF MAJUSCULES.

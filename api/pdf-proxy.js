@@ -5,6 +5,8 @@
 
 const ALLOWED_ORIGINS = [
   'supabase.co',
+  'pdfs.juritheque.com',      // Cloudflare R2 (PDFs migrés — egress gratuit)
+  'r2.dev',                   // R2 domaine par défaut (fallback si pas de domaine custom)
   'adala.justice.gov.ma',
   'sgg.gov.ma',
   'bkam.ma',

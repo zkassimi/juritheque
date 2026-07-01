@@ -94,9 +94,12 @@ class CanonicalRecord:
     dahir_number: str | None = None
     law_number: str | None = None
     decree_number: str | None = None
+    arrete_number: str | None = None
     official_number: str | None = None
     signature_date: str | None = None
     official_title_fr: str | None = None
+    number_ambiguous: bool = False
+    date_ambiguous: bool = False
     source_priority: str = 'db_only'
     canonical_confidence_score: int = 50
     canonical_validation_status: str = 'unknown'
@@ -156,6 +159,16 @@ MODIF_HISTORY_MARKERS = [
     r"بناء على الظهير",        # "vu le dahir" en arabe
 ]
 
+# Connecteurs introduisant un texte SECONDAIRE (modifié, abrogé, appliqué).
+# Tout ce qui suit cite le numéro/date d'un AUTRE instrument que l'acte présent.
+# NB : "portant promulgation de la loi" est EXCLU — pour un dahir de promulgation,
+# le n° de la loi promulguée est souvent celui stocké en base.
+CONNECTOR_RE = re.compile(
+    r'\b(?:modifiant et complétant|complétant et modifiant'
+    r'|modifiant|complétant|completant|abrogeant|remplaçant|remplacant'
+    r'|en application|pris pour (?:l[\'’])?application|portant application)\b',
+    re.IGNORECASE)
+
 # Détection de texte arabe et d'encodage CID corrompu
 _ARABIC_RE = re.compile(r'[؀-ۿݐ-ݿࢠ-ࣿ]')
 _CID_RE    = re.compile(r'\(cid:\d+\)')
@@ -196,9 +209,13 @@ def _extract_from_page1(text: str) -> dict[str, Any]:
         'dahir_number': None,
         'law_number': None,
         'decree_number': None,
+        'arrete_number': None,
         'formal_type': None,
         'signature_date': None,
         'title_lines': [],
+        'has_connector': False,
+        'number_ambiguous': False,
+        'date_ambiguous': False,
     }
 
     # Normaliser les chiffres arabes orientaux (٠١٢...) → occidentaux (012...)
@@ -206,6 +223,26 @@ def _extract_from_page1(text: str) -> dict[str, Any]:
 
     # Restreindre l'extraction à l'en-tête (avant l'historique des modifications)
     header = _header_region(text)
+
+    # Segment PRIMAIRE = en-tête tronqué au 1er connecteur introduisant un texte
+    # secondaire (modifiant/en application/…). Les numéros et dates de l'acte
+    # présent figurent AVANT ce connecteur ; ce qui suit cite d'autres instruments.
+    cm = CONNECTOR_RE.search(header)
+    has_connector = bool(cm)
+    primary = header[:cm.start()] if cm else header
+    result['has_connector'] = has_connector
+
+    # Ambiguïté : combien de numéros / dates distincts dans TOUT l'en-tête ?
+    # (sert de garde-fou : un texte modificatif cite plusieurs numéros/dates)
+    _all_nums = re.findall(r'\b\d+[.\-]\d+(?:[.\-]\d+)?\b', header)
+    _num_count = len({re.sub(r'[.\s]+', '-', n).strip('-') for n in _all_nums})
+    _all_dates_fr = re.findall(
+        r'\d{1,2}\s+(?:' + '|'.join(MONTHS_FR.keys()) + r')\s+\d{4}', header, re.IGNORECASE)
+    _all_dates_ar = re.findall(
+        r'\d{1,2}\s+(?:' + '|'.join(MONTHS_AR.keys()) + r')\s+\d{4}', header)
+    _date_count = len(_all_dates_fr) + len(_all_dates_ar)
+    result['number_ambiguous'] = has_connector and _num_count >= 2
+    result['date_ambiguous']   = has_connector and _date_count >= 2
 
     # Type formel (ordre de priorité) — sur l'en-tête
     type_patterns = [
@@ -224,36 +261,55 @@ def _extract_from_page1(text: str) -> dict[str, Any]:
         (r'\bCirculaire\b', 'Circulaire'),
         (r'\bمنشور\b',      'Circulaire'),
     ]
+    # Type = instrument AGISSANT = 1er mot-clé de type dans le SEGMENT PRIMAIRE
+    # (avant tout connecteur). On prend la position la plus précoce ; à position
+    # égale, le libellé le plus long (« Loi organique » > « Loi »). Évite d'attraper
+    # le type d'un instrument cité ("...en application de la loi n° X" pour un décret,
+    # "...promulguée par le dahir..." pour une loi).
+    best = None  # ((start, -len), type)
     for pat, typ in type_patterns:
-        if re.search(pat, header, re.IGNORECASE):
-            result['formal_type'] = typ
-            break
+        m = re.search(pat, primary, re.IGNORECASE)
+        if m:
+            key = (m.start(), -(m.end() - m.start()))
+            if best is None or key < best[0]:
+                best = (key, typ)
+    if best:
+        result['formal_type'] = best[1]
 
+    # Numéros extraits du SEGMENT PRIMAIRE (avant tout connecteur) → ignore les
+    # numéros des textes modifiés/référencés.
     # Numéro dahir : 1-XX-YYY — casse INSENSIBLE, supporte رقم (arabe) et n° (français)
     dm = re.search(
         r'(?:Dahir|ظهير|الظهير)\s+(?:[shn°]*\s*)?(?:[nN][°o]?\s*|رقم\s*)?([\d]+[\.\-][\d]+[\.\-][\d]+)',
-        header, re.IGNORECASE)
+        primary, re.IGNORECASE)
     if dm:
         result['dahir_number'] = re.sub(r'[\.\s]+', '-', dm.group(1)).strip('-')
 
     # Numéro loi : XX-YYY (supporte قانون رقم)
     lm = re.search(
         r'(?:Loi|قانون|القانون)\s+(?:[nr°]*\s*)?(?:[nN][°o]?\s*|رقم\s*)?([\d]+[\.\-][\d]+)',
-        header, re.IGNORECASE)
+        primary, re.IGNORECASE)
     if lm:
         result['law_number'] = re.sub(r'[\.\s]+', '-', lm.group(1)).strip('-')
 
     # Numéro décret : 2-XX-YYY (supporte مرسوم رقم)
     decm = re.search(
         r'(?:Décret|Decret|مرسوم|المرسوم)\s+(?:[nr°]*\s*)?(?:[nN][°o]?\s*|رقم\s*)?([\d]+[\.\-][\d]+[\.\-][\d]+)',
-        header, re.IGNORECASE)
+        primary, re.IGNORECASE)
     if decm:
         result['decree_number'] = re.sub(r'[\.\s]+', '-', decm.group(1)).strip('-')
 
-    # Date signature FR : "12 mars 2023" — première date de l'en-tête
+    # Numéro arrêté : format variable (ex: 2085-25, 1234.20)
+    am = re.search(
+        r'(?:Arrêté|Arrete|قرار)\s+(?:[a-z°]*\s*)?(?:[nN][°o]?\s*|رقم\s*)?([\d]+[\.\-][\d]+)',
+        primary, re.IGNORECASE)
+    if am:
+        result['arrete_number'] = re.sub(r'[\.\s]+', '-', am.group(1)).strip('-')
+
+    # Date signature FR : "12 mars 2023" — première date du SEGMENT PRIMAIRE
     dm_fr = re.search(
         r'(\d{1,2})\s+(' + '|'.join(MONTHS_FR.keys()) + r')\s+(\d{4})',
-        header, re.IGNORECASE
+        primary, re.IGNORECASE
     )
     if dm_fr:
         d, m, y = dm_fr.group(1), dm_fr.group(2).lower(), dm_fr.group(3)
@@ -265,7 +321,7 @@ def _extract_from_page1(text: str) -> dict[str, Any]:
     if not result['signature_date']:
         dm_ar = re.search(
             r'(\d{1,2})\s+(' + '|'.join(MONTHS_AR.keys()) + r')\s+(\d{4})',
-            header
+            primary
         )
         if dm_ar:
             d, m, y = dm_ar.group(1), dm_ar.group(2), dm_ar.group(3)
@@ -673,18 +729,27 @@ def build_canonical_record(law: dict, page1_text: str, pdf_source: str) -> Canon
     cr.dahir_number  = parsed['dahir_number']
     cr.law_number    = parsed['law_number']
     cr.decree_number = parsed['decree_number']
+    cr.arrete_number = parsed['arrete_number']
     cr.signature_date = parsed['signature_date']
+    cr.number_ambiguous = parsed['number_ambiguous']
+    cr.date_ambiguous   = parsed['date_ambiguous']
 
-    # Numéro officiel : choisir le plus pertinent selon type
+    # Numéro officiel : préférer le numéro de l'instrument correspondant au TYPE
+    # en base. La cascade type-agnostique précédente prenait le numéro de la loi
+    # référencée (ex: "en application de la loi n° 98-15") pour un Décret.
     db_type = (law.get('type') or '').lower()
-    if parsed['dahir_number'] and 'dahir' in db_type:
+    if 'dahir' in db_type and parsed['dahir_number']:
         cr.official_number = parsed['dahir_number']
-    elif parsed['law_number']:
-        cr.official_number = parsed['law_number']
-    elif parsed['decree_number']:
+    elif ('décret' in db_type or 'decret' in db_type) and parsed['decree_number']:
         cr.official_number = parsed['decree_number']
-    elif parsed['dahir_number']:
-        cr.official_number = parsed['dahir_number']
+    elif ('arrêté' in db_type or 'arrete' in db_type) and (parsed['arrete_number'] or parsed['law_number']):
+        cr.official_number = parsed['arrete_number'] or parsed['law_number']
+    elif 'loi' in db_type and parsed['law_number']:
+        cr.official_number = parsed['law_number']
+    else:
+        # Type inconnu / non trouvé : premier numéro disponible (dahir→décret→loi→arrêté)
+        cr.official_number = (parsed['dahir_number'] or parsed['decree_number']
+                              or parsed['law_number'] or parsed['arrete_number'])
 
     # Titre officiel : préférer la ligne qui porte le type juridique (Dahir/Loi/...)
     type_kw = re.compile(
@@ -789,16 +854,28 @@ def score_and_flag(law: dict, cr: CanonicalRecord) -> tuple[int, list[AuditFlag]
             norm_db2 = re.sub(r'[^0-9]', '-', db_number).strip('-')
             # Tolérance : l'un contient l'autre (numéros partiels)
             if norm_off and norm_db2 and norm_off not in norm_db2 and norm_db2 not in norm_off:
-                add('number_mismatch_pdf_vs_record', 'critical', 'number',
-                    f'PDF={cr.official_number!r} vs DB={db_number!r}', 30)
+                if cr.number_ambiguous:
+                    # Texte modificatif citant plusieurs numéros : signaler sans
+                    # proposer (build_diffs supprime le diff). Pas de malus lourd.
+                    add('number_needs_manual_check', 'info', 'number',
+                        f'Plusieurs numéros dans l\'en-tête — à vérifier manuellement '
+                        f'(candidat PDF={cr.official_number!r} vs DB={db_number!r})', 5)
+                else:
+                    add('number_mismatch_pdf_vs_record', 'critical', 'number',
+                        f'PDF={cr.official_number!r} vs DB={db_number!r}', 30)
 
         # Mismatch date (tolérance ±1 an)
         if cr.signature_date and db_date and len(db_date) >= 4:
             pdf_year = int(cr.signature_date[:4])
             db_year  = int(db_date[:4])
             if abs(pdf_year - db_year) > 1:
-                add('date_mismatch_pdf_vs_record', 'warning', 'date',
-                    f'PDF={cr.signature_date!r} vs DB={db_date!r}', 15)
+                if cr.date_ambiguous:
+                    add('date_needs_manual_check', 'info', 'date',
+                        f'Plusieurs dates dans l\'en-tête — à vérifier manuellement '
+                        f'(candidat PDF={cr.signature_date!r} vs DB={db_date!r})', 3)
+                else:
+                    add('date_mismatch_pdf_vs_record', 'warning', 'date',
+                        f'PDF={cr.signature_date!r} vs DB={db_date!r}', 15)
 
         # Mismatch titre (heuristique : moins de 50% de mots communs)
         if cr.official_title_fr and db_title and len(db_title) > 10:
@@ -877,6 +954,14 @@ def build_diffs(law: dict, cr: CanonicalRecord) -> list[DiffItem]:
     for field, proposed, sev in comparisons:
         current = (law.get(field) or '').strip()
         if not proposed or proposed == current:
+            continue
+        # Garde-fou anti-fausse-correction : sur un texte modificatif/d'application
+        # citant plusieurs numéros/dates, ne PAS proposer de valeur concrète (elle
+        # pourrait venir d'un instrument tiers). L'ambiguïté est signalée par un
+        # flag info dans score_and_flag ; aucune correction erronée à approuver.
+        if field == 'number' and cr.number_ambiguous:
+            continue
+        if field == 'date' and cr.date_ambiguous:
             continue
         # Titre : ne pas proposer si c'est le même titre (casse/ponctuation près).
         # Le titre en base, souvent en casse propre, vaut mieux que la version PDF MAJUSCULES.

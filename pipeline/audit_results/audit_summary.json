@@ -1,0 +1,12 @@
+{
+  "total": 20,
+  "by_decision": {
+    "block": 4,
+    "review": 15,
+    "review_high_priority": 1
+  },
+  "validated_via_pdf": 16,
+  "fallback_content_fr": 4,
+  "no_pdf": 0,
+  "critical_flags": 5
+}

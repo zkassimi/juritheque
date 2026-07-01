@@ -1,0 +1,1103 @@
+﻿id,number,norm_number,title_fr,stored_date,stored_year,expected_year,problem,auto_fixable
+1,Dahir n° 1-03-194,1-03-194,Dahir n° 1-03-194 du 14 rejeb 1424 (11 septembre 2003) portant promulgation de l,2003-09-11,,,number contient le type → devrait être '1-03-194',True
+2,Décret n°2.92.264,2-92-264,Décret n°2.92.264 fixant les modalités et les conditions d'octroi d'une indemnit,1993-05-18,,,number contient le type → devrait être '2-92-264',True
+3,Dahir n° 1-15-83,1-15-83,Dahir n° 1-15-83 du 20 ramadan 1436 (7 juillet 2015) portant promulgation de la ,2015-07-07,,,number contient le type → devrait être '1-15-83',True
+4,Dahir n° 1-15-85,1-15-85,Dahir n° 1-15-85 du 20 ramadan 1436 (7 juillet 2015) portant promulgation de la ,2015-07-07,,,number contient le type → devrait être '1-15-85',True
+5,Dahir n° 1-15-84,1-15-84,Dahir n° 1-15-84 du 20 ramadan 1436 (7 juillet 2015) portant promulgation de la ,2015-07-07,,,number contient le type → devrait être '1-15-84',True
+15,Loi n°16.09,16-09,Loi n° 16.09 relative à l'Agence marocaine pour l'efficacité énergétique,2024-07-07,,,number contient le type → devrait être '16-09',True
+19,Dahir n°1-58-376,1-58-376,Dahir n° 1-58-376 portant sur le droit d'association.,1958-11-15,,,number contient le type → devrait être '1-58-376',True
+20,Dahir n° 1-23-93,1-23-93,Dahir n° 1-23-93 du 29 novembre 2023 portant modification et complétant le Dahir,2023-11-29,,,number contient le type → devrait être '1-23-93',True
+22,Loi n° 20-13,20-13,Loi n° 20-13 relative au Conseil de la Concurrence,2014-07-30,,,number contient le type → devrait être '20-13',True
+24,Dahir n°1-23-108,1-23-108,Dahir n° 1-23-108 du 29 novembre 2023 portant promulgation de la loi n° 24-96 re,2023-11-29,,,number contient le type → devrait être '1-23-108',True
+30,Décret n°2.02.177,2-02-177,Décret n° 2-02-177 du 22 moharrem 1423 (22 février 2002) portant approbation du ,2002-02-22,,,number contient le type → devrait être '2-02-177',True
+31,Décret n°2.10.313 du 20 Chaoual 1431 (29 septembre 2010),2-10-313-du-20-chaoual-1431-(29-septembre-2010),Décret n° 2.10.313 du 20 Chaoual 1431 (29 septembre 2010) portant application de,2010-09-29,,,number contient le type → devrait être '2-10-313-du-20-chaoual-1431-(29-septembre-2010)',True
+32,Décret n° 2-23-936,2-23-936,"Décret n° 2-23-936 relatif aux poids et dimensions des véhicules, modifiant et c",2023-11-29,,,number contient le type → devrait être '2-23-936',True
+33,Décret n° 2.12.666,2-12-666,relatif à l'approbation du règlement de construction parasismique applicable aux,2013-05-28,,,number contient le type → devrait être '2-12-666',True
+34,Décret n°2.13.820,2-13-820,Décret n° 2.13.820 relatif à l'amélioration de la mise en œuvre des opérations d,2024-03-07,,,number contient le type → devrait être '2-13-820',True
+36,Décret n°2.14.791,2-14-791,Décret n° 2.14.791 fixant les conditions et les modalités de bénéfice de l'aide ,2014-12-04,,,number contient le type → devrait être '2-14-791',True
+38,Décret n° 2.15.426,2-15-426,Décret n° 2.15.426 du 28 Ramadan 1436 (15 juillet 2015) relatif à la préparation,2015-07-15,,,number contient le type → devrait être '2-15-426',True
+39,Décret n°2.24.264,2-24-264,Décret n°2.24.264 modifiant et complétant le décret n°2.18.622 du 10 Joumada I 1,2024-03-29,,,number contient le type → devrait être '2-24-264',True
+41,Dahir  n° 1-23-95,1-23-95,Dahir n° 1-23-95 du 29 novembre 2023 portant modification du décret n° 2.19.971 ,2023-11-29,,,number contient le type → devrait être '1-23-95',True
+42,Décret n°2.22.797,2-22-797,Décret n°2.22.797 portant application de la loi n° 65.00 relative à l'assurance ,2022-11-29,,,number contient le type → devrait être '2-22-797',True
+43,Décret n° 2.23.1067,2-23-1067,Décret n° 2.23.1067 portant application de la loi n° 58.23 relative au régime d’,2023-12-17,,,number contient le type → devrait être '2-23-1067',True
+44,Décret n°2.23.690,2-23-690,Décret n° 2.23.690 du 15 décembre 2023 portant application de la loi n° 60.22 re,2023-12-15,,,number contient le type → devrait être '2-23-690',True
+53,Loi n°47.18,47-18,Loi n° 47.18 modifiant et complétant la loi n° 1-04-22 relative aux centres régi,2019-02-13,,,number contient le type → devrait être '47-18',True
+75,Loi n°16.09,16-09,Loi n° 16-09 relative à l'Agence marocaine pour l'efficacité énergétique,2024-07-07,,,number contient le type → devrait être '16-09',True
+79,Dahir n° 1-58-376,1-58-376,Dahir n° 1-58-376 portant sur le droit d'association.,1958-11-15,,,number contient le type → devrait être '1-58-376',True
+81,Dahir n°1-73-255,1-73-255,Dahir n° 1-73-255 du 22 moharrem 1393 (22 février 1973) portant la loi n° 1.72.2,1973-03-22,,,number contient le type → devrait être '1-73-255',True
+82,Loi n° 20-13,20-13,Loi n° 20-13 relative au Conseil de la Concurrence,2014-07-30,,,number contient le type → devrait être '20-13',True
+84,Loi-n°24-96-portant-sur-les-télécommunications,n°24-96-portant-sur-les-télécommunications,Loi n° 24-96 relative aux télécommunications,2023-11-29,,,number contient le type → devrait être 'n°24-96-portant-sur-les-télécommunications',True
+90,Décret n°2.02.177,2-02-177,Décret n° 2-02-177 du 9 joumada II 1423 (22 août 2002) approuvant le règlement d,2002-02-22,,,number contient le type → devrait être '2-02-177',True
+92,Décret n° 2-23-936,2-23-936,Décret n° 2-23-936 relatif aux poids et dimensions des véhicules,2023-11-29,,,number contient le type → devrait être '2-23-936',True
+93,Décret n° 2.12.666,2-12-666,Décret n° 2.12.666 relatif à l'approbation du règlement de construction parasism,2013-05-28,,,number contient le type → devrait être '2-12-666',True
+95,Décret n°2.14.782,2-14-782,décret n° 2.14.782 relatif aux modalités de fonctionnement de la police de l'env,2015-05-19,,,number contient le type → devrait être '2-14-782',True
+96,Décret n°2.14.791,2-14-791,Décret n° 2.14.791 fixant les conditions et modalités de l'aide directe aux femm,2014-12-04,,,number contient le type → devrait être '2-14-791',True
+97,Décret n°2.14.867,2-14-867,"Décret n° 2.14.867 relatif à la Commission nationale des marchés publics, tel qu",2015-09-21,,,number contient le type → devrait être '2-14-867',True
+98,Décret n°2.15.426 du 28 Ramadan 1436 (15 juillet 2015),2-15-426-du-28-ramadan-1436-(15-juillet-2015),Décret n° 2.15.426 du 28 Ramadan 1436 (15 juillet 2015) relatif à la préparation,2015-07-15,,,number contient le type → devrait être '2-15-426-du-28-ramadan-1436-(15-juillet-2015)',True
+99,Décret n°2.18.622 du 10 Joumada I 1440,2-18-622-du-10-joumada-i-1440,Décret n° 2.18.622 du 10 joumada I 1440 (17 janvier 2019) portant application de,2019-01-17,,,number contient le type → devrait être '2-18-622-du-10-joumada-i-1440',True
+102,Décret n° 2.23.1067,2-23-1067,Décret n° 2.23.1067 portant application de la loi n° 58.23 relative au régime d',2023-12-17,,,number contient le type → devrait être '2-23-1067',True
+103,Décret n°2.23.690,2-23-690,Décret n° 2.23.690 relatif à l'application de la loi n° 60.22 concernant le régi,2023-12-15,,,number contient le type → devrait être '2-23-690',True
+108,Dahir n°1-22-38,1-22-38,Dahir n° 1-22-38 du 30 juillet 2022 portant promulgation de la loi n° 38.15 rela,2022-07-30,,,number contient le type → devrait être '1-22-38',True
+114,Loi n°47.18,47-18,Loi n° 47.18 modifiant et complétant la loi n° 1.19.18 du 7 joumada II 1440 (13 ,2019-02-13,,,number contient le type → devrait être '47-18',True
+127,Loi-cadre n° 18.95,cadre-n°-18-95,Loi-cadre n° 18.95 portant charte de l'investissement,1995-11-08,,,number contient le type → devrait être 'cadre-n°-18-95',True
+130,Dahir n°1.16.52,1-16-52,Dahir n° 1-16-52 du 19 rejeb 1437 (27 avril 2016) portant exécution de la loi-ca,2016-04-27,,,number contient le type → devrait être '1-16-52',True
+133,Décret n°2.17.618,2-17-618,Décret n° 2.17.618 du 18 Rabii II 1440 (26 décembre 2018) portant charte nationa,2018-12-26,,,number contient le type → devrait être '2-17-618',True
+135,Décret n°2.19.591,2-19-591,Décret n°2.19.591 du 19 Dhou al-Qiida 1440 (22 juillet 2019) modifiant le décret,2019-07-22,,,number contient le type → devrait être '2-19-591',True
+137,Décret n° 2-22-861,2-22-861,Décret n° 2-22-861 relatif aux marchés publics et modifiant et complétant le déc,2023-03-09,,,number contient le type → devrait être '2-22-861',True
+139,Loi n° 03.22,03-22,Loi n° 03.22 portant charte d'investissement,2022-12-09,,,number contient le type → devrait être '03-22',True
+141,Dahir n°1-21-65 du 26 juillet 2021,1-21-65-du-26-juillet-2021,Dahir n° 1-21-65 du 26 juillet 2021 portant promulgation de la loi-cadre n° 50-2,2021-07-26,,,number contient le type → devrait être '1-21-65-du-26-juillet-2021',True
+143,Dahir n°1-21-70,1-21-70,Dahir n° 1-21-70 du 26 juillet 2021 portant promulgation de la loi-cadre n° 69-1,2021-07-26,,,number contient le type → devrait être '1-21-70',True
+146,Dahir n°1-21-65,1-21-65,Dahir n° 1-21-65 du 8 ramadan 1442 (21 avril 2021) portant promulgation de la lo,2021-04-21,,,number contient le type → devrait être '1-21-65',True
+147,Dahir n°1.15.33,1-15-33,Dahir n° 1-15-33 du 28 Joumada I 1436 (19 mars 2015) portant exécution de la loi,2015-03-19,,,number contient le type → devrait être '1-15-33',True
+149,Dahir n°1-21-39,1-21-39,Dahir n° 1-21-39 du 8 ramadan 1442 (21 avril 2021) portant modification et compl,2021-04-21,,,number contient le type → devrait être '1-21-39',True
+150,Dahir n°1-21-30,1-21-30,Dahir n° 1-21-30 du 8 Ramadan 1442 (21 avril 2021) portant promulgation de la lo,2021-04-21,,,number contient le type → devrait être '1-21-30',True
+151,Dahir,Dahir,Texte N° Dahir,2014-08-14,,,number contient le type → devrait être 'Dahir',True
+152,Dahir n°1.16.41,1-16-41,Dahir n° 1-16-41 du 24 mars 2016 portant exécution de la loi organique n° 106.13,2016-03-24,,,number contient le type → devrait être '1-16-41',True
+155,Dahir,Dahir,Texte N° Dahir,2014-08-14,,,number contient le type → devrait être 'Dahir',True
+156,Dahir n°1-23-25,1-23-25,Dahir n°1-23-25 modifiant et complétant la loi n°13.22 relative au Conseil Supér,2023-03-23,,,number contient le type → devrait être '1-23-25',True
+158,Dahir n°1-24-95,1-24-95,Dahir n° 1-24-95 du 5 août 2024 portant modification et complément de la loi n° ,2024-08-05,,,number contient le type → devrait être '1-24-95',True
+160,Dahir n°1-23-45,1-23-45,Dahir n° 1-23-45 du 23 mars 2023 portant modification et complément du décret n°,2023-03-23,,,number contient le type → devrait être '1-23-45',True
+161,Dahir n°1-22-2,1-22-2,Dahir n° 1-22-2 du 27 janvier 2022 modifiant et complétant le dahir n° 1-12-20 d,2022-01-27,,,number contient le type → devrait être '1-22-2',True
+163,Dahir n°1.16.108,1-16-108,Dahir n° 1-16-108 du 23 Chaoual 1437 portant détermination des conditions et mod,2016-07-28,,,number contient le type → devrait être '1-16-108',True
+165,Décret n°2-21-666,2-21-666,Décret n° 2-21-666 approuvant la convention de prêt CMA 1269 01 P d'un montant d,2021-08-31,,,number contient le type → devrait être '2-21-666',True
+166,Dahir n°1.16.78,1-16-78,Dahir n° 1-16-78 du 1er Ramadan 1437 (7 juin 2016) portant exécution de la loi o,2016-06-07,,,number contient le type → devrait être '1-16-78',True
+168,Dahir n°1.21.30,1-21-30,Dahir n°1.21.30 du 9 Chaoual 1442 (23 mars 2021) portant exécution de la loi-cad,2021-03-23,,,number contient le type → devrait être '1-21-30',True
+169,Dahir n°1.14.187,1-14-187,Dahir n° 1-14-187 du 17 Safar 1436 (10 décembre 2014) portant exécution de la lo,2014-12-10,,,number contient le type → devrait être '1-14-187',True
+171,Dahir n° 1.19.08,1-19-08,Dahir n° 1.19.08 portant exécution de la loi n° 121-12 modifiant et complétant l,2019-01-25,,,number contient le type → devrait être '1-19-08',True
+172,Dahir n°1.19.121,1-19-121,Dahir n° 1.19.121 du 12 moharrem 1441 (12 septembre 2019) portant promulgation d,2019-09-12,,,number contient le type → devrait être '1-19-121',True
+173,Dahir n°1-07-43,1-07-43,Dahir n°1-07-43 du 17 avril 2007 portant exécution de la loi n° 29.06 modifiant ,2007-04-17,,,number contient le type → devrait être '1-07-43',True
+174,Dahir n° 1-19-82,1-19-82,Dahir n° 1-19-82 du 17 Chaoual 1440 (21 juin 2019) portant promulgation de la lo,2019-06-21,,,number contient le type → devrait être '1-19-82',True
+175,Loi n°43.12,43-12,Loi n° 43-12 relative à l'Autorité marocaine du marché des capitaux,2013-03-13,,,number contient le type → devrait être '43-12',True
+176,Dahir n° 1.20.30,1-20-30,Loi n° 55.19 relative à la simplification des procédures et formalités administr,2020-03-06,,,number contient le type → devrait être '1-20-30',True
+177,Dahir n°1.13.57,1-13-57,Dahir n°1.13.57 portant promulgation de la loi n°93.12 modifiant la loi,2013-06-17,,,number contient le type → devrait être '1-13-57',True
+178,Dahir n°1-17-49,1-17-49,Dahir n° 1-17-49 du 8 hija 1438 (30 août 2017) portant exécution de la loi n° 60,2017-08-30,,,number contient le type → devrait être '1-17-49',True
+179,Loi n° 64.12,64-12,Loi n° 64.12 portant création de l'Autorité de contrôle des assurances et de la ,2014-03-06,,,number contient le type → devrait être '64-12',True
+180,Dahir n° 1 1 97-162,1-1-97-162,Dahir portant promulgation de la loi n° 24-96 relative à la poste et aux télécom,1997-08-07,,,number contient le type → devrait être '1-1-97-162',True
+181,Dahir n• 1-01-123,•-1-01-123,Dahir n• 1-01-123 du 29 rabii 1 1422 (22 juin 2001) portant promulgation de la l,2001-06-22,,,number contient le type → devrait être '•-1-01-123',True
+182,Loi n° 22-02,22-02,"Loi n° 22-02 portant approbation, quant au principe, de la ratification du Royau",2004-11-18,,,number contient le type → devrait être '22-02',True
+183,dahir n°1-07-200,1-07-200,Dahir n° 1-07-200 du 29 hija 1428 (19 décembre 2007) portant promulgation de la ,2007-12-19,,,number contient le type → devrait être '1-07-200',True
+184,Dahir n° 1-11-03,1-11-03,Dahir n° 1-11-03 du 14 rabii 1 1432 (18 février 2011) portant promulgation de la,2011-02-18,,,number contient le type → devrait être '1-11-03',True
+185,Dahir n° 1-11-86,1-11-86,Dahir n° 1-11-86 du 29 rejeb 1432 (2 juillet 2011) portant promuiguation de la l,2011-07-02,,,number contient le type → devrait être '1-11-86',True
+187,Dahir n° 1-13-57,1-13-57,Dahir n° 1-13-57 du 8 chaabane 1434 (17 juin 2013) portant promulgation de la fo,2013-06-17,,,number contient le type → devrait être '1-13-57',True
+189,Arrêté n° 3291-16,3291-16,"Arrêté du ministre de l’industrie, du commerce, de l’investissement et de l’écon",2016-12-15,,,number contient le type → devrait être '3291-16',True
+199,Circulaire,Circulaire,Circulaire relative à la promotion des agents contractuels dans le cadre du droi,,,,number contient le type → devrait être 'Circulaire',True
+203,Décret,Décret,Décret fixant la liste des services à valeur ajoutée,,,,number contient le type → devrait être 'Décret',True
+204,Décret-relatif-aux-conditions-générales-d'exploitation-des-réseaux-publics-de-télécommunications,relatif-aux-conditions-générales-d'exploitation-des-réseaux-publics-de-télécommunications,Décret sur l'exploitation des réseaux publics de télécommunications (version con,,,,"number contient le type → devrait être ""relatif-aux-conditions-générales-d'exploitation-des-réseaux-publics-de-télécommunications""",True
+206,Décret n° 2-05-772,2-05-772,Décret n° 2-05-772 du 6 joumada II 1426 (13 juillet 2005) relatif à la procédure,2005-07-13,,,number contient le type → devrait être '2-05-772',True
+208,Décret n°2-01-94,2-01-94,Décret n° 2-01-94 du 29 rabii II 1422 (22 juillet 2001) fixant les conditions de,2001-07-05,,,number contient le type → devrait être '2-01-94',True
+209,Décret n°2-01-96,2-01-96,Décret n° 2-01-96 du 29 rabii I 1422 (22 juillet 2001) fixant les conditions de ,2001-07-05,,,number contient le type → devrait être '2-01-96',True
+211,Décret n°2-11-621,2-11-621,Décret n° 2-11-621 du 28 moharrem 1433 fixant les modalités d'organisation des c,2011-11-28,,,number contient le type → devrait être '2-11-621',True
+212,Décret n°2-12-90,2-12-90,Décret n° 2-12-90 modifiant et complétant le décret n° 2-04-23 fixant les modali,2012-04-30,,,number contient le type → devrait être '2-12-90',True
+213,Décret n°2.13.422,2-13-422,Décret n° 2.13.422 du 28 Rabii I 1435 (30 janvier 2014) fixant les modalités d’a,2014-01-30,,,number contient le type → devrait être '2-13-422',True
+216,Décret n°2-62-344,2-62-344,Décret n° 2-62-344 fixant les modalités de l'avancement des fonctionnaires de l',1963-07-08,,,number contient le type → devrait être '2-62-344',True
+217,Décret n°2-64-389,2-64-389,Décret n°2-64-389 relatif au recrutement des résistants dans les emplois publics,1964-08-19,,,number contient le type → devrait être '2-64-389',True
+218,Décret n°2.92.231,2-92-231,Décret relatif à la dérogation à la condition d'âge pour le recrutement dans les,1993-04-29,,,number contient le type → devrait être '2-92-231',True
+219,Décret n°2-99-1215,2-99-1215,Décret relatif aux modalités d'application de l'article 46 du dahir n° 1-58-008 ,2000-05-10,,,number contient le type → devrait être '2-99-1215',True
+220,Décret n° 2.99.1218,2-99-1218,Décret n° 2.99.1218 du 10 mai 2000 fixant les modalités d'application de l'artic,2000-05-10,,,number contient le type → devrait être '2-99-1218',True
+221,Décret n°2-00-1421 du 6 Rejeb 1421 (10 octobre 2000),2-00-1421-du-6-rejeb-1421-(10-octobre-2000),Décret n° 2-00-1421 du 6 rejeb 1421 (10 octobre 2000) pris pour l'application de,2000-10-10,,,number contient le type → devrait être '2-00-1421-du-6-rejeb-1421-(10-octobre-2000)',True
+222,Décret n°2-04-403,2-04-403,Décret n° 2-04-403 fixant les conditions de promotion dans l'échelle ou le grade,2005-12-02,,,number contient le type → devrait être '2-04-403',True
+223,Décret n° 2.17.635,2-17-635,Décret relatif aux modalités d'organisation des concours unifiés pour le recrute,2018-07-04,,,number contient le type → devrait être '2-17-635',True
+225,Décret n°2-05-772,2-05-772,"Décret relatif à la procédure suivie devant l’ANRT en matière de litiges, de pra",2005-06-22,,,number contient le type → devrait être '2-05-772',True
+226,Dahir n°1.58.008,1-58-008,Dahir n° 1-58-008 portant statut général de la fonction publique,1958-02-24,,,number contient le type → devrait être '1-58-008',True
+227,Dahir n° 1-15-123,1-15-123,"Dahir n° 1-15-123 du 18 chaoual 1436 (4 août 2015) portant
+promulgation de la lo",2015-08-04,,,number contient le type → devrait être '1-15-123',True
+228,Loi n°24-96,24-96,"Loi n°24-96 relative à la poste et aux télécommunications, telle qu’elle a été m",,,,number contient le type → devrait être '24-96',True
+229,Dahir n° 1‑22‑67,1‑22‑67,Dahir n° 1‑22‑67 du 30 rabii II 1444 (25 novembre 2022) portant promulgation de ,2022-11-25,,,number contient le type → devrait être '1‑22‑67',True
+230,Dahir n° 1-16-155,1-16-155,Dahir n° 1-16-155 du 21 kaada 1437 (25 août 2016) portant promulgation de la loi,2016-08-25,,,number contient le type → devrait être '1-16-155',True
+231,Dahir n° 1-14-116,1-14-116,Dahir n° 1-14-116 du 2 ramadan 1435 (30 juin 2014) portant promulgation de la lo,2014-06-30,,,number contient le type → devrait être '1-14-116',True
+232,Dahir n° 1-16-123,1-16-123,Dahir n° 1-16-123 du 21 kaada 1437 (25 août 2016) portant promulgation de la loi,2016-08-25,,,number contient le type → devrait être '1-16-123',True
+233,Loi n° 011-71 du 30 décembre 1971,011-71-du-30-décembre-1971,Loi n° 011-71 relative au régime des pensions civiles,1971-12-30,,,number contient le type → devrait être '011-71-du-30-décembre-1971',True
+235,Dahir n° 1-20-69,1-20-69,Dahir n° 1-20-69 du 4 hija 1441 (25 juillet 2020) portant promulgation de la loi,2020-07-25,,,number contient le type → devrait être '1-20-69',True
+236,Dahir n° 1-21-97,1-21-97,Dahir n° 1-21-97 du 15 hija 1442 (26 juillet 2021) portant promulgation de la lo,2021-07-26,,,number contient le type → devrait être '1-21-97',True
+237,Dahir n°1-16-110,1-16-110,Dahir n°1-16-110 du 20 août 2016 portant exécution de la loi n° 72-14 fixant l'â,2016-08-20,,,number contient le type → devrait être '1-16-110',True
+238,Dahir n°1-16-52,1-16-52,Dahir n°1-16-52 du 27 avril 2016 portant promulgation de la loi-cadre n° 97-13 r,2016-04-27,,,number contient le type → devrait être '1-16-52',True
+239,Dahir n°1.83.230,1-83-230,Dahir n°1.83.230 du 9 moharrem 1405 (5 octobre 1984) portant exécution de la loi,1984-10-05,,,number contient le type → devrait être '1-83-230',True
+247,Arrêté n° 1510.07,1510-07,Arrêté du Ministre des Finances et de la Privatisation n° 1510.07 du 10 rejeb 14,2007-07-26,,,number contient le type → devrait être '1510-07',True
+259,Circulaire n°1/W/2022,1-w-2022,Circulaire modifiant la circulaire n°6/W/2016 fixant les conditions et modalités,2022-05-19,,,number contient le type → devrait être '1-w-2022',True
+272,Circulaire n° 36/G/2004,36-g-2004,Circulaire n° 36/G/2004 du 12 Novembre 2004 relative aux conditions d’exercice d,2004-11-12,,,number contient le type → devrait être '36-g-2004',True
+277,Circulaire n°3/W/2021,3-w-2021,Circulaire modifiant et complétant la circulaire du Wali de Bank Al-Maghrib n°9/,2021-03-04,,,number contient le type → devrait être '3-w-2021',True
+278,Circulaire du Wali de Bank Al-Maghrib,du-wali-de-bank-al-maghrib,Circulaire du Wali de Bank Al-Maghrib fixant les conditions et modalités d’appli,2023-02-01,,,number contient le type → devrait être 'du-wali-de-bank-al-maghrib',True
+280,Circulaire n° 4/W/2021,4-w-2021,Circulaire modifiant la circulaire du Wali de Bank Al-Maghrib n°10/W/2018 relati,2021-03-04,,,number contient le type → devrait être '4-w-2021',True
+286,Arrêté n° 2810-16,2810-16,Arrêté du ministre de l’économie et des finances n° 2810-16 du 20 septembre 2016,2016-09-20,,,number contient le type → devrait être '2810-16',True
+287,Arrêté n° 2811-16,2811-16,Arrêté du ministre de l’économie et des finances n° 2811-16 du 18 hija 1437 (20 ,2016-09-20,,,number contient le type → devrait être '2811-16',True
+292,Dahir n° 1-21-76,1-21-76,Dahir n° 1-21-76 du 3 hija 1442 (14 juillet 2021) portant promulgation de la loi,2021-07-14,,,number contient le type → devrait être '1-21-76',True
+293,Dahir n° 1-21-77,1-21-77,Dahir n° 1-21-77 du 3 hija 1442 (14 juillet 2021) portant promulgation de la loi,2021-07-14,,,number contient le type → devrait être '1-21-77',True
+297,Décret n° 2-03-547,2-03-547,Décret n° 2-03-547 du 9 joumada II 1424 (8 août 2003) modifiant le décret n° 2-9,2003-08-08,,,number contient le type → devrait être '2-03-547',True
+301,Décret n° 2-97-965,2-97-965,approuvant le retrait de la circulation de billets et de monnaies métalliques.,1998-01-08,,,number contient le type → devrait être '2-97-965',True
+332,Dahir n° 1-06-232,1-06-232,Code Général des Impôts,2006-12-31,,,number contient le type → devrait être '1-06-232',True
+336,Loi de Finances n° 60-24,de-finances-n°-60-24,Note synthétique des mesures fiscales de la loi de finances n° 60-24 pour l’anné,2025-01-01,,,number contient le type → devrait être 'de-finances-n°-60-24',True
+346,Arrêté n° 551-18,551-18,Arrêté du ministre de l'économie et des finances n° 551-18 du 4 joumada II 1439 ,2018-02-21,,,number contient le type → devrait être '551-18',True
+356,Dahir n° 1-11-91,1-11-91,Dahir n° 1-11-91 du 27 chaabane 1432 (29 juillet 2011) portant promulgation du t,2011-07-29,,,number contient le type → devrait être '1-11-91',True
+358,Décret n° 2-22-580,2-22-580,Décret n° 2-22-580 du 10 chaabane 1444 (3 mars 2023) relatif à la mise en place ,2023-03-03,,,number contient le type → devrait être '2-22-580',True
+359,Dahir nO 1-15-62,1-15-62,Dahir n° 1-15-62 du 14 chaabane 1436 (2 juin 2015) portant promulgation de la lo,2015-06-02,,,number contient le type → devrait être '1-15-62',True
+363,Décret n° 2-16-344,2-16-344,Décret n° 2-16-344 du 17 chaoual 1437 (22 juillet 2016) fixant les délais de pai,2016-07-22,,,number contient le type → devrait être '2-16-344',True
+366,Dahir n° 1-10-16,1-10-16,Dahir n° 1-10-16 du 26 safar 1431 (11 février 2010) portant promulgation de la l,2010-02-11,,,number contient le type → devrait être '1-10-16',True
+367,Loi no 12-02,12-02,Loi no 12-02 relative à la responsabilité civile en matière de dommages nucléair,2005-01-07,,,number contient le type → devrait être '12-02',True
+369,Décret n° 2-15-772,2-15-772,relatif à l’accès au réseau électrique national de moyenne tension.,2015-10-28,,,number contient le type → devrait être '2-15-772',True
+370,Dahir n° 1-16-60,1-16-60,Dahir n° 1-16-60 du 17 chaabane 1437 (24 mai 2016) portant promulgation de la lo,2016-05-24,,,number contient le type → devrait être '1-16-60',True
+371,Loi n° 47-09,47-09,Loi n° 47-09 relative à l’efficacité énergétique,,,,number contient le type → devrait être '47-09',True
+374,Arrêté viziriel du 2 janvier 1932 (23 chaabane 1350),viziriel-du-2-janvier-1932-(23-chaabane-1350),Arrêté viziriel réglementant l'emploi des explosifs dans les carrières et chanti,1932-01-02,,,number contient le type → devrait être 'viziriel-du-2-janvier-1932-(23-chaabane-1350)',True
+375,Arrêté viziriel du 12 janvier 1955,viziriel-du-12-janvier-1955,ARRETE VIZIRIEL DU 12 JANVIER 1955 FIXANT LES TAXES PERÇUES A L'OCCASION DES EPR,1955-01-12,,,number contient le type → devrait être 'viziriel-du-12-janvier-1955',True
+376,Arrete-delegation-pouvoirs,delegation-pouvoirs,Délégation de pouvoirs en matière de licences minières et d'exploitation des déc,,,,number contient le type → devrait être 'delegation-pouvoirs',True
+377,Arrêté-n°-1263-91-du-9-chaoual-1413-(1er-avril-1993),n°-1263-91-du-9-chaoual-1413-(1er-avril-1993),"Règlement général de sécurité des GPL: centres, dépôts, stockages, conditionneme",,,,number contient le type → devrait être 'n°-1263-91-du-9-chaoual-1413-(1er-avril-1993)',True
+378,Arrêté du 11/4/1957,du-11-4-1957,Arrêté du sous-secrétaire d'Etat au commerce et à l'industrie du 11/4/1957 (11 a,1957-04-11,,,number contient le type → devrait être 'du-11-4-1957',True
+379,Arrêté-13Jan1955-Construction-et-emploi-des-APG,13jan1955-construction-et-emploi-des-apg,Réglementation de la construction et de l'emploi des appareils à pression de gaz,,,,number contient le type → devrait être '13jan1955-construction-et-emploi-des-apg',True
+380,Arrêté du 14 janvier 1955,du-14-janvier-1955,Arrêté du directeur de la production industrielle et des mines du 14 janvier 195,1955-01-14,,,number contient le type → devrait être 'du-14-janvier-1955',True
+381,Arrêté-15Jan1955-Générateurs-d'acétylène,15jan1955-générateurs-d'acétylène,Règlement des générateurs d'acétylène (1955),,,,"number contient le type → devrait être ""15jan1955-générateurs-d'acétylène""",True
+382,Arrêté-17-12-1953-emploi-de-la-soudure-art-5,17-12-1953-emploi-de-la-soudure-art-5,Réglementation de la soudure sur fer ou acier pour appareils à vapeur et à press,,,,number contient le type → devrait être '17-12-1953-emploi-de-la-soudure-art-5',True
+383,ARRÊTÉ DU 19 AOÛT 1953,du-19-août-1953,ARRÊTÉ DU DIRECTEUR DE LA PRODUCTION INDUSTRIELLE ET DES MINES DU 19 AOÛT 1953 f,1953-08-19,,,number contient le type → devrait être 'du-19-août-1953',True
+384,Arrêté du 19 août 1953,du-19-août-1953,ARRÊTÉ DU DIRECTEUR DE LA PRODUCTION INDUSTRIELLE ET DES MINES DU 19 AOÛT 1953 r,1953-08-19,,,number contient le type → devrait être 'du-19-août-1953',True
+387,Arrêté du 29 décembre 1953,du-29-décembre-1953,Arrêté du directeur de la production industrielle et des mines du 29 décembre 19,1953-12-29,,,number contient le type → devrait être 'du-29-décembre-1953',True
+390,arrêté-du-28-décembre-1951-installations-qui-mettent-en-oeuvre-des-cpourants-électriques-d,du-28-décembre-1951-installations-qui-mettent-en-oeuvre-des-cpourants-électriques-d,Déclassement de parcelles du domaine public municipal de Salé,,,,number contient le type → devrait être 'du-28-décembre-1951-installations-qui-mettent-en-oeuvre-des-cpourants-électriques-d',True
+391,"Arrêté-du-ministre-du-commerce,-de-l'artisanat,-de-l'industrie,-des-mines-et-de-la-marine-marchande-n°-345-68","du-ministre-du-commerce,-de-l'artisanat,-de-l'industrie,-des-mines-et-de-la-marine-marchande-n°-345-68",Déplacement de stations-service et de remplissage (Arrêté n° 345-68),,,,"number contient le type → devrait être ""du-ministre-du-commerce,-de-l'artisanat,-de-l'industrie,-des-mines-et-de-la-marine-marchande-n°-345-68""",True
+392,"Arrêté-du-ministre-du-commerce,-de-l'industrie,-des-mines-et-de-la-marine-marchande-n°-773-73","du-ministre-du-commerce,-de-l'industrie,-des-mines-et-de-la-marine-marchande-n°-773-73",Réglementation du parc de bouteilles des repreneurs en centres emplisseurs (1973,,,,"number contient le type → devrait être ""du-ministre-du-commerce,-de-l'industrie,-des-mines-et-de-la-marine-marchande-n°-773-73""",True
+393,Arrêté-Modèles-de-rapports-FR,modèles-de-rapports-fr,"Modèles de rapports géologiques, miniers et statistiques minières",,,,number contient le type → devrait être 'modèles-de-rapports-fr',True
+394,Arrêté-n°-1282-06,n°-1282-06,Réseau de distribution au détail des hydrocarbures raffinés (hors GPL),,,,number contient le type → devrait être 'n°-1282-06',True
+400,Arrêté n°1948-21,1948-21,"Arrêté du ministre de l’énergie, des mines et de l’environnement n°1948-21 du 5 ",2021-07-16,,,number contient le type → devrait être '1948-21',True
+401,Arrêté conjoint,Arrêté conjoint,"Arrêté conjoint des ministres chargé des finances, de l'économie et de la valori",2022-08-22,,,number contient le type → devrait être 'Arrêté conjoint',True
+402,Circulaire n°,Circulaire n°,Renforcement des mesures de sécurité relatives aux explosifs à usage civil,,,,number contient le type → devrait être 'Circulaire n°',True
+404,Circulaire du 13 MARS 2017,du-13-mars-2017,"Circulaire du Ministre de l’Energie, des Mines, de l’Eau et de l’Environnement r",2017-03-13,,,number contient le type → devrait être 'du-13-mars-2017',True
+409,DAHIR DU 12 JANVIER 1955,du-12-janvier-1955,DAHIR DU 12 JANVIER 1955 portant règlement sur les appareils à pression de gaz,1955-01-12,,,number contient le type → devrait être 'du-12-janvier-1955',True
+411,Dahir du 22 juillet 1953,du-22-juillet-1953,DAHIR du 22 juillet 1953 (9 kaada 1372) portant règlement sur l'emploi des appar,1953-07-22,,,number contient le type → devrait être 'du-22-juillet-1953',True
+412,DAHIR DU 2 MARS 1938,du-2-mars-1938,Déclaration de l'expédition de matières réglementant la manutention et le transp,1938-03-02,,,number contient le type → devrait être 'du-2-mars-1938',True
+413,DAHIR DU 18 JOUMADA I 1332,du-18-joumada-i-1332,PORTANT REGLEMENTATION DE LA FABRICATION DES EXPLOSIFS,1914-04-14,,,number contient le type → devrait être 'du-18-joumada-i-1332',True
+414,DAHIR DU 14 JANVIER 1914,du-14-janvier-1914,"Dahir du 14 janvier 1914 réglementant l'importation, la circulation et la vente ",1914-01-14,,,number contient le type → devrait être 'du-14-janvier-1914',True
+416,Décret n° 2-97-30,2-97-30,Décret n° 2-97-30 du 25 joumada II 1418 (28 octobre 1997) pris pour l'applicatio,1997-10-28,,,number contient le type → devrait être '2-97-30',True
+417,Décret n° 2-91-631,2-91-631,Décret n° 2-91-631 du 7 kaada 1413 (29 avril 1993) modifiant et complétant le dé,1993-04-29,,,number contient le type → devrait être '2-91-631',True
+419,Décret n° 2-15-807,2-15-807,Décret n° 2-15-807 du 12 rejeb 1437 (20 avril 2016) pris pour l’application des ,2016-04-20,,,number contient le type → devrait être '2-15-807',True
+420,Décret n° 2-72-513,2-72-513,Décret pris pour l'application du dahir portant loi n° 1-72-255 du 18 moharrem 1,1973-04-07,,,number contient le type → devrait être '2-72-513',True
+426,Décret n°2.19.1021,2-19-1021,Décret n°2.19.1021 du 2 chaâbane 1441 (27 mars 2020) portant application des dis,2020-03-27,,,number contient le type → devrait être '2-19-1021',True
+432,Arrêté conjoint n° 3399-12,3399-12,Arrêté conjoint du ministre de l’équipement et du transport et du ministre de l’,2012-10-08,,,number contient le type → devrait être '3399-12',True
+433,Arrêté conjoint n° 3413-11,3413-11,"Arrêté conjoint du ministre de l’énergie, des mines, de l’eau et de l’environnem",2012-12-20,,,number contient le type → devrait être '3413-11',True
+436,Décret n°2‑21‑1075,2‑21‑1075,Décret approuvant l’accord de prêt conclu le 14 décembre 2021 entre le Royaume d,2022-01-13,,,number contient le type → devrait être '2‑21‑1075',True
+440,Dahir n° 1-03-60,1-03-60,Dahir n° 1-03-60 du 10 rabii I 1424 (12 mai 2003) portant promulgation de la loi,2003-05-12,,,number contient le type → devrait être '1-03-60',True
+443,Dahir n° 1-19-126,1-19-126,Dahir n° 1-19-126 du 16 rabii II 1441 (13 décembre 2019) portant promulgation de,2019-12-13,,,number contient le type → devrait être '1-19-126',True
+446,Décret n°2-08-292,2-08-292,Décret n° 2-08-292 du 5 rejeb 1429 (9 juillet 2008) portant revalorisation du sa,2008-07-09,,,number contient le type → devrait être '2-08-292',True
+447,Décret n° 2-09-51,2-09-51,Décret n° 2-09-51 du 25 joumada 1 1430 (21 mai 2009) habilitant le ministre de l,2009-05-21,,,number contient le type → devrait être '2-09-51',True
+448,Décret n° 2-09-471,2-09-471,Décret n° 2-09-471 du 20 hija 1430 (8 décembre 2009) modifiant l’article 82 du d,2009-12-08,,,number contient le type → devrait être '2-09-471',True
+450,Décret n° 2-10-7,2-10-7,"portant délégation de pouvoirs au ministre délégué auprès du Premier ministre, c",2010-01-07,,,number contient le type → devrait être '2-10-7',True
+451,Décret n° 2-09-538,2-09-538,Décret n° 2-09-538 du 5 rabii II 1431 (22 mars 2010) fixant les modalités d’élab,2010-03-22,,,number contient le type → devrait être '2-09-538',True
+453,Décret n° 2-09-683,2-09-683,Décret n° 2-09-683 du 23 rejeb 1431 (6 juillet 2010) fixant les modalités d’élab,2010-07-06,,,number contient le type → devrait être '2-09-683',True
+454,Décret n° 2-11-480,2-11-480,Décret n° 2-11-480 du 29 ramadan 1432 (30 août 2011) approuvant la décision de B,2011-08-30,,,number contient le type → devrait être '2-11-480',True
+456,Dahir n° 1-09-273,1-09-273,Dahir n° 1-09-273 du 10 ramadan 1435 (8 juillet 2014) portant publication de l’A,2014-07-08,,,number contient le type → devrait être '1-09-273',True
+457,Décret n° 2-15-769,2-15-769,"Décret n° 2-15-769 du 3 rabii I 1437 (15 décembre 2015) fixant la
+composition, l",2015-12-15,,,number contient le type → devrait être '2-15-769',True
+458,Décret n° 2-16-174,2-16-174,Décret n° 2-16-174 du 25 joumada FI 1437 (4 avril 2016) pris pour l’application ,2016-04-04,,,number contient le type → devrait être '2-16-174',True
+460,Décret n° 2-19-721,2-19-721,Décret n° 2-19-721 du 3 ramadan 1441 (27 avril 2020) portant création de la comm,2020-04-27,,,number contient le type → devrait être '2-19-721',True
+461,Décret n° 2-20-641,2-20-641,Décret n° 2-20-641 du 23 rabii II 1442 (9 décembre 2020) modifiant et complétant,2020-12-09,,,number contient le type → devrait être '2-20-641',True
+462,Décret n° 2-21-165,2-21-165,Décret n° 2-21-165 du 5 chaoual 1443 (6 mai 2022) complétant le Décret n° 2-21-9,2022-05-06,,,number contient le type → devrait être '2-21-165',True
+463,Décret n° 2-95-717,2-95-717,relatif à la préparation et à la lutte contre les pollutions marines accidentell,1996-11-22,,,number contient le type → devrait être '2-95-717',True
+464,Dahir n° 1-14-09,1-14-09,Dahir n° 1-14-09 du 4 joumada 1 1435 (6 mars 2014) portant promulgation de la lo,2014-03-06,,,number contient le type → devrait être '1-14-09',True
+465,Dahir n° 1-03-59,1-03-59,Dahir portant promulgation de la loi n° 11-03 relative à la protection et à la m,2003-05-12,,,number contient le type → devrait être '1-03-59',True
+466,Dahir n° 1-03-61,1-03-61,Dahir n° 1-03-61 du 10 rabii I 1424 (12 mai 2003) portant promulgation de la loi,2003-05-12,,,number contient le type → devrait être '1-03-61',True
+467,Dahir n° 1-12-25,1-12-25,Dahir n° 1-12-25 du 13 ramadan 1433 (2 août 2012) portant promulgation de la loi,2012-08-02,,,number contient le type → devrait être '1-12-25',True
+468,Dahir n° 1-20-78,1-20-78,Dahir n° 1-20-78 du 18 hija 1441 (8 août 2020) portant promulgation de la loi n°,2020-08-08,,,number contient le type → devrait être '1-20-78',True
+469,Dahir n° 1-15-87,1-15-87,Dahir n° 1-15-87 du 29 ramadan 1436 (16 juillet 2015) portant promulgation de la,2015-07-16,,,number contient le type → devrait être '1-15-87',True
+470,Loi n° 38-16,38-16,modifiant et complétant l’article 2 du Dahir n° 1-63-226 du 14 rabii I 1383 (5 a,2016-09-22,,,number contient le type → devrait être '38-16',True
+471,Dahir n°1-02-316,1-02-316,Dahir n°1-02-316 du 13 hija 1422 (15 février 2002),2002-02-13,,,number contient le type → devrait être '1-02-316',True
+472,Dahir n° 1-04-22,1-04-22,Dahir n° 1-04-22 du 1er chaoual 1425 (13 décembre 2004) portant promulgation de ,2004-12-01,,,number contient le type → devrait être '1-04-22',True
+476,Dahir n°1-00-204,1-00-204,Dahir n° 1-00-204 du 15 safar 1421 (19 mai 2000) portant exécution de la loi n° ,2000-05-19,,,number contient le type → devrait être '1-00-204',True
+477,Dahir n°1-51-1,1-51-1,dahir n° 1-51-1 du 2 kaada 1370 (2 janvier 1951) relatif aux obligations et cont,1951-01-02,,,number contient le type → devrait être '1-51-1',True
+478,Dahir 1-11-20,1-11-20,Dahir n° 1-11-20 du 23 février 2011 portant modification et complétant le dahir ,2011-02-23,,,number contient le type → devrait être '1-11-20',True
+479,Dahir n°1.15.62,1-15-62,Dahir n°1.15.62 du 2 chaabane 1436 (2 juin 2015) portant promulgation de la loi ,2015-06-02,,,number contient le type → devrait être '1-15-62',True
+480,Décret n° 2.15.426 du 28 Ramadan 1436,2-15-426-du-28-ramadan-1436,relatif à la préparation et à l'exécution des lois de finances,2015-07-15,,,number contient le type → devrait être '2-15-426-du-28-ramadan-1436',True
+481,Dahir n°1.15.05,1-15-05,Dahir n° 1.15.05 du 29 Rabii II 1436 (19 février 2015) portant exécution de la l,2015-02-19,,,number contient le type → devrait être '1-15-05',True
+483,Dahir n°1.15.25,1-15-25,Dahir n° 1-15-25 du 29 Rabii II 1436 (19 février 2015) portant promulgation de l,2015-02-19,,,number contient le type → devrait être '1-15-25',True
+486,Dahir n°1-04-22,1-04-22,Dahir n° 1-04-22 du 19 moharrem 1425 (19 février 2004) portant promulgation de l,2004-02-19,,,number contient le type → devrait être '1-04-22',True
+487,Dahir n°1-09-07,1-09-07,Dahir n° 1-09-07 du 15 chaoual 1430 (5 octobre 2009) portant promulgation de la ,2009-08-05,,,number contient le type → devrait être '1-09-07',True
+488,Dahir n° 1-90-19,1-90-19,Dahir n° 1-90-19 du 9 chaoual 1411 (2 mai 1991) portant promulgation de la loi n,1990-10-09,,,number contient le type → devrait être '1-90-19',True
+491,Dahir n°1-11-141,1-11-141,Dahir n° 1-11-19 du 19 rebia II 1432 (22 mars 2011) portant publication de la lo,2011-04-19,,,number contient le type → devrait être '1-11-141',True
+494,Dahir n°1-70-10,1-70-10,Dahir n° 1-70-10 du 8 rabii I 1390 (17 avril 1970) portant promulgation de la lo,1970-04-08,,,number contient le type → devrait être '1-70-10',True
+495,Dahir n°1.16.25,1-16-25,Dahir n° 1-16-25 du 22 joumada I 1437 (2 mars 2016) portant exécution de la loi ,2016-03-02,,,number contient le type → devrait être '1-16-25',True
+496,Loi n°15.09,15-09,Loi n° 15.09 relative aux mesures de sauvegarde commerciale,2011-06-02,,,number contient le type → devrait être '15-09',True
+497,Dahir n°1-14-96,1-14-96,Dahir n° 1-14-96 du 20 rejeb 1435 (20 mai 2014) portant exécution de la loi n° 4,2014-05-20,,,number contient le type → devrait être '1-14-96',True
+498,Dahir n°1.95.213,1-95-213,Dahir n° 1-95-213 portant promulgation de la loi-cadre n° 18-95 formant charte d,1995-11-08,,,number contient le type → devrait être '1-95-213',True
+499,Dahir n°1-15-07,1-15-07,Dahir n° 1-15-07 portant promulgation de la loi n° 114.13 relative au régime de ,2015-02-19,,,number contient le type → devrait être '1-15-07',True
+502,Dahir n°1.16.50,1-16-50,Dahir n° 1-16-50 du 19 rejeb 1437 (27 avril 2016) portant exécution de la loi n°,2016-04-27,,,number contient le type → devrait être '1-16-50',True
+504,Dahir n°1.16.151,1-16-151,Dahir n° 1-16-151 du 21 kaada 1437 (25 août 2016) portant exécution de la loi n°,2016-08-25,,,number contient le type → devrait être '1-16-151',True
+505,Loi n°49-91,49-91,Loi n° 49-91 relative aux zones d'exportation franche,,,,number contient le type → devrait être '49-91',True
+508,Dahir n° 1-21-02,1-21-02,Dahir n° 1-21-02 du 2 ramadan 1442 (14 avril 2021) portant promulgation de la lo,2021-04-02,,,number contient le type → devrait être '1-21-02',True
+509,Dahir 1-04-22,1-04-22,Dahir n° 1-04-22 du 27 hija 1424 (18 février 2004) portant publication de la loi,1905-01-11,,,number contient le type → devrait être '1-04-22',True
+510,Dahir n°1-15-103,1-15-103,Dahir n° 1-15-103 du 29 rejeb 1436 (18 mai 2015) portant publication de la loi n,2015-05-18,,,number contient le type → devrait être '1-15-103',True
+511,Dahir n°1-00-71,1-00-71,Dahir n° 1-00-71 du 15 moharrem 1421 (19 mai 2000) portant création d'un office ,2000-02-15,,,number contient le type → devrait être '1-00-71',True
+512,Dahir n°1.11.19,1-11-19,Dahir n°1.11.19 du 25 Rabii I 1432 (1er mars 2011) portant création du Conseil n,2011-03-01,,,number contient le type → devrait être '1-11-19',True
+514,Dahir n°1-14-141,1-14-141,Dahir n° 1-14-141 du 6 juin 2014 portant promulgation de la loi n° 99-12 relativ,2014-06-06,,,number contient le type → devrait être '1-14-141',True
+515,Dahir n°1-15-87,1-15-87,Dahir n° 1-15-87 du 29 ramadan 1436 (16 juillet 2015) portant promulgation de la,2015-07-16,,,number contient le type → devrait être '1-15-87',True
+516,Dahir n°1-01-10,1-01-10,Dahir n° 1-01-10 du 1er août 2001 portant promulgation de la loi n° 62-99 relati,2001-08-01,,,number contient le type → devrait être '1-01-10',True
+518,Dahir n° 1-05-151,1-05-151,Dahir n° 1-05-151 du 14 rabii II 1426 (23 mai 2005) portant promulgation de la l,2005-02-14,,,number contient le type → devrait être '1-05-151',True
+519,Dahir n°1.02.119,1-02-119,Dahir n° 1-02-119 du 1er Rabii II 1423 (13 juin 2002) portant promulgation de la,2002-06-13,,,number contient le type → devrait être '1-02-119',True
+522,Dahir n°1.11.37,1-11-37,Dahir n°1-11-37 portant exécution de la loi n° 30-05 relative au transport de ma,2011-06-02,,,number contient le type → devrait être '1-11-37',True
+525,Dahir n°1-97-75,1-97-75,Dahir n° 1-97-75 du 25 moharrem 1418 (3 mai 1997) portant promulgation de la loi,1997-05-13,,,number contient le type → devrait être '1-97-75',True
+526,Dahir n°1-16-53,1-16-53,Dahir n° 1-16-53 du 19 rejeb 1437 (27 avril 2016) portant exécution de la loi n°,2016-04-27,,,number contient le type → devrait être '1-16-53',True
+527,Dahir n°1-11-151,1-11-151,Dahir n° 1-11-151 du 20 chaâbane 1432 (20 juillet 2011) portant publication de l,2011-07-20,,,number contient le type → devrait être '1-11-151',True
+531,Dahir 1-04-13,1-04-13,Dahir n° 1-04-13 du 1er chaoual 1424 (16 novembre 2003) portant publication de l,2004-03-01,,,number contient le type → devrait être '1-04-13',True
+533,Dahir n°1.15.76,1-15-76,Dahir n° 1-15-76 du 14 ramadan 1436 (1er juillet 2015) portant exécution de la l,2015-07-01,,,number contient le type → devrait être '1-15-76',True
+535,Dahir n°1-14-191,1-14-191,Dahir n° 1-14-191 du 7 moharrem 1434 (13 décembre 2012) portant promulgation de ,2012-12-13,,,number contient le type → devrait être '1-14-191',True
+536,Dahir n°1-20-92,1-20-92,Dahir n° 1-20-92 du 14 rabii I 1442 (1er novembre 2020) portant promulgation de ,2020-10-14,,,number contient le type → devrait être '1-20-92',True
+537,Dahir n°1-11-06 du 22 rebia II 1432 (2011-06-25) portant promulgation de la loi n° 08-06 modifiant et complétant la loi n° 62-03 relative au code de la nationalité marocaine,1-11-06-du-22-rebia-ii-1432-(2011-06-25)-portant-promulgation-de-la-loi-n°-08-06-modifiant-et-complétant-la-loi-n°-62-03-relative-au-code-de-la-nationalité-marocaine,Dahir n° 1-11-06 du 22 rebia II 1432 (25 juin 2011) portant promulgation de la l,2011-06-25,,,number contient le type → devrait être '1-11-06-du-22-rebia-ii-1432-(2011-06-25)-portant-promulgation-de-la-loi-n°-08-06-modifiant-et-complétant-la-loi-n°-62-03-relative-au-code-de-la-nationalité-marocaine',True
+539,Dahir n°1.16.48,1-16-48,Dahir n° 1-16-48 du 19 rejeb 1437 (27 avril 2016) portant exécution de la loi n°,2016-04-27,,,number contient le type → devrait être '1-16-48',True
+541,Dahir n° 1-95-59,1-95-59,Dahir n° 1-95-59 du 9 août 1995 portant promulgation de la loi n° 34-94 relative,1995-08-09,,,number contient le type → devrait être '1-95-59',True
+543,Dahir n°1-81-159,1-81-159,Dahir n° 1-81-159 du 3 Joumada I 1401 (3 mars 1981) portant promulgation du text,1981-12-03,,,number contient le type → devrait être '1-81-159',True
+545,Dahir n°1.16.130,1-16-130,Dahir n° 1.16.130 du 21 kaada 1437 (25 août 2016) portant promulgation de la loi,2016-08-25,,,number contient le type → devrait être '1-16-130',True
+546,Dahir n°1-20-31,1-20-31,Dahir n° 1-20-31 du 18 mai 2020 portant création de l'Agence Nationale de la Con,2020-05-18,,,number contient le type → devrait être '1-20-31',True
+549,Dahir n°1-96-101,1-96-101,Dahir n° 1-96-101 du 19 chaoual 1417 (27 février 1997) portant promulgation de l,1997-02-19,,,number contient le type → devrait être '1-96-101',True
+553,Dahir n°1-13-111,1-13-111,Dahir n° 1-13-111 du 15 moharrem 1435 (19 novembre 2013) portant promulgation de,2013-11-19,,,number contient le type → devrait être '1-13-111',True
+555,"Dahir n°1-91-11 dated 11 Joumada I 1412 (August 23, 1991)","1-91-11-dated-11-joumada-i-1412-(august-23,-1991)",Dahir n°1-91-11 du 11 Joumada I 1412 (23 août 1991) portant application des disp,1991-08-23,,,"number contient le type → devrait être '1-91-11-dated-11-joumada-i-1412-(august-23,-1991)'",True
+556,Arrêté conjoint n° 071.70.1 du 1er du kaada 1411 (19 avril 1991),071-70-1-du-1er-du-kaada-1411-(19-avril-1991),Arrêté conjoint n° 071.70.1 du 1er kaada 1411 (19 avril 1991) fixant le tarif de,1991-04-19,,,number contient le type → devrait être '071-70-1-du-1er-du-kaada-1411-(19-avril-1991)',True
+557,Dahir n°1-91-26,1-91-26,Dahir n° 1-91-26 du 9 septembre 1991 portant promulgation de la loi n° 37-87 mod,1991-09-09,,,number contient le type → devrait être '1-91-26',True
+560,Dahir n°1-83-384,1-83-384,Dahir n° 1-83-384 du 10 avril 1984 réglementant les professions de sécurité et d,1984-04-10,,,number contient le type → devrait être '1-83-384',True
+561,Dahir 1-03-309,1-03-309,Dahir n° 1-03-309 du 16 hija 1425 (27 janvier 2005) portant promulgation de la l,2004-12-16,,,number contient le type → devrait être '1-03-309',True
+562,Dahir n°1.15.26,1-15-26,Dahir n° 1-15-26 du 29 rabii II 1436 portant exécution de la loi n° 131.13 relat,2015-02-19,,,number contient le type → devrait être '1-15-26',True
+564,Dahir n°1-08-111,1-08-111,Dahir n° 1-08-111 du 23 mai 2008 portant promulgation de la loi n° 4-01 relative,2008-06-23,,,number contient le type → devrait être '1-08-111',True
+565,Dahir 1-89-098,1-89-098,Dahir n° 1-89-098 du 1er joumada II 1410 (1er janvier 1990) portant promulgation,1990-09-01,,,number contient le type → devrait être '1-89-098',True
+567,Dahir n°1.15.04,1-15-04,Dahir n° 1-15-04 du 29 Rabii II 1436 (19 février 2015) portant promulgation de l,2015-02-19,,,number contient le type → devrait être '1-15-04',True
+568,Dahir n°1.13.69,1-13-69,Dahir n° 1-13-69 du 18 ramadan 1434 (27 juillet 2013) portant promulgation de la,2013-07-27,,,number contient le type → devrait être '1-13-69',True
+569,Loi n°12.01,12-01,Loi n° 12-01 relative aux laboratoires privés de biologie médicale,2002-11-07,,,number contient le type → devrait être '12-01',True
+571,Loi n° 04.76,04-76,Loi n° 04.76 portant organisation de la profession des experts judiciaires.,1976-07-04,,,number contient le type → devrait être '04-76',True
+573,Dahir n°1-91-139,1-91-139,Dahir n° 1-91-139 du 9 juillet 1991 portant promulgation de la loi n° 43-90 rela,1991-07-09,,,number contient le type → devrait être '1-91-139',True
+574,Dahir n°1-10-61,1-10-61,Dahir n° 1-10-61 du 26 hija 1431 (11 novembre 2010) portant promulgation de la l,2010-11-11,,,number contient le type → devrait être '1-10-61',True
+575,dahir n°1-75-291,1-75-291,Dahir n° 1-75-291 du 24 chaoual 1397 (8 octobre 1977) portant loi relative au co,1977-08-08,,,number contient le type → devrait être '1-75-291',True
+576,Dahir n°1-07-27,1-07-27,Dahir n° 1-07-27 portant publication de la loi n° 27-02 relative à la lutte cont,2007-02-19,,,number contient le type → devrait être '1-07-27',True
+578,Dahir n°1-16-121,1-16-121,Dahir n° 1-16-121 du 6 kaada 1437 (10 août 2016) portant promulgation de la loi ,2016-08-10,,,number contient le type → devrait être '1-16-121',True
+579,Dahir n° 1-16-132,1-16-132,Dahir n° 1-16-132 du 21 kaada 1437 (25 août 2016) portant promulgation de la loi,2016-08-25,,,number contient le type → devrait être '1-16-132',True
+580,Dahir n° 1-15-77,1-15-77,Dahir n° 1-15-77 du 14 ramadan 1436 (1“ juillet 2015) portant promulgation de la,2015-07-01,,,number contient le type → devrait être '1-15-77',True
+581,Dahir n° 1-16-2,1-16-2,Dahir n° 1-16-2 du 1“ rabii II 1437 (12 janvier 2016) portant promulgation de la,2016-01-12,,,number contient le type → devrait être '1-16-2',True
+583,Dahir n°1.16.131,1-16-131,Dahir n° 1-16-131 du 21 kaada 1437 (25 août 2016) portant exécution de la loi n°,2016-08-25,,,number contient le type → devrait être '1-16-131',True
+585,Dahir n° 1-14-149,1-14-149,Dahir portant promulgation de la loi n° 142-12 relative à la sûreté et à la sécu,2014-09-18,,,number contient le type → devrait être '1-14-149',True
+586,Loi n°21-90 amendée et complétée par Loi n°27- 99,21-90-amendée-et-complétée-par-loi-n°27-99,Loi n° 21-90 relative à la recherche et à l’exploitation des gisements d’hydroca,2000-02-15,,,number contient le type → devrait être '21-90-amendée-et-complétée-par-loi-n°27-99',True
+587,Arrêté viziriel du 18 février 1938,viziriel-du-18-février-1938,Arrêté viziriel du 18 février 1938 portant règlement général sur l’exploitation ,1938-02-18,,,number contient le type → devrait être 'viziriel-du-18-février-1938',True
+591,Décret n°2.24.62,2-24-62,Décret n°2.24.62 modifiant le décret n°2.23.781 pris en application de la loi n°,2024-01-25,,,number contient le type → devrait être '2-24-62',True
+594,Dahir n°1.24.32,1-24-32,Dahir n° 1.24.32 du 18 moharrem 1446 portant exécution de la loi n° 43.22 relati,2024-07-24,,,number contient le type → devrait être '1-24-32',True
+595,Décret n°2.24.715,2-24-715,Décret relatif aux dispositions transitoires concernant certains magistrats,2024-07-25,,,number contient le type → devrait être '2-24-715',True
+597,Décret n°2.22.92,2-22-92,Décret n° 2.22.92 fixant les modalités et procédures de création d'entreprises p,2024-04-22,,,number contient le type → devrait être '2-22-92',True
+598,Décret n°2.23.150 portant approbation du code des devoirs professionnels des experts-comptables,2-23-150-portant-approbation-du-code-des-devoirs-professionnels-des-experts-comptables,Décret n° 2.23.150 portant approbation du code des devoirs professionnels des ex,2024-04-22,,,number contient le type → devrait être '2-23-150-portant-approbation-du-code-des-devoirs-professionnels-des-experts-comptables',True
+599,Décret n°2.22.604,2-22-604,Décret n° 2.22.604 portant application des dispositions de la loi n° 45.18 relat,2024-04-22,,,number contient le type → devrait être '2-22-604',True
+600,Décret n°2.21.345,2-21-345,Décret n° 2.21.345 du 5 Dhou al-Qi`da 1442 (16 juillet 2021) relatif à l’organis,2024-03-21,,,number contient le type → devrait être '2-21-345',True
+602,Dahir n°1.17.101,1-17-101,Dahir n° 1-17-101 du 2 de Ramadan 1445 portant publication de la Convention sur ,2024-03-13,,,number contient le type → devrait être '1-17-101',True
+603,Dahir n° 1.24.33,1-24-33,Dahir n° 1.24.33 portant exécution de la loi n° 10.23 relative à l'organisation ,2024-07-24,,,number contient le type → devrait être '1-24-33',True
+606,Dahir n°1-02-298,1-02-298,Dahir n° 1-02-298 du 3 rabii II 1423 (3 octobre 2002) portant promulgation de la,2002-10-03,,,number contient le type → devrait être '1-02-298',True
+607,Dahir n°1-11-178,1-11-178,Dahir n° 1-11-178 du 25 moharrem 1432 (22 novembre 2011) portant promulgation de,2011-11-22,,,number contient le type → devrait être '1-11-178',True
+608,Décret n°2.24.646,2-24-646,Décret fixant les avantages et indemnités accordés aux magistrats des juridictio,2024-07-25,,,number contient le type → devrait être '2-24-646',True
+609,Dahir n°1-58-008,1-58-008,Dahir n° 1-58-008 portant loi fondamentale relative à la fonction publique,,,,number contient le type → devrait être '1-58-008',True
+610,Dahir portant loi n° 1-24-38,portant-loi-n°-1-24-38,Dahir portant loi n° 1-24-38 modifiant et complétant le dahir formant loi n° 1-0,2024-08-07,,,number contient le type → devrait être 'portant-loi-n°-1-24-38',True
+613,Arrêté du Ministre de la Justice,du-ministre-de-la-justice,Arrêté du Ministre de la Justice fixant les spécialités requises pour l'emploi d,2024-01-15,,,number contient le type → devrait être 'du-ministre-de-la-justice',True
+614,Décret n°2.96.914,2-96-914,Décret fixant les avantages et indemnités accordés aux magistrats des 1er et 2èm,2024-07-25,,,number contient le type → devrait être '2-96-914',True
+616,Dahir n° 1-58-250,1-58-250,Dahir n° 1-58-250 du 21 safar 1378 (6 septembre 1958) portant code de la nationa,1958-09-06,,,number contient le type → devrait être '1-58-250',True
+617,Dahir n°1-93-330 du 10 septembre 1993,1-93-330-du-10-septembre-1993,Dahir n°1-93-330 du 10 septembre 1993 portant promulgation de la loi n°24-89 édi,1993-09-10,,,number contient le type → devrait être '1-93-330-du-10-septembre-1993',True
+619,Dahir n° 1-24-35,1-24-35,Dahir n° 1-24-35 du 2 safar 1446 (7 août 2024) portant promulgation de la loi n°,2024-08-07,,,number contient le type → devrait être '1-24-35',True
+620,Dahir n° 1-16-113,1-16-113,Dahir n° 1-16-113 du 6 kaada 1437 (10 août 2016) portant promulgation de la loi ,2016-08-10,,,number contient le type → devrait être '1-16-113',True
+621,Décret n° 2-24-308,2-24-308,Décret accordant à l’Office national des hydrocarbures et des mines et à la soci,2024-04-22,,,number contient le type → devrait être '2-24-308',True
+622,Décret n° 2-09-286,2-09-286,Décret fixant les normes de qualité de l'air et les modalités de surveillance de,2009-12-08,,,number contient le type → devrait être '2-09-286',True
+625,Décret n° 2-23-275,2-23-275,"Décret relatif à l’immatriculation, à l’identification, à l’inscription des hypo",2024-05-23,,,number contient le type → devrait être '2-23-275',True
+626,Décret n° 2-23-681,2-23-681,"Décret relatif à la conception, à la production, à la maintenance et à la naviga",2024-05-14,,,number contient le type → devrait être '2-23-681',True
+630,Décret n° 2-24-962,2-24-962,Décret portant suspension de la perception du droit d'importation applicable aux,2024-10-18,,,number contient le type → devrait être '2-24-962',True
+631,Décret n° 2-24-963 du 14 rabii II 1446 (18 octobre 2024),2-24-963-du-14-rabii-ii-1446-(18-octobre-2024),Décret portant suspension de la perception du droit d'importation applicable aux,2024-10-18,,,number contient le type → devrait être '2-24-963-du-14-rabii-ii-1446-(18-octobre-2024)',True
+634,Décret n°2-23-970,2-23-970,Décret relatif au Conseil national de la pêche et de l’aquaculture continentales,2024-03-21,,,number contient le type → devrait être '2-23-970',True
+636,Dahir n° 1.14.192,1-14-192,Dahir n° 1.14.192 portant exécution de la loi n° 86.12 relative aux contrats de ,2014-12-24,,,number contient le type → devrait être '1-14-192',True
+637,Dahir n°1-16-122,1-16-122,Dahir n° 1-16-122 du 6 Dou Al Kiada 1437 (10 août 2016) portant exécution de la ,2016-08-10,,,number contient le type → devrait être '1-16-122',True
+638,Dahir n°1-10-145,1-10-145,Loi n° 22-10 relative à l'utilisation des sacs et emballages en plastique biodég,2010-07-16,,,number contient le type → devrait être '1-10-145',True
+639,Loi-cadre n° 99.12,cadre-n°-99-12,Loi-cadre n°99-12 portant charte nationale de l'environnement et du développemen,2014-03-06,,,number contient le type → devrait être 'cadre-n°-99-12',True
+640,Dahir n° 1-20-42,1-20-42,Dahir n° 1-20-42 du 8 septembre 2020 portant promulgation de la loi organique n°,2020-09-08,,,number contient le type → devrait être '1-20-42',True
+642,Dahir n°1-24-26,1-24-26,Dahir n° 1-24-26 du 16 Ramadan 1447 (26 mars 2026) portant amendment et modifica,2024-03-16,,,number contient le type → devrait être '1-24-26',True
+644,Dahir n°1-25-71 du 26 Rajab 1447 (16 janvier 2026),1-25-71-du-26-rajab-1447-(16-janvier-2026),Dahir n°1-25-71 du 26 Rajab 1447 (16 janvier 2026) portant modification et compl,2026-01-16,,,number contient le type → devrait être '1-25-71-du-26-rajab-1447-(16-janvier-2026)',True
+645,Dahir n° 1-12-20,1-12-20,Dahir n° 1-12-20 portant promulgation de la loi n° 02.12 relative à la nominatio,2012-07-17,,,number contient le type → devrait être '1-12-20',True
+646,Dahir n°1.21.94,1-21-94,Dahir n° 1.21.94 portant exécution de la loi n° 01.21 relative à l'assujettissem,2024-02-12,,,number contient le type → devrait être '1-21-94',True
+647,Dahir n°1.24.08,1-24-08,Dahir n°1.24.08 portant publication de la loi n°14.23 approuvant le règlement de,2024-02-15,,,number contient le type → devrait être '1-24-08',True
+648,Dahir n°1-02-238,1-02-238,Dahir n° 1-02-238 portant promulgation de la loi n° 17-99 concernant le code des,2002-10-03,,,number contient le type → devrait être '1-02-238',True
+649,Dahir n°1-24-28,1-24-28,Dahir n° 1-24-28 du 28 juin 2024 portant modification de la loi n° 19-94 relativ,2024-06-28,,,number contient le type → devrait être '1-24-28',True
+651,Dahir n°1-97-49,1-97-49,Dahir n° 1-97-49 du 5 chaoual 1417 portant exécution de la loi n° 5.96 relative ,1997-02-13,,,number contient le type → devrait être '1-97-49',True
+652,Dahir n°1-24-01,1-24-01,Dahir n° 1-24-01 modifiant et complétant la loi n° 97-12 relative à la lutte con,2024-01-19,,,number contient le type → devrait être '1-24-01',True
+653,Dahir n°1-24-13,1-24-13,Dahir n° 1-24-13 du 10 chaabane 1445 modifiant et complétant la loi n° 98.15 rel,2024-02-20,,,number contient le type → devrait être '1-24-13',True
+654,Arrêté,Arrêté,Règlement intérieur de la Commission du droit d'accès à l'information (en arabe),2020-12-29,,,number contient le type → devrait être 'Arrêté',True
+657,Décret n°2.23.244,2-23-244,Décret n° 2.23.244 modifiant et complétant le décret n° 2.09.286 du 20 moharrem ,2024-03-07,,,number contient le type → devrait être '2-23-244',True
+658,Dahir n°1-17-109,1-17-109,Dahir n° 1-17-109 du 16 rabii I 1439 portant promulgation de la loi n° 99-15 ins,2017-12-05,,,number contient le type → devrait être '1-17-109',True
+659,Loi n° 07.00,07-00,Loi n° 07.00 portant création des académies régionales d'éducation et de formati,2000-01-19,,,number contient le type → devrait être '07-00',True
+660,Dahir n°1-22-53,1-22-53,"Dahir n° 1-22-53 du 13 moharrem 1444 portant promulgation de la loi n° 94-21, re",2022-08-11,,,number contient le type → devrait être '1-22-53',True
+661,Dahir n°1.24.11 portant exécution de la loi n°98.18,1-24-11-portant-exécution-de-la-loi-n°98-18,Dahir n° 1.24.11 portant exécution de la loi n° 98.18 relative à l'Ordre nationa,2024-02-20,,,number contient le type → devrait être '1-24-11-portant-exécution-de-la-loi-n°98-18',True
+662,Dahir n°1-24-12 portant loi n°01.22,1-24-12-portant-loi-n°01-22,Dahir n°1-24-12 portant promulgation de la loi n°01.22 relative aux bureaux d'in,2024-02-20,,,number contient le type → devrait être '1-24-12-portant-loi-n°01-22',True
+663,Dahir n°1-24-34,1-24-34,Dahir n° 1-24-34 du 18 moharrem 1446 portant promulgation de la loi n° 21.24 rel,2024-07-24,,,number contient le type → devrait être '1-24-34',True
+664,Dahir n°1.24.35,1-24-35,Dahir n° 1-24-35 du 2 rabii II 1446 portant exécution de la loi n° 32.24 relativ,2024-08-07,,,number contient le type → devrait être '1-24-35',True
+665,Décret no 2.77.862 du 25 Chaoual 1397 relatif à l'application du code des douanes et impôts indirects,2-77-862-du-25-chaoual-1397-relatif-à-l'application-du-code-des-douanes-et-impôts-indirects,Décret n° 2.77.862 du 25 Chaoual 1397 (9 octobre 1977) relatif à l'application d,1977-10-09,,,"number contient le type → devrait être ""2-77-862-du-25-chaoual-1397-relatif-à-l'application-du-code-des-douanes-et-impôts-indirects""",True
+666,Décret n°2.23.1067 portant application de la loi n°58.23 relative au soutien social direct,2-23-1067-portant-application-de-la-loi-n°58-23-relative-au-soutien-social-direct,Décret n°2.23.1067 portant application de la loi n°58.23 relative au soutien soc,2023-12-01,,,number contient le type → devrait être '2-23-1067-portant-application-de-la-loi-n°58-23-relative-au-soutien-social-direct',True
+667,Décret n°2.24.705,2-24-705,Décret n° 2.24.705 fixant l'organisation et les attributions du Secrétariat géné,2024-10-02,,,number contient le type → devrait être '2-24-705',True
+668,Décret n°2.15.183,2-15-183,Décret n° 2.15.183 fixant la liste des établissements et des universités liés pa,2015-07-24,,,number contient le type → devrait être '2-15-183',True
+669,Décret n°2.23.557,2-23-557,Décret n° 2.23.557 relatif à la qualité des matières destinées à l'alimentation ,2024-05-14,,,number contient le type → devrait être '2-23-557',True
+670,Dahir n° 2.24.1,2-24-1,Dahir n° 2.24.1 du 22 février 2024 modifiant et complétant le dahir n° 1.18.785 ,2024-02-22,,,number contient le type → devrait être '2-24-1',True
+671,Décret n° 2-00-1016,2-00-1016,Décret n° 2-00-1016 du 7 Rabii II 1422 (29 juillet 2001) pris pour l'application,2001-07-29,,,number contient le type → devrait être '2-00-1016',True
+672,Décret n°2.03.729,2-03-729,Décret n° 2-03-729 du 18 rabii II 1425 (7 juillet 2004) portant création du «Gra,2004-07-07,,,number contient le type → devrait être '2-03-729',True
+674,Décret n°2.24.636,2-24-636,Décret fixant le régime des indemnités spéciales allouées aux techniciens et tec,2024-07-25,,,number contient le type → devrait être '2-24-636',True
+675,Décret n°2.24.615,2-24-615,Décret n° 2.24.615 modifiant et complétant le décret n° 2.04.761 du 10 Dou Al Ki,2024-07-25,,,number contient le type → devrait être '2-24-615',True
+676,Décret n°2.24.608,2-24-608,Décret relatif au statut particulier du corps des administrateurs communs aux mi,2024-07-25,,,number contient le type → devrait être '2-24-608',True
+677,Décret n° 2-03-348,2-03-348,Décret n° 2-03-348 du 28 juillet 2003 fixant le statut particulier du corps des ,2003-07-28,,,number contient le type → devrait être '2-03-348',True
+678,Décret n°2.24.396,2-24-396,Décret n° 2.24.396 modifiant le décret n° 2.08.521 du 18 décembre 2008 portant r,2024-07-11,,,number contient le type → devrait être '2-24-396',True
+679,Décret n°2.08.573,2-08-573,Décret relatif à l'institution d'une redevance pour les services fournis par l'I,2008-12-30,,,number contient le type → devrait être '2-08-573',True
+682,Décret n°2.10.452,2-10-452,Décret n° 2.10.452 du 20 dou al-qiida 1431 (29 octobre 2010) relatif au statut p,2010-10-29,,,number contient le type → devrait être '2-10-452',True
+683,Décret n°2-11-672,2-11-672,Décret n° 2-11-672 du 27 moharrem 1433 (23 décembre 2011) relatif à l'organisati,2011-12-23,,,number contient le type → devrait être '2-11-672',True
+685,Décret n°2.13.24,2-13-24,Décret n° 2-13-24 fixant la liste des établissements publics soumis au contrôle ,2013-02-26,,,number contient le type → devrait être '2-13-24',True
+687,Décret n° 2.13.820,2-13-820,Décret n° 2.13.820 relatif à l'amélioration de l'exécution des opérations d'impo,2014-11-10,,,number contient le type → devrait être '2-13-820',True
+688,Décret n°2.24.152,2-24-152,Décret modifiant et complétant le décret n° 2.14.330 du 5 moharrem 1436 (30 octo,2024-07-27,,,number contient le type → devrait être '2-24-152',True
+689,Décret n° 2.15.402,2-15-402,"Décret n° 2.15.402 fixant la liste des cercles, des collectivités territoriales ",2015-07-22,,,number contient le type → devrait être '2-15-402',True
+690,Décret n°2.16.773,2-16-773,Décret n° 2.16.773 du 28 Chaabane 1438 (25 mai 2017) fixant les modalités de fon,2017-05-25,,,number contient le type → devrait être '2-16-773',True
+693,Décret n°2.23.1009,2-23-1009,Décret n° 2.23.1009 du 19 janvier 2024 portant application de la loi n° 17.99 po,2024-01-19,,,number contient le type → devrait être '2-23-1009',True
+694,Décret n°2.18.622,2-18-622,Décret n° 2.18.622 pris pour l'application de la loi n° 98.15 relative à l'assur,2019-01-17,,,number contient le type → devrait être '2-18-622',True
+695,Décret n° 2.19.333 du 7 août 2019,2-19-333-du-7-août-2019,Décret n° 2.19.333 modifiant et complétant le décret n° 2.19.333 fixant les moda,2019-08-07,,,number contient le type → devrait être '2-19-333-du-7-août-2019',True
+696,Décret n°2.19.429,2-19-429,Décret n° 2-19-429 modifiant le décret n° 2-19-429 du 18 Ramadan 1440 (24 mai 20,2024-07-16,,,number contient le type → devrait être '2-19-429',True
+697,Décret n°2.24.628,2-24-628,Décret n° 2.24.628 modifiant et complétant le dahir n° 2.19.453 du 7 joumada I 1,2024-07-25,,,number contient le type → devrait être '2-24-628',True
+698,Décret n°2.5.022,2-5-022,Décret n° 2.5.022 portant application de la loi n° 71.05 relative à l'exercice d,2021-12-09,,,number contient le type → devrait être '2-5-022',True
+700,Décret n°2.22.78,2-22-78,Décret portant création de l'observatoire marocain des marchés publics,2024-04-22,,,number contient le type → devrait être '2-22-78',True
+701,Décret n°2.22.831,2-22-831,Décret n° 2.22.831 relatif à la salubrité et la qualité du sel alimentaire,2024-03-21,,,number contient le type → devrait être '2-22-831',True
+703,Décret n°2.23.1034,2-23-1034,Décret n° 2.23.1034 autorisant la création de douze sociétés à vocation multiple,2024-02-19,,,number contient le type → devrait être '2-23-1034',True
+704,Décret n°2.23.1035,2-23-1035,Décret n°2.23.1035 portant application de l'article 14 de la loi n°83.21 relativ,2024-02-19,,,number contient le type → devrait être '2-23-1035',True
+705,Décret n°2.23.1041,2-23-1041,Décret n° 2.23.1041 fixant les modalités et conditions de bénéfice de l'aide pub,2023-12-22,,,number contient le type → devrait être '2-23-1041',True
+706,Décret n°2.23.105,2-23-105,relatif aux autorisations de forage,2024-03-21,,,number contient le type → devrait être '2-23-105',True
+707,Décret n°2.23.1055,2-23-1055,Décret n°2.23.1055 relatif à l'application des dispositions de la loi n°10.22 po,2024-07-23,,,number contient le type → devrait être '2-23-1055',True
+709,Décret n°2.23.1192,2-23-1192,Décret n° 2.23.1192 fixant les modalités d’accréditation des organismes techniqu,2024-05-23,,,number contient le type → devrait être '2-23-1192',True
+711,Décret n° 2.23.275,2-23-275,"Décret n° 2.23.275 relatif à l'immatriculation des aéronefs, aux marques d'ident",2024-05-23,,,number contient le type → devrait être '2-23-275',True
+712,Décret n°2.23.440 du 2 Moharrem 1446 (8 juillet 2024),2-23-440-du-2-moharrem-1446-(8-juillet-2024),Décret n° 2.23.440 fixant la procédure de radiation des parcelles du domaine pub,2024-07-08,,,number contient le type → devrait être '2-23-440-du-2-moharrem-1446-(8-juillet-2024)',True
+713,Décret n°2.23.681,2-23-681,"Décret n° 2.23.681 relatif aux dispositions concernant la conception, la mainten",2024-05-14,,,number contient le type → devrait être '2-23-681',True
+714,Décret n°2.23.698,2-23-698,Décret relatif au statut particulier du personnel du ministère de l'Économie et ,2024-07-16,,,number contient le type → devrait être '2-23-698',True
+716,Décret n°2.23.751,2-23-751,Décret n°2.23.751 fixant l'organisation et les attributions du ministère de l'Am,2023-12-21,,,number contient le type → devrait être '2-23-751',True
+717,Décret n° 2.23.827,2-23-827,Décret n° 2.23.827 relatif à la passation des concours et examens organisés par ,2024-02-23,,,number contient le type → devrait être '2-23-827',True
+718,Décret n° 2.23.920 portant application de la loi n° 37.21,2-23-920-portant-application-de-la-loi-n°-37-21,Décret n° 2.23.920 du 2 moharrem 1446 (8 juillet 2024) portant application de la,2024-07-08,,,number contient le type → devrait être '2-23-920-portant-application-de-la-loi-n°-37-21',True
+719,Décret n°2.23.922,2-23-922,Décret n° 2.23.922 portant organisation et détermination des attributions du sec,2024-01-29,,,number contient le type → devrait être '2-23-922',True
+720,Décret n°2.23.923,2-23-923,Décret n° 2.23.923 fixant l'organisation et les attributions du département du d,2024-01-29,,,number contient le type → devrait être '2-23-923',True
+722,Décret n°2.23.970,2-23-970,Décret n° 2.23.970 relatif au Conseil national de la culture et de la pêche des ,2024-03-21,,,number contient le type → devrait être '2-23-970',True
+723,Décret n°2.24.064,2-24-064,Décret relatif à la suspension du droit d'importation sur les bovins,2024-01-25,,,number contient le type → devrait être '2-24-064',True
+725,Décret n°2.24.141,2-24-141,Décret n° 2.24.141 relatif à diverses dispositions concernant les indemnités all,2024-02-23,,,number contient le type → devrait être '2-24-141',True
+727,Décret n°2.24.144 du 8 juillet 2024,2-24-144-du-8-juillet-2024,Décret n°2.24.144 relatif à la marque « Établissement pionnier »,2024-07-08,,,number contient le type → devrait être '2-24-144-du-8-juillet-2024',True
+729,Décret n°2.24.328,2-24-328,Décret n°2.24.328 fixant les attributions et l'organisation du secteur de l'Ense,2024-08-02,,,number contient le type → devrait être '2-24-328',True
+730,Décret n°2.24.394,2-24-394,Décret relatif à la sécurité sanitaire et à la qualité des sauces destinées à la,2024-10-03,,,number contient le type → devrait être '2-24-394',True
+731,Décret n°2.24.395,2-24-395,Décret n° 2.24.395 relatif à la réorganisation du Centre de planification et d'o,2024-07-11,,,number contient le type → devrait être '2-24-395',True
+735,Décret n°2.24.729,2-24-729,Décret n°2.24.729 relatif aux modalités et conditions d'octroi de l'agrément off,2024-09-30,,,number contient le type → devrait être '2-24-729',True
+736,Décret n°2.24.960,2-24-960,Décret relatif à la suspension du paiement des droits d'importation applicable à,2024-10-18,,,number contient le type → devrait être '2-24-960',True
+738,Décret n°2-04-949,2-04-949,Décret n° 2-04-949 du 25 octobre 2004 suspendant le paiement du droit d'importat,2004-10-25,,,number contient le type → devrait être '2-04-949',True
+739,Décret n°2-23-962,2-23-962,Décret n° 2-23-962 modifiant et complétant le décret n° 2-72-513 du 22 moharrem ,2024-02-19,,,number contient le type → devrait être '2-23-962',True
+740,Décret n°2.77.68,2-77-68,Décret n° 2-77-68 du 12 Safar 1397 (2 février 1977) instituant une indemnité de ,1977-02-02,,,number contient le type → devrait être '2-77-68',True
+741,Décret n°2.24.614,2-24-614,Décret n° 2.24.614 modifiant et complétant le décret n° 2.89.565 du 30 Chaoual 1,2024-07-25,,,number contient le type → devrait être '2-24-614',True
+742,Décret n°2.24.502,2-24-502,Décret relatif à l'octroi d'une prime complémentaire aux enseignants-chercheurs ,2024-07-08,,,number contient le type → devrait être '2-24-502',True
+743,Décret n°2.24.649,2-24-649,Décret modifiant et complétant le décret n° 2-90-922 du 7 kaada 1413 (29 avril 1,2024-07-25,,,number contient le type → devrait être '2-24-649',True
+744,Décret n°2.93.807,2-93-807,Décret relatif au statut particulier du corps de l'inspection générale des finan,1994-07-16,,,number contient le type → devrait être '2-93-807',True
+746,Décret n° 2-01-209,2-01-209,Décret n° 2-01-209 du 20 Chaoual 1422 (8 janvier 2002) fixant le nombre des cons,2002-04-18,,,number contient le type → devrait être '2-01-209',True
+747,Décret n°2.98.548,2-98-548,Décret n° 2.98.548 du 28 chaoual 1419 (15 février 1999) relatif au statut partic,1999-02-15,,,number contient le type → devrait être '2-98-548',True
+4041,decret cncp Ar,cncp-ar,Décret (référence CNCP — texte non identifié),,,,number contient le type → devrait être 'cncp-ar',True
+7580,Loi n° 01-09,01-09,Loi n° 01-09 portant création de la Fondation Nationale des Musées,2011-04-18,,,number contient le type → devrait être '01-09',True
+7585,Loi n° 104.12,104-12,Loi n° 104.12 relative à la liberté des prix et de la concurrence,2014-06-30,,,number contient le type → devrait être '104-12',True
+7587,Arrêté n°119.24,119-24,"Arrêté du ministre de l'Enseignement Supérieur, de la Recherche Scientifique et ",2024-01-08,,,number contient le type → devrait être '119-24',True
+7588,Dahir n°1-92-31,1-92-31,Dahir n° 1-92-31 du 15 joumada II 1412 (17 juin 1992) portant promulgation de la,1992-06-17,,,number contient le type → devrait être '1-92-31',True
+7589,Loi n°131-13,131-13,Loi n° 131-13 relative à l'exercice de la profession de médecin,2015-02-19,,,number contient le type → devrait être '131-13',True
+7590,Loi n°13-09,13-09,Loi n° 13.09 relative aux énergies renouvelables,2010-02-11,,,number contient le type → devrait être '13-09',True
+7592,Dahir n° 1-06-151,1-06-151,Loi n° 17-04 portant code du médicament et de la pharmacie,2006-11-22,,,number contient le type → devrait être '1-06-151',True
+7593,Loi n° 18.00,18-00,"Loi n° 18.00 relative au statut de la copropriété des immeubles bâtis, telle que",2002-10-03,,,number contient le type → devrait être '18-00',True
+7595,Dahir n°1.58.376,1-58-376,Dahir n° 1.58.376 réglementant le droit d'association,1958-11-15,,,number contient le type → devrait être '1-58-376',True
+7596,Dahir n°1.58.377,1-58-377,Dahir n° 1.58.377 du 3 joumada I 1378 (15 novembre 1958) relatif aux rassembleme,1958-11-15,,,number contient le type → devrait être '1-58-377',True
+7601,Loi n° 25.90,25-90,"Loi n° 25.90 relative aux lotissements, groupes d'habitations et morcellements d",1992-06-17,,,number contient le type → devrait être '25-90',True
+7603,Loi n°2.00,2-00,"Loi n° 2.00 relative aux droits d'auteur et droits voisins, telle que modifiée e",2000-02-15,,,number contient le type → devrait être '2-00',True
+7605,Décret n°2.15.426,2-15-426,Décret n°2.15.426 du 28 Ramadan 1436 (15 juillet 2015) relatif à l'élaboration e,2015-07-15,,,number contient le type → devrait être '2-15-426',True
+7615,Loi n°57-11,57-11,"Loi n°57-11 relative aux listes électorales générales, aux opérations de référen",2011-10-28,,,number contient le type → devrait être '57-11',True
+7619,Loi n° 7.81,7-81,Loi n° 7.81 relative à l'expropriation pour cause d'utilité publique et à l'occu,1982-05-06,,,number contient le type → devrait être '7-81',True
+7620,Loi n° 86.12,86-12,Loi n° 86.12 relative aux contrats de partenariat entre les secteurs public et p,2014-12-24,,,number contient le type → devrait être '86-12',True
+7633,Dahir n°1-95-213,1-95-213,Dahir portant promulgation de la loi-cadre n° 18-95 formant charte de l'investis,1995-11-08,,,number contient le type → devrait être '1-95-213',True
+7634,Circulaire N° 72-CAB,72-cab,Modalités d'application du dahir n° 1-56-211 du 8 Joumada I 1376 (11 Décembre 19,1992-11-26,,,number contient le type → devrait être '72-cab',True
+7636,Dahir n°1-11-91,1-11-91,Dahir n°1-11-91 du 27 Chaabane 1432 (29 juillet 2011) portant promulgation du te,2011-07-29,,,number contient le type → devrait être '1-11-91',True
+7638,Dahir n° 1-58-008,1-58-008,Dahir n° 1-58-008 du 4 chaabane 1377 (24 février 1958) portant statut général de,1958-02-24,,,number contient le type → devrait être '1-58-008',True
+7639,Dahir n° 1-56-211,1-56-211,Dahir n° 1-56-211 du 8 Joumada I 1376 (11 décembre 1956) relatif aux garanties p,1956-12-11,,,number contient le type → devrait être '1-56-211',True
+7640,Dahir n°1-58-377,1-58-377,Dahir portant réglementation du droit de réunion publique,1958-11-12,,,number contient le type → devrait être '1-58-377',True
+7643,Décret n°2-94-223,2-94-223,"Décret n°2-94-223 du 6 Moharrem 1415 (16 juin 1994) instituant, pour le compte d",1994-06-16,,,number contient le type → devrait être '2-94-223',True
+7644,Décret royal n° 62-68,62-68,Décret royal n° 62-68 du 19 safar 1388 (17/05/1968) fixant les dispositions appl,1968-05-17,,,number contient le type → devrait être '62-68',True
+7650,Décret n° 2-99-1216,2-99-1216,Décret n° 2-99-1216 du 6 safar 1421 (10 mai 2000) fixant les conditions et les m,2000-05-10,,,number contient le type → devrait être '2-99-1216',True
+7652,Décret royal n° 330-66,330-66,Décret royal n° 330-66 du 21/04/1967 (10 moharrem 1387) portant règlement généra,1967-04-21,,,number contient le type → devrait être '330-66',True
+7653,Décret n° 2-07-1235,2-07-1235,Décret n° 2-07-1235 du 5 kaada 1429 (4 novembre 2008) relatif au contrôle des dé,2008-11-04,,,number contient le type → devrait être '2-07-1235',True
+7654,Décret n° 2-16-470,2-16-470,Décret n° 2-16-470 du 6 chaoual 1437 (11 juillet 2016) approuvant la Convention ,2016-07-11,,,number contient le type → devrait être '2-16-470',True
+7661,Décret n° 2-12-349,2-12-349,Décret n° 2-12-349 du 8 joumada I 1434 relatif aux marchés publics.,2013-04-04,,,number contient le type → devrait être '2-12-349',True
+7664,Décret n° 2-59-0200,2-59-0200,Décret n° 2-59-0200 du 26 chaoual 1378 (5 mai 1959) portant application de l’art,1959-05-05,,,number contient le type → devrait être '2-59-0200',True
+7672,Dahir n° 1-19-125,1-19-125,Dahir n° 1-19-125 du 16 rabii II 1441 (13 décembre 2019) portant promulgation de,2019-12-13,,,number contient le type → devrait être '1-19-125',True
+7673,Loi n° 72-14,72-14,Loi n° 72-14 promulguée par le dahir n° 1-16-110 du 16 kaada 1437 (20 août 2016),2016-08-20,,,number contient le type → devrait être '72-14',True
+7674,Dahir n° 1-15-05,1-15-05,Dahir n° 1-15-05 du 29 rabii II 1436 (19 février 2015) portant promulgation de l,2015-02-19,,,number contient le type → devrait être '1-15-05',True
+7676,Dahir n° 1-15-62,1-15-62,Dahir n° 1-15-62 du 14 chaabane 1436 (2 juin 2015) portant promulgation de la lo,2015-06-02,,,number contient le type → devrait être '1-15-62',True
+7678,Dahir n°1-15-83,1-15-83,Dahir n°1-15-83 du 20 ramadan 1436 (7 juillet 2015) portant promulgation de la l,2015-07-07,,,number contient le type → devrait être '1-15-83',True
+7679,Dahir n°1-12-03,1-12-03,Dahir n° 1-12-03 du 16 rebia II 1433 (8 mars 2012) portant promulgation de la lo,2012-04-16,,,number contient le type → devrait être '1-12-03',True
+7680,Dahir n°1-14-187,1-14-187,Dahir n° 1-14-187 du 17 Safar 1436 (10 décembre 2014) portant promulgation de la,2014-12-10,,,number contient le type → devrait être '1-14-187',True
+7681,Dahir n°1-19-08,1-19-08,Dahir portant promulgation de la Loi n°121.12 modifiant et complétant la Loi n°2,2019-01-25,,,number contient le type → devrait être '1-19-08',True
+7682,Dahir n°1-97-164,1-97-164,Dahir n° 1-97-164 du 27 rebia I 1418 (2 août 1997) portant promulgation de la lo,1997-08-02,,,number contient le type → devrait être '1-97-164',True
+7683,Dahir n°1-19-121,1-19-121,Dahir n° 1-19-121 du 12 moharrem 1441 (12 septembre 2019) portant promulgation d,2019-09-12,,,number contient le type → devrait être '1-19-121',True
+7684,Dahir n°1-19-82,1-19-82,Dahir n°1-19-82 du 17 Chaoual 1440 (21 juin 2019) portant promulgation de la loi,2019-06-21,,,number contient le type → devrait être '1-19-82',True
+7685,Loi n° 43.12,43-12,Loi n° 43.12 relative à l’Autorité Marocaine du Marché des Capitaux,2013-03-13,,,number contient le type → devrait être '43-12',True
+7686,Dahir n°1-16-60,1-16-60,Dahir n°1-16-60 du 17 Chaabane 1437 (24 mai 2016) portant promulgation de la loi,2016-05-24,,,number contient le type → devrait être '1-16-60',True
+7687,Dahir n°1-20-07,1-20-07,Dahir portant promulgation de la loi n° 55.19 relative à la simplification des p,2020-03-06,,,number contient le type → devrait être '1-20-07',True
+7688,Dahir n°1-13-56,1-13-56,Dahir n°1-13-56 du 8 Chaabane 1434 (17 juin 2013) portant promulgation de la loi,2013-06-17,,,number contient le type → devrait être '1-13-56',True
+7690,Dahir n°1-02-200,1-02-200,Dahir n°1-02-200 du 12 joumada I 1423 (23 juillet 2002) portant promulgation de ,2002-07-23,,,number contient le type → devrait être '1-02-200',True
+7691,Dahir n°1-01-123,1-01-123,Dahir n°1-01-123 du 29 rabii I 1422 (22 juin 2001) portant promulgation de la lo,2001-06-22,,,number contient le type → devrait être '1-01-123',True
+7693,Dahir n°1-14-09‎,1-14-09‎,Dahir n°1-14-09 du 4 joumada I 1435 (6 mars 2014) portant promulgation de la loi,2014-03-06,,,number contient le type → devrait être '1-14-09\u200e',True
+7694,Dahir n°1-22-76,1-22-76,Dahir n°1-22-76 du 14 joumada I 1444 (9 décembre 2022) portant promulgation de l,2022-12-09,,,number contient le type → devrait être '1-22-76',True
+7695,Dahir n°1-22-77,1-22-77,Dahir n°1-22-77 du 14 joumada I 1444 (9 décembre 2022) portant promulgation de l,2022-12-09,,,number contient le type → devrait être '1-22-77',True
+7696,Dahir n° 1-21-89,1-21-89,Dahir n° 1-21-89 du 15 Dhou Al Hijja 1442 (26 juillet 2021) portant promulgation,2021-07-26,,,number contient le type → devrait être '1-21-89',True
+7697,Dahir n°1-19-113,1-19-113,Dahir n°1-19-113 du 7 Dhou Al Hijja 1440 (9 août 2019) portant promulgation de l,2019-08-09,,,number contient le type → devrait être '1-19-113',True
+7698,Dahir n°1-21-82,1-21-82,Dahir n° 1-21-82 du 15 Hija 1442 (26 juillet 2021) portant promulgation de la lo,2021-07-26,,,number contient le type → devrait être '1-21-82',True
+7700,Dahir n°1.83.229,1-83-229,Dahir portant promulgation de la loi n°3.82 modifiant la loi n°012.71 relative à,1984-10-05,,,number contient le type → devrait être '1-83-229',True
+7702,Dahir n°1.21.57,1-21-57,Dahir n°1-21-57 portant promulgation de la loi organique n°05.21 modifiant et co,2021-04-21,,,number contient le type → devrait être '1-21-57',True
+7703,Dahir n°1-21-16,1-21-16,Dahir n°1-21-16 du 8 ramadan 1442 (21 avril 2021) portant promulgation de la loi,2021-04-21,,,number contient le type → devrait être '1-21-16',True
+7704,Dahir n°1-21-31,1-21-31,Dahir n°1-21-31 du 8 ramadan 1442 (21 avril 2021) portant exécution de la loi or,2021-04-21,,,number contient le type → devrait être '1-21-31',True
+7705,Dahir n°1-21-68,1-21-68,Dahir n°1-21-68 portant promulgation de la loi organique n°08-21 modifiant et co,2021-04-21,,,number contient le type → devrait être '1-21-68',True
+7707,Dahir n°1-16-40,1-16-40,Dahir n°1-16-40 du 4 joumada II 1437 (24 mars 2016) portant promulgation de la l,2016-03-24,,,number contient le type → devrait être '1-16-40',True
+7708,Dahir n°1-15-84,1-15-84,Dahir n°1-15-84 du 27 Chaoual 1436 (13 juillet 2015) portant promulgation de la ,2015-07-27,,,number contient le type → devrait être '1-15-84',True
+7710,Dahir n°1-23-6,1-23-6,Dahir portant promulgation de la loi organique n°13.22 modifiant et complétant l,2023-03-23,,,number contient le type → devrait être '1-23-6',True
+7711,Dahir n°1-23-03,1-23-03,Dahir n°1-23-03 portant promulgation de la Loi Organique n°14.22 modifiant et co,2023-03-23,,,number contient le type → devrait être '1-23-03',True
+7712,Dahir n°1-24-35,1-24-35,Dahir n°1-24-35 portant promulgation de la Loi Organique n°30.24 modifiant et co,2024-08-16,,,number contient le type → devrait être '1-24-35',True
+7713,Dahir n°1-26-08,1-26-08,Dahir n°1-26-08 du 20 Ramadan 1447 (10 mars 2026) portant promulgation de la loi,2026-03-10,,,number contient le type → devrait être '1-26-08',True
+7714,Dahir n°1.16.107,1-16-107,Dahir n° 1-16-107 du 23 chaoual 1437 (28 juillet 2016) portant promulgation de l,2016-07-28,,,number contient le type → devrait être '1-16-107',True
+7715,Dahir n°1-23-48,1-23-48,Dahir portant promulgation de la loi organique n°48.22 modifiant et complétant l,2023-03-16,,,number contient le type → devrait être '1-23-48',True
+7716,Dahir n°1-22-02,1-22-02,Dahir n°1-22-02 du 28 Joumada I 1443 (18 janvier 2022) portant promulgation de l,2022-01-27,,,number contient le type → devrait être '1-22-02',True
+7717,Dahir n°1-25-71,1-25-71,Dahir n°1-25-71 du 26 rejeb 1447 (16 janvier 2026) portant promulgation de la lo,2026-01-16,,,number contient le type → devrait être '1-25-71',True
+7718,Dahir n°1-16-108,1-16-108,Dahir n° 1-16-108 du 23 chaoual 1437 (28 juillet 2016) fixant les conditions et ,2016-07-28,,,number contient le type → devrait être '1-16-108',True
+7719,Dahir n°1-21-99,1-21-99,Dahir n° 1-21-99 portant promulgation de la loi organique n° 70.21 modifiant et ,2021-09-13,,,number contient le type → devrait être '1-21-99',True
+7720,Dahir n°1-21-77,1-21-77,Dahir n°1-21-77 portant promulgation de la loi organique n°71-21 modifiant et co,2021-09-08,,,number contient le type → devrait être '1-21-77',True
+7727,Dahir n° 1-17-72,1-17-72,Dahir n° 1-23-72 du 20 joumada II 1445 (3 janvier 2024) portant promulgation de ,2023-01-17,,,number contient le type → devrait être '1-17-72',True
+7732,Arrêté n°3349-11,3349-11,"Arrêté de la Ministre de l’Energie, des Mines, et du Développement Durable n°334",2011-11-09,,,number contient le type → devrait être '3349-11',True
+7733,Dahir n°1-03-194,1-03-194,Dahir n° 1-03-194 du 14 rejeb 1424 (11 septembre 2003) portant promulgation de l,2003-09-11,,,number contient le type → devrait être '1-03-194',True
+7735,Arrêté n° 32-07,32-07,Arrêté du Ministre des Finances et de la Privatisation n° 32-07 du 15 hija 1427 ,2007-01-05,,,number contient le type → devrait être '32-07',True
+7738,Décret n° 2-17-32,2-17-32,Décret n° 2-17-32 du 23 hija 1438 (14 septembre 2017) fixant la composition et l,2017-09-14,,,number contient le type → devrait être '2-17-32',True
+7758,Circulaire-D-1265,d-1265,Texte N° Circulaire-D-1265,,,,number contient le type → devrait être 'd-1265',True
+7759,CirculaireDélaisPaiement_Juin2019_fr,délaispaiement_juin2019_fr,Circulaire n°1632/19/DEPP du 21/6/2019 de M. le Ministre de l'Economie et des Fi,,,,number contient le type → devrait être 'délaispaiement_juin2019_fr',True
+7761,decretn2-17-696ar,2-17-696ar,Texte N° decretn2-17-696ar,,,,number contient le type → devrait être '2-17-696ar',True
+7762,decretn2-16-344_ar,2-16-344_ar,Texte N° decretn2-16-344_ar,,,,number contient le type → devrait être '2-16-344_ar',True
+7765,loi_121.12_modifiant_loi_24.96_vf_0,_121-12_modifiant_loi_24-96_vf_0,Loi 121.12 modifiant loi 24.96 vf 0,,,,number contient le type → devrait être '_121-12_modifiant_loi_24-96_vf_0',True
+7773,loi_16.18_modifiant_la_loi_77.03_relative_a_la_communication,_16-18_modifiant_la_loi_77-03_relative_a_la_communication,Loi 16.18 modifiant la loi 77.03 relative a la communication audiovisuelle vf,,,,number contient le type → devrait être '_16-18_modifiant_la_loi_77-03_relative_a_la_communication',True
+7775,loi-haca,haca,Loi relative à la Haute Autorité de la Communication Audiovisuelle (HACA),,,,number contient le type → devrait être 'haca',True
+7776,loi-_com-audiosuelle-fr,_com-audiosuelle-fr,Loi com audiosuelle fr,,,,number contient le type → devrait être '_com-audiosuelle-fr',True
+7777,loi-concurrence,concurrence,Loi sur la concurrence au Maroc,,,,number contient le type → devrait être 'concurrence',True
+7779,decret_1026_version.consolide,_1026_version-consolide,Texte Réglementaire n° decret 1026 (version consolidée),,,,number contient le type → devrait être '_1026_version-consolide',True
+7780,decret_1025_version.consolide,_1025_version-consolide,Texte Réglementaire n° decret 1025 (version consolidée),,,,number contient le type → devrait être '_1025_version-consolide',True
+7781,Décret_ Membres du CA ANRT 2024 - VAR,_-membres-du-ca-anrt-2024-var,Décret_ Membres du CA ANRT 2024 - VAR,,,,number contient le type → devrait être '_-membres-du-ca-anrt-2024-var',True
+7783,decret-membres-du-ca-de-lanrt-avril-2013,membres-du-ca-de-lanrt-avril-2013,Décret relatif à la nomination des membres du Conseil d'Administration de l'ANRT,,,,number contient le type → devrait être 'membres-du-ca-de-lanrt-avril-2013',True
+7784,decret-nomination-membres-du-ca-de-lanrt-2008,nomination-membres-du-ca-de-lanrt-2008,Décret de nomination des membres du Conseil d'Administration de l'ANRT (2008),,,,number contient le type → devrait être 'nomination-membres-du-ca-de-lanrt-2008',True
+7846,loi_organique_130-30,_organique_130-30,Loi organique n°130.13 relative à la loi de finances,,,,number contient le type → devrait être '_organique_130-30',True
+7847,decret2.15.426_lf_ar,2-15-426_lf_ar,(version en arabe),,,,number contient le type → devrait être '2-15-426_lf_ar',True
+47,31.08 مقر,31-08-مقر,Dahir n° 31.08 fixant les mesures de protection du consommateur,2023-05-22,2023,2008,date 2023 ≠ année dans numéro (2008),False
+80,1.47.164,1-47-164,Dahir n° 1.47.164 portant publication de la loi n° 76-00 relative à l’organisati,2023-11-29,2023,1947,date 2023 ≠ année dans numéro (1947),False
+94,2.13.820,2-13-820,Décret n° 2.13.820 relatif à la bonne exécution des opérations d'importation des,2024-03-07,2024,2013,date 2024 ≠ année dans numéro (2013),False
+106,31.08 مقر نوناقلا,31-08-مقر-نوناقلا,Dahir n° 1-11-03 du 18 février 2011 portant mesures de protection du consommateu,2011-02-18,2011,2008,date 2011 ≠ année dans numéro (2008),False
+434,2023-01-285,2023-01-285,"Arrêté conjoint des ministres de l'Industrie et du Commerce, de la Santé et de l",2023-02-21,2023,2001,date 2023 ≠ année dans numéro (2001),False
+484,047.24.27,047-24-27,Dahir n° 1-72-277 du 9 chaoual 1392 (18 novembre 1972) portant loi modifiant et ,1972-12-09,1972,2024,date 1972 ≠ année dans numéro (2024),False
+493,80.50.1,80-50-1,Dahir n° 1-01-80 du 8 hija 1421 (3 avril 2001) portant promulgation de la loi n°,2001-01-08,2001,1950,date 2001 ≠ année dans numéro (1950),False
+524,247.41.2,247-41-2,Circulaire relative aux modalités d'application de certaines dispositions de la ,1991-03-03,1991,1941,date 1991 ≠ année dans numéro (1941),False
+544,862.67.1,862-67-1,Loi n° 67-00 relative à la spécialisation des compétences des huissiers de justi,2005-07-29,2005,1967,date 2005 ≠ année dans numéro (1967),False
+566,1.31.91,1-31-91,Dahir portant promulgation de la loi n° 21-90 relative à l’état civil,1991-05-22,1991,1931,date 1991 ≠ année dans numéro (1931),False
+593,1.14.81,1-14-81,Dahir n° 1-14-81 du 2 ramadan 1445 (13 mars 2024) portant publication de la conv,2024-03-13,2024,2014,date 2024 ≠ année dans numéro (2014),False
+643,1.25.70,1-25-70,Dahir n° 1-11-165 du 16 chaoual 1432 (16 septembre 2011) portant promulgation de,2011-10-14,2011,2025,date 2011 ≠ année dans numéro (2025),False
+681,2.09.442,2-09-442,Décret n° 2.09.442 du 21 décembre 2009 portant création d'une zone de promotion ,2024-03-04,2024,2009,date 2024 ≠ année dans numéro (2009),False
+686,2.13.325,2-13-325,Décret n° 2.13.325 relatif à l'organisation des encouragements de l'Etat à l'int,2024-04-08,2024,2013,date 2024 ≠ année dans numéro (2013),False
+884,2.22.64,2-22-64,Décret n° 2.22.64 rattachant la Délégation interministérielle aux droits de l'Ho,2025-09-18,2025,2022,date 2025 ≠ année dans numéro (2022),False
+888,1.57.090,1-57-090,Dahir chérifien relatif à la création de postes diplomatiques et consulaires,2025-08-13,2025,1957,date 2025 ≠ année dans numéro (1957),False
+894,2.22.81,2-22-81,Arrêté n° 2.22.81 du ministre de la Justice déléguant la validation des marchés,2025-07-25,2025,2022,date 2025 ≠ année dans numéro (2022),False
+900,2.59.0200,2-59-0200,Arrêté du ministre de la Justice portant désignation des représentants de l'admi,2025-07-14,2025,1959,date 2025 ≠ année dans numéro (1959),False
+919,1.72.184,1-72-184,Décret n° 1.72.184 relatif aux pensions d'invalidité et de vieillesse servies pa,2025-04-24,2025,1972,date 2025 ≠ année dans numéro (1972),False
+965,2.22.1075,2-22-1075,Décret n°2.22.1075 relatif à l'octroi de la carte de personne en situation de ha,2025-01-27,2025,2022,date 2025 ≠ année dans numéro (2022),False
+983,2.20.372,2-20-372,Arrêté de la ministre de l'économie et des finances relatif aux assurances const,2024-12-20,2024,2020,date 2024 ≠ année dans numéro (2020),False
+985,2.18.1009,2-18-1009,Arrêté de la ministre de l'économie et des finances fixant les conditions généra,2024-12-20,2024,2018,date 2024 ≠ année dans numéro (2018),False
+995,2.85.891,2-85-891,Arrêté conjoint n° 2.85.891 relatif à l'octroi d'une subvention à la commerciali,2024-12-13,2024,1985,date 2024 ≠ année dans numéro (1985),False
+1009,2.56.680,2-56-680,"Décret n° 2.56.680 fixant le régime des soldes, de l'alimentation et des frais d",2024-10-22,2024,1956,date 2024 ≠ année dans numéro (1956),False
+1016,1.77.339,1-77-339,Décret n° 1.77.339 suspendant la perception du droit d'importation sur les ovins,2024-10-18,2024,1977,date 2024 ≠ année dans numéro (1977),False
+1017,1.74.338,1-74-338,"Arrêté n°1.74.338 du ministre de la Justice portant création, organisation, déte",2024-10-03,2024,1974,date 2024 ≠ année dans numéro (1974),False
+1021,2.04.26,2-04-26,"Arrêté du ministre de l'agriculture, de la pêche maritime, du développement rura",2024-08-28,2024,2004,date 2024 ≠ année dans numéro (2004),False
+1027,1.74.467,1-74-467,Décret n° 1.74.467 relatif à l'adoption de mesures transitoires concernant certa,2024-07-25,2024,1974,date 2024 ≠ année dans numéro (1974),False
+1031,2.77.68,2-77-68,Décret n° 2.77.68 instituant une indemnité de hiérarchie au profit des fonctionn,2024-07-16,2024,1977,date 2024 ≠ année dans numéro (1977),False
+1039,2.08.573,2-08-573,Décret n° 2.08.573 instituant une rémunération pour les services rendus par le m,2024-05-23,2024,2008,date 2024 ≠ année dans numéro (2008),False
+1046,2.17.587,2-17-587,Arrêté de la ministre de la transition énergétique et du développement durable n,2024-03-25,2024,2017,date 2024 ≠ année dans numéro (2017),False
+1060,1.16.94,1-16-94,Dahir n° 1.16.94 portant publication de l'accord signé à Rome le 8 mai 2015 entr,2024-03-13,2024,2016,date 2024 ≠ année dans numéro (2016),False
+1062,2.02.857,2-02-857,Décret n° 2.02.857 instituant une indemnité complémentaire d'inspection au profi,2024-02-23,2024,2002,date 2024 ≠ année dans numéro (2002),False
+1076,2.16.773,2-16-773,Arrêté n°2.16.773 du Chef du Gouvernement fixant le modèle de pétition adressée ,2023-12-21,2023,2016,date 2023 ≠ année dans numéro (2016),False
+1103,1.77.399,1-77-399,Décret n° 1.77.399 relatif à la modification des taux du droit d'importation app,2023-07-21,2023,1977,date 2023 ≠ année dans numéro (1977),False
+1116,2.15.890,2-15-890,Décret relatif à la commission centrale de sécurité maritime et de prévention de,2023-05-17,2023,2015,date 2023 ≠ année dans numéro (2015),False
+1117,2.20.293,2-20-293,Décret approuvant l'avenant à la convention de gestion déléguée pour le cofinanc,2023-05-17,2023,2020,date 2023 ≠ année dans numéro (2020),False
+1124,2.05.916,2-05-916,n° 2.05.916 relatif au respect des horaires de travail officiels,2023-04-23,2023,2005,date 2023 ≠ année dans numéro (2005),False
+1158,2.97.352,2-97-352,Décret n° 2.97.352 abrogeant le décret n° 2.97.352 instituant une taxe parafisca,2022-12-16,2022,1997,date 2022 ≠ année dans numéro (1997),False
+1170,2.82.673,2-82-673,Décret d'application de la loi n°43-20 relative aux services de confiance pour l,2022-11-16,2022,1982,date 2022 ≠ année dans numéro (1982),False
+1173,2.58.1381,2-58-1381,Décret n° 2.58.1381 fixant les conditions d'octroi des allocations familiales au,2022-11-08,2022,1958,date 2022 ≠ année dans numéro (1958),False
+1182,2.64.406,2-64-406,Dahir n° 1-22-52 portant promulgation de la loi n° 25-19 relative au Bureau maro,2022-08-11,2022,1964,date 2022 ≠ année dans numéro (1964),False
+1191,1.69.25,1-69-25,Décret n° 1.69.25 fixant le périmètre d'irrigation de l'Oued Tine dans la provin,2022-07-12,2022,1969,date 2022 ≠ année dans numéro (1969),False
+1229,2.14.267,2-14-267,Arrêté conjoint portant création de la commission des archives judiciaires et de,2022-03-31,2022,2014,date 2022 ≠ année dans numéro (2014),False
+1242,1.10.137,1-10-137,"Accord de coopération maritime, signé à Rabat le 23 février 2010 entre le Gouver",2022-01-21,2022,2010,date 2022 ≠ année dans numéro (2010),False
+1244,1.11.58,1-11-58,Convention-cadre de coopération signée à Marrakech le 7 novembre 2008 entre le G,2022-01-21,2022,2011,date 2022 ≠ année dans numéro (2011),False
+1245,1.10.69,1-10-69,"Convention n°1.10.69 portant reconnaissance mutuelle des permis de conduire, sig",2022-01-21,2022,2010,date 2022 ≠ année dans numéro (2010),False
+1247,1.09.185,1-09-185,Dahir n° 1.09.185 portant publication de l'accord de coopération en matière de f,2022-01-21,2022,2009,date 2022 ≠ année dans numéro (2009),False
+1250,1.93.228,1-93-228,Dahir portant loi instituant la Fondation Cheikh Zaïd Ibn Soltan,2022-01-21,2022,1993,date 2022 ≠ année dans numéro (1993),False
+1251,1.17.18,1-17-18,Accord de coopération en matière d'hydrocarbures et d'énergie entre le Gouvernem,2022-01-21,2022,2017,date 2022 ≠ année dans numéro (2017),False
+1254,1.10.139,1-10-139,"Accord de coopération en matière d'environnement et d'aménagement du territoire,",2022-01-21,2022,2010,date 2022 ≠ année dans numéro (2010),False
+1265,2.13.06,2-13-06,Décret n°2.13.06 relatif au transfert de la garantie de l'État prévue par le déc,2021-11-30,2021,2013,date 2021 ≠ année dans numéro (2013),False
+1266,1.73.255,1-73-255,Décret n° 1.73.255 réglementant l'exercice de la pêche maritime à la lumière art,2021-11-30,2021,1973,date 2021 ≠ année dans numéro (1973),False
+1275,2.24.990,2-24-990,"Décret n° 2.24.990 relatif aux attributions du ministre de l'Agriculture, de la ",2021-09-14,2021,2024,date 2021 ≠ année dans numéro (2024),False
+1301,1.76.538,1-76-538,Dahir relatif au contrôle des opérations immobilières à réaliser par certaines p,2021-07-14,2021,1976,date 2021 ≠ année dans numéro (1976),False
+1325,1.11.165,1-11-165,Loi organique n° 1.11.165 relative à la Chambre des Représentants,2021-04-21,2021,2011,date 2021 ≠ année dans numéro (2011),False
+1338,1.17.19,1-17-19,"Accord de coopération agricole, signé à Addis-Abeba le 19 novembre 2016 entre le",2021-03-23,2021,2017,date 2021 ≠ année dans numéro (2017),False
+1340,1.09.12,1-09-12,"Convention n°1.09.12 relative à la coopération culturelle et au développement, s",2021-03-23,2021,2009,date 2021 ≠ année dans numéro (2009),False
+1342,1.09.183,1-09-183,Accord de coopération culturelle et éducative entre le Gouvernement du Royaume d,2021-03-23,2021,2009,date 2021 ≠ année dans numéro (2009),False
+1344,1.09.298,1-09-298,Protocole d'accord dans le domaine de la santé publique entre le Gouvernement du,2021-03-23,2021,2009,date 2021 ≠ année dans numéro (2009),False
+1364,1.73.211,1-73-211,Décret n° 1.73.211 fixant les conditions et modalités d'octroi des autorisations,2020-10-27,2020,1973,date 2020 ≠ année dans numéro (1973),False
+1365,1.74.92,1-74-92,Décret n° 1.74.92 fixant la composition et le fonctionnement de la commission d',2020-10-27,2020,1974,date 2020 ≠ année dans numéro (1974),False
+1394,1.75.168,1-75-168,Décret n° 1.75.168 déclarant l'état d'urgence sanitaire sur l'ensemble du territ,2020-03-24,2020,1975,date 2020 ≠ année dans numéro (1975),False
+1403,1.17.24,1-17-24,Accord de coopération en matière de protection de l'environnement et d'utilisati,2020-03-16,2020,2017,date 2020 ≠ année dans numéro (2017),False
+1429,1.74.403,1-74-403,"Décret n° 1.74.403 relatif aux attributions du ministre de l'économie, des finan",2019-10-30,2019,1974,date 2019 ≠ année dans numéro (1974),False
+1439,2.16.170,2-16-170,Décret n°2.16.170 relatif à la création de la Commission ministérielle permanent,2019-10-08,2019,2016,date 2019 ≠ année dans numéro (2016),False
+1451,2.08.566,2-08-566,Décret n°2.08.566 instituant une rémunération pour les services rendus par le mi,2019-08-07,2019,2008,date 2019 ≠ année dans numéro (2008),False
+1454,1.77.340,1-77-340,Décret n° 1.77.340 portant application de la loi relative à la fixation des mont,2019-07-11,2019,1977,date 2019 ≠ année dans numéro (1977),False
+1460,1.09.263,1-09-263,"Convention de coopération juridique et judiciaire en matière pénale, d'extraditi",2019-06-21,2019,2009,date 2019 ≠ année dans numéro (2009),False
+1461,2.22.925,2-22-925,Décret fixant les conditions d'octroi de la garantie de l'État en couverture de ,2019-06-21,2019,2022,date 2019 ≠ année dans numéro (2022),False
+1489,2.05.1017,2-05-1017,Décret n° 2.05.1017 relatif aux procédures d'exécution des dépenses programmées ,2018-12-20,2018,2005,date 2018 ≠ année dans numéro (2005),False
+1492,1.74.238,1-74-238,Décret n° 1.74.238 relatif à l'extension du ressort territorial de l'Office régi,2018-12-05,2018,1974,date 2018 ≠ année dans numéro (1974),False
+1504,1.73.252,1-73-252,Décret n° 1.73.252 relatif à l'institution du prix de la Résistance et de la Lib,2018-07-23,2018,1973,date 2018 ≠ année dans numéro (1973),False
+1542,2.23.1057,2-23-1057,Décret n° 2.23.1057 modifiant le décret n° 2.17.696 fixant les modalités de fonc,2017-11-30,2017,2023,date 2017 ≠ année dans numéro (2023),False
+1559,1.72.183,1-72-183,Décret n°1.72.183 fixant les conditions d'octroi des bourses d'études à certains,2017-08-04,2017,1972,date 2017 ≠ année dans numéro (1972),False
+1601,2.63.401,2-63-401,Décret n° 2.63.401 reconnaissant les sociétés de classification habilitées à mar,2016-12-15,2016,1963,date 2016 ≠ année dans numéro (1963),False
+1637,1.11.77,1-11-77,Convention n°1.11.77 relative à la coopération judiciaire en matière pénale entr,2016-07-18,2016,2011,date 2016 ≠ année dans numéro (2011),False
+1639,1.11.78,1-11-78,Convention de coopération judiciaire en matière d'extradition entre le Royaume d,2016-07-18,2016,2011,date 2016 ≠ année dans numéro (2011),False
+1682,1.09.271,1-09-271,Convention n°1.09.271 relative à l'encouragement et à la protection réciproques ,2016-04-27,2016,2009,date 2016 ≠ année dans numéro (2009),False
+1751,1.09.10,1-09-10,Accord de coopération sur un système mondial de navigation par satellite (GNSS) ,2015-05-20,2015,2009,date 2015 ≠ année dans numéro (2009),False
+1775,2.17.30,2-17-30,Décret fixant les modalités de fonctionnement du Comité des établissements de cr,2014-12-24,2014,2017,date 2014 ≠ année dans numéro (2017),False
+1776,2.17.32,2-17-32,Décret fixant la composition et les modalités de fonctionnement du comité de coo,2014-12-24,2014,2017,date 2014 ≠ année dans numéro (2017),False
+1786,2.90.196,2-90-196,Décret n°2.90.196 modifiant le cahier des charges annexé au décret n°2.90.196,2014-10-21,2014,1990,date 2014 ≠ année dans numéro (1990),False
+1788,1.09.143,1-09-143,Accord de coopération en matière de jeunesse et de sport signé entre le Gouverne,2014-10-20,2014,2009,date 2014 ≠ année dans numéro (2009),False
+1806,2.04.23,2-04-23,Décret n° 2.04.23 fixant les modalités de détermination des diplômes requis pour,2014-07-14,2014,2004,date 2014 ≠ année dans numéro (2004),False
+1807,1.09.178,1-09-178,"Accord de coopération culturelle, scientifique et éducative entre le Gouvernemen",2014-07-08,2014,2009,date 2014 ≠ année dans numéro (2009),False
+1808,1.09.306,1-09-306,Accord de coopération scientifique et technologique entre le Royaume du Maroc et,2014-07-08,2014,2009,date 2014 ≠ année dans numéro (2009),False
+1809,1.09.189,1-09-189,"Accord de coopération économique, technique, scientifique et culturelle entre le",2014-07-08,2014,2009,date 2014 ≠ année dans numéro (2009),False
+1810,1.09.295,1-09-295,Accord de coopération touristique entre le Gouvernement du Royaume du Maroc et l,2014-07-08,2014,2009,date 2014 ≠ année dans numéro (2009),False
+1811,1.09.163,1-09-163,Autre n°1.09.163,2014-06-30,2014,2009,date 2014 ≠ année dans numéro (2009),False
+1830,1.09.141,1-09-141,Convention n°1.09.141 portant deuxième protocole à la Convention de La Haye de 1,2014-03-06,2014,2009,date 2014 ≠ année dans numéro (2009),False
+1831,1.10.129,1-10-129,Convention de coopération judiciaire en matière pénale entre le Royaume du Maroc,2014-03-06,2014,2010,date 2014 ≠ année dans numéro (2010),False
+1832,1.09.175,1-09-175,Accord de coopération scientifique et technologique entre le Gouvernement du Roy,2014-03-06,2014,2009,date 2014 ≠ année dans numéro (2009),False
+1833,1.09.257,1-09-257,Autre n°1.09.257,2014-03-06,2014,2009,date 2014 ≠ année dans numéro (2009),False
+1834,1.09.187,1-09-187,Convention n°1.09.187 relative à la création d'une commission mixte de coopérati,2014-03-06,2014,2009,date 2014 ≠ année dans numéro (2009),False
+1835,1.11.57,1-11-57,Accord portant création de la Commission mixte de coopération bilatérale entre l,2014-03-06,2014,2011,date 2014 ≠ année dans numéro (2011),False
+1837,1.09.192,1-09-192,"Accord de coopération économique, scientifique et technique entre le Royaume du ",2014-03-06,2014,2009,date 2014 ≠ année dans numéro (2009),False
+1839,1.10.130,1-10-130,Convention n°1.10.130 relative à l'extradition entre le Royaume du Maroc et la R,2014-03-06,2014,2010,date 2014 ≠ année dans numéro (2010),False
+1841,2.19.452,2-19-452,Décret n°2.19.452 relatif à l'organisation de la Commission nationale du dévelop,2014-03-06,2014,2019,date 2014 ≠ année dans numéro (2019),False
+1845,1.10.58,1-10-58,"Convention n°1.10.58 relative au travail maritime, 2006, adoptée par la Conféren",2014-03-06,2014,2010,date 2014 ≠ année dans numéro (2010),False
+1852,1.10.81,1-10-81,Accord de coopération éducative et culturelle entre le Gouvernement du Royaume d,2013-12-30,2013,2010,date 2013 ≠ année dans numéro (2010),False
+1853,1.09.264,1-09-264,"Convention n°1.09.264 relative à l'intégration, l'échange d'informations et d'ex",2013-12-30,2013,2009,date 2013 ≠ année dans numéro (2009),False
+1854,1.10.132,1-10-132,Convention n°1.10.132 relative à la coopération judiciaire en matière pénale ent,2013-12-30,2013,2010,date 2013 ≠ année dans numéro (2010),False
+1855,1.10.133,1-10-133,Convention n°1.10.133 relative à l'extradition entre le Royaume du Maroc et la R,2013-12-30,2013,2010,date 2013 ≠ année dans numéro (2010),False
+1856,1.09.160,1-09-160,Accord relatif à l'encouragement et à la protection réciproques des investisseme,2013-12-30,2013,2009,date 2013 ≠ année dans numéro (2009),False
+1857,1.09.149,1-09-149,Convention n°1.09.149 relative à l'accord commercial entre le gouvernement du Ro,2013-12-30,2013,2009,date 2013 ≠ année dans numéro (2009),False
+1859,1.09.284,1-09-284,Accord relatif aux services aériens entre le Gouvernement du Royaume du Maroc et,2013-11-19,2013,2009,date 2013 ≠ année dans numéro (2009),False
+1870,1.09.309,1-09-309,Convention générale de sécurité sociale signée à Marrakech le 12 mai 2006 entre ,2013-07-27,2013,2009,date 2013 ≠ année dans numéro (2009),False
+1872,1.09.146,1-09-146,Accord relatif à la navigation commerciale et aux affaires maritimes entre le Go,2013-07-27,2013,2009,date 2013 ≠ année dans numéro (2009),False
+1873,1.09.145,1-09-145,Accord commercial signé entre le Gouvernement du Royaume du Maroc et le Gouverne,2013-07-27,2013,2009,date 2013 ≠ année dans numéro (2009),False
+1876,1.10.80,1-10-80,Accord de coproduction cinématographique entre le Gouvernement du Royaume du Mar,2013-07-27,2013,2010,date 2013 ≠ année dans numéro (2010),False
+1877,1.10.75,1-10-75,Accord dans le domaine de la navigation commerciale signé entre le Gouvernement ,2013-07-27,2013,2010,date 2013 ≠ année dans numéro (2010),False
+1878,1.10.173,1-10-173,Accord portant création d'une commission gouvernementale de coopération économiq,2013-07-27,2013,2010,date 2013 ≠ année dans numéro (2010),False
+1909,1.09.262,1-09-262,Loi n° 1.09.262 portant approbation du protocole de coopération juridique et jud,2013-01-31,2013,2009,date 2013 ≠ année dans numéro (2009),False
+1912,1.10.66,1-10-66,Convention relative au transfèrement des personnes condamnées entre le Royaume d,2013-01-31,2013,2010,date 2013 ≠ année dans numéro (2010),False
+1914,1.09.254,1-09-254,Avenant à la convention relative à l'assistance aux personnes détenues et au tra,2013-01-31,2013,2009,date 2013 ≠ année dans numéro (2009),False
+1915,1.10.67,1-10-67,Convention d'entraide judiciaire en matière pénale entre le Royaume du Maroc et ,2013-01-31,2013,2010,date 2013 ≠ année dans numéro (2010),False
+1930,1.88.139,1-88-139,Convention de Riyad arabe de coopération judiciaire,2012-06-11,2012,1988,date 2012 ≠ année dans numéro (1988),False
+1944,2.02.854,2-02-854,Décret n° 2.02.854 fixant les conditions et modalités de recrutement et de nomin,2011-11-25,2011,2002,date 2011 ≠ année dans numéro (2002),False
+1947,2.98.440,2-98-440,Décret n° 2.98.440 portant création d'un centre d'édition et de documentation ju,2011-10-25,2011,1998,date 2011 ≠ année dans numéro (1998),False
+1948,1.77.226,1-77-226,Dahir portant amnistie,2011-10-25,2011,1977,date 2011 ≠ année dans numéro (1977),False
+1949,2.01.2824,2-01-2824,Décret n° 2-01-2824 relatif aux experts judiciaires,2011-10-25,2011,2001,date 2011 ≠ année dans numéro (2001),False
+1956,2.07.151,2-07-151,Décret n° 2.07.151 relatif à l'organisation des services de recherche et de sauv,2011-09-21,2011,2007,date 2011 ≠ année dans numéro (2007),False
+1969,1.97.187,1-97-187,Convention de coopération relative au transfèrement des personnes condamnées ent,2011-08-02,2011,1997,date 2011 ≠ année dans numéro (1997),False
+1970,1.08.143,1-08-143,"Convention n°1.08.143 relative aux droits des personnes handicapées, adoptée par",2011-08-02,2011,2008,date 2011 ≠ année dans numéro (2008),False
+1972,1.90.152,1-90-152,Autre n°1.90.152,2011-08-02,2011,1990,date 2011 ≠ année dans numéro (1990),False
+1975,1.91.3,1-91-3,Dahir portant publication de l'accord signé à Rabat le 21 janvier 1987 entre le ,2011-08-02,2011,1991,date 2011 ≠ année dans numéro (1991),False
+1977,1.04.34,1-04-34,Convention n°1.04.34 relative à la signification et la notification à l'étranger,2011-08-02,2011,2004,date 2011 ≠ année dans numéro (2004),False
+1980,1.97.141,1-97-141,Loi n° 1.97.141 portant approbation des Protocoles additionnels I et II aux Conv,2011-08-02,2011,1997,date 2011 ≠ année dans numéro (1997),False
+1982,1.93.317,1-93-317,Convention internationale sur la protection des droits de tous les travailleurs ,2011-08-02,2011,1993,date 2011 ≠ année dans numéro (1993),False
+1994,2.17.265,2-17-265,"Décret n° 2.17.265 fixant les modalités de réception, de suivi et de traitement ",2011-06-23,2011,2017,date 2011 ≠ année dans numéro (2017),False
+2005,1.76.350,1-76-350,Décret n° 1.76.350 portant application du dahir relatif à la réglementation de l,2011-05-20,2011,1976,date 2011 ≠ année dans numéro (1976),False
+2016,1.01.298,1-01-298,Dahir portant création de l'institution «Diwan Al Madhalim» (abrogé),2011-03-17,2011,2001,date 2011 ≠ année dans numéro (2001),False
+2030,2.06.377,2-06-377,Décret n° 2.06.377 portant statut particulier du corps interministériel des admi,2010-10-29,2010,2006,date 2010 ≠ année dans numéro (2006),False
+2042,2.95.321,2-95-321,Loi n°2.95.321 relative au respect des dispositions de l'article 274 du Code de ,2010-06-08,2010,1995,date 2010 ≠ année dans numéro (1995),False
+2048,1.93.230,1-93-230,Décret n° 1.93.230 portant application du code de déontologie des vétérinaires,2010-03-22,2010,1993,date 2010 ≠ année dans numéro (1993),False
+2062,2.16.261,2-16-261,Décret n°2.16.261 fixant les conditions et modalités d'octroi de la prime de ren,2009-12-30,2009,2016,date 2009 ≠ année dans numéro (2016),False
+2068,1.84.54,1-84-54,Perception des frais de justice sur les requêtes et mémoires d'appel,2009-11-19,2009,1984,date 2009 ≠ année dans numéro (1984),False
+2076,2.23.784,2-23-784,Décret n° 2.23.784 portant création et organisation de l'Institut de formation a,2009-05-21,2009,2023,date 2009 ≠ année dans numéro (2023),False
+2079,2.06.765,2-06-765,Décret n° 2.06.765 instituant le « Prix Mohammed VI de l'architecture en logemen,2009-05-21,2009,2006,date 2009 ≠ année dans numéro (2006),False
+2094,1.02.230,1-02-230,Convention n°1.02.230 tendant à éviter la double imposition et à prévenir l'évas,2009-02-18,2009,2002,date 2009 ≠ année dans numéro (2002),False
+2098,1.98.146,1-98-146,Convention n°1.98.146 relative à la coopération judiciaire en matière pénale ent,2009-02-18,2009,1998,date 2009 ≠ année dans numéro (1998),False
+2099,1.98.147,1-98-147,Convention n°1.98.147 relative à l'extradition entre le Royaume du Maroc et le R,2009-02-18,2009,1998,date 2009 ≠ année dans numéro (1998),False
+2101,1.03.121,1-03-121,Convention n°1.03.121 relative à la coopération judiciaire en matière de statut ,2009-02-18,2009,2003,date 2009 ≠ année dans numéro (2003),False
+2104,1.12.43,1-12-43,Dahir portant création de la Fondation de la Mosquée Hassan II à Casablanca,2009-01-21,2009,2012,date 2009 ≠ année dans numéro (2012),False
+2115,1.02.212,1-02-212,Dahir portant création de la Haute Autorité de la Communication Audiovisuelle,2008-11-03,2008,2002,date 2008 ≠ année dans numéro (2002),False
+2127,1.74.16,1-74-16,Décret n° 1.74.16 relatif à l'exonération des pénalités de retard dues au titre ,2008-07-18,2008,1974,date 2008 ≠ année dans numéro (1974),False
+2135,1.04.134,1-04-134,Convention des Nations Unies sur le droit de la mer et Accord relatif à l'applic,2008-05-23,2008,2004,date 2008 ≠ année dans numéro (2004),False
+2170,1.11.75,1-11-75,Convention n°1.11.75 portant coopération judiciaire et juridique en matière civi,2007-03-05,2007,2011,date 2007 ≠ année dans numéro (2011),False
+2173,2.12.132,2-12-132,Décret n° 2.12.132 fixant les conditions d'octroi du statut de contribuable clas,2006-12-31,2006,2012,date 2006 ≠ année dans numéro (2012),False
+2184,1.93.51,1-93-51,"Décret n° 1.93.51 relatif aux agences urbaines de Laâyoune, Meknès, Tétouan, Ouj",2006-10-19,2006,1993,date 2006 ≠ année dans numéro (1993),False
+2188,1.72.278,1-72-278,Décret n° 1.72.278 portant approbation des modifications des statuts des coopéra,2006-07-25,2006,1972,date 2006 ≠ année dans numéro (1972),False
+2208,1.77.261,1-77-261,Dahir portant loi relatif au transport par véhicules automobiles sur route,2006-02-14,2006,1977,date 2006 ≠ année dans numéro (1977),False
+2215,1.10.128,1-10-128,Convention n°1.10.128 relative à la coopération judiciaire en matière civile et ,2006-02-08,2006,2010,date 2006 ≠ année dans numéro (2010),False
+2228,2.97.1003,2-97-1003,Décret n° 2.97.1003 relatif au contrôle de la sécurité et de la qualité des prod,2005-12-02,2005,1997,date 2005 ≠ année dans numéro (1997),False
+2231,2.63.253,2-63-253,"Décret n° 2.63.253 interdisant l'utilisation de substances arsénicales, alcooliq",2005-12-02,2005,1963,date 2005 ≠ année dans numéro (1963),False
+2274,1.08.17,1-08-17,Dahir portant organisation du Conseil scientifique marocain d'Europe,2004-04-22,2004,2008,date 2004 ≠ année dans numéro (2008),False
+2285,1.57.172,1-57-172,Dahir portant publication de la Convention relative à l'aviation civile internat,2003-12-04,2003,1957,date 2003 ≠ année dans numéro (1957),False
+2290,1.77.216,1-77-216,Décret n° 1.77.216 portant statut particulier du personnel de l'Entraide nationa,2003-11-13,2003,1977,date 2003 ≠ année dans numéro (1977),False
+2307,2.97.536,2-97-536,Décret n°2.97.536 fixant le nombre de sièges alloués aux chambres des pêches mar,2003-06-09,2003,1997,date 2003 ≠ année dans numéro (1997),False
+2329,1.92.280,1-92-280,Autre n°1.92.280,2003-01-13,2003,1992,date 2003 ≠ année dans numéro (1992),False
+2333,2.06.328,2-06-328,Décret n° 2.06.328 fixant les attributions et l'organisation du ministère de la ,2002-11-07,2002,2006,date 2002 ≠ année dans numéro (2006),False
+2340,2.99.665,2-99-665,Autre n°2.99.665,2002-10-03,2002,1999,date 2002 ≠ année dans numéro (1999),False
+2342,2.22.860,2-22-860,"Décret n° 2.22.860 pris pour l'application des lois n° 98-15 et n° 99-15, relati",2002-10-03,2002,2022,date 2002 ≠ année dans numéro (2022),False
+2343,1.73.654,1-73-654,Décret n° 1.73.654 fixant les attributions et l'organisation du ministère de l'É,2002-09-17,2002,1973,date 2002 ≠ année dans numéro (1973),False
+2347,1.96.185,1-96-185,"Convention n°1.96.185 relative à la coopération judiciaire en matière civile, co",2002-07-23,2002,1996,date 2002 ≠ année dans numéro (1996),False
+2374,1.96.94,1-96-94,"Convention n°1.96.94 relative à l'interdiction de la mise au point, de la fabric",2002-04-03,2002,1996,date 2002 ≠ année dans numéro (1996),False
+2375,1.99.262,1-99-262,Convention de coopération en matière de sécurité entre le Maroc et les Émirats a,2002-04-03,2002,1999,date 2002 ≠ année dans numéro (1999),False
+2376,1.99.279,1-99-279,Convention n°1.99.279 relative à la coopération judiciaire en matière civile et ,2002-04-03,2002,1999,date 2002 ≠ année dans numéro (1999),False
+2382,1.99.280,1-99-280,Convention n°1.99.280 relative à la coopération judiciaire en matière pénale et ,2002-01-29,2002,1999,date 2002 ≠ année dans numéro (1999),False
+2383,1.92.283,1-92-283,Convention n°1.92.283 relative à la lutte contre le trafic illicite de stupéfian,2002-01-29,2002,1992,date 2002 ≠ année dans numéro (1992),False
+2387,1.09.164,1-09-164,"Convention n°1.09.164 portant création de la Haute Commission Mixte, signée à Kh",2002-01-01,2002,2009,date 2002 ≠ année dans numéro (2009),False
+2411,2.96.794,2-96-794,Décret n° 2.96.794 fixant les conditions et procédures relatives à l'organisatio,2001-07-26,2001,1996,date 2001 ≠ année dans numéro (1996),False
+2425,1.06.167,1-06-167,Dahir portant réorganisation du Prix Mohammed VI de la pensée et des études isla,2001-06-22,2001,2006,date 2001 ≠ année dans numéro (2006),False
+2432,1.75.102,1-75-102,Décret n° 1.75.102 relatif à la fourniture de tenues de travail à certains agent,2001-04-13,2001,1975,date 2001 ≠ année dans numéro (1975),False
+2433,1.98.166,1-98-166,Convention n°1.98.166 relative à la coopération juridique et judiciaire en matiè,2001-04-10,2001,1998,date 2001 ≠ année dans numéro (1998),False
+2439,1.94.295,1-94-295,Convention de coopération judiciaire et d'échange d'informations juridiques en m,2001-02-15,2001,1994,date 2001 ≠ année dans numéro (1994),False
+2440,1.76.393,1-76-393,Dahir portant loi relatif à l'aménagement et à l'exploitation touristique de la ,2001-02-15,2001,1976,date 2001 ≠ année dans numéro (1976),False
+2445,2.98.975,2-98-975,Décret n° 2-98-975 relatif à la protection des travailleurs exposés aux poussièr,2001-01-23,2001,1998,date 2001 ≠ année dans numéro (1998),False
+2448,1.93.361,1-93-361,Convention n°1.93.361 relative à l'élimination de toutes les formes de discrimin,2000-12-26,2000,1993,date 2000 ≠ année dans numéro (1993),False
+2449,1.96.13,1-96-13,Convention consulaire entre le Gouvernement du Royaume du Maroc et le Gouverneme,2000-11-07,2000,1996,date 2000 ≠ année dans numéro (1996),False
+2467,2.15.99,2-15-99,Décret n°2.15.99 fixant les contingents du Wissam Al Arch et du Wissam Al Istihk,2000-06-05,2000,2015,date 2000 ≠ année dans numéro (2015),False
+2468,2.05.79,2-05-79,Décret n° 2.05.79 fixant les quotas des Wissams Al Arch et du Mérite National pr,2000-06-05,2000,2005,date 2000 ≠ année dans numéro (2005),False
+2475,2.77.83,2-77-83,Décret n° 2.77.83 relatif au statut particulier du corps des sapeurs-pompiers,2000-05-10,2000,1977,date 2000 ≠ année dans numéro (1977),False
+2493,1.63.194,1-63-194,Décret n° 1.63.194 fixant les attributions et l'organisation du Secrétariat d'Ét,1999-12-08,1999,1963,date 1999 ≠ année dans numéro (1963),False
+2518,1.75.291,1-75-291,Décret n° 1.75.291 relatif au contrôle des produits de viande préparés,1999-05-05,1999,1975,date 1999 ≠ année dans numéro (1975),False
+2519,2.05.1473,2-05-1473,Décret n°2.05.1473 instituant une rémunération pour les services rendus par le M,1999-04-26,1999,2005,date 1999 ≠ année dans numéro (2005),False
+2527,2.62.240,2-62-240,Décret n° 2.62.240 portant application du Dahir relatif au remembrement des terr,1999-01-06,1999,1962,date 1999 ≠ année dans numéro (1962),False
+2529,1.75.451,1-75-451,Décret n° 1.75.451 portant application du code de déontologie des chirurgiens-de,1999-01-05,1999,1975,date 1999 ≠ année dans numéro (1975),False
+2533,2.03.694,2-03-694,Décret n° 2.03.694 portant ouverture de crédits supplémentaires au profit du bud,1998-11-26,1998,2003,date 1998 ≠ année dans numéro (2003),False
+2534,2.08.361,2-08-361,Décret n° 2.08.361 relatif à l'ouverture de crédits supplémentaires au profit du,1998-11-26,1998,2008,date 1998 ≠ année dans numéro (2008),False
+2535,2-08-570,2-08-570,Décret n° 2.08.570 instituant une redevance pour les services du Ministère de l',1998-11-26,1998,2008,date 1998 ≠ année dans numéro (2008),False
+2564,1.59.446,1-59-446,Convention n°1.59.446 relative à l'extradition des délinquants étrangers et à la,1997-07-07,1997,1959,date 1997 ≠ année dans numéro (1959),False
+2582,1.77.61,1-77-61,Dahir portant loi relatif aux pensions militaires d'invalidité,1997-02-24,1997,1977,date 1997 ≠ année dans numéro (1977),False
+2596,1.93.362,1-93-362,"Convention contre la torture et autres peines ou traitements cruels, inhumains o",1996-11-21,1996,1993,date 1996 ≠ année dans numéro (1993),False
+2597,1.93.363,1-93-363,Convention n°1.93.363 relative aux droits de l'enfant,1996-11-21,1996,1993,date 1996 ≠ année dans numéro (1993),False
+2599,1.76.583,1-76-583,Décret n° 1-76-583 fixant les communes urbaines constituant les agglomérations u,1996-11-20,1996,1976,date 1996 ≠ année dans numéro (1976),False
+2603,2-73-531,2-73-531,Décret n° 2.73.531 accordant une indemnité pour frais de distribution d'appels t,1996-11-11,1996,1973,date 1996 ≠ année dans numéro (1973),False
+2610,1.93.213,1-93-213,Décret n° 1.93.213 autorisant la Banque Nationale pour le Développement Économiq,1996-07-31,1996,1993,date 1996 ≠ année dans numéro (1993),False
+2648,1.72.255,1-72-255,"Dahir portant réglementation de l'importation, de l'exportation, du raffinage, d",1995-08-04,1995,1972,date 1995 ≠ année dans numéro (1972),False
+2662,1.73.323,1-73-323,Décret n° 1.73.323 instituant une taxe parafiscale à l'importation destinée au f,1994-12-31,1994,1973,date 1994 ≠ année dans numéro (1973),False
+2722,2.56.248,2-56-248,Décret n° 2.56.248 relatif à l'organisation des services médicaux du travail,1993-06-16,1993,1956,date 1993 ≠ année dans numéro (1956),False
+2723,1.89.10,1-89-10,"Convention n°1.89.10 relative à la coopération judiciaire, aux notifications et ",1993-05-28,1993,1989,date 1993 ≠ année dans numéro (1989),False
+2724,1.85.210,1-85-210,Convention n°1.85.210 relative à l'assistance aux détenus et au transfèrement de,1993-05-28,1993,1985,date 1993 ≠ année dans numéro (1985),False
+2739,2.90.352,2-90-352,Décret n° 2-90-352 portant création du Conseil national de l'énergie nucléaire,1993-05-05,1993,1990,date 1993 ≠ année dans numéro (1990),False
+2744,2.90.574,2-90-574,Décret n° 2-90-574 relatif au statut particulier du personnel des chambres d'agr,1993-04-29,1993,1990,date 1993 ≠ année dans numéro (1990),False
+2745,2.90.934,2-90-934,Décret n° 2-90-934 portant statut particulier du personnel du ministère de l'Éne,1993-04-29,1993,1990,date 1993 ≠ année dans numéro (1990),False
+2748,2.90.881,2-90-881,"Décret n° 2-90-881 transférant au ministère des Travaux publics, de la Formation",1993-02-26,1993,1990,date 1993 ≠ année dans numéro (1990),False
+2750,2.90.935,2-90-935,Décret n° 2.90.935 relatif au concours d'agrégation pour l'enseignement secondai,1993-02-24,1993,1990,date 1993 ≠ année dans numéro (1990),False
+2802,1.60.126,1-60-126,Dahir portant réglementation des forêts et de leur exploitation,1990-12-31,1990,1960,date 1990 ≠ année dans numéro (1960),False
+2825,1.93.519,1-93-519,Dahir portant création du Conseil consultatif des droits de l'Homme,1990-04-20,1990,1993,date 1990 ≠ année dans numéro (1993),False
+2830,1.75.116,1-75-116,Décret n° 2-75-83 du 27 safar 1395 (10 mars 1975) pris pour l'application du dah,1990-01-16,1990,1975,date 1990 ≠ année dans numéro (1975),False
+2831,1.73.210,1-73-210,Décret n° 1.73.210 portant application du dahir portant loi n° 1.73.210 relatif ,1990-01-08,1990,1973,date 1990 ≠ année dans numéro (1973),False
+2840,2.86.808,2-86-808,Décret n° 2.86.808 étendant aux créances dues par l'État à certains établissemen,1989-12-18,1989,1986,date 1989 ≠ année dans numéro (1986),False
+2845,2.84.193,2-84-193,Décret n° 2.84.193 fixant les conditions d'accès aux académies et établissements,1989-10-30,1989,1984,date 1989 ≠ année dans numéro (1984),False
+2883,1.73.408,1-73-408,Décret n° 1.73.408 relatif à la convocation du Parlement en session extraordinai,1987-12-30,1987,1973,date 1987 ≠ année dans numéro (1973),False
+2887,1.73.366,1-73-366,Décret n° 1.73.366 fixant les conditions de gestion de l'assurance-crédit à l'ex,1987-10-13,1987,1973,date 1987 ≠ année dans numéro (1973),False
+2891,2.84.194,2-84-194,Décret n° 2.84.194 fixant les circonscriptions territoriales des conservations f,1987-09-15,1987,1984,date 1987 ≠ année dans numéro (1984),False
+2894,2.83.659,2-83-659,Décret n° 2.83.659 autorisant la vente de biens immobiliers domaniaux aux foncti,1987-08-18,1987,1983,date 1987 ≠ année dans numéro (1983),False
+2903,2.83.645,2-83-645,Décret n°2.83.645 relatif au régime des études et des examens pour l'obtention d,1987-05-14,1987,1983,date 1987 ≠ année dans numéro (1983),False
+2904,2.83.888,2-83-888,Décret n° 2.83.888 relatif aux conditions d'intégration des inspecteurs et inspe,1987-04-06,1987,1983,date 1987 ≠ année dans numéro (1983),False
+2905,2.84.147,2-84-147,Décret n° 2.84.147 relatif aux indemnités allouées aux fonctionnaires de la plan,1987-03-26,1987,1984,date 1987 ≠ année dans numéro (1984),False
+2909,2.84.188,2-84-188,Décret n° 2.84.188 relatif au statut particulier du personnel du ministère charg,1987-02-03,1987,1984,date 1987 ≠ année dans numéro (1984),False
+2919,2.76.84,2-76-84,Décret n° 2.76.84 relatif à l'alimentation des militaires en service dans les pr,1986-12-24,1986,1976,date 1986 ≠ année dans numéro (1976),False
+2920,2.99.90,2-99-90,Décret n° 2.99.90 relatif à la dotation en vêtements de travail de certaines cat,1986-12-02,1986,1999,date 1986 ≠ année dans numéro (1999),False
+2923,2.77.74,2-77-74,Décret n°2.77.74 relatif à l'octroi d'une indemnité technique à certaines catégo,1986-12-02,1986,1977,date 1986 ≠ année dans numéro (1977),False
+2924,1.83.197,1-83-197,Convention n°1.83.197 relative au statut des personnes et de la famille et à la ,1986-11-14,1986,1983,date 1986 ≠ année dans numéro (1983),False
+2927,1.82.324,1-82-324,Convention n°1.82.324 relative à la coopération judiciaire en matière civile et ,1986-11-14,1986,1982,date 1986 ≠ année dans numéro (1982),False
+2939,2.83.642,2-83-642,Décret n°2.83.642 relatif à la détermination du régime des études et des examens,1986-02-18,1986,1983,date 1986 ≠ année dans numéro (1983),False
+2969,2.76.313,2-76-313,Décret n° 2.76.313 fixant le régime des études et des examens pour l'obtention d,1985-02-15,1985,1976,date 1985 ≠ année dans numéro (1976),False
+2976,2-63-364,2-63-364,Décret n° 2.63.364 relatif à l'agrément des entrepreneurs de transport public ro,1985-01-29,1985,1963,date 1985 ≠ année dans numéro (1963),False
+2978,2.81.180,2-81-180,Décret n° 2.81.180 instituant une taxe parafiscale sur la viande casher au profi,1985-01-29,1985,1981,date 1985 ≠ année dans numéro (1981),False
+2982,2.82.327,2-82-327,"Décret n° 2.82.327 fixant les tarifs de vente des publications, produits et serv",1985-01-29,1985,1982,date 1985 ≠ année dans numéro (1982),False
+2983,1.73.250,1-73-250,Décret n°1.73.250 portant application du Dahir n°1.73.250 instituant un Conseil ,1985-01-23,1985,1973,date 1985 ≠ année dans numéro (1973),False
+2986,2.82.416,2-82-416,Décret n° 2.82.416 relatif aux instituts de musique et des arts chorégraphiques,1985-01-18,1985,1982,date 1985 ≠ année dans numéro (1982),False
+3029,2.57.1841,2-57-1841,"Décret n° 2.57.1841 fixant les salaires des fonctionnaires, auxiliaires et stagi",1983-09-02,1983,1957,date 1983 ≠ année dans numéro (1957),False
+3041,2.58.1214,2-58-1214,Décret n° 2.58.1214 relatif aux modalités d'application du dahir du 1er Chaabane,1983-04-04,1983,1958,date 1983 ≠ année dans numéro (1958),False
+3043,2.79.722,2-79-722,"Dahir portant création d'une commission nationale de l'éducation, de la science ",1983-04-04,1983,1979,date 1983 ≠ année dans numéro (1979),False
+3051,2.89.328,2-89-328,Décret n° 2.89.328 fixant les conditions d'accès à la première année des faculté,1983-01-31,1983,1989,date 1983 ≠ année dans numéro (1989),False
+3055,1.73.413,1-73-413,Dahir portant loi relatif aux mesures d'encouragement des investissements indust,1983-01-19,1983,1973,date 1983 ≠ année dans numéro (1973),False
+3062,2.00.354,2-00-354,Décret n° 2.00.354 relatif à l'octroi de subventions financières dans les domain,1982-12-31,1982,2000,date 1982 ≠ année dans numéro (2000),False
+3076,1.76.636,1-76-636,Dahir portant statut du personnel des entreprises minières,1982-05-06,1982,1976,date 1982 ≠ année dans numéro (1976),False
+3096,1.84.22,1-84-22,"Convention de coopération judiciaire en matière civile, commerciale et administr",1981-04-30,1981,1984,date 1981 ≠ année dans numéro (1984),False
+3150,2.75.666,2-75-666,Décret n° 2.75.666 fixant le régime des indemnités des enseignants-chercheurs de,1979-08-08,1979,1975,date 1979 ≠ année dans numéro (1975),False
+3189,2.81.864,2-81-864,Décret n°2.81.864 relatif à la désignation des centres où la taxe urbaine est ap,1977-12-30,1977,1981,date 1977 ≠ année dans numéro (1981),False
+3202,1.83.11,1-83-11,Décret n° 1.83.11 relatif aux membres correspondants de l'Académie du Royaume du,1977-10-08,1977,1983,date 1977 ≠ année dans numéro (1983),False
+3226,1.72.509,1-72-509,Dahir portant loi relatif à la suppression du Haut-Commissariat à la reconstruct,1977-09-19,1977,1972,date 1977 ≠ année dans numéro (1972),False
+3235,1.74.384,1-74-384,Dahir portant loi relatif au statut de l'enseignement libre des arts,1977-09-19,1977,1974,date 1977 ≠ année dans numéro (1974),False
+3242,2.72.275,2-72-275,Décret n° 2.72.275 portant création de la Commission nationale de prévention des,1977-07-15,1977,1972,date 1977 ≠ année dans numéro (1972),False
+3264,1.73.560,1-73-560,Décret n° 1.73.560 portant application du dahir portant loi n° 1.73.560 relatif ,1977-03-21,1977,1973,date 1977 ≠ année dans numéro (1973),False
+3268,1.61.116,1-61-116,Dahir portant loi n° 1.61.116 relatif à l'organisation des élections des délégué,1977-01-17,1977,1961,date 1977 ≠ année dans numéro (1961),False
+3288,1.73.398,1-73-398,Dahir portant loi relatif à la création des universités,1976-10-22,1976,1973,date 1976 ≠ année dans numéro (1973),False
+3320,2.81.347,2-81-347,Décret n°2.81.347 fixant le régime des études et des examens pour l'obtention du,1975-10-17,1975,1981,date 1975 ≠ année dans numéro (1981),False
+3323,2.78.452,2-78-452,Décret n° 2.78.452 relatif à la réforme du régime des études et des examens pour,1975-10-17,1975,1978,date 1975 ≠ année dans numéro (1978),False
+3347,2.84.281,2-84-281,Décret n° 2.84.281 fixant le régime des études et des examens pour l'obtention d,1975-02-25,1975,1984,date 1975 ≠ année dans numéro (1984),False
+3378,1.93.47,1-93-47,Dahir n° 1.93.47 portant loi abrogeant le dahir n° 1.73.210 portant loi relatif ,1974-04-04,1974,1993,date 1974 ≠ année dans numéro (1993),False
+3381,1.63.213,1-63-213,Décret n°1.63.213 portant application dans la province d'El Jadida du dahir n°1.,1974-03-05,1974,1963,date 1974 ≠ année dans numéro (1963),False
+3392,2.78.15,2-78-15,Décret n° 2.78.15 portant émission d'une série de trois timbres-poste représenta,1974-01-08,1974,1978,date 1974 ≠ année dans numéro (1978),False
+3404,2-80-603,2-80-603,Décret n° 2-80-603 du 28 safar 1401 (5 janvier 1981) pris pour l'application de ,1973-12-31,1973,1980,date 1973 ≠ année dans numéro (1980),False
+3436,12.58.1151,12-58-1151,Loi n° 12.58.1151 relative aux mesures d'encouragement des investissements touri,1973-08-13,1973,1958,date 1973 ≠ année dans numéro (1958),False
+3438,1.60.383,1-60-383,Loi n° 1.60.383 abrogeant le dahir n° 1.60.383 relatif aux mesures d'encourageme,1973-08-13,1973,1960,date 1973 ≠ année dans numéro (1960),False
+3439,2.58.1151,2-58-1151,Loi n° 2.58.1151 relative aux mesures d'encouragement des investissements mariti,1973-08-13,1973,1958,date 1973 ≠ année dans numéro (1958),False
+3447,2.82.648,2-82-648,Décret n° 2.82.648 accordant la garantie de l'État aux emprunts émis par les éta,1973-05-21,1973,1982,date 1973 ≠ année dans numéro (1982),False
+3452,1.76.386,1-76-386,Dahir portant loi fixant les conditions et modalités d'intégration des militaire,1973-04-04,1973,1976,date 1973 ≠ année dans numéro (1976),False
+3475,2-75-464,2-75-464,Décret n° 2.75.464 relatif aux attributions et à l'organisation du Ministère d'É,1972-11-20,1972,1975,date 1972 ≠ année dans numéro (1975),False
+3476,2.75.841,2-75-841,Décret n° 2.75.841 relatif aux attributions et à l'organisation du ministère des,1972-11-20,1972,1975,date 1972 ≠ année dans numéro (1975),False
+3479,1.62.329,1-62-329,Dahir portant loi fixant l'application à titre transitoire des dispositions du d,1972-10-06,1972,1962,date 1972 ≠ année dans numéro (1962),False
+3481,2.81.809,2-81-809,Loi de finances n° 2.81.809 pour l'année 1982,1972-09-20,1972,1981,date 1972 ≠ année dans numéro (1981),False
+3483,2.75.96,2-75-96,Décret n° 2.75.96 fixant les tarifs d'abonnement aux deux éditions du « Bulletin,1972-09-18,1972,1975,date 1972 ≠ année dans numéro (1975),False
+3484,2.93.979,2-93-979,Décret n° 2.93.979 relatif à l'ouverture des crédits nécessaires au fonctionneme,1972-09-18,1972,1993,date 1972 ≠ année dans numéro (1993),False
+3485,2.82.690,2-82-690,Décret n° 2.82.690 autorisant le Centre national de documentation à réaliser et ,1972-09-18,1972,1982,date 1972 ≠ année dans numéro (1982),False
+3486,2.93.980,2-93-980,Décret n° 2.93.980 relatif au recouvrement de certaines ressources pour l'année ,1972-09-18,1972,1993,date 1972 ≠ année dans numéro (1993),False
+3487,2.79.337,2-79-337,Décret n° 2.79.337 relatif à l'organisation et à la fixation des redevances aéro,1972-09-18,1972,1979,date 1972 ≠ année dans numéro (1979),False
+3488,2.81.633,2-81-633,Décret n° 2.81.633 dispensant de frais de publication au Bulletin officiel certa,1972-09-18,1972,1981,date 1972 ≠ année dans numéro (1981),False
+3489,2.81.223,2-81-223,Décret n° 2-81-223 fixant les taxes applicables aux envois de la poste aux lettr,1972-09-18,1972,1981,date 1972 ≠ année dans numéro (1981),False
+3490,2.75.190,2-75-190,Décret n° 2.75.190 fixant les montants des surtaxes aériennes applicables aux co,1972-09-18,1972,1975,date 1972 ≠ année dans numéro (1975),False
+3496,2.78.622,2-78-622,Décret n° 2.78.622 fixant le montant des allocations familiales versées par la C,1972-07-27,1972,1978,date 1972 ≠ année dans numéro (1978),False
+3498,1.61.266,1-61-266,Dahir portant création de l'Office national des anciens combattants,1972-07-27,1972,1961,date 1972 ≠ année dans numéro (1961),False
+3500,1.59.363,1-59-363,Dahir portant création d'une nouvelle unité monétaire,1972-07-27,1972,1959,date 1972 ≠ année dans numéro (1959),False
+3571,1.60.007,1-60-007,Dahir portant prorogation du mandat des représentants des employés au sein des c,1970-07-31,1970,1960,date 1970 ≠ année dans numéro (1960),False
+3583,1.63.289,1-63-289,Dahir portant détermination des conditions de récupération par l'État des terres,1970-07-27,1970,1963,date 1970 ≠ année dans numéro (1963),False
+3603,2.66.646,2-66-646,Décret n° 2.66.646 du 21 kaada 1389 (29 janvier 1970) portant application du dah,1970-01-01,1970,1966,date 1970 ≠ année dans numéro (1966),False
+3614,2.63.231,2-63-231,Dahir portant prorogation du mandat des membres des conseils communaux,1969-07-25,1969,1963,date 1969 ≠ année dans numéro (1963),False
+3615,1.75.137,1-75-137,Dahir portant déclaration d'utilité publique de l'aménagement foncier et de la c,1969-07-25,1969,1975,date 1969 ≠ année dans numéro (1975),False
+3618,1.76.472,1-76-472,Dahir portant réglementation de la production et de la commercialisation des sem,1969-07-25,1969,1976,date 1969 ≠ année dans numéro (1976),False
+3630,2.55.571,2-55-571,Loi de finances n°2.55.571 pour l'année 1989,1968-12-28,1968,1955,date 1968 ≠ année dans numéro (1955),False
+3631,2.57.1691,2-57-1691,Décret royal fixant pour une période de six mois l'application du régime des san,1968-12-23,1968,1957,date 1968 ≠ année dans numéro (1957),False
+3635,2.96.937,2-96-937,Décret n°2.96.937 garantissant les emprunts émis par le Crédit Immobilier et Hôt,1968-12-17,1968,1996,date 1968 ≠ année dans numéro (1996),False
+3637,2.82.868,2-82-868,Décret accordant la garantie de l'État aux emprunts émis par le Crédit Immobilie,1968-12-17,1968,1982,date 1968 ≠ année dans numéro (1982),False
+3639,2.81.234,2-81-234,Décret royal portant création et organisation des écoles de formation des assist,1968-11-20,1968,1981,date 1968 ≠ année dans numéro (1981),False
+3640,2.64.036,2-64-036,Décret royal portant réévaluation des rentes allouées aux victimes d'accidents d,1968-08-26,1968,1964,date 1968 ≠ année dans numéro (1964),False
+3641,2.57.0031,2-57-0031,Décret royal fixant les montants des bourses et frais d'études dans l'enseigneme,1968-08-26,1968,1957,date 1968 ≠ année dans numéro (1957),False
+3643,344-62-2,344-62-2,Décret royal fixant les dispositions applicables aux fonctionnaires stagiaires d,1968-05-17,1968,1962,date 1968 ≠ année dans numéro (1962),False
+3646,1.74.448,1-74-448,Demandes successives de mise en liberté provisoire au cours d'une même instructi,1967-10-09,1967,1974,date 1967 ≠ année dans numéro (1974),False
+3647,2.18.855,2-18-855,Décret n° 2.18.855 relatif à l'heure légale,1967-06-02,1967,2018,date 1967 ≠ année dans numéro (2018),False
+3648,2.11.170,2-11-170,Décret n° 2.11.170 relatif au changement de l'heure légale,1967-06-02,1967,2011,date 1967 ≠ année dans numéro (2011),False
+3650,2.73.365,2-73-365,Décret n° 2.73.365 autorisant la vente de collections métalliques et le paiement,1967-04-21,1967,1973,date 1967 ≠ année dans numéro (1973),False
+3651,1.76.629,1-76-629,Décret royal portant loi organique relative à la comptabilité publique,1967-04-21,1967,1976,date 1967 ≠ année dans numéro (1976),False
+3652,2.76.151,2-76-151,Décret n° 2.76.151 autorisant la vente des publications éditées par le ministère,1967-04-21,1967,1976,date 1967 ≠ année dans numéro (1976),False
+3653,2.75.686,2-75-686,Décret n° 2.75.686 relatif à l'indemnité de garde allouée aux agents chargés de ,1967-03-30,1967,1975,date 1967 ≠ année dans numéro (1975),False
+3654,2.70.651,2-70-651,Décret n° 2.70.651 portant création de l'École Royale Forestière de Salé,1967-03-09,1967,1970,date 1967 ≠ année dans numéro (1970),False
+3655,2.01.12,2-01-12,Décret n° 2.01.12 relatif au statut particulier des agents diplomatiques et cons,1967-03-09,1967,2001,date 1967 ≠ année dans numéro (2001),False
+3656,2.79.62,2-79-62,Décret n° 2.79.62 instituant deux indemnités pour travaux spéciaux et qualificat,1967-03-09,1967,1979,date 1967 ≠ année dans numéro (1979),False
+3658,2.77.92,2-77-92,Décret n° 2.77.92 portant création et organisation d'un centre de formation des ,1967-03-09,1967,1977,date 1967 ≠ année dans numéro (1977),False
+3659,2.91.406,2-91-406,"Décret royal relatif au statut des externes, internes et moniteurs du Centre hos",1967-03-02,1967,1991,date 1967 ≠ année dans numéro (1991),False
+3660,2.79.275,2-79-275,Décret n° 2.79.275 fixant le régime des indemnités allouées aux chargés du perfe,1967-03-02,1967,1979,date 1967 ≠ année dans numéro (1979),False
+3664,2.77.775,2-77-775,Décret n° 2.77.775 portant intégration dans les cadres du ministère des Travaux ,1966-12-30,1966,1977,date 1966 ≠ année dans numéro (1977),False
+3665,2.77.5,2-77-5,Décret n° 2.77.5 fixant les contingents des Wissams Al Arch et Al Ridha décernés,1966-12-14,1966,1977,date 1966 ≠ année dans numéro (1977),False
+3666,2.74.084,2-74-084,Décret n°2.74.084 instituant une prime spéciale au profit de certains membres du,1966-10-12,1966,1974,date 1966 ≠ année dans numéro (1974),False
+3667,2.77.502,2-77-502,Décret n° 2.77.502 portant création et organisation du centre de formation des t,1966-03-18,1966,1977,date 1966 ≠ année dans numéro (1977),False
+3669,1.72.454,1-72-454,Dahir portant loi n° 1.72.454 étendant aux parcelles agricoles ou à vocation agr,1966-01-01,1966,1972,date 1966 ≠ année dans numéro (1972),False
+3670,2.73.222,2-73-222,Décret n° 2.73.222 portant émission d'une série de timbres-poste spéciaux avec s,1965-12-11,1965,1973,date 1965 ≠ année dans numéro (1973),False
+3671,2.73.199,2-73-199,Décret n° 2.73.199 portant émission d'une série de timbres-poste spéciaux,1965-12-11,1965,1973,date 1965 ≠ année dans numéro (1973),False
+3672,2.72.286,2-72-286,Décret n° 2.72.286 relatif à l'émission d'une série spéciale de timbres-poste av,1965-12-11,1965,1972,date 1965 ≠ année dans numéro (1972),False
+3673,2.73.221,2-73-221,Décret n° 2.73.221 relatif à l'émission d'un timbre-poste spécial,1965-12-11,1965,1973,date 1965 ≠ année dans numéro (1973),False
+3674,2.74.500,2-74-500,Décret n° 2.74.500 portant émission d'une série de timbres-poste valant acquitte,1965-12-11,1965,1974,date 1965 ≠ année dans numéro (1974),False
+3675,2.57.1480,2-57-1480,Décret royal relatif aux enseignants d'éducation physique et sportive relevant d,1965-11-27,1965,1957,date 1965 ≠ année dans numéro (1957),False
+3678,2.77.101,2-77-101,Décret royal instituant une indemnité horaire spéciale pour le travail de nuit e,1965-09-27,1965,1977,date 1965 ≠ année dans numéro (1977),False
+3680,2.69.115,2-69-115,Décret n° 2.69.115 fixant les conditions d'émission des bons à court terme,1965-03-20,1965,1969,date 1965 ≠ année dans numéro (1969),False
+3688,2.75.295,2-75-295,Décret n°2.75.295 portant création de bureaux de conservation foncière à Béni Me,1964-07-31,1964,1975,date 1964 ≠ année dans numéro (1975),False
+3689,1.57.187,1-57-187,Décret n° 1.57.187 portant application de certaines dispositions du dahir n° 1.5,1963-11-12,1963,1957,date 1963 ≠ année dans numéro (1957),False
+3690,2.83.28,2-83-28,Décret n° 2.83.28 accordant la garantie de l'État aux emprunts émis par l'Office,1963-08-05,1963,1983,date 1963 ≠ année dans numéro (1983),False
+3692,2.79.243,2-79-243,"Décret n° 2.79.243 fixant les conditions d'intégration des chefs de service, sec",1963-07-08,1963,1979,date 1963 ≠ année dans numéro (1979),False
+3803,2.75.191,2-75-191,Décret n° 2.75.191 relatif à l'organisation des droits de la taxe professionnell,1961-01-01,1961,1975,date 1961 ≠ année dans numéro (1975),False
+3804,2.70.243,2-70-243,Décret n° 2.70.243 relatif à la réglementation des redevances de patente pour ce,1961-01-01,1961,1970,date 1961 ≠ année dans numéro (1970),False
+3805,2.73.332,2-73-332,Décret n° 2.73.332 fixant les redevances de patente applicables à certaines prof,1961-01-01,1961,1973,date 1961 ≠ année dans numéro (1973),False
+3851,1.73.251,1-73-251,Dahir portant attribution de la qualité de résistant,1960-07-21,1960,1973,date 1960 ≠ année dans numéro (1973),False
+3859,1.57.288,1-57-288,Dahir portant création d'une Caisse nationale d'épargne,1960-06-03,1960,1957,date 1960 ≠ année dans numéro (1957),False
+3889,2.25.398,2-25-398,Décret n°2.25.398 portant création de nouveaux cercles et caïdats,1959-12-02,1959,2025,date 1959 ≠ année dans numéro (2025),False
+3890,2.19.644,2-19-644,Décret n° 2.19.644 portant création de nouveaux cercles et caïdats,1959-12-02,1959,2019,date 1959 ≠ année dans numéro (2019),False
+3896,2.82.90,2-82-90,Décret n° 2.82.90 relatif à l'octroi de la garantie du Royaume du Maroc au prêt ,1959-10-21,1959,1982,date 1959 ≠ année dans numéro (1982),False
+3897,2.89.276,2-89-276,Décret n° 2.89.276 accordant la garantie de l'État aux emprunts émis par la Banq,1959-10-21,1959,1989,date 1959 ≠ année dans numéro (1989),False
+3915,2.85.880,2-85-880,Décret n° 2.85.880 relatif à l'approbation de l'émission de pièces commémorative,1959-06-30,1959,1985,date 1959 ≠ année dans numéro (1985),False
+3916,2.85.509,2-85-509,Décret n° 2.85.509 approuvant l'émission de pièces commémoratives de 100 dirhams,1959-06-30,1959,1985,date 1959 ≠ année dans numéro (1985),False
+3917,2.90.537,2-90-537,Décret n° 2.90.537 relatif à l'approbation de l'émission de pièces commémorative,1959-06-30,1959,1990,date 1959 ≠ année dans numéro (1990),False
+3918,2.85.925,2-85-925,Décret n° 2.85.925 approuvant l'émission de pièces de monnaie commémoratives de ,1959-06-30,1959,1985,date 1959 ≠ année dans numéro (1985),False
+3919,2.85.605,2-85-605,Décret n° 2.85.605 portant approbation de l'émission de pièces de monnaie commém,1959-06-30,1959,1985,date 1959 ≠ année dans numéro (1985),False
+3925,2.74.018,2-74-018,Décret prolongeant le mandat des membres des commissions administratives paritai,1959-05-05,1959,1974,date 1959 ≠ année dans numéro (1974),False
+3926,2.64.389,2-64-389,Décret n° 2.64.389 fixant le régime d'accès aux emplois des administrations publ,1959-03-11,1959,1964,date 1959 ≠ année dans numéro (1964),False
+3932,2.75.453,2-75-453,Décret n° 2.75.453 portant dissolution de l'association étrangère dénommée «Cent,1958-11-15,1958,1975,date 1958 ≠ année dans numéro (1975),False
+3935,2.77.738,2-77-738,Décret n° 2.77.738 fixant les modalités d'application de l'article 38 bis du Dah,1958-02-24,1958,1977,date 1958 ≠ année dans numéro (1977),False
+3936,2.10.552,2-10-552,Décret n° 2.10.552 relatif à la fourniture de tenues de travail à certains fonct,1958-02-24,1958,2010,date 1958 ≠ année dans numéro (2010),False
+3937,2.04.988,2-04-988,Décret n° 2.04.988 relatif à la fourniture d'une tenue de travail à certains fon,1958-02-24,1958,2004,date 1958 ≠ année dans numéro (2004),False
+3938,2.08.285,2-08-285,Décret n° 2.08.285 relatif aux tenues de travail de certains agents du ministère,1958-02-24,1958,2008,date 1958 ≠ année dans numéro (2008),False
+3939,2-10-062,2-10-062,Décret n° 2.10.062 instituant des mesures exceptionnelles d'avancement de grade ,1958-02-24,1958,2010,date 1958 ≠ année dans numéro (2010),False
+3940,2.16.452,2-16-452,Décret n° 2.16.452 relatif aux mesures spécifiques concernant la situation de ce,1958-02-24,1958,2016,date 1958 ≠ année dans numéro (2016),False
+3941,2.14.666,2-14-666,Décret n° 2.14.666 relatif à l'organisation des instituts de musique et d'art ch,1958-02-24,1958,2014,date 1958 ≠ année dans numéro (2014),False
+3942,2.17.765,2-17-765,Décret n° 2.17.765 relatif à l'intégration de certains administrateurs relevant ,1958-02-24,1958,2017,date 1958 ≠ année dans numéro (2017),False
+3943,2.14.667,2-14-667,Décret n° 2.14.667 relatif à la fourniture de tenues de travail à certains fonct,1958-02-24,1958,2014,date 1958 ≠ année dans numéro (2014),False
+3945,2.70.249,2-70-249,Décret n° 2.70.249 portant prorogation pour six mois du régime des sanctions adm,1957-11-21,1957,1970,date 1957 ≠ année dans numéro (1970),False
+3948,2.04.1022,2-04-1022,Décret n° 2.04.1022 accordant une indemnité de campagne aux militaires affectés ,1957-01-15,1957,2004,date 1957 ≠ année dans numéro (2004),False
+3949,2.84.418,2-84-418,Décret royal accordant la garantie partielle de l'État aux prêts bancaires relat,1957-01-08,1957,1984,date 1957 ≠ année dans numéro (1984),False
+3950,2.62.161,2-62-161,Décret royal n° 2.62.161 fixant les attributions du ministère de la Défense nati,1956-11-08,1956,1962,date 1956 ≠ année dans numéro (1962),False
+3951,1.59.338,1-59-338,Convention n°1.59.338 relative au recouvrement des aliments à l'étranger,1956-06-20,1956,1959,date 1956 ≠ année dans numéro (1959),False
+3953,1.76.343,1-76-343,Dahir portant création de la Société d'équipement et de développement régional d,1951-04-03,1951,1976,date 1951 ≠ année dans numéro (1976),False
+3954,2.81.486,2-81-486,Décret n° 2.81.486 autorisant la Société Minière de Touissit conformément à l'ar,1951-01-01,1951,1981,date 1951 ≠ année dans numéro (1981),False
+3956,2.79.745,2-79-745,Décret n° 2.79.745 modifiant l'arrêté du 30 Rabii II 1369 (18 février 1950) rela,1950-01-01,1950,1979,date 1950 ≠ année dans numéro (1979),False
+3957,1.58.210,1-58-210,"Convention n°1.58.210 relative à la circulation routière, Genève 1949",1949-09-19,1949,1958,date 1949 ≠ année dans numéro (1958),False
+3958,2.84.250,2-84-250,Décret n° 2.84.250 accordant la garantie de l'État aux emprunts émis par la Soci,1949-08-27,1949,1984,date 1949 ≠ année dans numéro (1984),False
+3959,2-73-116,2-73-116,"Décret n° 2.73.116 sur les tapis marocains, produits de l'artisanat et ouvrages ",1947-10-13,1947,1973,date 1947 ≠ année dans numéro (1973),False
+3960,2.87.457,2-87-457,Décret n° 2.87.457 relatif au chômage du samedi 30 mai 1987 correspondant au 2 C,1947-07-21,1947,1987,date 1947 ≠ année dans numéro (1987),False
+3961,312.60.2,312-60-2,"Dahir chérifien octroyant à tout chef de famille parmi les ouvriers, fonctionnai",1946-10-22,1946,1960,date 1946 ≠ année dans numéro (1960),False
+3962,2.69.22,2-69-22,Décret n°2.69.22 relatif aux fonctionnaires chargés des missions de conseillers ,1946-01-18,1946,1969,date 1946 ≠ année dans numéro (1969),False
+3963,2-74-619,2-74-619,"Décret n° 2.74.619 réévaluant les rentes des victimes d'accidents du travail, ma",1943-05-31,1943,1974,date 1943 ≠ année dans numéro (1974),False
+3964,2.96.618,2-96-618,Décret n° 2.96.618 abrogeant l'arrêté du 26 Chaoual 1361 (5 novembre 1942) relat,1941-12-30,1941,1996,date 1941 ≠ année dans numéro (1996),False
+3965,2.64.438,2-64-438,Décret n° 2.64.438 étendant aux produits de la récolte de l'année 1964 les dispo,1941-12-30,1941,1964,date 1941 ≠ année dans numéro (1964),False
+3966,2.78.273,2-78-273,Décret n°2.78.273 relatif à l'obligation de constituer un dépôt financier avant ,1939-09-10,1939,1978,date 1939 ≠ année dans numéro (1978),False
+3967,2.76.205,2-76-205,Décret n° 2.76.205 instituant à titre temporaire une indemnité de zone au profit,1938-08-06,1938,1976,date 1938 ≠ année dans numéro (1976),False
+3968,2.04.421,2-04-421,"Décret n° 2.04.421 relatif à l'augmentation du salaire minimum dans l'industrie,",1936-06-18,1936,2004,date 1936 ≠ année dans numéro (2004),False
+3970,1.58.060,1-58-060,Dahir relatif à la répression de la fraude aux examens et concours publics de la,1928-09-11,1928,1958,date 1928 ≠ année dans numéro (1958),False
+3971,2.74.472,2-74-472,Décret n° 2.74.472 fixant les modalités de paiement des salaires des assistants ,1926-07-10,1926,1974,date 1926 ≠ année dans numéro (1974),False
+3972,246.60.2,246-60-2,Fonds à déposer par les notaires auprès de la Caisse de Dépôt et de Gestion,1925-05-04,1925,1960,date 1925 ≠ année dans numéro (1960),False
+3974,2.58.1371,2-58-1371,Décret n° 2.58.1371 fixant la composition de la commission chargée d'émettre un ,1917-10-10,1917,1958,date 1917 ≠ année dans numéro (1958),False
+3975,2.63.296,2-63-296,Décret n°2.63.296 du 24 joumada II 1383 (12 novembre 1963) étendant l'obligation,1915-09-04,1915,1963,date 1915 ≠ année dans numéro (1963),False
+3978,2.12.502,2-12-502,Arrêté du ministre de l'industrie et du commerce relatif aux joints non métalliq,1913-08-12,1913,2012,date 1913 ≠ année dans numéro (2012),False
+3979,2.75.13,2-75-13,Décret n°2.75.13 créant une conservation foncière à Settat et fixant son ressort,1913-08-12,1913,1975,date 1913 ≠ année dans numéro (1975),False
+3980,2-75-12,2-75-12,Décret n° 2.75.12 portant création et délimitation de la conservation foncière d,1913-08-12,1913,1975,date 1913 ≠ année dans numéro (1975),False
+3981,2.64.282,2-64-282,Autre n°2.64.282,1913-08-12,1913,1964,date 1913 ≠ année dans numéro (1964),False
+3982,2.75.11,2-75-11,Décret n° 2.75.11 portant création d'une conservation foncière à Ksar Es Souk et,1913-08-12,1913,1975,date 1913 ≠ année dans numéro (1975),False
+4139,2-04-563,2-04-563,Décret n° 2.04.563 relatif aux attributions et au fonctionnement de la Commissio,2008-01-01,2008,2004,date 2008 ≠ année dans numéro (2004),False
+4158,1-15-49,1-15-49,Dahir n° 1-15-49 du 30 Dhou El Kaada 1443 (30 juin 2022) portant publication de ,2022-06-30,2022,2015,date 2022 ≠ année dans numéro (2015),False
+4175,1-18-90,1-18-90,Dahir n° 1-18-90 du 19 rejeb 1444 (10 février 2023) portant publication de l'Ame,2023-01-01,2023,2018,date 2023 ≠ année dans numéro (2018),False
+4215,2-06-517,2-06-517,Décret n° 2-06-517 du 23 hija 1430 (11 décembre 2009) relatif à l'organisation d,2009-01-01,2009,2006,date 2009 ≠ année dans numéro (2006),False
+4230,2-97-900,2-97-900,Décret modifiant les taxes intérieures de consommation sur certains produits (an,1977-10-09,1977,1997,date 1977 ≠ année dans numéro (1997),False
+4257,1-17-79,1-17-79,Dahir n° 1-17-79 du 19 rejeb 1444 (10 février 2023) portant publication de la Co,2023-01-01,2023,2017,date 2023 ≠ année dans numéro (2017),False
+4345,1-70-200,1-70-200,Création d'une haute autorité de contrôle des symboles et emblèmes du Royaume et,1930-01-01,1930,1970,date 1930 ≠ année dans numéro (1970),False
+4367,1-01-333,1-01-333,Dahir n° 1-01-333 du 19 moharrem 1423 (3 avril 2002) portant publication du prot,1997-01-01,1997,2001,date 1997 ≠ année dans numéro (2001),False
+4370,1-97-98,1-97-98,Dahir n° 1-97-98 du 19 moharrem 1423 (3 avril 2002) portant publication du proto,2002-01-01,2002,1997,date 2002 ≠ année dans numéro (1997),False
+4433,1-93-402,1-93-402,Dahir n° 1-93-402 du 1er ramadan 1432 (2 août 2011) portant publication du Statu,1951-10-31,1951,1993,date 1951 ≠ année dans numéro (1993),False
+4441,1-81-21,1-81-21,Dahir n° 1-84-21 du 11 rebia I 1407 (14 novembre 1986) portant publication de la,1978-03-31,1978,1981,date 1978 ≠ année dans numéro (1981),False
+4483,1-15-107,1-15-107,Dahir portant promulgation de la loi n° 37-12 relative au Code de la route,1922-04-11,1922,2015,date 1922 ≠ année dans numéro (2015),False
+4561,1-15-74,1-15-74,Dahir n° 1-15-74 du 30 kaada 1443 (30 juin 2022) portant publication de la Conve,2022-01-01,2022,2015,date 2022 ≠ année dans numéro (2015),False
+4635,2-12-484,2-12-484,Décret n° 2-12-484 du 21 mai 2015 relatif à la protection des espèces sauvages e,2015-05-21,2015,2012,date 2015 ≠ année dans numéro (2012),False
+4636,1-89-230,1-89-230,Dahir n° 1-89-230 du 1er joumada II 1413 (26 novembre 1992) portant promulgation,1993-01-01,1993,1989,date 1993 ≠ année dans numéro (1989),False
+4674,3-60-23,3-60-23,Arrêté n° 3.60.23 du Chef du Gouvernement fixant le modèle de pétition qui lui e,2023-01-01,2023,1960,date 2023 ≠ année dans numéro (1960),False
+4721,1-10-133,1-10-133,Dahir n° 1-10-133 du 26 safar 1435 (30 décembre 2013) portant publication de la ,2013-01-01,2013,2010,date 2013 ≠ année dans numéro (2010),False
+4750,1-88-240,1-88-240,Dahir n° 1-88-240 du 6 hija 1413 (28 mai 1993) portant promulgation de la loi n°,1993-05-28,1993,1988,date 1993 ≠ année dans numéro (1988),False
+4759,1-90-153,1-90-153,Dahir n° 1-90-153 du 27 Chaabane 1421 portant publication de la Convention sur l,1952-01-01,1952,1990,date 1952 ≠ année dans numéro (1990),False
+4776,2-18-878,2-18-878,Décret n° 2.18.878 relatif aux modalités d'exercice du contrôle par les pharmaci,2021-01-01,2021,2018,date 2021 ≠ année dans numéro (2018),False
+4808,1-99-279,1-99-279,Dahir n° 1-99-279 du 19 ramadan 1422 (4 décembre 2001) portant promulgation de l,2002-01-01,2002,1999,date 2002 ≠ année dans numéro (1999),False
+4814,1-85-210,1-85-210,Dahir n° 1-85-210 du 6 hija 1413 (28 mai 1993) portant publication de la convent,1993-01-01,1993,1985,date 1993 ≠ année dans numéro (1985),False
+4862,1-14-44,1-14-44,Dahir n° 1-14-44 du 19 rejeb 1444 (10 février 2023) portant publication du Proto,2023-01-01,2023,2014,date 2023 ≠ année dans numéro (2014),False
+4936,1-60-202,1-60-202,Dahir n° 1-60-202 du 23 ramadan 1382 (18 février 1963) portant statut des foncti,1963-01-01,1963,1960,date 1963 ≠ année dans numéro (1960),False
+5041,2.14.783,2-14-783,Traité n°2.14.783,2007-01-01,2007,2014,date 2007 ≠ année dans numéro (2014),False
+5089,1-14-175,1-14-175,Dahir n° 1-14-175 du 21 rejeb 1441 (16 mars 2020) portant publication de la Conv,2020-03-16,2020,2014,date 2020 ≠ année dans numéro (2014),False
+5099,1-96-199,1-96-199,Dahir n° 1-96-199 du 21 kaada 1421 (15 février 2001) portant publication de la c,2001-01-01,2001,1996,date 2001 ≠ année dans numéro (1996),False
+5107,1-99-280,1-99-280,Dahir n° 1-99-280 du 15 kaada 1422 (29 janvier 2002) portant publication de la c,2002-01-01,2002,1999,date 2002 ≠ année dans numéro (1999),False
+5194,1-10-197,1-10-197,Dahir n° 1-01-197 du 11 joumada I 1422 (1er août 2001) portant promulgation de l,2001-01-01,2001,2010,date 2001 ≠ année dans numéro (2010),False
+5205,1-59-413,1-59-413,Dahir n° 1-59-413 du 28 joumada II 1382 (26 novembre 1962) portant approbation d,1962-01-01,1962,1959,date 1962 ≠ année dans numéro (1959),False
+5210,2-21-770,2-21-770,Décret n° 2-21-770 du 24 rabii II 1443 (30 novembre 2021) portant transfert de l,2013-02-04,2013,2021,date 2013 ≠ année dans numéro (2021),False
+5223,1-15-81,1-15-81,Dahir portant approbation de l'accord Maroc-Royaume-Uni sur le statut des forces,2020-03-16,2020,2015,date 2020 ≠ année dans numéro (2015),False
+5226,2-86-806,2-86-806,Application de la loi n° 31.86 relative à la création de l'Établissement autonom,1993-01-01,1993,1986,date 1993 ≠ année dans numéro (1986),False
+5263,2-97-218,2-97-218,Décret n° 2-97-218 du 18 chaâbane 1418 (19 décembre 1997) pris pour l'applicatio,1982-05-06,1982,1997,date 1982 ≠ année dans numéro (1997),False
+5272,1-17-95,1-17-95,Dahir n° 1-17-95 du 18 joumada II 1443 (21 janvier 2022) portant publication de ,2022-01-21,2022,2017,date 2022 ≠ année dans numéro (2017),False
+5285,2-99-1028,2-99-1028,Décret n° 2-99-1028 du 27 décembre 2004 relatif à la Bibliothèque Nationale du R,2004-01-01,2004,1999,date 2004 ≠ année dans numéro (1999),False
+5325,2-96-989,2-96-989,Décret n° 2-96-989 du 17 ramadan 1419 (5 janvier 1999) portant application du co,1999-01-05,1999,1996,date 1999 ≠ année dans numéro (1996),False
+5337,2-93-277,2-93-277,Décret n° 2-93-277 du 28 janvier 1998 portant régime général du Parc National So,1998-01-28,1998,1993,date 1998 ≠ année dans numéro (1993),False
+5344,2-01-107,2-01-107,Décret n° 2-01-107 du 29 joumada II 1427 (25 juillet 2006) pris pour l'applicati,2006-01-01,2006,2001,date 2006 ≠ année dans numéro (2001),False
+5355,2-01-108,2-01-108,Décret n° 2-01-108 du 29 joumada II 1427 (25 juillet 2006) pris pour l'applicati,2006-01-01,2006,2001,date 2006 ≠ année dans numéro (2001),False
+5360,2-11-623,2-11-623,Décret n° 2-11-623 du 28 hija 1432 (25 novembre 2011) fixant les conditions et l,2003-02-10,2003,2011,date 2003 ≠ année dans numéro (2011),False
+5366,2-01-109,2-01-109,Décret n° 2-01-109 du 29 joumada II 1427 (25 juillet 2006) portant approbation d,2006-01-01,2006,2001,date 2006 ≠ année dans numéro (2001),False
+5380,1-02-152,1-02-152,Dahir n° 1-02-152 du 7 moharrem 1426 (16 février 2005) portant publication de l',2005-01-01,2005,2002,date 2005 ≠ année dans numéro (2002),False
+5418,1-15-141,1-15-141,Dahir n° 1-15-141 du 30 Kaada 1443 (30 juin 2022) portant publication de l'accor,2022-06-30,2022,2015,date 2022 ≠ année dans numéro (2015),False
+5421,2-99-671,2-99-671,Décret n° 2-99-671 du 4 juin 2002 fixant le régime des études et examens du dipl,2002-06-04,2002,1999,date 2002 ≠ année dans numéro (1999),False
+5448,1-17-93,1-17-93,Dahir n° 1-17-93 du 9 chaabane 1442 (23 mars 2021) portant publication de l'acco,2021-03-23,2021,2017,date 2021 ≠ année dans numéro (2017),False
+5450,1-17-73,1-17-73,Dahir n° 1-17-73 du 30 Dhou al-Qi’da 1443 (30 juin 2022) portant publication de ,2022-06-30,2022,2017,date 2022 ≠ année dans numéro (2017),False
+5459,1-17-92,1-17-92,Dahir n° 1-17-92 du 9 chaabane 1442 (23 mars 2021) portant publication de l'acco,2021-03-23,2021,2017,date 2021 ≠ année dans numéro (2017),False
+5485,2-82-790,2-82-790,Décret n° 2-82-790 du 29 joumada I 1405 (21 janvier 1985) pris pour l'applicatio,1985-01-29,1985,1982,date 1985 ≠ année dans numéro (1982),False
+5499,1-90-152,1-90-152,Dahir n° 1-90-152 du 1er ramadan 1432 (2 août 2011) portant publication de la Co,2011-01-01,2011,1990,date 2011 ≠ année dans numéro (1990),False
+5500,1-02-136,1-02-136,Dahir n° 1-02-136 du 19 kaada 1423 (23 janvier 2003) portant publication de la c,1996-01-01,1996,2002,date 1996 ≠ année dans numéro (2002),False
+5503,1-07-58,1-07-58,Dahir n° 1-07-58 du 19 kaada 1428 (29 novembre 2007) portant publication de la C,2003-01-01,2003,2007,date 2003 ≠ année dans numéro (2007),False
+5506,1-04-131,1-04-131,DAHIR N° 1-04-131 DU 17 JOUMADA I 1429 (23 MAI 2008) PORTANT PUBLICATION DE LA C,2008-01-01,2008,2004,date 2008 ≠ année dans numéro (2004),False
+5507,1-93-362,1-93-362,Dahir n° 1-93-362 du 9 rejeb 1417 (21 novembre 1996) portant publication de la c,1996-01-01,1996,1993,date 1996 ≠ année dans numéro (1993),False
+5515,2-87-906,2-87-906,Décret n° 2-87-906 du 13 joumada I 1414 (29 octobre 1993) fixant le régime des é,1993-10-29,1993,1987,date 1993 ≠ année dans numéro (1987),False
+5518,1-87-127,1-87-127,Dahir n° 1-87-127 du 9 novembre 1992 portant promulgation de la loi n° 16.86 rel,1992-01-01,1992,1987,date 1992 ≠ année dans numéro (1987),False
+5523,2-89-596,2-89-596,Décret n° 2-89-596 du 25 rabii II 1414 (12 octobre 1993) fixant les montants de ,1993-10-12,1993,1989,date 1993 ≠ année dans numéro (1989),False
+5546,1-15-36,1-15-36,Dahir n° 1-15-36 du 18 joumada II 1443 (21 janvier 2022) portant publication de ,2022-01-21,2022,2015,date 2022 ≠ année dans numéro (2015),False
+5553,2-89-189,2-89-189,Décret n° 2-89-189 du 16 joumada II 1413 (10 décembre 1992) portant application ,1993-02-02,1993,1989,date 1993 ≠ année dans numéro (1989),False
+5555,1-88-126,1-88-126,Dahir n° 1-88-126 du 24 joumada I 1413 (19 novembre 1992) portant promulgation d,1993-01-01,1993,1988,date 1993 ≠ année dans numéro (1988),False
+5563,2-96-782,2-96-782,Abrogation de l'arrêté ministériel suspendant temporairement les taxes et impôts,1981-04-25,1981,1996,date 1981 ≠ année dans numéro (1996),False
+5569,1-15-46,1-15-46,Dahir n° 1-15-46 du 9 chaabane 1442 (23 mars 2021) portant publication de l'acco,2021-03-23,2021,2015,date 2021 ≠ année dans numéro (2015),False
+5574,1-17-97,1-17-97,Dahir n° 1-17-97 du 9 chaabane 1442 (23 mars 2021) portant publication de l'acco,2021-03-23,2021,2017,date 2021 ≠ année dans numéro (2017),False
+5575,1-14-174,1-14-174,Dahir n° 1.14.174 portant publication du Protocole additionnel à la Convention e,2020-03-16,2020,2014,date 2020 ≠ année dans numéro (2014),False
+5576,1-14-73,1-14-73,Dahir n° 1-14-73 portant publication de la Convention du Mètre instituant le BIP,1875-05-20,1875,2014,date 1875 ≠ année dans numéro (2014),False
+5582,2-20-471,2-20-471,"Décret n° 2-20-471 du 6 mars 2026 relatif à l'orientation scolaire, professionne",2026-03-06,2026,2020,date 2026 ≠ année dans numéro (2020),False
+5585,1-93-46,1-93-46,Dahir portant loi n° 1-93-46 du 22 rebia I 1414 (10 septembre 1993) abrogeant le,1973-03-02,1973,1993,date 1973 ≠ année dans numéro (1993),False
+5590,1-16-92,1-16-92,Dahir n° 1-16-92 du 9 chaabane 1442 (23 mars 2021) portant publication de l'acco,2021-03-23,2021,2016,date 2021 ≠ année dans numéro (2016),False
+5598,1-15-42,1-15-42,Dahir portant publication du Traité de Marrakech facilitant l'accès aux œuvres p,2020-03-16,2020,2015,date 2020 ≠ année dans numéro (2015),False
+5602,1-10-77,1-10-77,Dahir n° 1-10-77 du 19 rabii I 1434 (31 janvier 2013) portant publication de l’A,2013-01-01,2013,2010,date 2013 ≠ année dans numéro (2010),False
+5606,1-10-76,1-10-76,Dahir n° 1-10-76 du 19 rabii I 1434 (31 janvier 2013) portant publication de l'a,2013-01-01,2013,2010,date 2013 ≠ année dans numéro (2010),False
+5643,2-86-144,2-86-144,Décret fixant les conditions de préparation et de délivrance des diplômes de l'É,1989-10-30,1989,1986,date 1989 ≠ année dans numéro (1986),False
+5646,1-83-100,1-83-100,Dahir n° 1-83-100 du 11 rebia I 1407 (14 novembre 1986) portant promulgation de ,1986-01-01,1986,1983,date 1986 ≠ année dans numéro (1983),False
+5663,2-88-756,2-88-756,Décret n° 2-88-756 du 13 chaoual 1412 (16 avril 1992) portant statut particulier,1992-05-13,1992,1988,date 1992 ≠ année dans numéro (1988),False
+5665,1-99-291,1-99-291,Dahir n° 1-99-291 du 18 rabii II 1424 (19 juin 2003) portant publication de l’Ac,2003-01-01,2003,1999,date 2003 ≠ année dans numéro (1999),False
+5666,1-17-24,1-17-24,Dahir n° 1-17-24 du 21 rejeb 1441 (16 mars 2020) portant publication de l'Accord,2020-01-01,2020,2017,date 2020 ≠ année dans numéro (2017),False
+5668,1-14-60,1-14-60,Dahir n° 1-14-60 du 9 chaabane 1442 (23 mars 2021) portant publication de la con,2021-03-23,2021,2014,date 2021 ≠ année dans numéro (2014),False
+5675,2-85-894,2-85-894,Décret n° 2-85-894 du 18 Rabii II 1406 (31 décembre 1985) abrogeant les décrets ,1982-02-16,1982,1985,date 1982 ≠ année dans numéro (1985),False
+5686,1-17-91,1-17-91,Dahir n° 1-17-91 du 9 chaabane 1442 (23 mars 2021) portant publication de la con,2021-03-23,2021,2017,date 2021 ≠ année dans numéro (2017),False
+5692,1-18-61,1-18-61,Dahir n° 1-18-61 du 9 chaabane 1442 (23 mars 2021) portant publication de la con,2021-03-23,2021,2018,date 2021 ≠ année dans numéro (2018),False
+5697,1-18-58,1-18-58,Dahir n° 1-18-58 du 28 joumada I 1443 (1er janvier 2022) portant promulgation de,2022-01-21,2022,2018,date 2022 ≠ année dans numéro (2018),False
+5732,1-17-19,1-17-19,Dahir n° 1-17-19 du 9 chaabane 1442 (23 mars 2021) portant publication de l’Acco,2021-01-01,2021,2017,date 2021 ≠ année dans numéro (2017),False
+5733,1-89-224,1-89-224,Dahir n° 1.89.224 portant promulgation de la loi n° 19.88 relative à la création,1992-01-01,1992,1989,date 1992 ≠ année dans numéro (1989),False
+5737,1-87-118,1-87-118,Dahir n° 1-87-118 du 28 ramadan 1412 (2 avril 1992) portant promulgation de la l,1992-04-02,1992,1987,date 1992 ≠ année dans numéro (1987),False
+5738,2-80-687,2-80-687,Décret n° 2-80-687 du 30 Chaoual 1405 (19 juillet 1985) relatif au statut partic,1985-01-01,1985,1980,date 1985 ≠ année dans numéro (1980),False
+5743,1-87-12,1-87-12,Dahir n° 1-87-12 du 14 joumada I 1410 (12 décembre 1989) portant promulgation de,1990-01-01,1990,1987,date 1990 ≠ année dans numéro (1987),False
+5745,2-84-93,2-84-93,Décret n° 2-84-93 du 7 kaada 1413 (29 avril 1993) fixant les attributions et l'o,1993-04-29,1993,1984,date 1993 ≠ année dans numéro (1984),False
+5753,2-88-584,2-88-584,Décret n° 2-88-584 du 28 joumada I 1413 (23 novembre 1992) portant application d,1993-01-18,1993,1988,date 1993 ≠ année dans numéro (1988),False
+5757,1-87-126,1-87-126,Dahir n° 1-87-126 du 6 rebia II 1412 (15 octobre 1991) portant promulgation de l,1991-10-15,1991,1987,date 1991 ≠ année dans numéro (1987),False
+5759,2-00-368,2-00-368,Décret n° 2-00-368 du 22 rabii I 1425 (11 mai 2004) fixant les conditions et les,2004-06-07,2004,2000,date 2004 ≠ année dans numéro (2000),False
+5774,1-16-98,1-16-98,Dahir n° 1-16-98 du 23 mars 2021 portant publication de l'accord d'assistance do,2021-03-23,2021,2016,date 2021 ≠ année dans numéro (2016),False
+5775,1-17-98,1-17-98,Dahir n° 1-17-98 du 9 chaabane 1442 (23 mars 2021) portant publication de l'acco,2021-03-23,2021,2017,date 2021 ≠ année dans numéro (2017),False
+5778,1-19-103,1-19-103,Dahir n° 1-19-103 du 30 kaada 1443 (30 juin 2022) portant publication de l'accor,2022-06-30,2022,2019,date 2022 ≠ année dans numéro (2019),False
+5779,1-17-92,1-17-92,Dahir n° 1-17-92 du 9 chaabane 1442 (23 mars 2021) portant publication de l’Acco,2021-01-01,2021,2017,date 2021 ≠ année dans numéro (2017),False
+5780,1-17-91,1-17-91,Dahir n° 1-17-91 du 9 chaabane 1442 (23 mars 2021) portant publication de la Con,2021-01-01,2021,2017,date 2021 ≠ année dans numéro (2017),False
+5781,1-17-93,1-17-93,Dahir n° 1-17-93 du 9 chaabane 1442 (23 mars 2021) portant publication de l’Acco,2021-01-01,2021,2017,date 2021 ≠ année dans numéro (2017),False
+5784,3-28-18,3-28-18,Arrêté du Chef du Gouvernement n° 3.28.18 du 5 chaoual 1439 (19 juin 2018) fixan,2018-06-19,2018,2028,date 2018 ≠ année dans numéro (2028),False
+5785,1-17-96,1-17-96,Dahir n° 1-17-96 du 19 rejeb 1444 (10 février 2023) portant publication de la co,2023-02-10,2023,2017,date 2023 ≠ année dans numéro (2017),False
+5787,1-75-139,1-75-139,Dahir n° 1-75-139 du 20 chaabane 1395 (29 août 1975) portant publication de la c,1998-01-01,1998,1975,date 1998 ≠ année dans numéro (1975),False
+5802,2-81-509,2-81-509,Décret n° 2.81.509 relatif à l'application du Dahir n° 1.73.250 instituant le Co,1985-01-23,1985,1981,date 1985 ≠ année dans numéro (1981),False
+5823,1-14-109,1-14-109,Dahir n° 1-14-109 du 21 rejeb 1441 (16 mars 2020) portant publication de la conv,2020-03-16,2020,2014,date 2020 ≠ année dans numéro (2014),False
+5829,1-15-74,1-15-74,Dahir n° 1-15-74 du 30 kaada 1443 (30 juin 2022) portant publication de la conve,2022-06-30,2022,2015,date 2022 ≠ année dans numéro (2015),False
+5834,1-16-168,1-16-168,Dahir n° 1-16-168 du 19 rejeb 1444 (10 février 2023) portant publication de la C,2023-01-01,2023,2016,date 2023 ≠ année dans numéro (2016),False
+5835,1-14-41,1-14-41,Dahir n° 1-14-41 du 9 chaabane 1442 (23 mars 2021) portant publication de la con,2021-03-23,2021,2014,date 2021 ≠ année dans numéro (2014),False
+5837,2-80-616,2-80-616,Décret n° 2-80-616 du 5 janvier 1981 étendant le régime d'indemnités aux fonctio,1976-01-19,1976,1980,date 1976 ≠ année dans numéro (1980),False
+5839,1-19-65,1-19-65,Dahir n° 1.19.65 portant ratification de la Convention de Bamako sur les déchets,2023-02-10,2023,2019,date 2023 ≠ année dans numéro (2019),False
+5840,1-14-62,1-14-62,Dahir n° 1-14-62 du 30 kaada 1443 (30 juin 2022) portant publication du Protocol,2022-06-30,2022,2014,date 2022 ≠ année dans numéro (2014),False
+5845,1-14-76,1-14-76,Dahir n° 1-14-76 du 30 kaada 1443 (30 juin 2022) portant publication de la conve,2022-06-30,2022,2014,date 2022 ≠ année dans numéro (2014),False
+5848,1-14-79,1-14-79,Dahir n° 1-14-79 du 2 ramadan 1445 (13 mars 2024) portant publication de l'Accor,2024-01-01,2024,2014,date 2024 ≠ année dans numéro (2014),False
+5849,1-14-108,1-14-108,Dahir n° 1.14.108 portant publication du Traité de Pékin sur les interprétations,2023-02-10,2023,2014,date 2023 ≠ année dans numéro (2014),False
+5853,1-14-170,1-14-170,Convention unifiée pour l'investissement des capitaux arabes dans les pays arabe,2022-06-30,2022,2014,date 2022 ≠ année dans numéro (2014),False
+5858,2-83-440,2-83-440,Statut particulier du personnel du ministère de l'Équipement (n° 2.83.440),1986-03-28,1986,1983,date 1986 ≠ année dans numéro (1983),False
+5861,1-14-179,1-14-179,Dahir n° 1-14-179 du 30 kaada 1443 (30 juin 2022) portant publication de la conv,2022-06-30,2022,2014,date 2022 ≠ année dans numéro (2014),False
+5868,2-82-678,2-82-678,Décret n° 2.82.678 de radiation du titre foncier R/23911 et des parcelles 3 et 4,1971-08-03,1971,1982,date 1971 ≠ année dans numéro (1982),False
+5872,1-00-312,1-00-312,Dahir n° 1.00.312 portant publication de la convention n° 182 et de la recommand,2003-06-03,2003,2000,date 2003 ≠ année dans numéro (2000),False
+5888,2-86-68,2-86-68,Décret n° 2-86-68 du 8 Rabii II 1407 (11 décembre 1986) ouvrant un nouveau délai,1959-03-16,1959,1986,date 1959 ≠ année dans numéro (1986),False
+5908,1-14-73,1-14-73,Dahir n° 1-14-73 du 21 rejeb 1441 (16 mars 2020) portant publication de la Conve,2020-01-01,2020,2014,date 2020 ≠ année dans numéro (2014),False
+5910,1-16-27,1-16-27,Dahir n° 1-16-27 du 21 rejeb 1441 (16 mars 2020) portant publication de la Conve,2020-01-01,2020,2016,date 2020 ≠ année dans numéro (2016),False
+5929,1-15-49,1-15-49,Dahir n° 1-15-49 du 30 kaada 1443 (30 juin 2022) portant publication de la Conve,2022-01-01,2022,2015,date 2022 ≠ année dans numéro (2015),False
+5932,1-15-133,1-15-133,Dahir n° 1-15-133 du 19 rejeb 1444 (10 février 2023) portant publication du Prot,2023-02-10,2023,2015,date 2023 ≠ année dans numéro (2015),False
+5935,1-18-42,1-18-42,Dahir n° 1-18-42 du 30 kaada 1443 (30 juin 2022) portant publication de l'accord,2022-06-30,2022,2018,date 2022 ≠ année dans numéro (2018),False
+5942,1-09-185,1-09-185,Dahir n° 1-09-185 du 18 joumada II 1443 (21 janvier 2022) portant publication de,2022-01-01,2022,2009,date 2022 ≠ année dans numéro (2009),False
+5959,1-20-43,1-20-43,Dahir n° 1-20-43 du 2 ramadan 1445 (13 mars 2024) portant publication de la Conv,2024-01-01,2024,2020,date 2024 ≠ année dans numéro (2020),False
+5960,1-10-139,1-10-139,Dahir n° 1-10-139 du 18 joumada II 1443 (21 janvier 2022) portant publication de,2022-01-01,2022,2010,date 2022 ≠ année dans numéro (2010),False
+5968,2-97-745,2-97-745,Décret n° 2-79-745 du 11 safar 1400 (31 décembre 1979) modifiant l'arrêté du 30 ,1979-12-31,1979,1997,date 1979 ≠ année dans numéro (1997),False
+5970,1-19-107,1-19-107,Dahir n° 1-19-107 du 2 ramadan 1445 (13 mars 2024) portant publication de l’Acco,2024-01-01,2024,2019,date 2024 ≠ année dans numéro (2019),False
+5976,2-97-569,2-97-569,Décret n° 2-79-569 du 1er Safar 1400 (21 décembre 1979) fixant le contingent des,1979-12-21,1979,1997,date 1979 ≠ année dans numéro (1997),False
+5978,2-81-862,2-81-862,Décret n° 2.81.862 déléguant au ministre des Finances le pouvoir de fixer les mo,1961-12-30,1961,1981,date 1961 ≠ année dans numéro (1981),False
+5999,1-16-165,1-16-165,Dahir n° 1-16-165 du 19 rejeb 1444 (10 février 2023) portant publication de la C,2023-01-01,2023,2016,date 2023 ≠ année dans numéro (2016),False
+6002,1-16-93,1-16-93,Dahir n° 1-16-93 du 19 rejeb 1444 (10 février 2023) portant publication de la Co,2023-01-01,2023,2016,date 2023 ≠ année dans numéro (2016),False
+6003,1-16-161,1-16-161,Dahir n° 1-16-161 du 19 rejeb 1444 (10 février 2023) portant publication de la C,2023-01-01,2023,2016,date 2023 ≠ année dans numéro (2016),False
+6013,2-81-863,2-81-863,Décret n° 2-81-863 du 5 Rabii I 1402 (1er janvier 1982) fixant les montants de l,1961-12-30,1961,1981,date 1961 ≠ année dans numéro (1981),False
+6016,1-16-92,1-16-92,Dahir n° 1-16-92 du 9 chaabane 1442 (23 mars 2021) portant publication de l'Acco,2021-01-01,2021,2016,date 2021 ≠ année dans numéro (2016),False
+6020,2-81-866,2-81-866,Décret n° 2-81-866 du 5 rebia I 1402 (1er janvier 1982) relatif à l'application ,1961-12-30,1961,1981,date 1961 ≠ année dans numéro (1981),False
+6022,1-09-298,1-09-298,Dahir n° 1-09-298 du 9 chaabane 1442 (23 mars 2021) portant publication du Proto,2021-01-01,2021,2009,date 2021 ≠ année dans numéro (2009),False
+6023,2-81-865,2-81-865,Décret d'application des articles 26 et 27 du Dahir n° 1.59.430 relatif à l'impô,1959-12-31,1959,1981,date 1959 ≠ année dans numéro (1981),False
+6063,2-86-74,2-86-74,Décret portant exécution de la loi n° 37.80 relative aux centres hospitaliers (n,1983-01-15,1983,1986,date 1983 ≠ année dans numéro (1986),False
+6064,1-15-73,1-15-73,Dahir n° 1-15-73 du 19 rejeb 1444 (10 février 2023) portant publication de l'acc,2023-02-10,2023,2015,date 2023 ≠ année dans numéro (2015),False
+6067,1-14-44,1-14-44,Dahir n° 1-14-44 du 19 rejeb 1444 (10 février 2023) portant publication du Proto,2023-02-10,2023,2014,date 2023 ≠ année dans numéro (2014),False
+6075,1-19-107,1-19-107,Dahir n° 1.19.107 portant accord de siège entre le Maroc et l'Union africaine po,2024-03-13,2024,2019,date 2024 ≠ année dans numéro (2019),False
+6076,1-15-73,1-15-73,Dahir n° 1-15-73 du 19 rejeb 1444 (10 février 2023) portant publication de l’Acc,2023-01-01,2023,2015,date 2023 ≠ année dans numéro (2015),False
+6083,1-15-42,1-15-42,Dahir n° 1-15-42 du 21 rejeb 1441 (16 mars 2020) portant publication du Traité d,2020-01-01,2020,2015,date 2020 ≠ année dans numéro (2015),False
+6084,2-59-251,2-59-251,Décret n° 2-79-251 du 23 rejeb 1399 (19 juin 1979) portant autorisation de la fr,1979-01-01,1979,1959,date 1979 ≠ année dans numéro (1959),False
+6088,1-83-197,1-83-197,Dahir n° 1-83-197 du 9 rebia I 1406 (22 novembre 1985) portant promulgation de l,1986-01-01,1986,1983,date 1986 ≠ année dans numéro (1983),False
+6090,1-17-98,1-17-98,Dahir n° 1-17-98 du 9 chaabane 1442 (23 mars 2021) portant publication de l'Acco,2021-01-01,2021,2017,date 2021 ≠ année dans numéro (2017),False
+6093,1-94-295,1-94-295,Dahir n° 1-94-295 du 21 kaada 1421 (15 février 2001) portant publication de la c,2001-01-01,2001,1994,date 2001 ≠ année dans numéro (1994),False
+6096,1-17-97,1-17-97,Dahir n° 1-17-97 du 9 chaabane 1442 (23 mars 2021) portant publication de l'Acco,2021-01-01,2021,2017,date 2021 ≠ année dans numéro (2017),False
+6098,1-83-199,1-83-199,Loi n° 1-83-199 abrogeant le dahir n° 1-63-194 relatif au statut des chambres d',2011-01-01,2011,1983,date 2011 ≠ année dans numéro (1983),False
+6101,1-83-84,1-83-84,Dahir n° 1-83-84 du 14/11/1986 portant publication du protocole additionnel à la,1986-01-01,1986,1983,date 1986 ≠ année dans numéro (1983),False
+6104,1-90-94,1-90-94,Loi n° 1-90-94 portant abrogation du dahir n° 1-63-194 du 5 safar 1383 (28 juin ,1963-01-01,1963,1990,date 1963 ≠ année dans numéro (1990),False
+6108,1-18-61,1-18-61,Dahir n° 1-18-61 du 9 chaabane 1442 (23 mars 2021) portant publication de la Con,2021-01-01,2021,2018,date 2021 ≠ année dans numéro (2018),False
+6115,1-82-324,1-82-324,Dahir n° 1-82-324 du 11 rebia I 1407 (14 novembre 1986) portant publication de l,1986-01-01,1986,1982,date 1986 ≠ année dans numéro (1982),False
+6118,1-83-200,1-83-200,Loi n° 1-83-200 abrogeant le dahir n° 1-62-281 du 24 joumada I 1382 (24 octobre ,1962-10-24,1962,1983,date 1962 ≠ année dans numéro (1983),False
+6131,1-15-81,1-15-81,Dahir n° 1-15-81 du 21 rejeb 1441 (16 mars 2020) portant publication de l’Accord,2020-01-01,2020,2015,date 2020 ≠ année dans numéro (2015),False
+6144,2-77-252,2-77-252,Décret n° 2.77.252 fixant la composition et le fonctionnement de la commission d,1959-03-16,1959,1977,date 1959 ≠ année dans numéro (1977),False
+6148,1-19-65,1-19-65,Dahir n° 1-19-65 du 19 rejeb 1444 (10 février 2023) portant publication de la Co,2023-01-01,2023,2019,date 2023 ≠ année dans numéro (2019),False
+6152,1.14.165,1-14-165,Règlement n°1.14.165,2020-03-16,2020,2014,date 2020 ≠ année dans numéro (2014),False
+6153,2-82-795,2-82-795,Décret n° 2-82-795 du 15 joumada I 1405 (18 janvier 1985) pris pour l'applicatio,1985-01-18,1985,1982,date 1985 ≠ année dans numéro (1982),False
+6156,1-16-171,1-16-171,Dahir n° 1-16-171 du 21 rejeb 1441 (16 mars 2020) portant publication de l'accor,2020-03-16,2020,2016,date 2020 ≠ année dans numéro (2016),False
+6159,1-14-165,1-14-165,Dahir n° 1-14-165 du 21 rejeb 1441 (16 mars 2020) portant publication de l’Accor,2020-01-01,2020,2014,date 2020 ≠ année dans numéro (2014),False
+6164,1-15-34,1-15-34,Dahir n° 1-15-34 du 21 rejeb 1441 (16 mars 2020) portant publication de la conve,2020-03-16,2020,2015,date 2020 ≠ année dans numéro (2015),False
+6167,1-14-171,1-14-171,Dahir n° 1-14-171 du 21 rejeb 1441 (16 mars 2020) portant publication de l’Amend,2020-01-01,2020,2014,date 2020 ≠ année dans numéro (2014),False
+6170,1-16-171,1-16-171,Dahir n° 1-16-171 du 21 rejeb 1441 (16 mars 2020) portant publication de l'Accor,2020-01-01,2020,2016,date 2020 ≠ année dans numéro (2016),False
+6175,1-17-85,1-17-85,Dahir n° 1-17-85 du 21 rejeb 1441 (16 mars 2020) portant publication de l'accord,2020-03-16,2020,2017,date 2020 ≠ année dans numéro (2017),False
+6176,1-15-34,1-15-34,Dahir n° 1-15-34 du 21 rejeb 1441 (16 mars 2020) portant publication de la Conve,2020-01-01,2020,2015,date 2020 ≠ année dans numéro (2015),False
+6178,1-14-171,1-14-171,Dahir n° 1-14-171 du 21 rejeb 1441 (16 mars 2020) portant publication de l'avena,2020-03-16,2020,2014,date 2020 ≠ année dans numéro (2014),False
+6179,1-17-85,1-17-85,Dahir n° 1-17-85 du 21 rejeb 1441 (16 mars 2020) portant publication de l’Accord,2020-01-01,2020,2017,date 2020 ≠ année dans numéro (2017),False
+6184,2-73-538,2-73-538,Décret n° 2-73-538 du 1er Rabii II 1397 (21 mars 1977) pris pour l'application d,1977-03-21,1977,1973,date 1977 ≠ année dans numéro (1973),False
+6191,1-14-109,1-14-109,Dahir n° 1-14-109 portant publication de la Convention sur la cybercriminalité e,2020-01-01,2020,2014,date 2020 ≠ année dans numéro (2014),False
+6211,1-29-30,1-29-30,Dahir n° 1-29-30 du 21 chaabane 1446 (20 février 2025) portant promulgation de l,2025-01-01,2025,2029,date 2025 ≠ année dans numéro (2029),False
+6224,1-16-161,1-16-161,Dahir n° 1-16-161 du 19 rejeb 1444 (10 février 2023) portant publication de la c,2023-02-10,2023,2016,date 2023 ≠ année dans numéro (2016),False
+6243,1-17-74,1-17-74,Dahir n° 1-17-74 du 9 chaabane 1442 (23 mars 2021) portant publication de l’Acco,2021-01-01,2021,2017,date 2021 ≠ année dans numéro (2017),False
+6251,1-25-61,1-25-61,Dahir n° 1-25-61 du 19 safar 1447 (13 août 2025) portant publication de la conve,2013-04-15,2013,2025,date 2013 ≠ année dans numéro (2025),False
+6253,1-17-102,1-17-102,Dahir n° 1-17-102 du 30 kaada 1443 (30 juin 2022) portant publication du protoco,2022-06-30,2022,2017,date 2022 ≠ année dans numéro (2017),False
+6261,1-10-69,1-10-69,Dahir n° 1-10-69 du 18 joumada II 1443 (21 janvier 2022) portant publication de ,2022-01-01,2022,2010,date 2022 ≠ année dans numéro (2010),False
+6275,3-44-18,3-44-18,Dahir n° 1-18-03 du 29 joumada I 1439 (16 février 2018) portant promulgation de ,2018-01-01,2018,1944,date 2018 ≠ année dans numéro (1944),False
+6283,1-15-36,1-15-36,Dahir n° 1-15-36 du 18 joumada II 1443 (21 janvier 2022) portant publication de ,2022-01-01,2022,2015,date 2022 ≠ année dans numéro (2015),False
+6286,1-09-183,1-09-183,Dahir n° 1-09-183 du 9 chaabane 1442 (23 mars 2021) portant publication de l'Acc,2021-01-01,2021,2009,date 2021 ≠ année dans numéro (2009),False
+6287,1-11-58,1-11-58,Dahir n° 1-11-58 du 18 joumada II 1443 (21 janvier 2022) portant publication de ,2022-01-01,2022,2011,date 2022 ≠ année dans numéro (2011),False
+6313,2-69-280,2-69-280,Décret d'application du Dahir relatif à la taxe sur les produits et services,1961-12-30,1961,1969,date 1961 ≠ année dans numéro (1969),False
+6324,2-69-346,2-69-346,Décret n° 2-69-346 du 12 hija 1389 (19 février 1970) fixant les secteurs industr,1960-12-31,1960,1969,date 1960 ≠ année dans numéro (1969),False
+6364,1-09-257,1-09-257,Dahir n° 1-09-257 du 4 joumada I 1435 (6 mars 2014) portant publication de l’Acc,2014-01-01,2014,2009,date 2014 ≠ année dans numéro (2009),False
+6367,1-10-132,1-10-132,Dahir n° 1-10-132 du 26 safar 1435 (30 décembre 2013) portant publication de la ,2013-01-01,2013,2010,date 2013 ≠ année dans numéro (2010),False
+6375,1-09-254,1-09-254,Dahir n° 1-09-254 du 19 rabii I 1434 (31 janvier 2013) portant publication de l’,2013-01-01,2013,2009,date 2013 ≠ année dans numéro (2009),False
+6380,1-99-262,1-99-262,Dahir n° 1-99-262 du 27 Chaoual 1422 (12 janvier 2002) portant promulgation de l,2002-01-01,2002,1999,date 2002 ≠ année dans numéro (1999),False
+6382,1-03-121,1-03-121,Dahir n° 1-03-121 du 22 safar 1430 (18 février 2009) portant publication de la C,2009-01-01,2009,2003,date 2009 ≠ année dans numéro (2003),False
+6386,1-11-75,1-11-75,Dahir n° 1-11-75 du 7 safar 1437 (19 novembre 2015) portant publication de la Co,2015-01-01,2015,2011,date 2015 ≠ année dans numéro (2011),False
+6449,2-80-261,2-80-261,Décret n° 2-80-261 du 28 safar 1401 (5 janvier 1981) pris pour l'application de ,1971-12-30,1971,1980,date 1971 ≠ année dans numéro (1980),False
+6468,2-20-581,2-20-581,Décret n° 2-20-581 du 11 chaabane 1442 (24 mars 2021) pris pour l'application de,1919-01-01,1919,2020,date 1919 ≠ année dans numéro (2020),False
+6500,2-18-242,2-18-242,Décret n° 2-18-242 du 2 joumada II 1442 (15 janvier 2021) fixant les modalités d,2021-01-01,2021,2018,date 2021 ≠ année dans numéro (2018),False
+6536,3-51-25,3-51-25,Arrêté du Chef du gouvernement fixant la liste des branches d'activités par régi,2025-01-01,2025,1951,date 2025 ≠ année dans numéro (1951),False
+6546,1-19-100,1-19-100,Dahir n° 1-19-100 du 5 kaada 1440 (8 juillet 2019) portant promulgation de la lo,2016-05-11,2016,2019,date 2016 ≠ année dans numéro (2019),False
+6548,2-95-30,2-95-30,Décret n° 2-95-30 du 26 chaoual 1419 (13 février 1999) fixant les conditions et ,1999-02-26,1999,1995,date 1999 ≠ année dans numéro (1995),False
+6556,1-96-147,1-96-147,Dahir n° 1-96-147 du 26 moharrem 1420 (13 mai 1999) portant publication de la co,1999-01-01,1999,1996,date 1999 ≠ année dans numéro (1996),False
+6577,2-17-395,2-17-395,"Décret d'application des lois sur l'urbanisme, les lotissements et les construct",2021-06-22,2021,2017,date 2021 ≠ année dans numéro (2017),False
+6593,1-14-108,1-14-108,Dahir n° 1-14-108 du 19 rejeb 1444 (10 février 2023) portant publication du Trai,2023-01-01,2023,2014,date 2023 ≠ année dans numéro (2014),False
+6602,2-20-581,2-20-581,Décret n° 2-20-581 du 11 chaâbane 1442 (25 mars 2021) portant application de cer,1919-03-31,1919,2020,date 1919 ≠ année dans numéro (2020),False
+6612,1-73-664,1-73-664,Dahir portant loi n° 1-73-664 du 25 safar 1397 (15 février 1977) fixant la date ,1977-01-01,1977,1973,date 1977 ≠ année dans numéro (1973),False
+6625,3-52-25,3-52-25,Arrêté du Chef du gouvernement fixant la liste des activités prioritaires pour l,2025-01-01,2025,1952,date 2025 ≠ année dans numéro (1952),False
+6632,1-15-126,1-15-126,Dahir n° 1-15-126 du 30 kaada 1443 (30 juin 2022) portant publication de l'Accor,2022-01-01,2022,2015,date 2022 ≠ année dans numéro (2015),False
+6633,1-10-137,1-10-137,Dahir n° 1-10-137 du 18 joumada II 1443 (21 janvier 2022) portant publication de,2022-01-01,2022,2010,date 2022 ≠ année dans numéro (2010),False
+6684,3-04-22,3-04-22,Arrêté n° 3.04.22 du Chef du Gouvernement portant classification des établisseme,2022-01-28,2022,2004,date 2022 ≠ année dans numéro (2004),False
+6756,1-17-02,1-17-02,Dahir n° 1.17.02 portant publication de l'Acte constitutif de l'Union africaine ,2003-02-03,2003,2017,date 2003 ≠ année dans numéro (2017),False
+6782,3-54-25,3-54-25,Arrêté du Chef du gouvernement n° 3-54-25 du 31 octobre 2025 relatif au soutien ,2025-01-01,2025,1954,date 2025 ≠ année dans numéro (1954),False
+6821,2-03-201,2-03-201,Décret n° 2-03-201 du 21 avril 2006 fixant la liste des établissements d'enseign,2006-04-21,2006,2003,date 2006 ≠ année dans numéro (2003),False
+6933,1-15-46,1-15-46,Dahir n° 1-15-46 du 9 chaabane 1442 (23 mars 2021) portant publication de l'Acco,2021-01-01,2021,2015,date 2021 ≠ année dans numéro (2015),False
+6941,1-73-291,1-73-291,Dahir portant loi n° 1-73-291 du 24 chaoual 1397 (8 octobre 1977) édictant des m,1977-01-01,1977,1973,date 1977 ≠ année dans numéro (1973),False
+6974,1-14-62,1-14-62,Dahir n° 1-14-62 du 30 kaada 1443 (30 juin 2022) portant publication du Protocol,2022-01-01,2022,2014,date 2022 ≠ année dans numéro (2014),False
+6979,1-14-77,1-14-77,Dahir n° 1-14-77 du 18 joumada II 1443 (21 janvier 2022) portant publication de ,2022-01-01,2022,2014,date 2022 ≠ année dans numéro (2014),False
+6981,1-19-101,1-19-101,Dahir n° 1-19-101 du 19 rejeb 1444 (10 février 2023) portant publication de l’Ac,2023-01-01,2023,2019,date 2023 ≠ année dans numéro (2019),False
+6984,1-19-55,1-19-55,Dahir: Accord Maroc-Mali sur le transport routier international de passagers et ,2022-06-30,2022,2019,date 2022 ≠ année dans numéro (2019),False
+6986,1-18-57,1-18-57,Accord Maroc-Slovénie sur le transport routier international de passagers et de ,2022-06-30,2022,2018,date 2022 ≠ année dans numéro (2018),False
+6987,1-18-92,1-18-92,Dahir n° 1-18-92 du 30 Dhou El Kaada 1443 (30 juin 2022) portant publication de ,2022-06-30,2022,2018,date 2022 ≠ année dans numéro (2018),False
+6995,1-16-170,1-16-170,Dahir n° 1-16-170 du 30 kaada 1443 (30 juin 2022) portant publication de la conv,2022-06-30,2022,2016,date 2022 ≠ année dans numéro (2016),False
+6998,1-18-60,1-18-60,Dahir n° 1-18-60 du 30 Dhou El Kaada 1443 (30 juin 2022) portant publication de ,2022-06-30,2022,2018,date 2022 ≠ année dans numéro (2018),False
+7002,1-15-124,1-15-124,Dahir n° 1-15-124 du 19 rejeb 1444 (10 février 2023) portant publication de l'Ac,2023-01-01,2023,2015,date 2023 ≠ année dans numéro (2015),False
+7041,1-11-177,1-11-177,Dahir du 9 ramadan 1331 (12 août 1913) relatif à l'immatriculation des immeubles,1913-01-01,1913,2011,date 1913 ≠ année dans numéro (2011),False
+7049,1-16-93,1-16-93,Dahir n° 1-16-93 du 19 rejeb 1444 (10 février 2023) portant publication de la co,2023-02-10,2023,2016,date 2023 ≠ année dans numéro (2016),False
+7050,1-16-165,1-16-165,Dahir n° 1-16-165 du 19 rejeb 1444 (10 février 2023) portant publication de l'ac,2023-02-10,2023,2016,date 2023 ≠ année dans numéro (2016),False
+7051,1-19-71,1-19-71,Dahir n° 1-19-71 du 19 rejeb 1444 (10 février 2023) portant publication de la Co,2023-02-10,2023,2019,date 2023 ≠ année dans numéro (2019),False
+7052,1-17-79,1-17-79,Dahir n° 1-17-79 du 19 rejeb 1444 (10 février 2023) portant publication de la co,2023-02-10,2023,2017,date 2023 ≠ année dans numéro (2017),False
+7054,1-19-101,1-19-101,Dahir n° 1-19-101 du 19 rejeb 1444 (10 février 2023) portant publication de l'ac,2023-02-10,2023,2019,date 2023 ≠ année dans numéro (2019),False
+7059,1-20-58,1-20-58,Dahir n° 1-20-58 du 19 rejeb 1444 (10 février 2023) portant publication de la co,2023-02-10,2023,2020,date 2023 ≠ année dans numéro (2020),False
+7134,3-07-26,3-07-26,Arrêté du Chef du Gouvernement n° 3.07.26 du 17 mars 2026 fixant les conditions ,2026-03-17,2026,2007,date 2026 ≠ année dans numéro (2007),False
+7159,3-75-21,3-75-21,Décret du Chef du Gouvernement n° 3.75.21 du 30 moharrem 1443 (8 septembre 2021),2021-01-01,2021,1975,date 2021 ≠ année dans numéro (1975),False
+7169,2-18-879,2-18-879,"Décret n° 2-18-879 du 15 chaâbane 1442 (29 mars 2021) fixant les missions, la co",2021-03-29,2021,2018,date 2021 ≠ année dans numéro (2018),False
+7220,2-23-1096,2-23-1096,Décret n° 2.23.1096 relatif aux enquêtes techniques en matière de sécurité de l',2026-04-09,2026,2023,date 2026 ≠ année dans numéro (2023),False
+7245,2-22-1020,2-22-1020,Décret n° 2-22-1020 fixant la liste et les modalités de communication de la docu,2025-01-01,2025,2022,date 2025 ≠ année dans numéro (2022),False
+7272,3-11-26,3-11-26,Arrêté n° 3.11.26 du Chef du Gouvernement fixant les attributions et l'organisat,2026-04-16,2026,2011,date 2026 ≠ année dans numéro (2011),False
+7435,1-98-167,1-98-167,Dahir n° 1-98-167 du 1er ramadan 1432 (2 août 2011) portant publication de la co,2011-01-01,2011,1998,date 2011 ≠ année dans numéro (1998),False
+7436,1-02-46,1-02-46,Dahir n° 1-02-46 du 1er ramadan 1432 (2 août 2011) portant publication de la con,1978-06-26,1978,2002,date 1978 ≠ année dans numéro (2002),False
+7437,1-02-47,1-02-47,Dahir n° 1.02.47 portant ratification de la Convention n° 154 sur la négociation,2011-01-01,2011,2002,date 2011 ≠ année dans numéro (2002),False
+7439,1-10-61,1-10-61,Dahir n° 1-10-61 du 4 kaada 1434 (11 septembre 2013) portant publication de la c,2007-06-15,2007,2010,date 2007 ≠ année dans numéro (2010),False
+7440,1-14-164,1-14-164,Dahir n° 1-14-164 du 9 chaabane 1442 (23 mars 2021) portant publication de la co,2021-03-23,2021,2014,date 2021 ≠ année dans numéro (2014),False
+7446,1-09-128,1-09-128,Dahir n° 1-09-128 du 10 ramadan 1435 (8 juillet 2014) portant publication de la ,2014-01-01,2014,2009,date 2014 ≠ année dans numéro (2009),False
+7458,1-09-12,1-09-12,Dahir n° 1-09-12 du 9 chaabane 1442 (23 mars 2021) portant publication de la Con,2021-01-01,2021,2009,date 2021 ≠ année dans numéro (2009),False
+7459,2-23-968,2-23-968,Décret n° 2-23-968 du 5 Dhou El Kaada 1447 (23 avril 2026) relatif à l'exercice ,2026-04-23,2026,2023,date 2026 ≠ année dans numéro (2023),False
+7462,1-99-238,1-99-238,Dahir n° 1-99-238 du 1er rabii I 1425 (21 avril 2004) portant publication de la ,2004-01-01,2004,1999,date 2004 ≠ année dans numéro (1999),False
+7487,2-88-583,2-88-583,Décret d'application de la loi n° 19.88 relative à la création de l'Agence urbai,1993-01-18,1993,1988,date 1993 ≠ année dans numéro (1988),False
+7505,3-51-25,3-51-25,Décret du Chef du gouvernement n° 3-51-25 fixant la liste des branches d'activit,2025-10-31,2025,1951,date 2025 ≠ année dans numéro (1951),False
+7506,3-53-25,3-53-25,Décret du Chef du Gouvernement n° 3.53.25 fixant la liste des documents du dossi,2025-10-31,2025,1953,date 2025 ≠ année dans numéro (1953),False
+7511,1-16-98,1-16-98,Dahir n° 1-16-98 du 9 chaabane 1442 (23 mars 2021) portant publication de l'Acco,2021-01-01,2021,2016,date 2021 ≠ année dans numéro (2016),False
+7514,3-52-25,3-52-25,Décret du Chef du gouvernement n° 3-52-25 fixant la liste des activités priorita,2025-10-31,2025,1952,date 2025 ≠ année dans numéro (1952),False
+7520,3-54-25,3-54-25,"Arrêté du Chef du gouvernement n° 3-54-25 relatif au soutien des TPE, PME.",2025-10-31,2025,1954,date 2025 ≠ année dans numéro (1954),False
+7525,1-20-43,1-20-43,Dahir n° 1-20-43 du 2 ramadan 1445 (13 mars 2024) portant publication de la conv,2024-03-13,2024,2020,date 2024 ≠ année dans numéro (2020),False
+7546,1-16-94,1-16-94,Dahir n° 1-16-94 du 2 ramadan 1445 (13 mars 2024) portant publication de l’Accor,2024-01-01,2024,2016,date 2024 ≠ année dans numéro (2016),False
+7547,1-14-79,1-14-79,Dahir n° 1-14-79 du 2 ramadan 1445 (13 mars 2024) portant publication de l'accor,2024-03-13,2024,2014,date 2024 ≠ année dans numéro (2014),False
+7623,3-95-17,3-95-17,Arrêté du Chef du Gouvernement n° 3-95-17 du 11 Dou Al Qui'da 1438 (4 août 2017),2017-08-04,2017,1995,date 2017 ≠ année dans numéro (1995),False
+7641,3.25.15,3-25-15,Arrêté du Chef du Gouvernement n° 3.25.15 du 15 juillet 2015 fixant les attribut,2015-07-15,2015,2025,date 2015 ≠ année dans numéro (2025),False
+7667,2-06-377,2-06-377,Décret n° 2-06-377 du 20 kaada 1431 (29 octobre 2010) portant statut particulier,2010-10-29,2010,2006,date 2010 ≠ année dans numéro (2006),False

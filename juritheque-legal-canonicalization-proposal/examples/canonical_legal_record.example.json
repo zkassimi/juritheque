@@ -1,0 +1,37 @@
+{
+  "law_id": 123,
+  "canonical_validation_status": "high_confidence",
+  "canonical_confidence_score": 92,
+  "official_title_fr": "Loi n 59-24 relative a un dispositif de soutien",
+  "official_title_ar": "[titre arabe officiel extrait du PDF]",
+  "formal_instrument_type": "Dahir",
+  "subject_text_type": "Loi",
+  "official_number": "59-24",
+  "dahir_number": "1-24-00",
+  "law_number": "59-24",
+  "decree_number": null,
+  "signature_date": "2024-12-01",
+  "law_date": null,
+  "bo_number": "7350",
+  "bo_publication_date": "2024-12-12",
+  "legal_effective_date_detected": null,
+  "source_name": "SGG",
+  "source_url": "https://www.sgg.gov.ma/example.pdf",
+  "pdf_url": "https://example.supabase.co/storage/v1/object/public/legal-documents/example.pdf",
+  "pdf_sha256": "0123456789abcdef",
+  "pdf_text_hash": "abcdef0123456789",
+  "pdf_page_count": 12,
+  "source_priority": "pdf_page_1",
+  "flags": [],
+  "evidence": [
+    {
+      "field": "law_number",
+      "value": "59-24",
+      "source": "pdf_page_1",
+      "page": 1,
+      "quote": "Loi n 59-24",
+      "confidence": 98
+    }
+  ]
+}
+

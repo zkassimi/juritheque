@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://juritheque.local/schemas/canonical_legal_record.schema.json",
+  "title": "CanonicalLegalRecord",
+  "type": "object",
+  "required": [
+    "law_id",
+    "canonical_validation_status",
+    "canonical_confidence_score",
+    "official_number",
+    "formal_instrument_type",
+    "source_priority",
+    "evidence"
+  ],
+  "properties": {
+    "law_id": {
+      "type": ["integer", "string"]
+    },
+    "canonical_validation_status": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "metadata_only",
+        "low_confidence",
+        "high_confidence",
+        "verified",
+        "rejected"
+      ]
+    },
+    "canonical_confidence_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "official_title_fr": {
+      "type": ["string", "null"]
+    },
+    "official_title_ar": {
+      "type": ["string", "null"]
+    },
+    "formal_instrument_type": {
+      "type": ["string", "null"]
+    },
+    "subject_text_type": {
+      "type": ["string", "null"]
+    },
+    "official_number": {
+      "type": ["string", "null"]
+    },
+    "dahir_number": {
+      "type": ["string", "null"]
+    },
+    "law_number": {
+      "type": ["string", "null"]
+    },
+    "decree_number": {
+      "type": ["string", "null"]
+    },
+    "signature_date": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "law_date": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "bo_number": {
+      "type": ["string", "null"]
+    },
+    "bo_publication_date": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "legal_effective_date_detected": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "source_name": {
+      "type": ["string", "null"]
+    },
+    "source_url": {
+      "type": ["string", "null"]
+    },
+    "pdf_url": {
+      "type": ["string", "null"]
+    },
+    "pdf_sha256": {
+      "type": ["string", "null"]
+    },
+    "pdf_text_hash": {
+      "type": ["string", "null"]
+    },
+    "pdf_page_count": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "source_priority": {
+      "type": "string",
+      "enum": [
+        "pdf_page_1",
+        "pdf_full_text",
+        "official_html",
+        "official_filename",
+        "database_record",
+        "ai_inference",
+        "manual"
+      ]
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "required": ["field", "value", "source"],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "value": {
+          "type": ["string", "null"]
+        },
+        "source": {
+          "type": "string"
+        },
+        "page": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "quote": {
+          "type": ["string", "null"]
+        },
+        "confidence": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
+

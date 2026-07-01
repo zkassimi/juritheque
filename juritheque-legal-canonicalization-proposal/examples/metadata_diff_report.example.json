@@ -1,0 +1,32 @@
+{
+  "law_id": 123,
+  "diffs": [
+    {
+      "field": "type",
+      "current_value": "Loi",
+      "proposed_value": "Dahir",
+      "severity": "critical",
+      "action": "review",
+      "reason": "Le PDF officiel identifie l'instrument formel comme Dahir."
+    },
+    {
+      "field": "number",
+      "current_value": "1-24-00",
+      "proposed_value": "59-24",
+      "severity": "critical",
+      "action": "review",
+      "reason": "Le numero public semble confondre dahir de promulgation et loi promulguee."
+    }
+  ],
+  "safe_to_auto_update": false,
+  "proposed_patch": {
+    "official_number": "59-24",
+    "dahir_number": "1-24-00",
+    "law_number": "59-24",
+    "formal_instrument_type": "Dahir",
+    "subject_text_type": "Loi",
+    "canonical_validation_status": "high_confidence",
+    "canonical_confidence_score": 92
+  }
+}
+

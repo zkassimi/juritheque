@@ -1,0 +1,27 @@
+{
+  "law_id": 123,
+  "score": 68,
+  "decision": "review",
+  "flags": [
+    {
+      "code": "type_mismatch_pdf_vs_record",
+      "severity": "critical",
+      "message": "Le type DB ne correspond pas au type detecte dans le PDF.",
+      "field": "type"
+    },
+    {
+      "code": "law_number_dahir_number_confused",
+      "severity": "critical",
+      "message": "Le numero public semble etre celui du dahir, pas celui de la loi.",
+      "field": "number"
+    }
+  ],
+  "blocking": false,
+  "auto_update_allowed": false,
+  "recommended_patch": {
+    "canonical_validation_status": "high_confidence",
+    "canonical_confidence_score": 92
+  },
+  "review_reason": "Conflit critique sur type et numero public."
+}
+

@@ -1,0 +1,5 @@
+﻿id,score,flags
+1,30,number_mismatch_pdf_vs_record;date_mismatch_pdf_vs_record;title_mismatch_pdf_vs_record
+3,30,audited_without_source_pdf;type_mismatch_pdf_vs_record;title_mismatch_pdf_vs_record
+4,30,audited_without_source_pdf;type_mismatch_pdf_vs_record;title_mismatch_pdf_vs_record
+5,30,audited_without_source_pdf;type_mismatch_pdf_vs_record;title_mismatch_pdf_vs_record

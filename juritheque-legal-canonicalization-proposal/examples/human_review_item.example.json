@@ -1,0 +1,34 @@
+{
+  "law_id": 123,
+  "audit_id": "00000000-0000-0000-0000-000000000000",
+  "priority": 1,
+  "status": "pending",
+  "reason": "Type formel et numero potentiellement confondus",
+  "flags": [
+    "type_mismatch_pdf_vs_record",
+    "law_number_dahir_number_confused"
+  ],
+  "current_metadata": {
+    "type": "Loi",
+    "number": "1-24-00",
+    "date": "2024-12-12",
+    "title_fr": "Loi n 59-24 relative a un dispositif de soutien"
+  },
+  "proposed_metadata": {
+    "formal_instrument_type": "Dahir",
+    "subject_text_type": "Loi",
+    "official_number": "59-24",
+    "dahir_number": "1-24-00",
+    "bo_publication_date": "2024-12-12"
+  },
+  "evidence": {
+    "pdf_page_1": {
+      "url": "https://www.sgg.gov.ma/example.pdf",
+      "quotes": [
+        "Dahir n 1-24-00",
+        "Loi n 59-24"
+      ]
+    }
+  }
+}
+

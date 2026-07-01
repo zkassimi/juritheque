@@ -1,0 +1,235 @@
+{
+  "total": 7624,
+  "distinct_pdfs": 926,
+  "duplicate_groups": 30,
+  "to_publish": 9,
+  "to_mask": 7,
+  "to_fix_meta": 2,
+  "plan": [
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_02_12_loi_n_02_12_relative_aux_nominations_aux_hautes_f.pdf",
+      "keep_id": 7,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_100_13_loi_n_100_13_relative_au_conseil_superieur_du_pou.pdf",
+      "keep_id": 8,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_103_12_loi_n_103_12_relative_aux_etablissements_de_credi.pdf",
+      "keep_id": 306,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_104_12_loi_n_104_12_relative_a_la_liberte_des_prix_et_de.pdf",
+      "keep_id": 10,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_13_09_loi_n_13_09_relative_aux_energies_renouvelables.pdf",
+      "keep_id": 14,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_loi_n16_09_loi_n_16_09_relative_a_l_agence_marocaine_pour_l.pdf",
+      "keep_id": 15,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/dahir_1_09_236_dahir_n_1_09_236_du_8_rabii_ii_1431_23_fevrier_2.pdf",
+      "keep_id": 18,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_loi_n_20_13_loi_n_20_13_relative_au_conseil_de_la_concurrence.pdf",
+      "keep_id": 22,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_25_90_loi_n_25_90_relative_au_lotissement_des_terrains.pdf",
+      "keep_id": 25,
+      "keep_needs_publish": true,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_28_00_loi_n_28_00_relative_a_la_gestion_des_dechets_et.pdf",
+      "keep_id": 87,
+      "keep_needs_publish": true,
+      "keep_meta_broken": false,
+      "mask_ids": [
+        7602
+      ]
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_28_11_loi_organique_n_28_11_relative_au_conseil_des_con.pdf",
+      "keep_id": 28,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/decret_decret_n_2_23_936_decret_n_2_23_936_relatif_aux_poids_et_dimensions.pdf",
+      "keep_id": 32,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": [
+        92
+      ]
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/decret_decret_n_2_23_1067_decret_n_2_23_1067_portant_application_de_la_loi.pdf",
+      "keep_id": 43,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_39_08_loi_n_39_08_relative_aux_droits_reels.pdf",
+      "keep_id": 49,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_44_14_loi_n_44_14_relative_aux_modalites_et_conditions.pdf",
+      "keep_id": 50,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_45_12_loi_n_45_12_relative_au_pret_de_titres.pdf",
+      "keep_id": 112,
+      "keep_needs_publish": true,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_48_15_loi_n48_15_relative_a_l_institution_de_l_autorite.pdf",
+      "keep_id": 54,
+      "keep_needs_publish": true,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_57_11_loi_n_57_11_relative_aux_listes_electorales_gener.pdf",
+      "keep_id": 57,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_59_11_loi_organique_n_59_11_relative_a_l_election_des_m.pdf",
+      "keep_id": 58,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_60_22_loi_n_60_22_relative_a_l_assurance_maladie_obliga.pdf",
+      "keep_id": 59,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_7_81_loi_n_7_81_relative_a_l_expropriation_pour_cause.pdf",
+      "keep_id": 61,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_86_12_loi_n_86_12_relative_aux_contrats_de_partenariat.pdf",
+      "keep_id": 123,
+      "keep_needs_publish": true,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_97_12_loi_n_97_12_relative_a_la_lutte_contre_le_dopage.pdf",
+      "keep_id": 124,
+      "keep_needs_publish": true,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_99_15_loi_n_99_15_relative_a_la_creation_d_un_regime_de.pdf",
+      "keep_id": 65,
+      "keep_needs_publish": true,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_36_15_loi_n_36_15_relative_a_l_eau.pdf",
+      "keep_id": 107,
+      "keep_needs_publish": false,
+      "keep_meta_broken": true,
+      "mask_ids": [
+        7612
+      ]
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/loi_69_00_loi_n_69_00_relative_au_controle_financier_de_l_e.pdf",
+      "keep_id": 121,
+      "keep_needs_publish": true,
+      "keep_meta_broken": false,
+      "mask_ids": [
+        7618
+      ]
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/decret_2_15_426_decret_n_2_15_426_du_28_ramadan_1436_15_juillet.pdf",
+      "keep_id": 357,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": []
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/dahir_dahir_dahir.pdf",
+      "keep_id": 151,
+      "keep_needs_publish": false,
+      "keep_meta_broken": true,
+      "mask_ids": [
+        155
+      ]
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/dahir_dahir_n1_14_187_dahir_n_1_14_187_du_17_safar_1436_10_decembre_20.pdf",
+      "keep_id": 7680,
+      "keep_needs_publish": false,
+      "keep_meta_broken": false,
+      "mask_ids": [
+        169
+      ]
+    },
+    {
+      "pdf_url": "https://bmargdbbcnhkrjeidmvh.supabase.co/storage/v1/object/public/legal-documents/arrete_arrete_du_19_aout_1953_arrete_du_directeur_de_la_production_industrielle.pdf",
+      "keep_id": 384,
+      "keep_needs_publish": true,
+      "keep_meta_broken": false,
+      "mask_ids": [
+        383
+      ]
+    }
+  ],
+  "shell_ids": []
+}

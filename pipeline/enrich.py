@@ -142,7 +142,7 @@ def call_ai(prompt: str) -> str | None:
                 json={
                     "model": "google/gemini-2.5-flash",
                     "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": 1200,
+                    "max_tokens": 2000,
                     "temperature": 0.1,
                 },
                 timeout=45,
@@ -155,7 +155,7 @@ def call_ai(prompt: str) -> str | None:
             client = _ant.Anthropic(api_key=ANTHROPIC_KEY)
             msg = client.messages.create(
                 model=MODEL,
-                max_tokens=1200,
+                max_tokens=2000,
                 messages=[{"role": "user", "content": prompt}],
             )
             return msg.content[0].text.strip()
@@ -484,22 +484,22 @@ def generate_summary_ai(law: dict) -> str | None:
 
 STRUCTURE OBLIGATOIRE — 3 PARAGRAPHES :
 
-PARAGRAPHE 1 — OBJET (2-3 phrases complètes) :
-Expliquer ce que ce texte juridique régit et son objectif principal. Contextualiser dans le système juridique marocain.
+PARAGRAPHE 1 — OBJET ET CONTEXTE (3-4 phrases complètes) :
+Expliquer clairement ce que ce texte juridique régit, son objectif principal et sa raison d'être. Contextualiser dans le système juridique marocain et mentionner les grandes lignes de son contenu.
 
-PARAGRAPHE 2 — CHAMP D'APPLICATION (2-3 phrases complètes) :
-Préciser qui est concerné (personnes, entités, secteurs). Décrire les principales obligations, droits ou procédures établies.
+PARAGRAPHE 2 — CHAMP D'APPLICATION ET DISPOSITIONS PRINCIPALES (3-4 phrases complètes) :
+Préciser qui est concerné (personnes physiques, morales, entités publiques, secteurs d'activité). Décrire les principales obligations, droits, procédures ou mécanismes établis par ce texte. Mentionner les organes compétents chargés de son application si connus.
 
-PARAGRAPHE 3 — POINTS CLÉS (1-2 phrases) :
-Si des informations sur des sanctions, délais, organes compétents ou innovations notables peuvent être déduites, les mentionner. Sinon, résumer l'importance de ce texte dans l'ordre juridique marocain.
+PARAGRAPHE 3 — POINTS CLÉS ET IMPORTANCE (3-4 phrases complètes) :
+Mentionner les aspects notables : sanctions prévues, délais importants, innovations législatives, relations avec d'autres textes ou réformes antérieures. Expliquer l'importance pratique de ce texte pour les justiciables, les professionnels ou l'administration marocaine.
 
 RÈGLES ABSOLUES :
-- TOUJOURS rédiger les 3 paragraphes, même si le contenu est limité au titre
-- Chaque paragraphe = minimum 2 phrases complètes
-- Ne PAS inventer de numéros d'articles ou de chiffres précis non mentionnés
+- TOUJOURS rédiger les 3 paragraphes complets, même si le contenu est limité au titre
+- Chaque paragraphe = minimum 3 phrases complètes et bien développées
+- Ne PAS inventer de numéros d'articles ou de chiffres précis non mentionnés dans le texte
 - L'analyse déductive à partir du type, domaine et titre est OBLIGATOIRE et correcte
 - Compréhensible par un non-juriste, neutre, sans conseil personnel
-- Total visé : 150-200 mots
+- Total visé : 300-400 mots
 - Ne PAS inclure les en-têtes "PARAGRAPHE 1", "OBJET" etc. dans le texte final{title_context}
 
 Type : {type_}

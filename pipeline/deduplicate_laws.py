@@ -147,21 +147,37 @@ def main():
     print(f'{len(laws):,} lois chargées\n', flush=True)
 
     # Grouper par clé = type_catégorie::numéro_normalisé
-    # Exclure les textes "liés" (modificatifs, décrets d'application, promulgation)
+    # Règle :
+    #   - Si le groupe contient des textes modificateurs ET non-modificateurs :
+    #     → les modificateurs sont de faux doublons (ex: "Loi 40.21 modifiant 104-12"
+    #       stocké avec number=104-12) → on les ignore dans ce groupe
+    #   - Si le groupe est 100% modificateurs (ex: 3 copies du même "Dahir portant
+    #     promulgation 48-15") → déduplication normale entre eux
     by_key = defaultdict(list)
-    excluded_modifiers = 0
     for law in laws:
-        if is_modifier_text(law):
-            excluded_modifiers += 1
-            continue                          # texte lié → jamais dédoublonné
         key = dedup_key(law)
         num = normalize_number(law.get('number') or '')
         if num and len(num) > 2:
             by_key[key].append(law)
 
-    groups = {k: v for k, v in by_key.items() if len(v) > 1}
+    # Filtrer les groupes : si mixtes, exclure les modificateurs du groupe
+    filtered = {}
+    excluded_modifiers = 0
+    for key, group in by_key.items():
+        modifiers     = [l for l in group if is_modifier_text(l)]
+        non_modifiers = [l for l in group if not is_modifier_text(l)]
+        if modifiers and non_modifiers:
+            # Groupe mixte : les modificateurs sont faux doublons → on garde seulement les vrais
+            excluded_modifiers += len(modifiers)
+            effective = non_modifiers
+        else:
+            effective = group   # groupe homogène (tout modif ou tout non-modif)
+        if len(effective) > 1:
+            filtered[key] = effective
+
+    groups = filtered
     total_records = sum(len(v) for v in groups.values())
-    print(f'{excluded_modifiers} textes liés (modificatifs/application) exclus du dédoublonnage', flush=True)
+    print(f'{excluded_modifiers} faux doublons modificateurs exclus des groupes mixtes', flush=True)
     print(f'{len(groups)} groupes de vrais doublons — {total_records} enregistrements concernés\n', flush=True)
 
     # Calculer les IDs qui doivent être masqués (les "others" de chaque groupe)
